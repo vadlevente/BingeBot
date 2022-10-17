@@ -14,3 +14,9 @@ dependencyResolutionManagement {
 }
 rootProject.name = "BingeBot"
 include ':app'
+include ':network'
+include ':data'
+include ':mymovies'
+include ':myseries'
+include ':search'
+include ':details'
