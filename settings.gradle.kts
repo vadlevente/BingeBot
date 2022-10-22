@@ -1,10 +1,19 @@
+//pluginManagement {
+//    repositories {
+//        gradlePluginPortal()
+//        google()
+//        mavenCentral()
+//    }
+//}
 pluginManagement {
+    includeBuild("build-logic")
     repositories {
-        gradlePluginPortal()
         google()
         mavenCentral()
+        gradlePluginPortal()
     }
 }
+
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
@@ -13,10 +22,5 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "BingeBot"
-include ':app'
-include ':network'
-include ':data'
-include ':mymovies'
-include ':myseries'
-include ':search'
-include ':details'
+include(":app")
+include(":core:designsystem")
