@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">BingeBot</string>
+
+    <string name="common_Ok">OK</string>
+    <string name="common_Yes">Igen</string>
+    <string name="common_No">Nem</string>
+    <string name="common_Cancel">Mégsem</string>
+
+    <string name="errorTitle">Hiba</string>
+    <string name="errorMessage_unknown">Ismeretlen hiba</string>
+</resources>

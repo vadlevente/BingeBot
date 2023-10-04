@@ -16,3 +16,4 @@ rootProject.name = "BingeBot"
 include(":app")
 include(":ui")
 include(":features:authentication")
+include(":core")
