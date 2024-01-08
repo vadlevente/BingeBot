@@ -1,10 +1,9 @@
 object Modules {
     const val app = ":app"
-    const val coreUi = ":coreUi"
     const val core = ":core"
-    const val simulation = ":simulation"
-    const val testing = ":testing"
-    const val quickPracticeUi = ":quickPractice:quickPracticeUi"
-    const val quickPracticeDomain = ":quickPractice:quickPracticeDomain"
-    const val quickPracticeData = ":quickPractice:quickPracticeData"
+    const val ui = ":ui"
+    const val splash = ":features:splash"
+    const val authentication = ":features:authentication"
+    const val list = ":features:list"
+    const val search = ":features:search"
 }

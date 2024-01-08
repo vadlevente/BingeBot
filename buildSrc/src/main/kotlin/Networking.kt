@@ -6,7 +6,6 @@ object Networking {
 
     private const val retrofitVersion = "2.9.0"
     const val retrofit = "com.squareup.retrofit2:retrofit:$retrofitVersion"
-    const val retrofitConverter = "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
 
     private const val retrofitRxAdapterVersion = "2.9.0"
     const val retrofitRxAdapter = "com.squareup.retrofit2:adapter-rxjava3:$retrofitRxAdapterVersion"

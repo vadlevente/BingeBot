@@ -1,4 +1,4 @@
-package com.bingebot.core.model
+package com.bingebot.core.model.exception
 
 import com.bingebot.core.UIText
 

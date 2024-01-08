@@ -15,5 +15,8 @@ dependencyResolutionManagement {
 rootProject.name = "BingeBot"
 include(":app")
 include(":ui")
-include(":features:authentication")
 include(":core")
+include(":features:splash")
+include(":features:authentication")
+include(":features:list")
+include(":features:search")

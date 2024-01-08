@@ -8,13 +8,13 @@ import com.bingebot.core.events.dialog.DialogResponse
 import com.bingebot.core.events.dialog.DialogResponse.NEGATIVE
 import com.bingebot.core.events.dialog.DialogResponse.POSITIVE
 import com.bingebot.core.events.navigation.NavigationEventChannel
-import com.bingebot.core.model.BingeBotException
-import fake.`package`.name.`for`.sync.R
+import com.bingebot.core.model.exception.BingeBotException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
@@ -23,6 +23,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 interface State
+
+object EmptyState : State
 
 abstract class BaseViewModel<S : State>(
 ) : ViewModel() {
@@ -76,7 +78,7 @@ abstract class BaseViewModel<S : State>(
         }
         .collect(collector)
 
-    protected suspend fun collectDialog(event: ShowDialog) = MutableSharedFlow<DialogResponse>()
+    protected suspend fun showDialog(event: ShowDialog) = MutableSharedFlow<DialogResponse>()
         .apply {
             dialogEventChannel.sendEvent(
                 event.copy(
@@ -84,7 +86,7 @@ abstract class BaseViewModel<S : State>(
                     onNegativeButtonClicked = { tryEmit(NEGATIVE) },
                 )
             )
-        }
+        }.asSharedFlow()
 
 
 }

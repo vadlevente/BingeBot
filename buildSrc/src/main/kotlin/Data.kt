@@ -1,10 +1,9 @@
 object Data {
-    private const val moshiVersion = "1.14.0"
-    const val moshiCore = "com.squareup.moshi:moshi:$moshiVersion"
-    const val moshiCodegen = "com.squareup.moshi:moshi-kotlin-codegen:$moshiVersion"
 
     private const val datastoreVersion = "1.0.0"
     const val dataStore = "androidx.datastore:datastore-preferences:$datastoreVersion"
+    private const val cryptoDatastoreVersion = "1.0.0-beta01"
+    const val cryptoDataStore = "io.github.osipxd:security-crypto-datastore-preferences:$cryptoDatastoreVersion"
 
     private const val roomVersion = "2.4.3"
     const val room = "androidx.room:room-runtime:$roomVersion"
