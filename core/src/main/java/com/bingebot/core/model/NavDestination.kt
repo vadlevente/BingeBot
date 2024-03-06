@@ -1,4 +1,4 @@
-package com.bingebot.app
+package com.bingebot.core.model
 
 enum class NavDestination(val route: String) {
     SPLASH("splash"),

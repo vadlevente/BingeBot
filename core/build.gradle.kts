@@ -24,6 +24,10 @@ dependencies {
     "implementation"(Data.cryptoDataStore)
     "implementation"(Utils.timber)
     "implementation"(Utils.gson)
+    // Firebase
+    "implementation"(platform(Firebase.firebaseBoM))
+    "implementation"(Firebase.firebaseCrashlytics)
+    "implementation"(Firebase.firebaseAuth)
 //    "implementation"(project(Modules.coreUi))
     "testImplementation"(Testing.kotlin)
     "androidTestImplementation"(Testing.kotlin)

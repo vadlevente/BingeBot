@@ -1,7 +1,7 @@
 package com.bingebot.core.inject
 
-import com.bingebot.core.data.authentication.AuthenticationService
-import com.bingebot.core.data.authentication.AuthenticationServiceImpl
+import com.bingebot.core.data.service.AuthenticationService
+import com.bingebot.core.data.service.AuthenticationServiceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

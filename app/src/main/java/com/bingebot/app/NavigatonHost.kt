@@ -5,6 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.bingebot.core.model.NavDestination
 import com.bingebot.splash.ui.SplashScreenComponent
 import com.bingebot.ui.BingeBotTheme
 

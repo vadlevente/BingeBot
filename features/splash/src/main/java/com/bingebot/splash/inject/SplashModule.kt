@@ -1,6 +1,6 @@
 package com.bingebot.splash.inject
 
-import com.bingebot.splash.usecase.NavigateToStartScreen
+import com.bingebot.splash.usecase.GetNavDestinationToStartScreenUseCase
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -14,7 +14,7 @@ abstract class SplashModule {
     @Binds
     @Singleton
     abstract fun bindsNavigateToStartScreen(
-        impl: NavigateToStartScreen
-    ): NavigateToStartScreen
+        impl: GetNavDestinationToStartScreenUseCase
+    ): GetNavDestinationToStartScreenUseCase
 
 }

@@ -1,0 +1,52 @@
+package com.bingebot.core.data.local.datastore
+
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.MutablePreferences
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.stringPreferencesKey
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.map
+import javax.inject.Inject
+
+class PreferencesDataSource @Inject constructor(
+    private val dataStore: DataStore<Preferences>,
+) {
+
+    companion object {
+        val ACTIVE_PROFILE_ID = stringPreferencesKey("activeProfileId")
+    }
+
+    fun <T> observePreference(key: Preferences.Key<T>): Flow<T> = dataStore.data
+        .filter { it.contains(key) }
+        .map { it[key]!! }
+        .distinctUntilChanged()
+
+    suspend fun <T> savePreference(
+        preferencesKey: Preferences.Key<T>,
+        value: T,
+    ) = updateDataAsync { this[preferencesKey] = value }
+
+    suspend fun <T> removePreference(preferencesKey: Preferences.Key<T>) =
+        updateDataAsync { remove(preferencesKey) }
+
+    suspend fun removeAllPreferences(except: Preferences.Key<*>) =
+        updateDataAsync {
+            listOf(
+                ACTIVE_PROFILE_ID
+            ).minus(except)
+                .forEach {
+                    remove(it)
+                }
+        }
+
+    private suspend fun updateDataAsync(action: MutablePreferences.() -> Unit) {
+        dataStore.updateData { preferences ->
+            preferences.toMutablePreferences().apply {
+                action()
+            }
+        }
+    }
+
+}

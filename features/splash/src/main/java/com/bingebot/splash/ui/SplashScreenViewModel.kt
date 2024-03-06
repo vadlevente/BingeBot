@@ -1,23 +1,22 @@
 package com.bingebot.splash.ui
 
-import androidx.lifecycle.viewModelScope
-import com.bingebot.core.BaseViewModel
-import com.bingebot.core.EmptyState
-import com.bingebot.splash.usecase.NavigateToStartScreen
+import com.bingebot.core.ui.BaseViewModel
+import com.bingebot.core.ui.EmptyState
+import com.bingebot.splash.usecase.GetNavDestinationToStartScreenUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class SplashScreenViewModel @Inject constructor(
-    private val navigateToStartScreen: NavigateToStartScreen,
+    getNavDestinationToStartScreen: GetNavDestinationToStartScreenUseCase,
 ) : BaseViewModel<EmptyState>() {
 
     override val state = MutableStateFlow(EmptyState)
 
     init {
-        viewModelScope.launch {
-            navigateToStartScreen()
-        }
+        getNavDestinationToStartScreen.execute(Unit)
+            .onValue {
+                navigateTo(it)
+            }
     }
 
 }

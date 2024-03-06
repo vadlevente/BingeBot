@@ -1,22 +1,27 @@
-package com.bingebot.core
+package com.bingebot.core.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bingebot.core.R.string
 import com.bingebot.core.events.dialog.DialogEvent.ShowDialog
 import com.bingebot.core.events.dialog.DialogEventChannel
 import com.bingebot.core.events.dialog.DialogResponse
 import com.bingebot.core.events.dialog.DialogResponse.NEGATIVE
 import com.bingebot.core.events.dialog.DialogResponse.POSITIVE
+import com.bingebot.core.events.navigation.NavigationEvent.NavigateTo
 import com.bingebot.core.events.navigation.NavigationEventChannel
+import com.bingebot.core.model.NavDestination
 import com.bingebot.core.model.exception.BingeBotException
+import com.bingebot.core.stringOf
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -44,39 +49,39 @@ abstract class BaseViewModel<S : State>(
         val errorMessage = when (t) {
             is BingeBotException -> t.reason.reasonText
             else -> t.localizedMessage?.let { stringOf(it) }
-                ?: stringOf(R.string.errorMessage_unknown)
+                ?: stringOf(string.errorMessage_unknown)
         }
         viewModelScope.launch {
             dialogEventChannel.sendEvent(
                 ShowDialog(
-                    title = stringOf(R.string.errorTitle),
+                    title = stringOf(string.errorTitle),
                     content = errorMessage,
-                    positiveButtonTitle = stringOf(R.string.common_Ok),
+                    positiveButtonTitle = stringOf(string.common_Ok),
                 )
             )
         }
     }
 
-    protected suspend fun <T : Any> Flow<T>.collectSimple(
-        collector: FlowCollector<T> = FlowCollector {},
-        errorHandler: (Throwable) -> Unit = basicErrorHandler,
+    protected fun <T : Any> Flow<T>.onValue(
+        action: (T) -> Unit,
     ) =
         this
             .onStart { isInProgressMutable.update { true } }
             .onCompletion { isInProgressMutable.update { false } }
             .catch {
-                errorHandler(it)
+                basicErrorHandler(it)
             }
-            .collect(collector)
+            .onEach(action)
+            .launchIn(viewModelScope)
 
-    protected suspend fun Flow<Any>.collectSilent(
-        collector: FlowCollector<Any> = FlowCollector {},
-        errorHandler: (Throwable) -> Unit = basicErrorHandler,
+    protected fun <T : Any> Flow<T>.onValueSilent(
+        action: (T) -> Unit,
     ) = this
         .catch {
-            errorHandler(it)
+            basicErrorHandler(it)
         }
-        .collect(collector)
+        .onEach(action)
+        .launchIn(viewModelScope)
 
     protected suspend fun showDialog(event: ShowDialog) = MutableSharedFlow<DialogResponse>()
         .apply {
@@ -87,6 +92,12 @@ abstract class BaseViewModel<S : State>(
                 )
             )
         }.asSharedFlow()
+
+    protected fun navigateTo(navDestination: NavDestination) {
+        viewModelScope.launch {
+            navigationEventChannel.sendEvent(NavigateTo(navDestination.route))
+        }
+    }
 
 
 }
