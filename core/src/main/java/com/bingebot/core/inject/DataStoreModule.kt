@@ -20,15 +20,18 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 abstract class DataStoreModule {
 
-    @Provides
-    @Singleton
-    fun provideDataStore(context: Context): DataStore<Preferences> = PreferenceDataStoreFactory.createEncrypted {
-        EncryptedFile.Builder(
-            context.dataStoreFile("encrypted.preferences_pb"),
-            context,
-            MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC),
-            EncryptedFile.FileEncryptionScheme.AES256_GCM_HKDF_4KB
-        ).build()
+    companion object {
+        @Provides
+        @Singleton
+        fun provideDataStore(context: Context): DataStore<Preferences> =
+            PreferenceDataStoreFactory.createEncrypted {
+                EncryptedFile.Builder(
+                    context.dataStoreFile("encrypted.preferences_pb"),
+                    context,
+                    MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC),
+                    EncryptedFile.FileEncryptionScheme.AES256_GCM_HKDF_4KB
+                ).build()
+            }
     }
 
     @Binds

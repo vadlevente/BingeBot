@@ -18,17 +18,24 @@ class PreferencesDataSource @Inject constructor(
         val ACTIVE_PROFILE_ID = stringPreferencesKey("activeProfileId")
     }
 
-    fun <T> observePreference(key: Preferences.Key<T>): Flow<T> = dataStore.data
+    val activeProfileId: Flow<String>
+        get() = observePreference(ACTIVE_PROFILE_ID)
+
+    suspend fun saveActiveProfileId(value: String) {
+        savePreference(ACTIVE_PROFILE_ID, value)
+    }
+
+    private fun <T> observePreference(key: Preferences.Key<T>): Flow<T> = dataStore.data
         .filter { it.contains(key) }
         .map { it[key]!! }
         .distinctUntilChanged()
 
-    suspend fun <T> savePreference(
+    private suspend fun <T> savePreference(
         preferencesKey: Preferences.Key<T>,
         value: T,
     ) = updateDataAsync { this[preferencesKey] = value }
 
-    suspend fun <T> removePreference(preferencesKey: Preferences.Key<T>) =
+    private suspend fun <T> removePreference(preferencesKey: Preferences.Key<T>) =
         updateDataAsync { remove(preferencesKey) }
 
     suspend fun removeAllPreferences(except: Preferences.Key<*>) =

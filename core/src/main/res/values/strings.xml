@@ -8,4 +8,6 @@
 
     <string name="errorTitle">Hiba</string>
     <string name="errorMessage_unknown">Ismeretlen hiba</string>
+
+    <string name="loginSubmitButtonTitle">Bejelentkezés</string>
 </resources>

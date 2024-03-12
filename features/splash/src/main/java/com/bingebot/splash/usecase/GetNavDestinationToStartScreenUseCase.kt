@@ -1,7 +1,6 @@
 package com.bingebot.splash.usecase
 
 import com.bingebot.core.data.local.datastore.PreferencesDataSource
-import com.bingebot.core.data.local.datastore.PreferencesDataSource.Companion.ACTIVE_PROFILE_ID
 import com.bingebot.core.data.service.AuthenticationService
 import com.bingebot.core.model.NavDestination
 import com.bingebot.core.model.NavDestination.LIST
@@ -19,7 +18,7 @@ class GetNavDestinationToStartScreenUseCase @Inject constructor(
 ) : BaseUseCase<Unit, NavDestination>() {
 
     override fun execute(params: Unit): Flow<NavDestination> =
-        preferencesDataSource.observePreference(ACTIVE_PROFILE_ID)
+        preferencesDataSource.activeProfileId
             .map {
                 if (authenticationService.isProfileSignedIn(it)) LIST
                 else LOGIN
