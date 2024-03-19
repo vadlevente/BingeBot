@@ -129,3 +129,5 @@ dependencies {
     testImplementation(Concurrency.coroutinestest)
     testImplementation(Testing.turbine)
 }
+
+apply(plugin = "com.google.gms.google-services")

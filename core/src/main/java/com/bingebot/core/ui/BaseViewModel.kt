@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onEmpty
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -68,6 +69,9 @@ abstract class BaseViewModel<S : State>(
         this
             .onStart { isInProgressMutable.update { true } }
             .onCompletion { isInProgressMutable.update { false } }
+            .onEmpty {
+                var a = 1
+            }
             .catch {
                 basicErrorHandler(it)
             }

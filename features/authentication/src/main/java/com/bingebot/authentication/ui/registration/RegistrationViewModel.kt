@@ -1,8 +1,8 @@
-package com.bingebot.authentication.ui.login
+package com.bingebot.authentication.ui.registration
 
 import com.bingebot.authentication.domain.usecase.RegistrationUseCase
 import com.bingebot.authentication.domain.usecase.RegistrationUseCaseParams
-import com.bingebot.authentication.ui.login.RegistrationViewModel.ViewState
+import com.bingebot.authentication.ui.registration.RegistrationViewModel.ViewState
 import com.bingebot.core.model.NavDestination
 import com.bingebot.core.ui.BaseViewModel
 import com.bingebot.core.ui.State

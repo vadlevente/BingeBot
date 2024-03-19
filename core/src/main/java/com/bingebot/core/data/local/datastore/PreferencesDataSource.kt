@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEmpty
 import javax.inject.Inject
 
 class PreferencesDataSource @Inject constructor(
@@ -26,7 +27,13 @@ class PreferencesDataSource @Inject constructor(
     }
 
     private fun <T> observePreference(key: Preferences.Key<T>): Flow<T> = dataStore.data
+        .onEmpty {
+            var a = 1
+        }
         .filter { it.contains(key) }
+        .onEmpty {
+            var a = 1
+        }
         .map { it[key]!! }
         .distinctUntilChanged()
 

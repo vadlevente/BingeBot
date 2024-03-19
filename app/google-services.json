@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "780292974114",
+    "project_id": "bingebot-9de85",
+    "storage_bucket": "bingebot-9de85.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:780292974114:android:8baa1fa8c961bbd64acc7b",
+        "android_client_info": {
+          "package_name": "com.vadlevente.bingebot"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "780292974114-ei7jr6esb0ij31spqhkdfgq4mapb557r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vadlevente.bingebot",
+            "certificate_hash": "08afdf142d734a29bca16c5ad3420330bdfaf29c"
+          }
+        },
+        {
+          "client_id": "780292974114-1kn97139m7f7p49i29sgpe4ipvcr5t4a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAVmnYW1XYo_1XIBuc4MNxQ2UfZ3F1OIxk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "780292974114-1kn97139m7f7p49i29sgpe4ipvcr5t4a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

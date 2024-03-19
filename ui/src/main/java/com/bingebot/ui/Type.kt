@@ -1,6 +1,7 @@
 package com.bingebot.ui
 
 import androidx.compose.material3.Typography
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -31,4 +32,21 @@ val Typography = Typography(
         letterSpacing = 0.5.sp
     )
     */
+)
+
+private val fontFamily = FontFamily.Default
+
+val pageTitle = TextStyle(
+    fontFamily = fontFamily,
+    fontWeight = FontWeight.Normal,
+    fontSize = 16.sp,
+    letterSpacing = 0.6.sp
+)
+
+val errorLabel = TextStyle(
+    fontFamily = fontFamily,
+    fontWeight = FontWeight.Normal,
+    fontSize = 12.sp,
+    letterSpacing = 0.6.sp,
+    color = Color.Red
 )

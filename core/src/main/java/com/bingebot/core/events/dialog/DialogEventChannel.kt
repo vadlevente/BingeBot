@@ -2,6 +2,7 @@ package com.bingebot.core.events.dialog
 
 import com.bingebot.core.events.EventChannel
 import com.bingebot.core.events.EventChannelBase
+import javax.inject.Inject
 
 enum class DialogResponse {
     POSITIVE,
@@ -10,4 +11,6 @@ enum class DialogResponse {
 
 interface DialogEventChannel : EventChannel<DialogEvent>
 
-class DialogEventChannelImpl : EventChannelBase<DialogEvent>(), DialogEventChannel
+class DialogEventChannelImpl @Inject constructor(
+
+) : EventChannelBase<DialogEvent>(), DialogEventChannel

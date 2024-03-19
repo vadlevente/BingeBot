@@ -4,6 +4,7 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import dagger.Lazy
+import javax.inject.Inject
 import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
@@ -16,7 +17,7 @@ interface AuthenticationService {
     fun isProfileSignedIn(profileId: String): Boolean
 }
 
-class AuthenticationServiceImpl(
+class AuthenticationServiceImpl @Inject constructor(
     private val firebaseAuth: Lazy<FirebaseAuth>,
 ) : AuthenticationService {
 
