@@ -6,5 +6,10 @@ object Firebase {
 
     private const val googleServicesVersion = "4.3.2"
     const val googleServices = "com.google.gms:google-services:$googleServicesVersion"
+    const val googleServicesPlugin = "com.google.gms.google-services"
+
+    private const val crashlyticsVersion = "2.2.0"
+    const val crashlytics = "com.google.firebase:firebase-crashlytics-gradle:$crashlyticsVersion"
+    const val crashlyticsPlugin = "com.google.firebase.crashlytics"
 
 }

@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace = "com.bingebot.app"
+    namespace = "com.vadlevente.bingebot"
 
     buildTypes {
         getByName("debug") {
@@ -130,4 +130,5 @@ dependencies {
     testImplementation(Testing.turbine)
 }
 
-apply(plugin = "com.google.gms.google-services")
+apply(plugin = Firebase.googleServicesPlugin)
+apply(plugin = Firebase.crashlyticsPlugin)

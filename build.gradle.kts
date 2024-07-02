@@ -8,6 +8,7 @@ buildscript {
         classpath(Kotlin.kotlinPlugin)
         classpath(Hilt.hiltGradle)
         classpath(Firebase.googleServices)
+        classpath(Firebase.crashlytics)
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
