@@ -32,8 +32,8 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.vadlevente.bingebot.authentication.R
 import com.vadlevente.bingebot.authentication.ui.registration.RegistrationViewModel.ViewState
-import com.vadlevente.bingebot.core.R
 import com.vadlevente.bingebot.core.stringOf
 import com.vadlevente.bingebot.core.ui.composables.BBOutlinedTextField
 import com.vadlevente.bingebot.ui.BingeBotTheme
@@ -82,7 +82,7 @@ fun RegistrationScreenComponent(
         ) {
             Text(
                 modifier = Modifier.align(Alignment.Center),
-                text = stringResource(id = R.string.registrationTitle),
+                text = stringResource(id = com.vadlevente.bingebot.authentication.R.string.registrationTitle),
                 textAlign = TextAlign.Center,
                 style = pageTitle,
             )

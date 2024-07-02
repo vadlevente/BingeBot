@@ -9,20 +9,6 @@
     <string name="errorTitle">Hiba</string>
     <string name="errorMessage_unknown">Ismeretlen hiba</string>
 
-    <string name="loginEmailLabel">E-mail cím</string>
-    <string name="loginPasswordLabel">Jelszó</string>
-    <string name="loginSubmitButtonTitle">Bejelentkezés</string>
-    <string name="loginNavigateToRegistrationTitle">Még nincs felhasználód? Regisztrálj itt!</string>
-    <string name="loginTitle">Kérjük, adja meg a bejelentkezési adatokat!</string>
-
-    <string name="registrationEmailLabel">E-mail cím</string>
-    <string name="registrationPasswordLabel">Jelszó</string>
-    <string name="registrationConfirmPasswordLabel">Jelszó újra</string>
-    <string name="registrationSubmitButtonTitle">Regisztráció</string>
-    <string name="registrationPasswordsDoNotMatchLabel">A megadott jelszavak nem egyeznek meg</string>
-    <string name="registrationTitle">Kérjük, adja meg a regisztrációhoz szükséges adatokat!</string>
-    <string name="registrationNavigateToLoginTitle">Belépés meglévő felhasználóval</string>
-
     <string name="exception_authenticationFailed">Sikertelen bejelentkezés! Kérjük, próbálja újra!</string>
     <string name="exception_weakPassword">A megadott jelszó túl gyenge! Kérjük, adjon meg egy másikat!</string>
     <string name="exception_sessionExpired">A munkamenet lejárt, kérjük, jelentkezzen be újra!</string>

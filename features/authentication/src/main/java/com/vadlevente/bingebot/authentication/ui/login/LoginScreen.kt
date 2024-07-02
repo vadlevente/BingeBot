@@ -20,8 +20,8 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.vadlevente.bingebot.authentication.R
 import com.vadlevente.bingebot.authentication.ui.login.LoginViewModel.ViewState
-import com.vadlevente.bingebot.core.R
 import com.vadlevente.bingebot.core.stringOf
 import com.vadlevente.bingebot.core.ui.composables.BBOutlinedTextField
 import com.vadlevente.bingebot.ui.BingeBotTheme

@@ -80,11 +80,27 @@ private fun navigate(
     route: String,
 ) {
     when (route) {
-        NavDestination.SPLASH.route -> navController.navigate(route) {
-            popUpTo(NavDestination.SPLASH.route) {
-                inclusive = true
+        NavDestination.SPLASH.route -> {
+            navController.navigate(route) {
+                popUpTo(NavDestination.SPLASH.route) {
+                    inclusive = true
+                }
             }
         }
+
+        NavDestination.REGISTRATION.route,
+        NavDestination.LOGIN.route,
+        -> {
+            if (navController.currentBackStackEntry?.destination?.route == NavDestination.SPLASH.route) {
+                navController.popBackStack()
+            }
+            navController.navigate(route)
+        }
+        NavDestination.LIST.route -> {
+            navController.popBackStack()
+            navController.navigate(route)
+        }
+
         else -> navController.navigate(route)
     }
 }

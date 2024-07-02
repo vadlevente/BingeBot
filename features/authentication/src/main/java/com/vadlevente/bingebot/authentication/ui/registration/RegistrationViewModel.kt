@@ -1,12 +1,15 @@
 package com.vadlevente.bingebot.authentication.ui.registration
 
+import com.vadlevente.bingebot.authentication.R
 import com.vadlevente.bingebot.authentication.domain.usecase.RegistrationUseCase
 import com.vadlevente.bingebot.authentication.domain.usecase.RegistrationUseCaseParams
 import com.vadlevente.bingebot.authentication.ui.registration.RegistrationViewModel.ViewState
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
+import com.vadlevente.bingebot.core.events.toast.ToastType.INFO
 import com.vadlevente.bingebot.core.model.NavDestination
 import com.vadlevente.bingebot.core.model.NavDestination.LOGIN
+import com.vadlevente.bingebot.core.stringOf
 import com.vadlevente.bingebot.core.ui.BaseViewModel
 import com.vadlevente.bingebot.core.ui.State
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -45,10 +48,14 @@ class RegistrationViewModel @Inject constructor(
     fun onSubmit() {
         registrationUseCase.execute(
             RegistrationUseCaseParams(
-            viewState.value.email,
-            viewState.value.password,
-        )
+                viewState.value.email,
+                viewState.value.password,
+            )
         ).onValue {
+            showToast(
+                stringOf(R.string.registrationSuccessful),
+                INFO,
+            )
             navigateTo(NavDestination.LIST)
         }
     }

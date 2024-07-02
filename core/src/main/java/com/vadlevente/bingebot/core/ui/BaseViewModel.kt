@@ -3,10 +3,12 @@ package com.vadlevente.bingebot.core.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.vadlevente.bingebot.core.R.string
+import com.vadlevente.bingebot.core.UIText
 import com.vadlevente.bingebot.core.events.navigation.NavigationEvent.NavigateTo
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEvent.ShowToast
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
+import com.vadlevente.bingebot.core.events.toast.ToastType
 import com.vadlevente.bingebot.core.events.toast.ToastType.ERROR
 import com.vadlevente.bingebot.core.model.NavDestination
 import com.vadlevente.bingebot.core.model.exception.BingeBotException
@@ -59,7 +61,7 @@ abstract class BaseViewModel<S : State>(
     }
 
     protected fun <T : Any> Flow<T>.onValue(
-        action: (T) -> Unit,
+        action: suspend (T) -> Unit,
     ) =
         this
             .onStart { isInProgressMutable.update { true } }
@@ -85,6 +87,12 @@ abstract class BaseViewModel<S : State>(
     protected fun navigateTo(navDestination: NavDestination) {
         viewModelScope.launch {
             navigationEventChannel.sendEvent(NavigateTo(navDestination.route))
+        }
+    }
+
+    protected fun showToast(message: UIText, type: ToastType) {
+        viewModelScope.launch {
+            toastEventChannel.sendEvent(ShowToast(message, type))
         }
     }
 

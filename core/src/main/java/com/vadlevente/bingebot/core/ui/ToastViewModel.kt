@@ -42,7 +42,11 @@ class ToastViewModel @Inject constructor(
     }
 
     fun onHideToast() {
-        viewState.update { ViewState() }
+        viewState.update {
+            it.copy(
+                isVisible = false,
+            )
+        }
     }
 
     data class ViewState(
