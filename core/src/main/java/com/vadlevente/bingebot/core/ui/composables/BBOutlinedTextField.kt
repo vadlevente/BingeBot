@@ -19,6 +19,7 @@ fun BBOutlinedTextField(
     onValueChange: (String) -> Unit = {},
     isError: Boolean = false,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    trailingIcon: @Composable () -> Unit = {},
 ) {
     BBOutlinedTextField(
         modifier = modifier,
@@ -33,6 +34,7 @@ fun BBOutlinedTextField(
         onValueChange = onValueChange,
         isError = isError,
         keyboardOptions = keyboardOptions,
+        trailingIcon = trailingIcon,
     )
 }
 
@@ -46,6 +48,7 @@ fun BBOutlinedTextField(
     onValueChange: (String) -> Unit = {},
     isError: Boolean = false,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    trailingIcon: @Composable () -> Unit = {},
 ) {
     OutlinedTextField(
         modifier = modifier,
@@ -56,5 +59,6 @@ fun BBOutlinedTextField(
         onValueChange = onValueChange,
         isError = isError,
         keyboardOptions = keyboardOptions,
+        trailingIcon = trailingIcon,
     )
 }

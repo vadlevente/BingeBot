@@ -7,6 +7,7 @@ import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.vadlevente.bingebot.core.data.local.datastore.PreferencesDataSource
 import com.vadlevente.bingebot.core.model.exception.BingeBotException
 import com.vadlevente.bingebot.core.model.exception.Reason.AUTHENTICATION_FAILED
+import com.vadlevente.bingebot.core.model.exception.Reason.SESSION_EXPIRED
 import com.vadlevente.bingebot.core.model.exception.Reason.WEAK_PASSWORD
 import dagger.Lazy
 import javax.inject.Inject
@@ -19,7 +20,7 @@ interface AuthenticationService {
     val currentUserId: String?
     suspend fun login(email: String, password: String)
     suspend fun register(email: String, password: String)
-    fun isProfileSignedIn(profileId: String): Boolean
+    suspend fun isProfileSignedIn(profileId: String): Boolean
 }
 
 class AuthenticationServiceImpl @Inject constructor(
@@ -46,8 +47,23 @@ class AuthenticationServiceImpl @Inject constructor(
         saveCurrentUserId()
     }
 
-    override fun isProfileSignedIn(profileId: String) =
-        profileId == currentUserId
+    override suspend fun isProfileSignedIn(profileId: String): Boolean {
+        if (profileId != currentUserId) {
+            return false
+        }
+        return suspendCoroutine { continuation ->
+            firebaseAuth.get().currentUser?.reload()
+                ?.addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        continuation.resume(true)
+                    } else {
+                        it.exception?.let {
+                            continuation.resumeWithException(BingeBotException(SESSION_EXPIRED))
+                        } ?: continuation.resume(false)
+                    }
+                }
+        }
+    }
 
     private suspend fun saveCurrentUserId() {
         currentUserId?.let {

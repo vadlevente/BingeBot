@@ -71,6 +71,7 @@ dependencies {
     implementation(Compose.navigation)
     implementation(Compose.constraintLayout)
     implementation(Compose.pager)
+    implementation(Compose.materialIcons)
     debugImplementation(Compose.tooling)
     debugImplementation(Compose.testManifest)
 

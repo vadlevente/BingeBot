@@ -14,4 +14,9 @@ enum class Reason(val reasonText: UIText? = null) {
     AUTHENTICATION_FAILED(stringOf(R.string.exception_authenticationFailed)),
     DATA_READ_ERROR,
     WEAK_PASSWORD(stringOf(R.string.exception_weakPassword)),
+    SESSION_EXPIRED(stringOf(R.string.exception_sessionExpired)),
 }
+
+fun Throwable.isBecauseOf(reason: Reason) =
+    this is BingeBotException &&
+        this.reason == reason

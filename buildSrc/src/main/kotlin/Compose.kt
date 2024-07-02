@@ -35,4 +35,6 @@ object Compose {
 
     private const val exoPlayerVersion = "2.18.5"
     const val exoPlayer = "com.google.android.exoplayer:exoplayer:$exoPlayerVersion"
+
+    const val materialIcons = "androidx.compose.material:material-icons-extended:$composeVersion"
 }

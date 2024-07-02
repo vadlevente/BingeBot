@@ -28,7 +28,7 @@ import kotlinx.coroutines.delay
 import kotlin.time.Duration.Companion.seconds
 
 @Composable
-fun ToastHandler(
+fun Toast(
     modifier: Modifier,
     toastViewModel: ToastViewModel = hiltViewModel(),
 ) {

@@ -50,3 +50,11 @@ val errorLabel = TextStyle(
     letterSpacing = 0.6.sp,
     color = Color.Red
 )
+
+val link = TextStyle(
+    fontFamily = fontFamily,
+    fontWeight = FontWeight.Normal,
+    fontSize = 12.sp,
+    letterSpacing = 0.6.sp,
+    color = Color.Blue
+)

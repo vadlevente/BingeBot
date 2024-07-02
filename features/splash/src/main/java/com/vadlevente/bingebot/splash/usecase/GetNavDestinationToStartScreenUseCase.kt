@@ -8,7 +8,8 @@ import com.vadlevente.bingebot.core.model.NavDestination.LOGIN
 import com.vadlevente.bingebot.core.model.NavDestination.REGISTRATION
 import com.vadlevente.bingebot.core.ui.BaseUseCase
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
 import javax.inject.Inject
 
 class GetNavDestinationToStartScreenUseCase @Inject constructor(
@@ -18,12 +19,12 @@ class GetNavDestinationToStartScreenUseCase @Inject constructor(
 
     override fun execute(params: Unit): Flow<NavDestination> {
         return preferencesDataSource.activeProfileId
-                .map { profileId ->
-                    profileId?.let {
-                        if (authenticationService.isProfileSignedIn(it)) LIST
-                        else LOGIN
-                    } ?: REGISTRATION
-                }
+            .flatMapLatest { profileId ->
+                profileId?.let {
+                    if (authenticationService.isProfileSignedIn(it)) flowOf(LIST)
+                    else flowOf(LOGIN)
+                } ?: flowOf(REGISTRATION)
+            }
     }
 
 }

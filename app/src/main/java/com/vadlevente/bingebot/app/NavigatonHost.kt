@@ -17,7 +17,8 @@ import com.vadlevente.bingebot.core.events.navigation.NavigationEvent.NavigateTo
 import com.vadlevente.bingebot.core.events.navigation.NavigationEvent.NavigateUp
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.model.NavDestination
-import com.vadlevente.bingebot.core.ui.composables.ToastHandler
+import com.vadlevente.bingebot.core.ui.composables.Toast
+import com.vadlevente.bingebot.list.ui.ListScreen
 import com.vadlevente.bingebot.splash.ui.SplashScreen
 import com.vadlevente.bingebot.ui.BingeBotTheme
 import kotlinx.coroutines.flow.collectLatest
@@ -45,8 +46,11 @@ fun NavigationHost(
                 composable(NavDestination.LOGIN.route) {
                     LoginScreen()
                 }
+                composable(NavDestination.LIST.route) {
+                    ListScreen()
+                }
             }
-            ToastHandler(
+            Toast(
                 modifier = Modifier.align(Alignment.TopCenter),
             )
         }
@@ -63,10 +67,24 @@ private fun CollectEvents(
         coroutineScope.launch {
             navigationEventChannel.events.collectLatest { event ->
                 when (event) {
-                    is NavigateTo -> navController.navigate(event.route)
+                    is NavigateTo -> navigate(navController, event.route)
                     NavigateUp -> navController.navigateUp()
                 }
             }
         }
+    }
+}
+
+private fun navigate(
+    navController: NavHostController,
+    route: String,
+) {
+    when (route) {
+        NavDestination.SPLASH.route -> navController.navigate(route) {
+            popUpTo(NavDestination.SPLASH.route) {
+                inclusive = true
+            }
+        }
+        else -> navController.navigate(route)
     }
 }

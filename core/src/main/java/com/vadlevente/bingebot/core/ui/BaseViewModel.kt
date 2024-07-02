@@ -10,6 +10,8 @@ import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastType.ERROR
 import com.vadlevente.bingebot.core.model.NavDestination
 import com.vadlevente.bingebot.core.model.exception.BingeBotException
+import com.vadlevente.bingebot.core.model.exception.Reason.SESSION_EXPIRED
+import com.vadlevente.bingebot.core.model.exception.isBecauseOf
 import com.vadlevente.bingebot.core.stringOf
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -50,6 +52,9 @@ abstract class BaseViewModel<S : State>(
                     type = ERROR,
                 )
             )
+        }
+        if (t.isBecauseOf(SESSION_EXPIRED)) {
+            navigateTo(NavDestination.SPLASH)
         }
     }
 

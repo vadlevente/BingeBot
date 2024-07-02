@@ -6,6 +6,7 @@ import com.vadlevente.bingebot.authentication.ui.login.LoginViewModel.ViewState
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
 import com.vadlevente.bingebot.core.model.NavDestination
+import com.vadlevente.bingebot.core.model.NavDestination.REGISTRATION
 import com.vadlevente.bingebot.core.ui.BaseViewModel
 import com.vadlevente.bingebot.core.ui.State
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -45,6 +46,10 @@ class LoginViewModel @Inject constructor(
         ).onValue {
             navigateTo(NavDestination.LIST)
         }
+    }
+
+    fun onNavigateToRegistration() {
+        navigateTo(REGISTRATION)
     }
 
     private fun reevaluateSubmitEnabled() {

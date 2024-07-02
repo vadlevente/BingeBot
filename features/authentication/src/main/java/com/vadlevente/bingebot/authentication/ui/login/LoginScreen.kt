@@ -1,5 +1,6 @@
 package com.vadlevente.bingebot.authentication.ui.login
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -24,13 +25,14 @@ import com.vadlevente.bingebot.core.R
 import com.vadlevente.bingebot.core.stringOf
 import com.vadlevente.bingebot.core.ui.composables.BBOutlinedTextField
 import com.vadlevente.bingebot.ui.BingeBotTheme
+import com.vadlevente.bingebot.ui.link
 import com.vadlevente.bingebot.ui.margin16
 import com.vadlevente.bingebot.ui.margin8
 import com.vadlevente.bingebot.ui.pageTitle
 
 @Composable
 fun LoginScreen(
-    viewModel: LoginViewModel = hiltViewModel()
+    viewModel: LoginViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsState()
     LoginScreenComponent(
@@ -38,15 +40,17 @@ fun LoginScreen(
         viewModel::onEmailChanged,
         viewModel::onPasswordChanged,
         viewModel::onSubmit,
+        viewModel::onNavigateToRegistration,
     )
 }
 
 @Composable
 fun LoginScreenComponent(
     state: ViewState,
-    onEmailChanged: (String) -> Unit = {},
-    onPasswordChanged: (String) -> Unit = {},
-    onSubmit: () -> Unit = {},
+    onEmailChanged: (String) -> Unit,
+    onPasswordChanged: (String) -> Unit,
+    onSubmit: () -> Unit,
+    onNavigateToRegistration: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -100,6 +104,15 @@ fun LoginScreenComponent(
             ) {
                 Text(text = stringResource(id = R.string.loginSubmitButtonTitle))
             }
+            Text(
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .clickable {
+                    onNavigateToRegistration()
+                },
+                text = stringResource(id = R.string.loginNavigateToRegistrationTitle),
+                style = link,
+            )
         }
     }
 
@@ -110,7 +123,7 @@ fun LoginScreenComponent(
 fun LoginScreenPreview() {
     BingeBotTheme {
         LoginScreenComponent(
-            ViewState("email", "password", true),
+            ViewState("email", "password", true), {}, {}, {}, {}
         )
     }
 }
