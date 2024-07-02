@@ -13,10 +13,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -24,6 +28,7 @@ import com.vadlevente.bingebot.authentication.R
 import com.vadlevente.bingebot.authentication.ui.login.LoginViewModel.ViewState
 import com.vadlevente.bingebot.core.stringOf
 import com.vadlevente.bingebot.core.ui.composables.BBOutlinedTextField
+import com.vadlevente.bingebot.core.ui.composables.PasswordTrailingIcon
 import com.vadlevente.bingebot.ui.BingeBotTheme
 import com.vadlevente.bingebot.ui.link
 import com.vadlevente.bingebot.ui.margin16
@@ -52,6 +57,7 @@ fun LoginScreenComponent(
     onSubmit: () -> Unit,
     onNavigateToRegistration: () -> Unit,
 ) {
+    var passwordVisible by remember { mutableStateOf(false) }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -61,7 +67,7 @@ fun LoginScreenComponent(
             modifier = Modifier
                 .fillMaxWidth(.8f)
                 .align(Alignment.CenterHorizontally)
-                .weight(.4f)
+                .weight(.3f)
         ) {
             Text(
                 modifier = Modifier.align(Alignment.Center),
@@ -73,7 +79,7 @@ fun LoginScreenComponent(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(.6f)
+                .weight(.7f)
         ) {
             Spacer(modifier = Modifier.fillMaxHeight(.2f))
             BBOutlinedTextField(
@@ -91,8 +97,13 @@ fun LoginScreenComponent(
                 value = state.password,
                 label = stringOf(R.string.loginPasswordLabel),
                 hint = stringOf(R.string.loginPasswordLabel),
-                visualTransformation = PasswordVisualTransformation(),
+                visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 onValueChange = onPasswordChanged,
+                trailingIcon = {
+                    PasswordTrailingIcon(isPasswordVisible = passwordVisible) {
+                        passwordVisible = !passwordVisible
+                    }
+                }
             )
             Spacer(modifier = Modifier.fillMaxHeight(.2f))
             OutlinedButton(

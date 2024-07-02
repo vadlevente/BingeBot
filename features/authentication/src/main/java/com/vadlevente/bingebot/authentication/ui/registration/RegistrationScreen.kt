@@ -9,11 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,6 +31,7 @@ import com.vadlevente.bingebot.authentication.R
 import com.vadlevente.bingebot.authentication.ui.registration.RegistrationViewModel.ViewState
 import com.vadlevente.bingebot.core.stringOf
 import com.vadlevente.bingebot.core.ui.composables.BBOutlinedTextField
+import com.vadlevente.bingebot.core.ui.composables.PasswordTrailingIcon
 import com.vadlevente.bingebot.ui.BingeBotTheme
 import com.vadlevente.bingebot.ui.errorLabel
 import com.vadlevente.bingebot.ui.link
@@ -78,11 +74,11 @@ fun RegistrationScreenComponent(
             modifier = Modifier
                 .fillMaxWidth(.8f)
                 .align(Alignment.CenterHorizontally)
-                .weight(.4f)
+                .weight(.3f)
         ) {
             Text(
                 modifier = Modifier.align(Alignment.Center),
-                text = stringResource(id = com.vadlevente.bingebot.authentication.R.string.registrationTitle),
+                text = stringResource(id = R.string.registrationTitle),
                 textAlign = TextAlign.Center,
                 style = pageTitle,
             )
@@ -90,7 +86,7 @@ fun RegistrationScreenComponent(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(.6f)
+                .weight(.7f)
         ) {
             Spacer(modifier = Modifier.fillMaxHeight(.1f))
             BBOutlinedTextField(
@@ -168,21 +164,6 @@ fun RegistrationScreenComponent(
         }
     }
 
-}
-
-@Composable
-private fun PasswordTrailingIcon(
-    isPasswordVisible: Boolean,
-    onToggleClicked: () -> Unit,
-) {
-    val image = if (isPasswordVisible)
-        Icons.Filled.Visibility
-    else Icons.Filled.VisibilityOff
-
-    // Toggle button to hide or display password
-    IconButton(onClick = onToggleClicked){
-        Icon(imageVector  = image, null)
-    }
 }
 
 @Composable
