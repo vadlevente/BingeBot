@@ -19,7 +19,7 @@ import kotlin.coroutines.suspendCoroutine
 interface AuthenticationService {
     val currentUserId: String?
     suspend fun login(email: String, password: String)
-    suspend fun register(email: String, password: String)
+    suspend fun register(email: String, password: String): String
     suspend fun isProfileSignedIn(profileId: String): Boolean
 }
 
@@ -39,12 +39,13 @@ class AuthenticationServiceImpl @Inject constructor(
         saveCurrentUserId()
     }
 
-    override suspend fun register(email: String, password: String) {
+    override suspend fun register(email: String, password: String): String {
         suspendCoroutine { continuation ->
             firebaseAuth.get().createUserWithEmailAndPassword(email, password)
                 .handleAuthResult(continuation)
         }
         saveCurrentUserId()
+        return currentUserId!!
     }
 
     override suspend fun isProfileSignedIn(profileId: String): Boolean {

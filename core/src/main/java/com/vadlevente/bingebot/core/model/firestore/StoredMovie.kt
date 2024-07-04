@@ -1,8 +1,8 @@
-package com.vadlevente.bingebot.core.model
+package com.vadlevente.bingebot.core.model.firestore
 
 import java.util.Date
 
-data class Movie(
+data class StoredMovie(
     val id: String,
     val watchDate: Date? = null,
 )

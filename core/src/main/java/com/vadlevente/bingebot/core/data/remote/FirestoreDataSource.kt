@@ -5,11 +5,12 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.firestore
 import com.google.firebase.firestore.toObject
 import com.vadlevente.bingebot.core.data.local.datastore.PreferencesDataSource
-import com.vadlevente.bingebot.core.model.Movie
 import com.vadlevente.bingebot.core.model.WatchList
 import com.vadlevente.bingebot.core.model.exception.BingeBotException
 import com.vadlevente.bingebot.core.model.exception.Reason.DATA_READ_ERROR
 import com.vadlevente.bingebot.core.model.exception.Reason.DATA_WRITE_ERROR
+import com.vadlevente.bingebot.core.model.firestore.StoredMovie
+import com.vadlevente.bingebot.core.model.firestore.StoredMovies
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
@@ -25,7 +26,7 @@ class FirestoreDataSource @Inject constructor(
 
     private val db = Firebase.firestore
 
-    suspend fun getMovies(): Flow<List<Movie>> {
+    suspend fun getMovies(): Flow<List<StoredMovie>> {
         return flow {
             val profileId = preferencesDataSource.activeProfileId.first() ?: return@flow
             val movies = suspendCoroutine { continuation ->
@@ -35,7 +36,7 @@ class FirestoreDataSource @Inject constructor(
                     .get()
                     .addOnSuccessListener { result ->
                         val movies = result.map {
-                            it.toObject<Movie>()
+                            it.toObject<StoredMovie>()
                         }
                         continuation.resume(movies)
                     }
@@ -69,7 +70,19 @@ class FirestoreDataSource @Inject constructor(
         }
     }
 
-    suspend fun addMovie(movie: Movie) {
+    suspend fun createUser(userId: String) = suspendCoroutine { continuation ->
+        db.collection(COLLECTION_MOVIES)
+            .document(userId)
+            .set(StoredMovies(emptyList(), emptyList()))
+            .addOnSuccessListener {
+                continuation.resume(Unit)
+            }
+            .addOnFailureListener {
+                continuation.resumeWithException(BingeBotException(DATA_WRITE_ERROR))
+            }
+    }
+
+    suspend fun addMovie(movie: StoredMovie) {
         val profileId = preferencesDataSource.activeProfileId.first() ?: return
         suspendCoroutine { continuation ->
             db.collection(COLLECTION_MOVIES)
@@ -86,7 +99,7 @@ class FirestoreDataSource @Inject constructor(
         }
     }
 
-    suspend fun deleteMovie(movie: Movie) {
+    suspend fun deleteMovie(movie: StoredMovie) {
         val profileId = preferencesDataSource.activeProfileId.first() ?: return
         suspendCoroutine { continuation ->
             db.collection(COLLECTION_MOVIES)
