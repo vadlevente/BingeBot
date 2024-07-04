@@ -28,6 +28,7 @@ dependencies {
     "implementation"(platform(Firebase.firebaseBoM))
     "implementation"(Firebase.firebaseCrashlytics)
     "implementation"(Firebase.firebaseAuth)
+    "implementation"(Firebase.firebaseFirestore)
 //    "implementation"(project(Modules.coreUi))
     "testImplementation"(Testing.kotlin)
     "androidTestImplementation"(Testing.kotlin)

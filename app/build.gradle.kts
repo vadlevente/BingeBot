@@ -103,6 +103,7 @@ dependencies {
     implementation(platform(Firebase.firebaseBoM))
     implementation(Firebase.firebaseCrashlytics)
     implementation(Firebase.firebaseAuth)
+    implementation(Firebase.firebaseFirestore)
 
 // Kapt
     kapt(Data.roomCompiler)
