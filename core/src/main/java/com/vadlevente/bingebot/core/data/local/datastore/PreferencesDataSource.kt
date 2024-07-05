@@ -5,6 +5,8 @@ import androidx.datastore.preferences.core.MutablePreferences
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
+import com.google.gson.Gson
+import com.vadlevente.bingebot.core.model.ApiConfiguration
 import com.vadlevente.bingebot.core.model.exception.BingeBotException
 import com.vadlevente.bingebot.core.model.exception.Reason.DATA_READ_ERROR
 import kotlinx.coroutines.Dispatchers
@@ -16,10 +18,12 @@ import javax.inject.Inject
 
 class PreferencesDataSource @Inject constructor(
     private val dataStore: DataStore<Preferences>,
+    private val gson: Gson,
 ) {
 
     companion object {
         private const val ACTIVE_PROFILE_ID = "activeProfileId"
+        private const val API_CONFIGURATION = "apiConfiguration"
     }
 
     private val data = dataStore.data.catch {
@@ -30,10 +34,18 @@ class PreferencesDataSource @Inject constructor(
         it[stringPreferencesKey(ACTIVE_PROFILE_ID)]
     }
 
+    val apiConfiguration: Flow<ApiConfiguration> = data.map {
+        gson.fromJson(it[stringPreferencesKey(API_CONFIGURATION)], ApiConfiguration::class.java)
+    }
+
     suspend fun saveActiveProfileId(value: String?) {
         value?.let {
             savePreference(stringPreferencesKey(ACTIVE_PROFILE_ID), value)
         } ?: removePreference(stringPreferencesKey(ACTIVE_PROFILE_ID))
+    }
+
+    suspend fun saveApiConfiguration(value: ApiConfiguration) {
+        savePreference(stringPreferencesKey(API_CONFIGURATION), gson.toJson(value))
     }
 
     private suspend fun <T> savePreference(

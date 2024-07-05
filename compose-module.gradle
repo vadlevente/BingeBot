@@ -16,7 +16,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
 
-        buildConfigField("String", "API_KEY", "\"3dd6ad3671993e60ed51c31266b1ec36\"")
+        buildConfigField("String", "ACCESS_TOKEN", "\"eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzZGQ2YWQzNjcxOTkzZTYwZWQ1MWMzMTI2NmIxZWMzNiIsIm5iZiI6MTcyMDE2MDQ2Ny4yNTQ4MTMsInN1YiI6IjVhZWRiMTc5YzNhMzY4MzQ3MDAwYTk1MSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.h9nnbkDhH_wvGjQzek7qtWzHMZ4lmmypkxyeV5kfEyU\"")
         buildConfigField("String", "BASE_URL", "\"https://api.themoviedb.org/3/\"")
 
     }

@@ -4,16 +4,18 @@ import com.vadlevente.bingebot.core.BuildConfig
 import okhttp3.Interceptor
 import okhttp3.Interceptor.Chain
 import okhttp3.Response
+import javax.inject.Inject
 
-class ApiKeyInterceptor : Interceptor {
+class ApiKeyInterceptor @Inject constructor() : Interceptor {
     override fun intercept(chain: Chain): Response {
         val request = chain.request().newBuilder()
-            .addHeader(API_KEY, BuildConfig.API_KEY)
+            .addHeader(HEADER_AUTHORIZATION, "$BEARER ${BuildConfig.ACCESS_TOKEN}")
             .build()
         return chain.proceed(request)
     }
 
     companion object {
-        private const val API_KEY = "API_KEY"
+        private const val HEADER_AUTHORIZATION = "Authorization"
+        private const val BEARER = "Bearer"
     }
 }
