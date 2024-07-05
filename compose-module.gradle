@@ -15,6 +15,10 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
+
+        buildConfigField("String", "API_KEY", "\"3dd6ad3671993e60ed51c31266b1ec36\"")
+        buildConfigField("String", "BASE_URL", "\"https://api.themoviedb.org/3/\"")
+
     }
     buildFeatures {
         compose true
@@ -71,7 +75,6 @@ dependencies {
     testImplementation Testing.androidArchTest
     testImplementation Testing.mockk
     testImplementation Testing.robolectric
-    testImplementation Networking.okhttpTest
     testImplementation Testing.kotlin
     testImplementation Testing.kotlinJunit
     testImplementation Concurrency.coroutinestest

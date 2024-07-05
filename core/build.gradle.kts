@@ -19,6 +19,7 @@ dependencies {
     "implementation"(Networking.retrofit)
     "implementation"(Networking.okHttp)
     "implementation"(Networking.okhttpLogger)
+    "implementation"(Networking.retrofitGsonConverter)
     "kapt"(Data.roomCompiler)
     "implementation"(Data.dataStore)
     "implementation"(Data.cryptoDataStore)

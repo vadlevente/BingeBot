@@ -1,9 +1,9 @@
 package com.vadlevente.bingebot.core.data.remote
 
-import com.google.firebase.Firebase
 import com.google.firebase.firestore.FieldValue
-import com.google.firebase.firestore.firestore
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.toObject
+import com.vadlevente.bingebot.core.BuildConfig
 import com.vadlevente.bingebot.core.data.local.datastore.PreferencesDataSource
 import com.vadlevente.bingebot.core.model.WatchList
 import com.vadlevente.bingebot.core.model.exception.BingeBotException
@@ -22,15 +22,14 @@ import kotlin.coroutines.suspendCoroutine
 
 class FirestoreDataSource @Inject constructor(
     private val preferencesDataSource: PreferencesDataSource,
+    private val firestore: FirebaseFirestore,
 ) {
-
-    private val db = Firebase.firestore
 
     suspend fun getMovies(): Flow<List<StoredMovie>> {
         return flow {
             val profileId = preferencesDataSource.activeProfileId.first() ?: return@flow
             val movies = suspendCoroutine { continuation ->
-                db.collection(COLLECTION_MOVIES)
+                this@FirestoreDataSource.firestore.collection(COLLECTION_MOVIES)
                     .document(profileId)
                     .collection(COLLECTION_MOVIES)
                     .get()
@@ -52,7 +51,7 @@ class FirestoreDataSource @Inject constructor(
         return flow {
             val profileId = preferencesDataSource.activeProfileId.first() ?: return@flow
             val watchLists = suspendCoroutine { continuation ->
-                db.collection(COLLECTION_MOVIES)
+                this@FirestoreDataSource.firestore.collection(COLLECTION_MOVIES)
                     .document(profileId)
                     .collection(COLLECTION_WATCHLISTS)
                     .get()
@@ -71,7 +70,8 @@ class FirestoreDataSource @Inject constructor(
     }
 
     suspend fun createUser(userId: String) = suspendCoroutine { continuation ->
-        db.collection(COLLECTION_MOVIES)
+        BuildConfig.BUILD_TYPE
+        this.firestore.collection(COLLECTION_MOVIES)
             .document(userId)
             .set(StoredMovies(emptyList(), emptyList()))
             .addOnSuccessListener {
@@ -85,7 +85,7 @@ class FirestoreDataSource @Inject constructor(
     suspend fun addMovie(movie: StoredMovie) {
         val profileId = preferencesDataSource.activeProfileId.first() ?: return
         suspendCoroutine { continuation ->
-            db.collection(COLLECTION_MOVIES)
+            this.firestore.collection(COLLECTION_MOVIES)
                 .document(profileId)
                 .collection(COLLECTION_MOVIES)
                 .document(movie.id)
@@ -102,7 +102,7 @@ class FirestoreDataSource @Inject constructor(
     suspend fun deleteMovie(movie: StoredMovie) {
         val profileId = preferencesDataSource.activeProfileId.first() ?: return
         suspendCoroutine { continuation ->
-            db.collection(COLLECTION_MOVIES)
+            this.firestore.collection(COLLECTION_MOVIES)
                 .document(profileId)
                 .collection(COLLECTION_MOVIES)
                 .document(movie.id)
@@ -119,7 +119,7 @@ class FirestoreDataSource @Inject constructor(
     suspend fun setMovieWatchDate(movieId: Int, watchDate: Date) {
         val profileId = preferencesDataSource.activeProfileId.first() ?: return
         suspendCoroutine { continuation ->
-            db.collection(COLLECTION_MOVIES)
+            this.firestore.collection(COLLECTION_MOVIES)
                 .document(profileId)
                 .collection(COLLECTION_MOVIES)
                 .document("$movieId")
@@ -136,7 +136,7 @@ class FirestoreDataSource @Inject constructor(
     suspend fun addMovieToWatchList(watchListId: String, movieId: Int) {
         val profileId = preferencesDataSource.activeProfileId.first() ?: return
         suspendCoroutine { continuation ->
-            db.collection(COLLECTION_MOVIES)
+            this.firestore.collection(COLLECTION_MOVIES)
                 .document(profileId)
                 .collection(COLLECTION_WATCHLISTS)
                 .document(watchListId)
@@ -153,7 +153,7 @@ class FirestoreDataSource @Inject constructor(
     suspend fun removeMovieFromWatchList(watchListId: String, movieId: Int) {
         val profileId = preferencesDataSource.activeProfileId.first() ?: return
         suspendCoroutine { continuation ->
-            db.collection(COLLECTION_MOVIES)
+            this.firestore.collection(COLLECTION_MOVIES)
                 .document(profileId)
                 .collection(COLLECTION_WATCHLISTS)
                 .document(watchListId)
