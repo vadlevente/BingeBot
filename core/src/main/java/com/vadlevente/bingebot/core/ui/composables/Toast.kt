@@ -77,4 +77,4 @@ fun Toast(
     }
 }
 
-private const val TOAST_LENGTH = 5
+private const val TOAST_LENGTH = 4

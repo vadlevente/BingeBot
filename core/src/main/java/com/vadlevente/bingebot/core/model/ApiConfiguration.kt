@@ -16,7 +16,7 @@ data class ImageConfiguration(
     @SerializedName("poster_sizes")
     val posterSizes: List<String>,
 ) {
-    private val thumbnailSize: String
+    val thumbnailSize: String
         get() = posterSizes[min(posterSizes.size-1, 3)]
 
     private val posterSize: String

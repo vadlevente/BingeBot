@@ -3,6 +3,7 @@ apply {
 }
 
 dependencies {
+    "implementation"(project(Modules.ui))
     "implementation"(Testing.junit4)
     "implementation"(Testing.composeUiTest)
     "implementation"(Testing.mockk)

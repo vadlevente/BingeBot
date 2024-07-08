@@ -2,16 +2,16 @@ package com.vadlevente.bingebot.list
 
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
+import com.vadlevente.bingebot.core.model.DisplayedMovie
 import com.vadlevente.bingebot.core.model.Genre
-import com.vadlevente.bingebot.core.model.Movie
 import com.vadlevente.bingebot.core.model.NavDestination.SEARCH_MOVIE
 import com.vadlevente.bingebot.core.ui.BaseViewModel
 import com.vadlevente.bingebot.core.ui.State
 import com.vadlevente.bingebot.list.MovieListViewModel.ViewState
-import com.vadlevente.bingebot.list.usecase.GetGenresUseCase
-import com.vadlevente.bingebot.list.usecase.GetMoviesUseCase
-import com.vadlevente.bingebot.list.usecase.GetMoviesUseCaseParams
-import com.vadlevente.bingebot.list.usecase.UpdateMoviesUseCase
+import com.vadlevente.bingebot.list.domain.usecase.GetGenresUseCase
+import com.vadlevente.bingebot.list.domain.usecase.GetMoviesUseCase
+import com.vadlevente.bingebot.list.domain.usecase.GetMoviesUseCaseParams
+import com.vadlevente.bingebot.list.domain.usecase.UpdateMoviesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -57,8 +57,12 @@ class MovieListViewModel @Inject constructor(
         navigateTo(SEARCH_MOVIE)
     }
 
+    fun onNavigateToDetails(movieId: Int) {
+
+    }
+
     data class ViewState(
-        val movies: List<Movie> = emptyList(),
+        val movies: List<DisplayedMovie> = emptyList(),
         val genres: List<Genre> = emptyList(),
         val selectedGenres: List<Genre> = emptyList(),
     ) : State

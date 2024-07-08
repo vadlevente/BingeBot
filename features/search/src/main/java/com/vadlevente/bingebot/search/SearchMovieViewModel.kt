@@ -3,10 +3,12 @@ package com.vadlevente.bingebot.search
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastType.INFO
+import com.vadlevente.bingebot.core.model.DisplayedMovie
 import com.vadlevente.bingebot.core.model.Movie
 import com.vadlevente.bingebot.core.stringOf
 import com.vadlevente.bingebot.core.ui.BaseViewModel
 import com.vadlevente.bingebot.core.ui.State
+import com.vadlevente.bingebot.core.util.Constants.QUERY_MINIMUM_LENGTH
 import com.vadlevente.bingebot.search.SearchMovieViewModel.ViewState
 import com.vadlevente.bingebot.search.usecase.GetSearchResultUseCase
 import com.vadlevente.bingebot.search.usecase.SaveMovieUseCase
@@ -16,7 +18,6 @@ import com.vadlevente.bingebot.search.usecase.SearchMovieUseCaseParams
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
@@ -36,9 +37,6 @@ class SearchMovieViewModel @Inject constructor(
 
     init {
         getSearchResultUseCase.execute(Unit)
-            .catch {
-                var a = 1
-            }
             .onValue { movies ->
                 viewState.update {
                     it.copy(
@@ -71,13 +69,13 @@ class SearchMovieViewModel @Inject constructor(
             }
     }
 
+    fun onBackPressed() {
+        navigateUp()
+    }
+
     data class ViewState(
         val query: String = "",
-        val movies: List<Movie> = emptyList(),
+        val movies: List<DisplayedMovie> = emptyList(),
     ) : State
-
-    companion object {
-        private const val QUERY_MINIMUM_LENGTH = 3
-    }
 
 }

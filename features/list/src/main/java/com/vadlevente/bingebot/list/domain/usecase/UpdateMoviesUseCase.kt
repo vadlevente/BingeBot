@@ -1,4 +1,4 @@
-package com.vadlevente.bingebot.list.usecase
+package com.vadlevente.bingebot.list.domain.usecase
 
 import com.vadlevente.bingebot.core.data.repository.MovieRepository
 import com.vadlevente.bingebot.core.ui.BaseUseCase

@@ -1,32 +1,42 @@
-package com.vadlevente.bingebot.search.usecase
+package com.vadlevente.bingebot.list.domain.usecase
 
 import com.vadlevente.bingebot.core.data.local.datastore.PreferencesDataSource
 import com.vadlevente.bingebot.core.data.repository.MovieRepository
 import com.vadlevente.bingebot.core.model.ApiConfiguration
 import com.vadlevente.bingebot.core.model.DisplayedMovie
+import com.vadlevente.bingebot.core.model.Genre
 import com.vadlevente.bingebot.core.model.Movie
 import com.vadlevente.bingebot.core.ui.BaseUseCase
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class GetSearchResultUseCase @Inject constructor(
+data class GetMoviesUseCaseParams(
+    val genres: List<Genre> = emptyList(),
+)
+
+class GetMoviesUseCase @Inject constructor(
     private val movieRepository: MovieRepository,
     private val preferencesDataSource: PreferencesDataSource,
-) : BaseUseCase<Unit, List<DisplayedMovie>>() {
+) : BaseUseCase<GetMoviesUseCaseParams, List<DisplayedMovie>>() {
 
-    override fun execute(params: Unit) =
+    override fun execute(params: GetMoviesUseCaseParams): Flow<List<DisplayedMovie>> =
         combine(
-            movieRepository.getSearchResult(),
+            movieRepository.getMovies(),
             preferencesDataSource.apiConfiguration,
             ::Pair,
         ).map { (movies, configuration) ->
-            movies.map { movie ->
-                DisplayedMovie(
-                    movie = movie,
-                    backdropUrl = getThumbnailUrl(configuration, movie),
-                )
+            movies.filter { movie ->
+                if (params.genres.isEmpty()) true
+                else movie.genreCodes.any { params.genres.map { it.id }.contains(it) }
             }
+                .map { movie ->
+                    DisplayedMovie(
+                        movie = movie,
+                        backdropUrl = getThumbnailUrl(configuration, movie),
+                    )
+                }
         }
 
     private fun getThumbnailUrl(

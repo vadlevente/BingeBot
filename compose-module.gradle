@@ -55,6 +55,7 @@ dependencies {
     implementation Compose.viewModel
     implementation Compose.appcompat
     implementation Compose.materialIcons
+    implementation Compose.coil
     debugImplementation Compose.tooling
     debugImplementation Compose.testManifest
 
