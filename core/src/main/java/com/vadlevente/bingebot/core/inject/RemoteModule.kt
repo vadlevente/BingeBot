@@ -5,6 +5,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.gson.Gson
 import com.vadlevente.bingebot.core.BuildConfig
 import com.vadlevente.bingebot.core.data.api.MovieApi
 import com.vadlevente.bingebot.core.data.remote.interceptor.ApiKeyInterceptor
@@ -36,10 +37,11 @@ class RemoteModule {
     @Singleton
     fun provideRetrofit(
         client: OkHttpClient,
+        gson: Gson,
     ): Retrofit =
         Retrofit.Builder()
             .client(client)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .baseUrl(BuildConfig.BASE_URL)
             .build()
 

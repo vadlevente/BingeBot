@@ -7,6 +7,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.google.gson.Gson
 import com.vadlevente.bingebot.core.model.ApiConfiguration
+import com.vadlevente.bingebot.core.model.SelectedLanguage
 import com.vadlevente.bingebot.core.model.exception.BingeBotException
 import com.vadlevente.bingebot.core.model.exception.Reason.DATA_READ_ERROR
 import kotlinx.coroutines.Dispatchers
@@ -24,6 +25,8 @@ class PreferencesDataSource @Inject constructor(
     companion object {
         private const val ACTIVE_PROFILE_ID = "activeProfileId"
         private const val API_CONFIGURATION = "apiConfiguration"
+        private const val LANGUAGE = "language"
+
     }
 
     private val data = dataStore.data.catch {
@@ -38,6 +41,12 @@ class PreferencesDataSource @Inject constructor(
         gson.fromJson(it[stringPreferencesKey(API_CONFIGURATION)], ApiConfiguration::class.java)
     }
 
+    val language: Flow<SelectedLanguage> = data.map {
+        it[stringPreferencesKey(LANGUAGE)]?.let { code ->
+            SelectedLanguage.from(code)
+        } ?: SelectedLanguage.default
+    }
+
     suspend fun saveActiveProfileId(value: String?) {
         value?.let {
             savePreference(stringPreferencesKey(ACTIVE_PROFILE_ID), value)
@@ -46,6 +55,10 @@ class PreferencesDataSource @Inject constructor(
 
     suspend fun saveApiConfiguration(value: ApiConfiguration) {
         savePreference(stringPreferencesKey(API_CONFIGURATION), gson.toJson(value))
+    }
+
+    suspend fun saveSelectedLanguage(value: SelectedLanguage) {
+        savePreference(stringPreferencesKey(LANGUAGE), value.code)
     }
 
     private suspend fun <T> savePreference(

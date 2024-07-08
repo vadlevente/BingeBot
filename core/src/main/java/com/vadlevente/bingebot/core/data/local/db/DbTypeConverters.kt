@@ -4,6 +4,7 @@ import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import java.util.Date
 import javax.inject.Inject
 
 
@@ -21,4 +22,15 @@ class DbTypeConverters @Inject constructor(
     fun fromIntList(list: List<Int>): String {
         return gson.toJson(list)
     }
+
+    @TypeConverter
+    fun toDate(dateLong: Long?): Date? {
+        return dateLong?.let { Date(it) }
+    }
+
+    @TypeConverter
+    fun fromDate(date: Date?): Long? {
+        return date?.time
+    }
+
 }

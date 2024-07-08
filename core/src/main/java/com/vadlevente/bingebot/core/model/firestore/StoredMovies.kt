@@ -5,4 +5,6 @@ import com.vadlevente.bingebot.core.model.WatchList
 data class StoredMovies(
     val movies: List<StoredMovie>,
     val watchLists: List<WatchList>
-)
+) {
+    constructor() : this(emptyList(), emptyList())
+}

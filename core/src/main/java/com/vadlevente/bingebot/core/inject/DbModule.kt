@@ -2,6 +2,7 @@ package com.vadlevente.bingebot.core.inject
 
 import android.app.Application
 import androidx.room.Room
+import com.vadlevente.bingebot.core.data.dao.GenreDao
 import com.vadlevente.bingebot.core.data.dao.MovieDao
 import com.vadlevente.bingebot.core.data.local.db.DbTypeConverters
 import com.vadlevente.bingebot.core.data.local.db.MovieDatabase
@@ -32,5 +33,11 @@ object DbModule {
     fun provideMovieDao(
         db: MovieDatabase
     ): MovieDao = db.movieDao()
+
+    @Provides
+    @Singleton
+    fun provideGenreDao(
+        db: MovieDatabase
+    ): GenreDao = db.genreDao()
 
 }

@@ -5,4 +5,7 @@ import java.util.Date
 data class StoredMovie(
     val id: String,
     val watchDate: Date? = null,
-)
+    val createdDate: Date,
+) {
+    constructor() : this("", null, Date())
+}

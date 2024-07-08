@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.vadlevente.bingebot.core.R.string
 import com.vadlevente.bingebot.core.UIText
 import com.vadlevente.bingebot.core.events.navigation.NavigationEvent.NavigateTo
+import com.vadlevente.bingebot.core.events.navigation.NavigationEvent.NavigateUp
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEvent.ShowToast
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
@@ -84,9 +85,21 @@ abstract class BaseViewModel<S : State>(
         .onEach(action)
         .launchIn(viewModelScope)
 
+    protected fun <T : Any> Flow<T>.onStart() = this
+        .catch {
+            basicErrorHandler(it)
+        }
+        .launchIn(viewModelScope)
+
     protected fun navigateTo(navDestination: NavDestination) {
         viewModelScope.launch {
             navigationEventChannel.sendEvent(NavigateTo(navDestination.route))
+        }
+    }
+
+    protected fun navigateUp() {
+        viewModelScope.launch {
+            navigationEventChannel.sendEvent(NavigateUp)
         }
     }
 

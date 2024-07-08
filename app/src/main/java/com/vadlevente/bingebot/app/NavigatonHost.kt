@@ -18,7 +18,8 @@ import com.vadlevente.bingebot.core.events.navigation.NavigationEvent.NavigateUp
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.model.NavDestination
 import com.vadlevente.bingebot.core.ui.composables.Toast
-import com.vadlevente.bingebot.list.ui.ListScreen
+import com.vadlevente.bingebot.list.ui.MovieListScreen
+import com.vadlevente.bingebot.search.ui.SearchMovieScreen
 import com.vadlevente.bingebot.splash.ui.SplashScreen
 import com.vadlevente.bingebot.ui.BingeBotTheme
 import kotlinx.coroutines.flow.collectLatest
@@ -46,8 +47,11 @@ fun NavigationHost(
                 composable(NavDestination.LOGIN.route) {
                     LoginScreen()
                 }
-                composable(NavDestination.LIST.route) {
-                    ListScreen()
+                composable(NavDestination.LIST_MOVIE.route) {
+                    MovieListScreen()
+                }
+                composable(NavDestination.SEARCH_MOVIE.route) {
+                    SearchMovieScreen()
                 }
             }
             Toast(
@@ -96,7 +100,7 @@ private fun navigate(
             }
             navController.navigate(route)
         }
-        NavDestination.LIST.route -> {
+        NavDestination.LIST_MOVIE.route -> {
             navController.popBackStack()
             navController.navigate(route)
         }

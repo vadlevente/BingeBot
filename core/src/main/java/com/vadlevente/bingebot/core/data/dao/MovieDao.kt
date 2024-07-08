@@ -13,10 +13,16 @@ interface MovieDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertMovie(movie: Movie)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertMovies(movies: List<Movie>)
+
     @Delete
     suspend fun deleteMovie(movie: Movie)
 
     @Query("SELECT * from movie")
     fun getAllMovies(): Flow<List<Movie>>
+
+    @Query("SELECT * from movie WHERE localeCode != :localeCode")
+    fun getAllIncorrectlyLocalizedMovies(localeCode: String): Flow<List<Movie>>
 
 }
