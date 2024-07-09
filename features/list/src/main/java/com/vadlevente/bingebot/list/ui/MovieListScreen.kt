@@ -48,6 +48,7 @@ fun MovieListScreen(
         onNavigateToDetails = viewModel::onNavigateToDetails,
         onToggleSearchField = viewModel::onToggleSearchField,
         onQueryChanged = viewModel::onQueryChanged,
+        onNavigateToOptions = viewModel::onNavigateToOptions,
     )
 }
 
@@ -59,6 +60,7 @@ fun MovieListScreenComponent(
     onNavigateToDetails: (Int) -> Unit,
     onToggleSearchField: () -> Unit,
     onQueryChanged: (String) -> Unit,
+    onNavigateToOptions: (Int) -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -118,6 +120,7 @@ fun MovieListScreenComponent(
                                 rating = movie.voteAverage.asOneDecimalString,
                                 releaseYear = movie.releaseDate?.yearString ?: "",
                                 onClick = { onNavigateToDetails(movie.id) },
+                                onLongClick = { onNavigateToOptions(movie.id) },
                                 onDelete = { /*TODO*/ }) {
 
                             }

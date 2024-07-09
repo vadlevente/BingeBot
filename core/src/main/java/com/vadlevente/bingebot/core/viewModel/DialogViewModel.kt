@@ -1,14 +1,11 @@
-package com.vadlevente.bingebot.core.ui
+package com.vadlevente.bingebot.core.viewModel
 
 import androidx.lifecycle.viewModelScope
-import com.vadlevente.bingebot.core.UIText
+import com.vadlevente.bingebot.core.events.dialog.DialogEvent.ShowDialog
+import com.vadlevente.bingebot.core.events.dialog.DialogEventChannel
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
-import com.vadlevente.bingebot.core.events.toast.ToastEvent.ShowToast
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
-import com.vadlevente.bingebot.core.events.toast.ToastType
-import com.vadlevente.bingebot.core.events.toast.ToastType.WARNING
-import com.vadlevente.bingebot.core.stringOf
-import com.vadlevente.bingebot.core.ui.ToastViewModel.ViewState
+import com.vadlevente.bingebot.core.viewModel.DialogViewModel.ViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,9 +16,10 @@ import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
-class ToastViewModel @Inject constructor(
+class DialogViewModel @Inject constructor(
     navigationEventChannel: NavigationEventChannel,
     toastEventChannel: ToastEventChannel,
+    dialogEventChannel: DialogEventChannel,
 ) : BaseViewModel<ViewState>(
     navigationEventChannel, toastEventChannel
 ) {
@@ -30,18 +28,17 @@ class ToastViewModel @Inject constructor(
     override val state: StateFlow<ViewState> = viewState
 
     init {
-            toastEventChannel.events.filterIsInstance<ShowToast>().onEach { event ->
-                viewState.update {
-                    it.copy(
-                        isVisible = true,
-                        text = event.message,
-                        type = event.type,
-                    )
-                }
-            }.launchIn(viewModelScope)
+        dialogEventChannel.events.filterIsInstance<ShowDialog>().onEach { event ->
+            viewState.update {
+                it.copy(
+                    isVisible = true,
+                    event = event,
+                )
+            }
+        }.launchIn(viewModelScope)
     }
 
-    fun onHideToast() {
+    fun onDismiss() {
         viewState.update {
             it.copy(
                 isVisible = false,
@@ -49,10 +46,23 @@ class ToastViewModel @Inject constructor(
         }
     }
 
+    fun onPositiveClicked() {
+        viewState.value.event?.let {
+            it.onPositiveButtonClicked()
+        }
+        onDismiss()
+    }
+
+    fun onNegativeClicked() {
+        viewState.value.event?.let {
+            it.onNegativeButtonClicked()
+        }
+        onDismiss()
+    }
+
     data class ViewState(
         val isVisible: Boolean = false,
-        val text: UIText = stringOf(""),
-        val type: ToastType = WARNING,
+        val event: ShowDialog? = null,
     ) : State
 
 }

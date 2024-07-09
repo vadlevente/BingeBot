@@ -1,5 +1,7 @@
 package com.vadlevente.bingebot.core.inject
 
+import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEventChannel
+import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEventChannelImpl
 import com.vadlevente.bingebot.core.events.dialog.DialogEventChannel
 import com.vadlevente.bingebot.core.events.dialog.DialogEventChannelImpl
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
@@ -33,5 +35,11 @@ abstract class EventModule {
     abstract fun bindDialogEventChannel(
         impl: DialogEventChannelImpl
     ): DialogEventChannel
+
+    @Binds
+    @Singleton
+    abstract fun bindBottomSheetEventChannel(
+        impl: BottomSheetEventChannelImpl
+    ): BottomSheetEventChannel
 
 }

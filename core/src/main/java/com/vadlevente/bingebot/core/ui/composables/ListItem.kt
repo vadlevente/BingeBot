@@ -1,6 +1,7 @@
 package com.vadlevente.bingebot.core.ui.composables
 
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -27,6 +28,7 @@ import com.vadlevente.bingebot.ui.BingeBotTheme
 import com.vadlevente.bingebot.ui.listItemSubtitle
 import com.vadlevente.bingebot.ui.listItemTitle
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ListItem(
     title: String,
@@ -35,13 +37,17 @@ fun ListItem(
     rating: String,
     releaseYear: String,
     onClick: () -> Unit = {},
+    onLongClick: () -> Unit = {},
     onDelete: () -> Unit = {},
     onAddToList: () -> Unit = {},
 ) {
     Card(
         modifier = Modifier
             .padding(8.dp)
-            .clickable { onClick() },
+            .combinedClickable(
+                onClick = onClick,
+                onLongClick = onLongClick,
+            ),
         shape = RoundedCornerShape(8.dp),
     ) {
         Row(

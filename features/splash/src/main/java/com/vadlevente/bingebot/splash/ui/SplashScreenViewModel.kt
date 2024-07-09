@@ -2,8 +2,8 @@ package com.vadlevente.bingebot.splash.ui
 
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
-import com.vadlevente.bingebot.core.ui.BaseViewModel
-import com.vadlevente.bingebot.core.ui.EmptyState
+import com.vadlevente.bingebot.core.viewModel.BaseViewModel
+import com.vadlevente.bingebot.core.viewModel.EmptyState
 import com.vadlevente.bingebot.splash.usecase.GetConfigurationUseCase
 import com.vadlevente.bingebot.splash.usecase.GetNavDestinationToStartScreenUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel

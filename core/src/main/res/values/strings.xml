@@ -13,4 +13,11 @@
     <string name="exception_weakPassword">A megadott jelszó túl gyenge! Kérjük, adjon meg egy másikat!</string>
     <string name="exception_sessionExpired">A munkamenet lejárt, kérjük, jelentkezzen be újra!</string>
 
+    <string name="movieBottomSheet_addToWatchList">Hozzáadás listához</string>
+    <string name="movieBottomSheet_delete">Törlés</string>
+    <string name="movieBottomSheet_openDetails">Részletek megjelenítése</string>
+    <string name="movieBottomSheet_deleteConfirmationTitle">Film törlése</string>
+    <string name="movieBottomSheet_deleteConfirmationDescription">Biztosan szeretné törölni a filmet? Így minden listájáról is törlődni fog.</string>
+    <string name="movieBottomSheet_movieDeletedToast">Sikeresen törölve</string>
+
 </resources>

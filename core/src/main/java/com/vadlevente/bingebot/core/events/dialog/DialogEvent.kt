@@ -5,8 +5,8 @@ import com.vadlevente.bingebot.core.UIText
 sealed interface DialogEvent {
 
     data class ShowDialog(
-        val title: UIText,
-        val content: UIText,
+        val title: UIText? = null,
+        val content: UIText? = null,
         val positiveButtonTitle: UIText?,
         val negativeButtonTitle: UIText? = null,
         val isCancelable: Boolean = true,

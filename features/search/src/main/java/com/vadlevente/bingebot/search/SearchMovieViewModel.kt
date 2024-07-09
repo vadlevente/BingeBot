@@ -6,9 +6,9 @@ import com.vadlevente.bingebot.core.events.toast.ToastType.INFO
 import com.vadlevente.bingebot.core.model.DisplayedMovie
 import com.vadlevente.bingebot.core.model.Movie
 import com.vadlevente.bingebot.core.stringOf
-import com.vadlevente.bingebot.core.ui.BaseViewModel
-import com.vadlevente.bingebot.core.ui.State
 import com.vadlevente.bingebot.core.util.Constants.QUERY_MINIMUM_LENGTH
+import com.vadlevente.bingebot.core.viewModel.BaseViewModel
+import com.vadlevente.bingebot.core.viewModel.State
 import com.vadlevente.bingebot.search.SearchMovieViewModel.ViewState
 import com.vadlevente.bingebot.search.usecase.GetSearchResultUseCase
 import com.vadlevente.bingebot.search.usecase.SaveMovieUseCase

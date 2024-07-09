@@ -81,3 +81,27 @@ val listDescription = TextStyle(
     letterSpacing = 0.6.sp,
     textAlign = TextAlign.Center,
 )
+
+val bottomSheetAction = TextStyle(
+    fontFamily = fontFamily,
+    fontWeight = FontWeight.Bold,
+    fontSize = 17.sp,
+    letterSpacing = 0.6.sp,
+    textAlign = TextAlign.Center,
+)
+
+val dialogTitle = TextStyle(
+    fontFamily = fontFamily,
+    fontWeight = FontWeight.Bold,
+    fontSize = 17.sp,
+    letterSpacing = 0.6.sp,
+    textAlign = TextAlign.Center,
+)
+
+val dialogDescription = TextStyle(
+    fontFamily = fontFamily,
+    fontWeight = FontWeight.Normal,
+    fontSize = 15.sp,
+    letterSpacing = 0.6.sp,
+    textAlign = TextAlign.Center,
+)

@@ -27,7 +27,7 @@ import com.vadlevente.bingebot.core.asString
 import com.vadlevente.bingebot.core.events.toast.ToastType.ERROR
 import com.vadlevente.bingebot.core.events.toast.ToastType.INFO
 import com.vadlevente.bingebot.core.events.toast.ToastType.WARNING
-import com.vadlevente.bingebot.core.ui.ToastViewModel
+import com.vadlevente.bingebot.core.viewModel.ToastViewModel
 import kotlinx.coroutines.delay
 import kotlin.time.Duration.Companion.seconds
 

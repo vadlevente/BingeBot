@@ -9,8 +9,11 @@ import com.vadlevente.bingebot.core.model.Genre
 import com.vadlevente.bingebot.core.model.Movie
 import com.vadlevente.bingebot.core.model.WatchList
 import com.vadlevente.bingebot.core.model.firestore.StoredMovie
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.withContext
 import java.util.Date
 import javax.inject.Inject
 
@@ -24,6 +27,7 @@ interface MovieRepository {
     suspend fun searchMovies(query: String)
     suspend fun updateMovieLocalizations()
     suspend fun saveMovie(movie: Movie)
+    suspend fun deleteMovie(movieId: Int)
     suspend fun addMovieToList(movie: Movie, watchList: WatchList)
     suspend fun saveMovieAndAddToWatchList(movie: Movie, watchList: WatchList)
 }
@@ -36,25 +40,25 @@ class MovieRepositoryImpl @Inject constructor(
     private val firestoreDataSource: FirestoreDataSource,
 ) : MovieRepository {
 
-    override fun getMovies(): Flow<List<Movie>> = movieLocalDataSource.getAllMovies()
+    override fun getMovies(): Flow<List<Movie>> = movieLocalDataSource.getAllMovies().flowOn(Dispatchers.IO)
 
-    override fun getGenres(): Flow<List<Genre>> = movieLocalDataSource.getAllGenres()
+    override fun getGenres(): Flow<List<Genre>> = movieLocalDataSource.getAllGenres().flowOn(Dispatchers.IO)
 
     override fun getSearchResult(): Flow<List<Movie>> = movieCacheDataSource.moviesState
 
-    override suspend fun updateConfiguration() {
+    override suspend fun updateConfiguration() = withContext(Dispatchers.IO) {
         val config = movieRemoteDataSource.getConfiguration()
         preferencesDataSource.saveApiConfiguration(config)
     }
 
-    override suspend fun updateGenres() {
+    override suspend fun updateGenres() = withContext(Dispatchers.IO) {
         val language = preferencesDataSource.language.first()
         val genres = movieRemoteDataSource.getGenres(language)
         movieLocalDataSource.deleteAllGenres()
         movieLocalDataSource.insertGenres(genres.genres)
     }
 
-    override suspend fun updateMovies() {
+    override suspend fun updateMovies() = withContext(Dispatchers.IO) {
         val language = preferencesDataSource.language.first()
         val storedMovies = movieLocalDataSource.getAllMovies().first()
         val remoteMovies = firestoreDataSource.getMovies().first()
@@ -76,13 +80,13 @@ class MovieRepositoryImpl @Inject constructor(
         movieLocalDataSource.updateMovies(moviesToUpdate.plus(moviesToInsert))
     }
 
-    override suspend fun searchMovies(query: String) {
+    override suspend fun searchMovies(query: String) = withContext(Dispatchers.IO) {
         val language = preferencesDataSource.language.first()
         val movies = movieRemoteDataSource.searchMovie(query, language)
         movieCacheDataSource.updateMovies(movies, language)
     }
 
-    override suspend fun updateMovieLocalizations() {
+    override suspend fun updateMovieLocalizations() = withContext(Dispatchers.IO) {
         val language = preferencesDataSource.language.first()
         val storedMoviesWithIncorrectLocalization =
             movieLocalDataSource.getAllMoviesWithIncorrectLocalization(language.code).first()
@@ -95,7 +99,7 @@ class MovieRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun saveMovie(movie: Movie) {
+    override suspend fun saveMovie(movie: Movie) = withContext(Dispatchers.IO) {
         val createdDate = Date()
         firestoreDataSource.addMovie(
             StoredMovie(
@@ -104,6 +108,11 @@ class MovieRepositoryImpl @Inject constructor(
             )
         )
         movieLocalDataSource.insertMovie(movie.copy(createdDate = createdDate))
+    }
+
+    override suspend fun deleteMovie(movieId: Int) = withContext(Dispatchers.IO) {
+        firestoreDataSource.deleteMovie(movieId.toString())
+        movieLocalDataSource.deleteMovie(movieId)
     }
 
     override suspend fun saveMovieAndAddToWatchList(movie: Movie, watchList: WatchList) {

@@ -17,6 +17,8 @@ import com.vadlevente.bingebot.core.events.navigation.NavigationEvent.NavigateTo
 import com.vadlevente.bingebot.core.events.navigation.NavigationEvent.NavigateUp
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.model.NavDestination
+import com.vadlevente.bingebot.core.ui.composables.BBDialog
+import com.vadlevente.bingebot.core.ui.composables.MovieBottomSheet
 import com.vadlevente.bingebot.core.ui.composables.Toast
 import com.vadlevente.bingebot.list.ui.MovieListScreen
 import com.vadlevente.bingebot.search.ui.SearchMovieScreen
@@ -57,6 +59,8 @@ fun NavigationHost(
             Toast(
                 modifier = Modifier.align(Alignment.TopCenter),
             )
+            MovieBottomSheet()
+            BBDialog()
         }
     }
 }

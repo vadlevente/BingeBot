@@ -99,13 +99,13 @@ class FirestoreDataSource @Inject constructor(
         }
     }
 
-    suspend fun deleteMovie(movie: StoredMovie) {
+    suspend fun deleteMovie(movieId: String) {
         val profileId = preferencesDataSource.activeProfileId.first() ?: return
         suspendCoroutine { continuation ->
             this.firestore.collection(COLLECTION_MOVIES)
                 .document(profileId)
                 .collection(COLLECTION_MOVIES)
-                .document(movie.id)
+                .document(movieId)
                 .delete()
                 .addOnSuccessListener {
                     continuation.resume(Unit)

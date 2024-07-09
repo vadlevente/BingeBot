@@ -1,4 +1,4 @@
-package com.vadlevente.bingebot.core.ui
+package com.vadlevente.bingebot.core.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

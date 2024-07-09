@@ -10,8 +10,8 @@ import com.vadlevente.bingebot.core.events.toast.ToastType.INFO
 import com.vadlevente.bingebot.core.model.NavDestination
 import com.vadlevente.bingebot.core.model.NavDestination.LOGIN
 import com.vadlevente.bingebot.core.stringOf
-import com.vadlevente.bingebot.core.ui.BaseViewModel
-import com.vadlevente.bingebot.core.ui.State
+import com.vadlevente.bingebot.core.viewModel.BaseViewModel
+import com.vadlevente.bingebot.core.viewModel.State
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

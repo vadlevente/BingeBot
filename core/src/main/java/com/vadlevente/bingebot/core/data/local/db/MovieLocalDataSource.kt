@@ -31,6 +31,10 @@ class MovieLocalDataSource @Inject constructor(
         movieDao.deleteMovie(movie)
     }
 
+    suspend fun deleteMovie(movieId: Int) {
+        movieDao.deleteMovie(movieId)
+    }
+
     suspend fun insertGenres(genres: List<Genre>) {
         genreDao.insertGenres(genres)
     }
