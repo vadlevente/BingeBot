@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="movieList_pageTitle">Filmek</string>
+    <string name="movieList_searchFieldHint">Filmek szűrése</string>
+    <string name="movieList_emptyQueriedListDescription">Nincs a kulcsszónak megfelelő találat.</string>
+    <string name="movieList_emptyListDescription">Nem található film a listában..</string>
 </resources>

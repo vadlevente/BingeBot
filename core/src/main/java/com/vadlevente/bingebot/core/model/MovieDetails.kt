@@ -6,6 +6,8 @@ import java.util.Date
 data class MovieDetails(
     val id: Int,
     val title: String,
+    @SerializedName("original_title")
+    val originalTitle: String,
     val genres: List<Genre>,
     val overview: String,
     @SerializedName("backdrop_path")
@@ -20,6 +22,7 @@ data class MovieDetails(
     fun toMovie() = Movie(
         id = id,
         title = title,
+        originalTitle = originalTitle,
         genreCodes = genres.map { it.id },
         overview = overview,
         backdropPath = backdropPath,

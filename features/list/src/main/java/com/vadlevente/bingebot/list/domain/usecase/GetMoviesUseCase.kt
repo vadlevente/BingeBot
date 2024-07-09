@@ -14,6 +14,7 @@ import javax.inject.Inject
 
 data class GetMoviesUseCaseParams(
     val genres: List<Genre> = emptyList(),
+    val query: String? = null,
 )
 
 class GetMoviesUseCase @Inject constructor(
@@ -27,10 +28,18 @@ class GetMoviesUseCase @Inject constructor(
             preferencesDataSource.apiConfiguration,
             ::Pair,
         ).map { (movies, configuration) ->
-            movies.filter { movie ->
-                if (params.genres.isEmpty()) true
-                else movie.genreCodes.any { params.genres.map { it.id }.contains(it) }
-            }
+            movies
+                .filter { movie ->
+                    if (params.genres.isEmpty()) true
+                    else movie.genreCodes.any { params.genres.map { it.id }.contains(it) }
+                }
+                .filter { movie ->
+                    params.query?.let { query ->
+                        if (query.isEmpty()) return@let false
+                        movie.title.lowercase().contains(query.lowercase()) ||
+                            movie.originalTitle.lowercase().contains(query.lowercase())
+                    } ?: true
+                }
                 .map { movie ->
                     DisplayedMovie(
                         movie = movie,

@@ -11,6 +11,8 @@ data class Movie(
     @PrimaryKey
     val id: Int,
     val title: String,
+    @SerializedName("original_title")
+    val originalTitle: String,
     @SerializedName("genre_ids")
     val genreCodes: List<Int>,
     val overview: String,

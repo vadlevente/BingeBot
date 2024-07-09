@@ -34,14 +34,7 @@ class MovieListViewModel @Inject constructor(
 
     init {
         updateMoviesUseCase.execute(Unit).onStart()
-        getMoviesUseCase.execute(GetMoviesUseCaseParams())
-            .onValue { movies ->
-                viewState.update {
-                    it.copy(
-                        movies = movies
-                    )
-                }
-            }
+        getMovies()
         getGenresUseCase.execute(Unit)
             .onValue { genres ->
                 viewState.update {
@@ -61,10 +54,45 @@ class MovieListViewModel @Inject constructor(
 
     }
 
+    fun onToggleSearchField() {
+        viewState.update {
+            it.copy(
+                isSearchFieldVisible = !it.isSearchFieldVisible,
+                searchQuery = if (it.isSearchFieldVisible) null else "",
+            )
+        }
+        getMovies()
+    }
+
+    fun onQueryChanged(value: String) {
+        viewState.update {
+            it.copy(
+                searchQuery = value,
+            )
+        }
+        getMovies()
+    }
+
+    private fun getMovies() {
+        getMoviesUseCase.execute(
+            GetMoviesUseCaseParams(
+                query = viewState.value.searchQuery,
+            )
+        ).onValue { movies ->
+            viewState.update {
+                it.copy(
+                    movies = movies
+                )
+            }
+        }
+    }
+
     data class ViewState(
         val movies: List<DisplayedMovie> = emptyList(),
         val genres: List<Genre> = emptyList(),
         val selectedGenres: List<Genre> = emptyList(),
+        val isSearchFieldVisible: Boolean = false,
+        val searchQuery: String? = null,
     ) : State
 
 }

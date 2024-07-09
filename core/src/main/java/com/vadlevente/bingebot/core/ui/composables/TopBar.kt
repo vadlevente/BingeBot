@@ -17,7 +17,7 @@ import com.vadlevente.bingebot.core.asString
 fun TopBar(
     title: UIText,
     canNavigateBack: Boolean = false,
-    icons: @Composable RowScope.() -> Unit = {},
+    actions: @Composable RowScope.() -> Unit = {},
     onBackPressed: () -> Unit = {},
 ) {
     TopAppBar(
@@ -34,6 +34,6 @@ fun TopBar(
                 }
             }
         },
-        actions = icons,
+        actions = actions,
     )
 }
