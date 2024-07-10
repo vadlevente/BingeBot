@@ -2,6 +2,7 @@ package com.vadlevente.bingebot.core.viewModel
 
 import androidx.lifecycle.viewModelScope
 import com.vadlevente.bingebot.core.R
+import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEvent.ShowAddMovieToWatchListBottomSheet
 import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEvent.ShowMovieBottomSheet
 import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEventChannel
 import com.vadlevente.bingebot.core.events.dialog.DialogEvent.ShowDialog
@@ -9,10 +10,14 @@ import com.vadlevente.bingebot.core.events.dialog.DialogEventChannel
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastType.INFO
+import com.vadlevente.bingebot.core.model.Movie
+import com.vadlevente.bingebot.core.model.NavDestination.MOVIE_DETAILS
 import com.vadlevente.bingebot.core.stringOf
 import com.vadlevente.bingebot.core.usecase.DeleteMovieUseCase
 import com.vadlevente.bingebot.core.usecase.DeleteMovieUseCaseParams
-import com.vadlevente.bingebot.core.viewModel.BottomSheetViewModel.ViewState
+import com.vadlevente.bingebot.core.usecase.SaveMovieUseCase
+import com.vadlevente.bingebot.core.usecase.SaveMovieUseCaseParams
+import com.vadlevente.bingebot.core.viewModel.MovieBottomSheetViewModel.ViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -24,12 +29,13 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class BottomSheetViewModel @Inject constructor(
+class MovieBottomSheetViewModel @Inject constructor(
     navigationEventChannel: NavigationEventChannel,
     toastEventChannel: ToastEventChannel,
-    bottomSheetEventChannel: BottomSheetEventChannel,
+    private val bottomSheetEventChannel: BottomSheetEventChannel,
     private val dialogEventChannel: DialogEventChannel,
     private val deleteMovieUseCase: DeleteMovieUseCase,
+    private val saveMovieUseCase: SaveMovieUseCase,
 ) : BaseViewModel<ViewState>(
     navigationEventChannel, toastEventChannel
 ) {
@@ -56,12 +62,35 @@ class BottomSheetViewModel @Inject constructor(
         }
     }
 
-    fun onAddToWatchList() {
+    fun onSaveMovie(movie: Movie) {
+        saveMovieUseCase.execute(SaveMovieUseCaseParams(movie))
+            .onValue {
+                showToast(
+                    stringOf(R.string.movieBottomSheet_saveSuccessful),
+                    INFO,
+                )
+                navigateUp()
+                onDismiss()
+            }
+    }
 
+    fun onAddToWatchList() {
+        viewState.value.event?.let { event ->
+            val displayedMovie = event.movie
+            viewModelScope.launch {
+                bottomSheetEventChannel.sendEvent(
+                    ShowAddMovieToWatchListBottomSheet(
+                        movie = displayedMovie,
+                        alreadySaved = event.alreadySaved,
+                    )
+                )
+            }
+            onDismiss()
+        }
     }
 
     fun onDelete() {
-        val movieId = viewState.value.event?.movieId ?: return
+        val movieId = viewState.value.event?.movie?.movie?.id ?: return
         viewModelScope.launch {
             dialogEventChannel.sendEvent(
                 ShowDialog(
@@ -87,7 +116,8 @@ class BottomSheetViewModel @Inject constructor(
     }
 
     fun onShowDetails() {
-
+        navigateTo(MOVIE_DETAILS)
+        onDismiss()
     }
 
     data class ViewState(

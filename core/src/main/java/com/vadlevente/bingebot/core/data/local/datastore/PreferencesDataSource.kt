@@ -30,7 +30,7 @@ class PreferencesDataSource @Inject constructor(
     }
 
     private val data = dataStore.data.catch {
-        throw BingeBotException(DATA_READ_ERROR)
+        throw BingeBotException(it, DATA_READ_ERROR)
     }.flowOn(Dispatchers.IO)
 
     val activeProfileId: Flow<String?> = data.map {

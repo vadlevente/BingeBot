@@ -39,7 +39,7 @@ fun BBOutlinedTextField(
 }
 
 @Composable
-fun BBOutlinedTextField(
+private fun BBOutlinedTextField(
     modifier: Modifier = Modifier,
     value: String,
     label: @Composable (() -> Unit)? = null,

@@ -1,4 +1,4 @@
-package com.vadlevente.bingebot.search.usecase
+package com.vadlevente.bingebot.core.usecase
 
 import com.vadlevente.bingebot.core.data.repository.MovieRepository
 import com.vadlevente.bingebot.core.model.Movie

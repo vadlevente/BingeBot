@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.room.Room
 import com.vadlevente.bingebot.core.data.dao.GenreDao
 import com.vadlevente.bingebot.core.data.dao.MovieDao
+import com.vadlevente.bingebot.core.data.dao.WatchListDao
 import com.vadlevente.bingebot.core.data.local.db.DbTypeConverters
 import com.vadlevente.bingebot.core.data.local.db.MovieDatabase
 import dagger.Module
@@ -39,5 +40,11 @@ object DbModule {
     fun provideGenreDao(
         db: MovieDatabase
     ): GenreDao = db.genreDao()
+
+    @Provides
+    @Singleton
+    fun provideWatchListDao(
+        db: MovieDatabase
+    ): WatchListDao = db.watchListDao()
 
 }

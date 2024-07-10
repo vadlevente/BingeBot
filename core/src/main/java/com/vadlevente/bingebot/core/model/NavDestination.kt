@@ -6,4 +6,5 @@ enum class NavDestination(val route: String) {
     LOGIN("login"),
     LIST_MOVIE("listMovie"),
     SEARCH_MOVIE("searchMovie"),
+    MOVIE_DETAILS("movieDetails"),
 }

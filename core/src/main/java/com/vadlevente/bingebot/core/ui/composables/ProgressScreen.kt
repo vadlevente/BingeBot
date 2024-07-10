@@ -2,10 +2,12 @@ package com.vadlevente.bingebot.core.ui.composables
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 
 @Composable
 fun ProgressScreen(
@@ -15,7 +17,11 @@ fun ProgressScreen(
 ) {
     Box(modifier = modifier) {
         if (isProgressVisible) {
-            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+            CircularProgressIndicator(
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .padding(12.dp)
+            )
         } else {
             content()
         }

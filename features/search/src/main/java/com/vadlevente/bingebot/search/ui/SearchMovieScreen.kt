@@ -19,7 +19,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.vadlevente.bingebot.core.model.Movie
 import com.vadlevente.bingebot.core.stringOf
 import com.vadlevente.bingebot.core.ui.composables.BBOutlinedTextField
 import com.vadlevente.bingebot.core.ui.composables.ListItem
@@ -40,7 +39,7 @@ fun SearchMovieScreen(
     SearchMovieScreenComponent(
         state = state,
         onQueryChanged = viewModel::onQueryChanged,
-        onSaveMovie = viewModel::onSaveMovie,
+        onNavigateToOptions = viewModel::onNavigateToOptions,
         onBackPressed = viewModel::onBackPressed,
     )
 }
@@ -49,7 +48,7 @@ fun SearchMovieScreen(
 fun SearchMovieScreenComponent(
     state: ViewState,
     onQueryChanged: (String) -> Unit,
-    onSaveMovie: (Movie) -> Unit,
+    onNavigateToOptions: (Int) -> Unit,
     onBackPressed: () -> Unit,
 ) {
     Scaffold(
@@ -106,7 +105,7 @@ fun SearchMovieScreenComponent(
                                 isWatched = movie.watchedDate != null,
                                 rating = movie.voteAverage.asOneDecimalString,
                                 releaseYear = movie.releaseDate?.yearString ?: "",
-                                onClick = { onSaveMovie(movie) },
+                                onClick = { onNavigateToOptions(movie.id) },
                             )
                         }
                     }

@@ -21,15 +21,17 @@ interface MovieRepository {
     fun getMovies(): Flow<List<Movie>>
     fun getGenres(): Flow<List<Genre>>
     fun getSearchResult(): Flow<List<Movie>>
+    fun getWatchLists(): Flow<List<WatchList>>
     suspend fun updateConfiguration()
     suspend fun updateGenres()
     suspend fun updateMovies()
+    suspend fun updateWatchLists()
     suspend fun searchMovies(query: String)
     suspend fun updateMovieLocalizations()
     suspend fun saveMovie(movie: Movie)
     suspend fun deleteMovie(movieId: Int)
-    suspend fun addMovieToList(movie: Movie, watchList: WatchList)
-    suspend fun saveMovieAndAddToWatchList(movie: Movie, watchList: WatchList)
+    suspend fun createWatchList(title: String): String
+    suspend fun addMovieToList(movieId: Int, watchListId: String)
 }
 
 class MovieRepositoryImpl @Inject constructor(
@@ -40,11 +42,16 @@ class MovieRepositoryImpl @Inject constructor(
     private val firestoreDataSource: FirestoreDataSource,
 ) : MovieRepository {
 
-    override fun getMovies(): Flow<List<Movie>> = movieLocalDataSource.getAllMovies().flowOn(Dispatchers.IO)
+    override fun getMovies(): Flow<List<Movie>> =
+        movieLocalDataSource.getAllMovies().flowOn(Dispatchers.IO)
 
-    override fun getGenres(): Flow<List<Genre>> = movieLocalDataSource.getAllGenres().flowOn(Dispatchers.IO)
+    override fun getGenres(): Flow<List<Genre>> =
+        movieLocalDataSource.getAllGenres().flowOn(Dispatchers.IO)
 
     override fun getSearchResult(): Flow<List<Movie>> = movieCacheDataSource.moviesState
+
+    override fun getWatchLists(): Flow<List<WatchList>> =
+        movieLocalDataSource.getAllWatchLists().flowOn(Dispatchers.IO)
 
     override suspend fun updateConfiguration() = withContext(Dispatchers.IO) {
         val config = movieRemoteDataSource.getConfiguration()
@@ -80,6 +87,12 @@ class MovieRepositoryImpl @Inject constructor(
         movieLocalDataSource.updateMovies(moviesToUpdate.plus(moviesToInsert))
     }
 
+    override suspend fun updateWatchLists() = withContext(Dispatchers.IO) {
+        movieLocalDataSource.deleteAllWatchLists()
+        val remoteWatchLists = firestoreDataSource.getWatchLists().first()
+        movieLocalDataSource.insertWatchLists(remoteWatchLists)
+    }
+
     override suspend fun searchMovies(query: String) = withContext(Dispatchers.IO) {
         val language = preferencesDataSource.language.first()
         val movies = movieRemoteDataSource.searchMovie(query, language)
@@ -111,24 +124,41 @@ class MovieRepositoryImpl @Inject constructor(
     }
 
     override suspend fun deleteMovie(movieId: Int) = withContext(Dispatchers.IO) {
-        firestoreDataSource.deleteMovie(movieId.toString())
+        firestoreDataSource.deleteMovie(movieId)
         movieLocalDataSource.deleteMovie(movieId)
+        movieLocalDataSource.getAllWatchLists().first()
+            .filter { it.movieIds.contains(movieId) }
+            .forEach { watchList ->
+                movieLocalDataSource.insertWatchList(
+                    watchList.copy(
+                        movieIds = watchList.movieIds.minus(movieId)
+                    )
+                )
+            }
     }
 
-    override suspend fun saveMovieAndAddToWatchList(movie: Movie, watchList: WatchList) {
-//        firestoreDataSource.addMovie(StoredMovie(
-//            id = movie.id.toString(),
-//            createdDate = movie.createdDate,
-//        )
-//        )
-//        firestoreDataSource.addMovieToWatchList(watchList.watchListId, movie.id)
-//        movieLocalDataSource.insertMovie(movie)
+    override suspend fun createWatchList(title: String): String =
+        withContext(Dispatchers.IO) {
+            val watchListId = firestoreDataSource.addWatchList(title)
+            movieLocalDataSource.insertWatchList(
+                WatchList(
+                    watchListId = watchListId,
+                    title = title,
+                    movieIds = emptyList(),
+                )
+            )
+            return@withContext watchListId
+        }
 
-    }
-
-    override suspend fun addMovieToList(movie: Movie, watchList: WatchList) {
-//        firestoreDataSource.addMovieToWatchList(watchList.watchListId, movie.id)
-    }
-
+    override suspend fun addMovieToList(movieId: Int, watchListId: String) =
+        withContext(Dispatchers.IO) {
+            firestoreDataSource.addMovieToWatchList(watchListId, movieId)
+            val watchList = movieLocalDataSource.getWatchList(watchListId).first()
+            movieLocalDataSource.insertWatchList(
+                watchList.copy(
+                    movieIds = watchList.movieIds.plus(movieId)
+                )
+            )
+        }
 
 }

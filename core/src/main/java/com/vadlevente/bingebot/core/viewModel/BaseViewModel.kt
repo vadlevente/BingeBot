@@ -23,9 +23,11 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onEmpty
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 interface State
 
@@ -42,6 +44,7 @@ abstract class BaseViewModel<S : State>(
     val isInProgress = isInProgressMutable
 
     open val basicErrorHandler: (Throwable) -> Unit = { t ->
+        Timber.e(t)
         val errorMessage = when (t) {
             is BingeBotException -> t.reason?.reasonText ?: t.errorMessage ?: stringOf(string.errorMessage_unknown)
             else -> t.localizedMessage?.let { stringOf(it) }
@@ -66,9 +69,11 @@ abstract class BaseViewModel<S : State>(
         this
             .onStart { isInProgressMutable.update { true } }
             .onCompletion { isInProgressMutable.update { false } }
+            .onEmpty { isInProgressMutable.update { false } }
             .catch {
                 basicErrorHandler(it)
             }
+            .onEach { isInProgressMutable.update { false } }
             .onEach(action)
             .launchIn(viewModelScope)
 
@@ -84,6 +89,8 @@ abstract class BaseViewModel<S : State>(
     protected fun <T : Any> Flow<T>.onStart() = this
         .onStart { isInProgressMutable.update { true } }
         .onCompletion { isInProgressMutable.update { false } }
+        .onEmpty { isInProgressMutable.update { false } }
+        .onEach { isInProgressMutable.update { false } }
         .catch {
             basicErrorHandler(it)
         }

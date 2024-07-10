@@ -59,7 +59,7 @@ class AuthenticationServiceImpl @Inject constructor(
                         continuation.resume(true)
                     } else {
                         it.exception?.let {
-                            continuation.resumeWithException(BingeBotException(SESSION_EXPIRED))
+                            continuation.resumeWithException(BingeBotException(it, SESSION_EXPIRED))
                         } ?: continuation.resume(false)
                     }
                 }
@@ -69,7 +69,7 @@ class AuthenticationServiceImpl @Inject constructor(
     private suspend fun saveCurrentUserId() {
         currentUserId?.let {
             preferencesDataSource.saveActiveProfileId(it)
-        } ?: throw BingeBotException(AUTHENTICATION_FAILED)
+        } ?: throw BingeBotException(reason = AUTHENTICATION_FAILED)
     }
 
     private fun Task<AuthResult>.handleAuthResult(continuation: Continuation<Unit>) =
@@ -79,7 +79,7 @@ class AuthenticationServiceImpl @Inject constructor(
             } else {
                 it.exception?.let { throwable ->
                     val exception = if (throwable is FirebaseAuthWeakPasswordException) {
-                        BingeBotException(WEAK_PASSWORD)
+                        BingeBotException(throwable, WEAK_PASSWORD)
                     } else throwable
                     continuation.resumeWithException(exception)
                 } ?: continuation.resume(Unit)

@@ -2,18 +2,23 @@ package com.vadlevente.bingebot.core.data.local.db
 
 import com.vadlevente.bingebot.core.data.dao.GenreDao
 import com.vadlevente.bingebot.core.data.dao.MovieDao
+import com.vadlevente.bingebot.core.data.dao.WatchListDao
 import com.vadlevente.bingebot.core.model.Genre
 import com.vadlevente.bingebot.core.model.Movie
+import com.vadlevente.bingebot.core.model.WatchList
 import javax.inject.Inject
 
 class MovieLocalDataSource @Inject constructor(
     private val movieDao: MovieDao,
     private val genreDao: GenreDao,
+    private val watchListDao: WatchListDao,
 ) {
 
     fun getAllMovies() = movieDao.getAllMovies()
     fun getAllMoviesWithIncorrectLocalization(locale: String) = movieDao.getAllIncorrectlyLocalizedMovies(locale)
     fun getAllGenres() = genreDao.getAllGenres()
+    fun getAllWatchLists() = watchListDao.getAllWatchLists()
+    fun getWatchList(watchListId: String) = watchListDao.getWatchList(watchListId)
 
     suspend fun updateMovie(movie: Movie) {
         movieDao.insertMovie(movie)
@@ -41,6 +46,18 @@ class MovieLocalDataSource @Inject constructor(
 
     suspend fun deleteAllGenres() {
         genreDao.deleteAll()
+    }
+
+    suspend fun deleteAllWatchLists() {
+        watchListDao.deleteAll()
+    }
+
+    suspend fun insertWatchList(watchList: WatchList) {
+        watchListDao.insertWatchList(watchList)
+    }
+
+    suspend fun insertWatchLists(watchLists: List<WatchList>) {
+        watchListDao.insertWatchLists(watchLists)
     }
 
 }

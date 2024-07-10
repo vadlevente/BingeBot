@@ -8,7 +8,6 @@ import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
 import com.vadlevente.bingebot.core.model.DisplayedMovie
 import com.vadlevente.bingebot.core.model.Genre
 import com.vadlevente.bingebot.core.model.NavDestination.SEARCH_MOVIE
-import com.vadlevente.bingebot.core.util.yearString
 import com.vadlevente.bingebot.core.viewModel.BaseViewModel
 import com.vadlevente.bingebot.core.viewModel.State
 import com.vadlevente.bingebot.list.MovieListViewModel.ViewState
@@ -16,6 +15,7 @@ import com.vadlevente.bingebot.list.domain.usecase.GetGenresUseCase
 import com.vadlevente.bingebot.list.domain.usecase.GetMoviesUseCase
 import com.vadlevente.bingebot.list.domain.usecase.GetMoviesUseCaseParams
 import com.vadlevente.bingebot.list.domain.usecase.UpdateMoviesUseCase
+import com.vadlevente.bingebot.list.domain.usecase.UpdateWatchListsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -28,6 +28,7 @@ class MovieListViewModel @Inject constructor(
     navigationEventChannel: NavigationEventChannel,
     toastEventChannel: ToastEventChannel,
     updateMoviesUseCase: UpdateMoviesUseCase,
+    updateWatchListsUseCase: UpdateWatchListsUseCase,
     getGenresUseCase: GetGenresUseCase,
     private val getMoviesUseCase: GetMoviesUseCase,
     private val bottomSheetEventChannel: BottomSheetEventChannel,
@@ -40,6 +41,7 @@ class MovieListViewModel @Inject constructor(
 
     init {
         updateMoviesUseCase.execute(Unit).onStart()
+        updateWatchListsUseCase.execute(Unit).onStart()
         getMovies()
         getGenresUseCase.execute(Unit)
             .onValue { genres ->
@@ -81,14 +83,11 @@ class MovieListViewModel @Inject constructor(
 
     fun onNavigateToOptions(movieId: Int) {
         viewState.value.movies.firstOrNull { it.movie.id == movieId }?.let {
-            val movie = it.movie
             viewModelScope.launch {
                 bottomSheetEventChannel.sendEvent(
                     ShowMovieBottomSheet(
-                        movieId = movieId,
-                        title = movie.title,
-                        thumbnailUrl = it.backdropUrl,
-                        releaseYear = movie.releaseDate?.yearString ?: "",
+                        movie = it,
+                        alreadySaved = true,
                     )
                 )
             }

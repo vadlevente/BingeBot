@@ -5,6 +5,7 @@ import com.vadlevente.bingebot.core.UIText
 import com.vadlevente.bingebot.core.stringOf
 
 class BingeBotException(
+    val originalException: Throwable? = null,
     val reason: Reason? = null,
     val errorMessage: UIText? = null,
     val silent: Boolean = false,
@@ -16,6 +17,7 @@ enum class Reason(val reasonText: UIText? = null) {
     DATA_WRITE_ERROR,
     WEAK_PASSWORD(stringOf(R.string.exception_weakPassword)),
     SESSION_EXPIRED(stringOf(R.string.exception_sessionExpired)),
+    WATCHLIST_ALREADY_EXISTS(stringOf(R.string.exception_sessionExpired)),
 }
 
 fun Throwable.isBecauseOf(reason: Reason) =

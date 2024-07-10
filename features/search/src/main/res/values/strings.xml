@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="searchMovies_saveSuccessful">Sikeresen hozzáadva a megnézendő filmekhez</string>
     <string name="searchMovies_pageTitle">Filmek keresése</string>
     <string name="searchMovies_searchFieldHint">Film címe</string>
     <string name="searchMovies_emptyListDescription">Nincs a kulcsszónak megfelelő találat.</string>

@@ -1,24 +1,23 @@
 package com.vadlevente.bingebot.search
 
+import androidx.lifecycle.viewModelScope
+import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEvent.ShowMovieBottomSheet
+import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEventChannel
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
-import com.vadlevente.bingebot.core.events.toast.ToastType.INFO
 import com.vadlevente.bingebot.core.model.DisplayedMovie
-import com.vadlevente.bingebot.core.model.Movie
-import com.vadlevente.bingebot.core.stringOf
 import com.vadlevente.bingebot.core.util.Constants.QUERY_MINIMUM_LENGTH
 import com.vadlevente.bingebot.core.viewModel.BaseViewModel
 import com.vadlevente.bingebot.core.viewModel.State
 import com.vadlevente.bingebot.search.SearchMovieViewModel.ViewState
 import com.vadlevente.bingebot.search.usecase.GetSearchResultUseCase
-import com.vadlevente.bingebot.search.usecase.SaveMovieUseCase
-import com.vadlevente.bingebot.search.usecase.SaveMovieUseCaseParams
 import com.vadlevente.bingebot.search.usecase.SearchMovieUseCase
 import com.vadlevente.bingebot.search.usecase.SearchMovieUseCaseParams
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,7 +26,7 @@ class SearchMovieViewModel @Inject constructor(
     toastEventChannel: ToastEventChannel,
     private val getSearchResultUseCase: GetSearchResultUseCase,
     private val searchMovieUseCase: SearchMovieUseCase,
-    private val saveMovieUseCase: SaveMovieUseCase,
+    private val bottomSheetEventChannel: BottomSheetEventChannel,
 ) : BaseViewModel<ViewState>(
     navigationEventChannel, toastEventChannel
 ) {
@@ -58,15 +57,17 @@ class SearchMovieViewModel @Inject constructor(
         ).onStart()
     }
 
-    fun onSaveMovie(movie: Movie) {
-        saveMovieUseCase.execute(SaveMovieUseCaseParams(movie))
-            .onValue {
-                showToast(
-                    stringOf(R.string.searchMovies_saveSuccessful),
-                    INFO,
+    fun onNavigateToOptions(movieId: Int) {
+        viewState.value.movies.firstOrNull { it.movie.id == movieId }?.let {
+            viewModelScope.launch {
+                bottomSheetEventChannel.sendEvent(
+                    ShowMovieBottomSheet(
+                        movie = it,
+                        alreadySaved = false,
+                    )
                 )
-                navigateUp()
             }
+        }
     }
 
     fun onBackPressed() {

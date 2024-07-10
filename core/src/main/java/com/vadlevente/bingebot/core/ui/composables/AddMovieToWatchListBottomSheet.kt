@@ -1,7 +1,6 @@
 package com.vadlevente.bingebot.core.ui.composables
 
 import androidx.activity.compose.BackHandler
-import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -10,11 +9,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddToPhotos
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.SaveAlt
-import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -27,24 +25,23 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.vadlevente.bingebot.core.R
 import com.vadlevente.bingebot.core.util.yearString
-import com.vadlevente.bingebot.core.viewModel.MovieBottomSheetViewModel
+import com.vadlevente.bingebot.core.viewModel.AddMovieToWatchListBottomSheetViewModel
 import com.vadlevente.bingebot.ui.bottomSheetAction
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MovieBottomSheet(
-    viewModel: MovieBottomSheetViewModel = hiltViewModel(),
+fun AddMovieToWatchListBottomSheet(
+    viewModel: AddMovieToWatchListBottomSheetViewModel = hiltViewModel(),
 ) {
     val modalBottomSheetState = rememberModalBottomSheetState()
     val state by viewModel.state.collectAsState()
-    val event = state.event ?: return
-    val displayedMovie = event.movie
+    val isInProgress by viewModel.isInProgress.collectAsState()
+    val displayedMovie = state.event?.movie ?: return
     val movie = displayedMovie.movie
     if (!state.isVisible) return
 
@@ -65,35 +62,44 @@ fun MovieBottomSheet(
                     .height(1.dp)
                     .background(Color.DarkGray)
             )
-            Column(
+            Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(8.dp)
+                    .clickable { viewModel.onCreateWatchList() }
+                    .padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically,
             ) {
-                BottomSheetAction(
-                    action = { viewModel.onShowDetails() },
-                    labelRes = R.string.movieBottomSheet_openDetails,
-                    imageVector = Icons.Filled.Visibility,
+                Icon(
+                    imageVector = Icons.Filled.Add,
+                    contentDescription = null,
                 )
-                BottomSheetAction(
-                    action = { viewModel.onAddToWatchList() },
-                    labelRes = R.string.movieBottomSheet_addToWatchList,
-                    imageVector = Icons.Filled.AddToPhotos,
+                Text(
+                    modifier = Modifier.padding(start = 12.dp),
+                    text = stringResource(id = R.string.movieBottomSheet_createWatchListLabel),
+                    style = bottomSheetAction,
                 )
-                if (event.alreadySaved) {
-                    BottomSheetAction(
-                        action = { viewModel.onDelete() },
-                        labelRes = R.string.movieBottomSheet_delete,
-                        imageVector = Icons.Filled.Delete,
-                    )
-                } else {
-                    BottomSheetAction(
-                        action = { viewModel.onSaveMovie(event.movie.movie) },
-                        labelRes = R.string.movieBottomSheet_save,
-                        imageVector = Icons.Filled.SaveAlt,
-                    )
+            }
+            ProgressScreen(
+                isProgressVisible = isInProgress,
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                LazyColumn {
+                    items(
+                        items = state.watchLists,
+                        key = { it.watchListId },
+                    ) { watchList ->
+                        Text(
+                            modifier = Modifier
+                                .padding(bottom = 16.dp)
+                                .padding(horizontal = 16.dp)
+                                .clickable {
+                                    viewModel.onAddToWatchList(watchList.watchListId)
+                                },
+                            text = watchList.title,
+                            style = bottomSheetAction,
+                        )
+                    }
                 }
-                Spacer(modifier = Modifier.height(20.dp))
             }
         }
     }
@@ -102,27 +108,3 @@ fun MovieBottomSheet(
     }
 }
 
-@Composable
-private fun BottomSheetAction(
-    action: () -> Unit,
-    @StringRes labelRes: Int,
-    imageVector: ImageVector,
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { action() }
-            .padding(8.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Icon(
-            imageVector = imageVector,
-            contentDescription = null,
-        )
-        Text(
-            modifier = Modifier.padding(start = 12.dp),
-            text = stringResource(id = labelRes),
-            style = bottomSheetAction,
-        )
-    }
-}

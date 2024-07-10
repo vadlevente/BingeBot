@@ -5,6 +5,7 @@
     <string name="common_Yes">Igen</string>
     <string name="common_No">Nem</string>
     <string name="common_Cancel">Mégsem</string>
+    <string name="common_Create">Létrehozás</string>
 
     <string name="errorTitle">Hiba</string>
     <string name="errorMessage_unknown">Ismeretlen hiba</string>
@@ -12,12 +13,19 @@
     <string name="exception_authenticationFailed">Sikertelen bejelentkezés! Kérjük, próbálja újra!</string>
     <string name="exception_weakPassword">A megadott jelszó túl gyenge! Kérjük, adjon meg egy másikat!</string>
     <string name="exception_sessionExpired">A munkamenet lejárt, kérjük, jelentkezzen be újra!</string>
+    <string name="exception_watchListAlreadyExists">A megadott névvel már létezik lista!</string>
 
     <string name="movieBottomSheet_addToWatchList">Hozzáadás listához</string>
+    <string name="movieBottomSheet_save">Film mentése</string>
     <string name="movieBottomSheet_delete">Törlés</string>
     <string name="movieBottomSheet_openDetails">Részletek megjelenítése</string>
     <string name="movieBottomSheet_deleteConfirmationTitle">Film törlése</string>
     <string name="movieBottomSheet_deleteConfirmationDescription">Biztosan szeretné törölni a filmet? Így minden listájáról is törlődni fog.</string>
     <string name="movieBottomSheet_movieDeletedToast">Sikeresen törölve</string>
+    <string name="movieBottomSheet_createWatchListDialogTitle">Lista létrehozása</string>
+    <string name="movieBottomSheet_createWatchListDialogDescription">Kérjük, adja meg a létrehozni kívánt lista címét!</string>
+    <string name="movieBottomSheet_movieAddedToWatchList">Sikeresen hozzáadva a listához!</string>
+    <string name="movieBottomSheet_createWatchListLabel">Új lista létrehozása</string>
+    <string name="movieBottomSheet_saveSuccessful">Sikeresen hozzáadva a megnézendő filmekhez</string>
 
 </resources>
