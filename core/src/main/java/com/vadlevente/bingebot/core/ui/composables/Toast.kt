@@ -19,7 +19,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -28,6 +27,9 @@ import com.vadlevente.bingebot.core.events.toast.ToastType.ERROR
 import com.vadlevente.bingebot.core.events.toast.ToastType.INFO
 import com.vadlevente.bingebot.core.events.toast.ToastType.WARNING
 import com.vadlevente.bingebot.core.viewModel.ToastViewModel
+import com.vadlevente.bingebot.ui.errorColor
+import com.vadlevente.bingebot.ui.infoColor
+import com.vadlevente.bingebot.ui.warningColor
 import kotlinx.coroutines.delay
 import kotlin.time.Duration.Companion.seconds
 
@@ -62,9 +64,9 @@ fun Toast(
                 .clip(RoundedCornerShape(8.dp))
                 .background(
                     when (viewState.type) {
-                        INFO -> Color.Green
-                        WARNING -> Color.Yellow
-                        ERROR -> Color.Red
+                        INFO -> infoColor
+                        WARNING -> warningColor
+                        ERROR -> errorColor
                     }
                 ),
             contentAlignment = Alignment.Center,

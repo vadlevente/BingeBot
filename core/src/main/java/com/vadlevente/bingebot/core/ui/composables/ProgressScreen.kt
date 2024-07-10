@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.vadlevente.bingebot.ui.progressColor
 
 @Composable
 fun ProgressScreen(
@@ -20,7 +21,8 @@ fun ProgressScreen(
             CircularProgressIndicator(
                 modifier = Modifier
                     .align(Alignment.Center)
-                    .padding(12.dp)
+                    .padding(12.dp),
+                color = progressColor,
             )
         } else {
             content()

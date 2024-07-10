@@ -11,6 +11,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.vadlevente.bingebot.core.R
 import com.vadlevente.bingebot.ui.BingeBotTheme
+import com.vadlevente.bingebot.ui.cardColor
 import com.vadlevente.bingebot.ui.listItemSubtitle
 import com.vadlevente.bingebot.ui.listItemTitle
 
@@ -49,6 +51,9 @@ fun ListItem(
                 onLongClick = onLongClick,
             ),
         shape = RoundedCornerShape(8.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = cardColor,
+        )
     ) {
         Row(
             modifier = Modifier

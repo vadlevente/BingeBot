@@ -24,7 +24,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -32,6 +31,9 @@ import com.vadlevente.bingebot.core.R
 import com.vadlevente.bingebot.core.util.yearString
 import com.vadlevente.bingebot.core.viewModel.AddMovieToWatchListBottomSheetViewModel
 import com.vadlevente.bingebot.ui.bottomSheetAction
+import com.vadlevente.bingebot.ui.cardColor
+import com.vadlevente.bingebot.ui.lightTextColor
+import com.vadlevente.bingebot.ui.onBackgroundColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -49,8 +51,13 @@ fun AddMovieToWatchListBottomSheet(
         onDismissRequest = viewModel::onDismiss,
         sheetState = modalBottomSheetState,
         dragHandle = { BottomSheetDefaults.DragHandle() },
+        containerColor = cardColor,
     ) {
-        Column(modifier = Modifier.fillMaxWidth()) {
+        Column(
+            modifier = Modifier
+            .fillMaxWidth()
+                .background(cardColor)
+        ) {
             MovieBottomSheetHeader(
                 thumbnailUrl = displayedMovie.backdropUrl,
                 title = movie.title,
@@ -60,7 +67,7 @@ fun AddMovieToWatchListBottomSheet(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(1.dp)
-                    .background(Color.DarkGray)
+                    .background(onBackgroundColor)
             )
             Row(
                 modifier = Modifier
@@ -72,6 +79,7 @@ fun AddMovieToWatchListBottomSheet(
                 Icon(
                     imageVector = Icons.Filled.Add,
                     contentDescription = null,
+                    tint = lightTextColor,
                 )
                 Text(
                     modifier = Modifier.padding(start = 12.dp),

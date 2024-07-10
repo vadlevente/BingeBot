@@ -1,5 +1,6 @@
 package com.vadlevente.bingebot.search.ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -29,6 +30,7 @@ import com.vadlevente.bingebot.core.util.yearString
 import com.vadlevente.bingebot.search.R
 import com.vadlevente.bingebot.search.SearchMovieViewModel
 import com.vadlevente.bingebot.search.SearchMovieViewModel.ViewState
+import com.vadlevente.bingebot.ui.backgroundColor
 import com.vadlevente.bingebot.ui.listDescription
 
 @Composable
@@ -63,6 +65,7 @@ fun SearchMovieScreenComponent(
         Column(modifier = Modifier
             .fillMaxSize()
             .padding(paddingValues)
+            .background(backgroundColor)
         ) {
             BBOutlinedTextField(
                 modifier = Modifier

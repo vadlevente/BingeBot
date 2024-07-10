@@ -1,6 +1,7 @@
 package com.vadlevente.bingebot.list.ui
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -33,7 +34,11 @@ import com.vadlevente.bingebot.core.util.yearString
 import com.vadlevente.bingebot.list.MovieListViewModel
 import com.vadlevente.bingebot.list.MovieListViewModel.ViewState
 import com.vadlevente.bingebot.list.R
+import com.vadlevente.bingebot.ui.backgroundColor
+import com.vadlevente.bingebot.ui.infoColor
+import com.vadlevente.bingebot.ui.lightTextColor
 import com.vadlevente.bingebot.ui.listDescription
+import com.vadlevente.bingebot.ui.white
 
 @Composable
 fun MovieListScreen(
@@ -70,6 +75,7 @@ fun MovieListScreenComponent(
                     Icon(
                         imageVector = Icons.Filled.Search,
                         contentDescription = null,
+                        tint = lightTextColor,
                         modifier = Modifier
                             .clickable { onToggleSearchField() }
                             .padding(end = 8.dp)
@@ -79,12 +85,20 @@ fun MovieListScreenComponent(
         },
         bottomBar = {},
         floatingActionButton = {
-            FloatingActionButton(onClick = onNavigateToSearch) {
+            FloatingActionButton(
+                onClick = onNavigateToSearch,
+                containerColor = infoColor,
+                contentColor = white,
+            ) {
                 Icon(Icons.Filled.Add, "")
             }
         }
     ) { paddingValues ->
-        Column(modifier = Modifier.padding(paddingValues)) {
+        Column(
+            modifier = Modifier
+                .padding(paddingValues)
+                .background(backgroundColor)
+        ) {
             AnimatedVisibility(visible = state.isSearchFieldVisible) {
                 BBOutlinedTextField(
                     modifier = Modifier

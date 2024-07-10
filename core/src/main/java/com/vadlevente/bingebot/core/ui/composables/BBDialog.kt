@@ -6,19 +6,20 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ElevatedButton
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.vadlevente.bingebot.core.asString
 import com.vadlevente.bingebot.core.viewModel.DialogViewModel
+import com.vadlevente.bingebot.ui.cardColor
 import com.vadlevente.bingebot.ui.dialogDescription
 import com.vadlevente.bingebot.ui.dialogTitle
 
@@ -39,7 +40,9 @@ fun BBDialog(
         Column(modifier = Modifier
             .fillMaxWidth()
             .padding(12.dp)
-            .background(Color.LightGray)
+            .clip(RoundedCornerShape(8.dp))
+            .background(cardColor)
+            .padding(24.dp)
         ) {
             event.title?.asString()?.let {
                 Text(
@@ -62,14 +65,16 @@ fun BBDialog(
                 horizontalArrangement = Arrangement.SpaceEvenly,
             ) {
                 event.negativeButtonTitle?.asString()?.let {
-                    ElevatedButton(onClick = viewModel::onNegativeClicked) {
-                        Text(text = it)
-                    }
+                    BBOutlinedButton(
+                        text = it,
+                        onClick = viewModel::onNegativeClicked
+                    )
                 }
                 event.positiveButtonTitle?.asString()?.let {
-                    ElevatedButton(onClick = viewModel::onPositiveClicked) {
-                        Text(text = it)
-                    }
+                    BBButton(
+                        text = it,
+                        onClick = viewModel::onPositiveClicked,
+                    )
                 }
             }
         }

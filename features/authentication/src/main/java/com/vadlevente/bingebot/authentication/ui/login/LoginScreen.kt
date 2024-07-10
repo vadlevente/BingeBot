@@ -1,5 +1,6 @@
 package com.vadlevente.bingebot.authentication.ui.login
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,6 +31,7 @@ import com.vadlevente.bingebot.core.stringOf
 import com.vadlevente.bingebot.core.ui.composables.BBOutlinedTextField
 import com.vadlevente.bingebot.core.ui.composables.PasswordTrailingIcon
 import com.vadlevente.bingebot.ui.BingeBotTheme
+import com.vadlevente.bingebot.ui.backgroundColor
 import com.vadlevente.bingebot.ui.link
 import com.vadlevente.bingebot.ui.margin16
 import com.vadlevente.bingebot.ui.margin8
@@ -62,6 +64,7 @@ fun LoginScreenComponent(
         modifier = Modifier
             .fillMaxSize()
             .padding(margin16)
+            .background(backgroundColor)
     ) {
         Box(
             modifier = Modifier

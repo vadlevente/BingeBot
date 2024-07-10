@@ -26,7 +26,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -35,6 +34,9 @@ import com.vadlevente.bingebot.core.R
 import com.vadlevente.bingebot.core.util.yearString
 import com.vadlevente.bingebot.core.viewModel.MovieBottomSheetViewModel
 import com.vadlevente.bingebot.ui.bottomSheetAction
+import com.vadlevente.bingebot.ui.cardColor
+import com.vadlevente.bingebot.ui.lightTextColor
+import com.vadlevente.bingebot.ui.onBackgroundColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -52,6 +54,7 @@ fun MovieBottomSheet(
         onDismissRequest = viewModel::onDismiss,
         sheetState = modalBottomSheetState,
         dragHandle = { BottomSheetDefaults.DragHandle() },
+        containerColor = cardColor,
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
             MovieBottomSheetHeader(
@@ -63,7 +66,7 @@ fun MovieBottomSheet(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(1.dp)
-                    .background(Color.DarkGray)
+                    .background(onBackgroundColor)
             )
             Column(
                 modifier = Modifier
@@ -117,6 +120,7 @@ private fun BottomSheetAction(
     ) {
         Icon(
             imageVector = imageVector,
+            tint = lightTextColor,
             contentDescription = null,
         )
         Text(

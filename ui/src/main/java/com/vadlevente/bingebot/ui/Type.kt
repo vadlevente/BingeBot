@@ -39,9 +39,10 @@ private val fontFamily = FontFamily.Default
 
 val pageTitle = TextStyle(
     fontFamily = fontFamily,
-    fontWeight = FontWeight.Normal,
-    fontSize = 16.sp,
-    letterSpacing = 0.6.sp
+    fontWeight = FontWeight.Bold,
+    fontSize = 24.sp,
+    letterSpacing = 0.6.sp,
+    color = lightTextColor,
 )
 
 val errorLabel = TextStyle(
@@ -49,7 +50,7 @@ val errorLabel = TextStyle(
     fontWeight = FontWeight.Normal,
     fontSize = 12.sp,
     letterSpacing = 0.6.sp,
-    color = Color.Red
+    color = errorColor,
 )
 
 val link = TextStyle(
@@ -65,6 +66,7 @@ val listItemTitle = TextStyle(
     fontWeight = FontWeight.Bold,
     fontSize = 20.sp,
     letterSpacing = 0.6.sp,
+    color = lightTextColor,
 )
 
 val listItemSubtitle = TextStyle(
@@ -72,6 +74,7 @@ val listItemSubtitle = TextStyle(
     fontWeight = FontWeight.Bold,
     fontSize = 18.sp,
     letterSpacing = 0.6.sp,
+    color = lightTextColor,
 )
 
 val listDescription = TextStyle(
@@ -80,6 +83,7 @@ val listDescription = TextStyle(
     fontSize = 17.sp,
     letterSpacing = 0.6.sp,
     textAlign = TextAlign.Center,
+    color = lightTextColor,
 )
 
 val bottomSheetAction = TextStyle(
@@ -88,6 +92,7 @@ val bottomSheetAction = TextStyle(
     fontSize = 17.sp,
     letterSpacing = 0.6.sp,
     textAlign = TextAlign.Center,
+    color = lightTextColor,
 )
 
 val dialogTitle = TextStyle(
@@ -96,6 +101,7 @@ val dialogTitle = TextStyle(
     fontSize = 17.sp,
     letterSpacing = 0.6.sp,
     textAlign = TextAlign.Center,
+    color = lightTextColor,
 )
 
 val dialogDescription = TextStyle(
@@ -104,4 +110,23 @@ val dialogDescription = TextStyle(
     fontSize = 15.sp,
     letterSpacing = 0.6.sp,
     textAlign = TextAlign.Center,
+    color = lightTextColor,
+)
+
+val outlinedButtonLabel = TextStyle(
+    fontFamily = fontFamily,
+    fontWeight = FontWeight.Normal,
+    fontSize = 15.sp,
+    letterSpacing = 0.6.sp,
+    textAlign = TextAlign.Center,
+    color = lightTextColor,
+)
+
+val buttonLabel = TextStyle(
+    fontFamily = fontFamily,
+    fontWeight = FontWeight.Normal,
+    fontSize = 15.sp,
+    letterSpacing = 0.6.sp,
+    textAlign = TextAlign.Center,
+    color = lightTextColor,
 )
