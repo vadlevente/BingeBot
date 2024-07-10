@@ -24,6 +24,7 @@ fun BBOutlinedTextField(
     isError: Boolean = false,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     trailingIcon: @Composable () -> Unit = {},
+    maxLines: Int = Int.MAX_VALUE,
 ) {
     BBOutlinedTextField(
         modifier = modifier,
@@ -39,6 +40,7 @@ fun BBOutlinedTextField(
         isError = isError,
         keyboardOptions = keyboardOptions,
         trailingIcon = trailingIcon,
+        maxLines = maxLines,
     )
 }
 
@@ -53,6 +55,7 @@ private fun BBOutlinedTextField(
     isError: Boolean = false,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     trailingIcon: @Composable () -> Unit = {},
+    maxLines: Int,
 ) {
     OutlinedTextField(
         modifier = modifier,
@@ -70,6 +73,7 @@ private fun BBOutlinedTextField(
             unfocusedBorderColor = onBackgroundColor,
             focusedTextColor = lightTextColor,
             unfocusedTextColor = onBackgroundColor,
-        )
+        ),
+        maxLines = maxLines,
     )
 }

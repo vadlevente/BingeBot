@@ -6,6 +6,7 @@ import com.vadlevente.bingebot.core.data.dao.WatchListDao
 import com.vadlevente.bingebot.core.model.Genre
 import com.vadlevente.bingebot.core.model.Movie
 import com.vadlevente.bingebot.core.model.WatchList
+import java.util.Date
 import javax.inject.Inject
 
 class MovieLocalDataSource @Inject constructor(
@@ -58,6 +59,10 @@ class MovieLocalDataSource @Inject constructor(
 
     suspend fun insertWatchLists(watchLists: List<WatchList>) {
         watchListDao.insertWatchLists(watchLists)
+    }
+
+    suspend fun setMovieWatchedDate(movieId: Int, watchedDate: Date?) {
+        movieDao.setMovieWatchedDate(movieId, watchedDate)
     }
 
 }

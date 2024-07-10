@@ -17,6 +17,8 @@ import com.vadlevente.bingebot.core.usecase.DeleteMovieUseCase
 import com.vadlevente.bingebot.core.usecase.DeleteMovieUseCaseParams
 import com.vadlevente.bingebot.core.usecase.SaveMovieUseCase
 import com.vadlevente.bingebot.core.usecase.SaveMovieUseCaseParams
+import com.vadlevente.bingebot.core.usecase.SetMovieSeenUseCase
+import com.vadlevente.bingebot.core.usecase.SetMovieSeenUseCaseParams
 import com.vadlevente.bingebot.core.viewModel.MovieBottomSheetViewModel.ViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,6 +28,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
@@ -36,6 +39,7 @@ class MovieBottomSheetViewModel @Inject constructor(
     private val dialogEventChannel: DialogEventChannel,
     private val deleteMovieUseCase: DeleteMovieUseCase,
     private val saveMovieUseCase: SaveMovieUseCase,
+    private val setMovieSeenUseCase: SetMovieSeenUseCase,
 ) : BaseViewModel<ViewState>(
     navigationEventChannel, toastEventChannel
 ) {
@@ -112,6 +116,40 @@ class MovieBottomSheetViewModel @Inject constructor(
                     },
                 )
             )
+        }
+    }
+
+    fun onSetMovieWatched() {
+        viewState.value.event?.let {
+            setMovieSeenUseCase.execute(
+                SetMovieSeenUseCaseParams(
+                    movieId = it.movie.movie.id,
+                    watchedDate = Date(),
+                )
+            ).onValue {
+                onDismiss()
+                showToast(
+                    message = stringOf(R.string.movieBottomSheet_setWatchedDateSuccessful),
+                    type = INFO,
+                )
+            }
+        }
+    }
+
+    fun onSetMovieNotWatched() {
+        viewState.value.event?.let {
+            setMovieSeenUseCase.execute(
+                SetMovieSeenUseCaseParams(
+                    movieId = it.movie.movie.id,
+                    watchedDate = null,
+                )
+            ).onValue {
+                onDismiss()
+                showToast(
+                    message = stringOf(R.string.movieBottomSheet_revertWatchedDateSuccessful),
+                    type = INFO,
+                )
+            }
         }
     }
 

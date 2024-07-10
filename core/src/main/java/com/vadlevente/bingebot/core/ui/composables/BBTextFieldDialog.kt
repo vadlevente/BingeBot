@@ -64,6 +64,7 @@ fun BBTextFieldDialog(
                     .padding(bottom = 8.dp),
                 value = state.text,
                 onValueChange = viewModel::onTextChanged,
+                maxLines = 1,
             )
             Row(
                 modifier = Modifier

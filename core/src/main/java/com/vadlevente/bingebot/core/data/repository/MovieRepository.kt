@@ -32,6 +32,7 @@ interface MovieRepository {
     suspend fun deleteMovie(movieId: Int)
     suspend fun createWatchList(title: String): String
     suspend fun addMovieToList(movieId: Int, watchListId: String)
+    suspend fun setMovieWatchedDate(movieId: Int, watchedDate: Date?)
 }
 
 class MovieRepositoryImpl @Inject constructor(
@@ -159,6 +160,12 @@ class MovieRepositoryImpl @Inject constructor(
                     movieIds = watchList.movieIds.plus(movieId)
                 )
             )
+        }
+
+    override suspend fun setMovieWatchedDate(movieId: Int, watchedDate: Date?) =
+        withContext(Dispatchers.IO) {
+            firestoreDataSource.setMovieWatchDate(movieId, watchedDate)
+            movieLocalDataSource.setMovieWatchedDate(movieId, watchedDate)
         }
 
 }

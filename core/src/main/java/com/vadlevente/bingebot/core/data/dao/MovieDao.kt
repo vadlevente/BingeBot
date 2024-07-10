@@ -7,6 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.vadlevente.bingebot.core.model.Movie
 import kotlinx.coroutines.flow.Flow
+import java.util.Date
 
 @Dao
 interface MovieDao {
@@ -27,5 +28,8 @@ interface MovieDao {
 
     @Query("SELECT * from movie WHERE localeCode != :localeCode")
     fun getAllIncorrectlyLocalizedMovies(localeCode: String): Flow<List<Movie>>
+
+    @Query("UPDATE movie SET watchedDate = :watchedDate WHERE id = :movieId")
+    suspend fun setMovieWatchedDate(movieId: Int, watchedDate: Date?)
 
 }

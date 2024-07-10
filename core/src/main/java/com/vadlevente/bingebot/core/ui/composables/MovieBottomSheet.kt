@@ -13,8 +13,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddToPhotos
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.SaveAlt
 import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -76,7 +78,7 @@ fun MovieBottomSheet(
                 BottomSheetAction(
                     action = { viewModel.onShowDetails() },
                     labelRes = R.string.movieBottomSheet_openDetails,
-                    imageVector = Icons.Filled.Visibility,
+                    imageVector = Icons.Filled.Info,
                 )
                 BottomSheetAction(
                     action = { viewModel.onAddToWatchList() },
@@ -84,6 +86,19 @@ fun MovieBottomSheet(
                     imageVector = Icons.Filled.AddToPhotos,
                 )
                 if (event.alreadySaved) {
+                    if (movie.isWatched) {
+                        BottomSheetAction(
+                            action = { viewModel.onSetMovieNotWatched() },
+                            labelRes = R.string.movieBottomSheet_revertSeen,
+                            imageVector = Icons.Filled.VisibilityOff,
+                        )
+                    } else {
+                        BottomSheetAction(
+                            action = { viewModel.onSetMovieWatched() },
+                            labelRes = R.string.movieBottomSheet_seen,
+                            imageVector = Icons.Filled.Visibility,
+                        )
+                    }
                     BottomSheetAction(
                         action = { viewModel.onDelete() },
                         labelRes = R.string.movieBottomSheet_delete,

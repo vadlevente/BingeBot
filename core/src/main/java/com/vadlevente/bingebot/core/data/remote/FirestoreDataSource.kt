@@ -122,7 +122,7 @@ class FirestoreDataSource @Inject constructor(
         }
     }
 
-    suspend fun setMovieWatchDate(movieId: Int, watchDate: Date) {
+    suspend fun setMovieWatchDate(movieId: Int, watchDate: Date?) {
         val profileId = preferencesDataSource.activeProfileId.first() ?: return
         suspendCoroutine { continuation ->
             firestore.collection(COLLECTION_MOVIES)

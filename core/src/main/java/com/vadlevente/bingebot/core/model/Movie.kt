@@ -30,4 +30,6 @@ data class Movie(
 ) {
     @Ignore
     val localization: SelectedLanguage = SelectedLanguage.from(localeCode)
+    val isWatched: Boolean
+        get() = watchedDate != null
 }
