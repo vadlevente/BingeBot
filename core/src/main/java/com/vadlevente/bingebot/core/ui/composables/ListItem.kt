@@ -90,6 +90,7 @@ fun ListItem(
                     style = listItemSubtitle,
                 )
                 Icon(
+                    modifier = Modifier.padding(end = 8.dp),
                     imageVector = Icons.Filled.Star,
                     contentDescription = null,
                     tint = Color.Yellow

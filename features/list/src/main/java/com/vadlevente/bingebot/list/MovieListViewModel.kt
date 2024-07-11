@@ -11,9 +11,12 @@ import com.vadlevente.bingebot.core.model.NavDestination.SEARCH_MOVIE
 import com.vadlevente.bingebot.core.viewModel.BaseViewModel
 import com.vadlevente.bingebot.core.viewModel.State
 import com.vadlevente.bingebot.list.MovieListViewModel.ViewState
+import com.vadlevente.bingebot.list.domain.model.DisplayedGenre
 import com.vadlevente.bingebot.list.domain.usecase.GetGenresUseCase
 import com.vadlevente.bingebot.list.domain.usecase.GetMoviesUseCase
 import com.vadlevente.bingebot.list.domain.usecase.GetMoviesUseCaseParams
+import com.vadlevente.bingebot.list.domain.usecase.SetSelectedGenresUseCase
+import com.vadlevente.bingebot.list.domain.usecase.SetSelectedGenresUseCaseParams
 import com.vadlevente.bingebot.list.domain.usecase.UpdateMoviesUseCase
 import com.vadlevente.bingebot.list.domain.usecase.UpdateWatchListsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -32,6 +35,7 @@ class MovieListViewModel @Inject constructor(
     getGenresUseCase: GetGenresUseCase,
     private val getMoviesUseCase: GetMoviesUseCase,
     private val bottomSheetEventChannel: BottomSheetEventChannel,
+    private val setSelectedGenresUseCase: SetSelectedGenresUseCase,
 ) : BaseViewModel<ViewState>(
     navigationEventChannel, toastEventChannel
 ) {
@@ -48,7 +52,7 @@ class MovieListViewModel @Inject constructor(
                 viewState.update {
                     it.copy(
                         genres = genres,
-                        selectedGenres = emptyList(),
+                        isAnyGenreSelected = genres.any { it.isSelected }
                     )
                 }
             }
@@ -94,6 +98,29 @@ class MovieListViewModel @Inject constructor(
         }
     }
 
+    fun onClearGenres() {
+        setSelectedGenresUseCase.execute(
+            SetSelectedGenresUseCaseParams(
+                emptyList()
+            )
+        )
+    }
+
+    fun onToggleGenre(genre: Genre) {
+        val selectedGenres = viewState.value.genres.filter { it.isSelected }.map { it.genre }
+        val modifiedGenres = if (selectedGenres.contains(genre)) {
+            selectedGenres.minus(genre)
+        } else {
+            selectedGenres.plus(genre)
+        }
+        println("select genres: modify ${modifiedGenres.joinToString { it.name }}")
+        setSelectedGenresUseCase.execute(
+            SetSelectedGenresUseCaseParams(
+                modifiedGenres
+            )
+        ).onStart()
+    }
+
     private fun getMovies() {
         getMoviesUseCase.execute(
             GetMoviesUseCaseParams(
@@ -110,10 +137,10 @@ class MovieListViewModel @Inject constructor(
 
     data class ViewState(
         val movies: List<DisplayedMovie> = emptyList(),
-        val genres: List<Genre> = emptyList(),
-        val selectedGenres: List<Genre> = emptyList(),
+        val genres: List<DisplayedGenre> = emptyList(),
         val isSearchFieldVisible: Boolean = false,
         val searchQuery: String? = null,
+        val isAnyGenreSelected: Boolean = false,
     ) : State
 
 }
