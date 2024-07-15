@@ -200,9 +200,10 @@ private fun GenreSelector(
 ) {
     Row(
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
-        LazyRow {
+        LazyRow(modifier = Modifier.weight(1f)) {
             items(state.genres) { genre ->
                 GenreChip(
                     genre = genre,
@@ -216,7 +217,6 @@ private fun GenreSelector(
                 contentDescription = null,
                 tint = lightTextColor,
                 modifier = Modifier
-                    .weight(1f)
                     .clickable { onClearGenres() }
                     .padding(horizontal = 8.dp)
             )

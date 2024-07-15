@@ -100,7 +100,7 @@ class MovieListViewModel @Inject constructor(
             SetSelectedGenresUseCaseParams(
                 emptyList()
             )
-        )
+        ).onStart()
     }
 
     fun onToggleGenre(genre: Genre) {
