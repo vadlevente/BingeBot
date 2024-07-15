@@ -24,12 +24,15 @@
     <string name="movieBottomSheet_deleteConfirmationTitle">Film törlése</string>
     <string name="movieBottomSheet_deleteConfirmationDescription">Biztosan szeretné törölni a filmet? Így minden listájáról is törlődni fog.</string>
     <string name="movieBottomSheet_movieDeletedToast">Sikeresen törölve</string>
-    <string name="movieBottomSheet_createWatchListDialogTitle">Lista létrehozása</string>
-    <string name="movieBottomSheet_createWatchListDialogDescription">Kérjük, adja meg a létrehozni kívánt lista címét!</string>
-    <string name="movieBottomSheet_movieAddedToWatchList">Sikeresen hozzáadva a listához!</string>
-    <string name="movieBottomSheet_createWatchListLabel">Új lista létrehozása</string>
     <string name="movieBottomSheet_saveSuccessful">Sikeresen hozzáadva a megnézendő filmekhez</string>
     <string name="movieBottomSheet_revertWatchedDateSuccessful">Sikeresen törölve a megnézett filmek közül</string>
     <string name="movieBottomSheet_setWatchedDateSuccessful">Megtekintési dátum hozzáadva</string>
+
+    <string name="addMovieToWatchListBottomSheet_createWatchListDialogTitle">Lista létrehozása</string>
+    <string name="addMovieToWatchListBottomSheet_createWatchListDialogDescription">Kérjük, adja meg a létrehozni kívánt lista címét!</string>
+    <string name="addMovieToWatchListBottomSheet_movieAddedToWatchList">Sikeresen hozzáadva a listához!</string>
+    <string name="addMovieToWatchListBottomSheet_createWatchListLabel">Új lista létrehozása</string>
+
+    <string name="watchListBottomSheet_title">Megnézendő filmek listája</string>
 
 </resources>

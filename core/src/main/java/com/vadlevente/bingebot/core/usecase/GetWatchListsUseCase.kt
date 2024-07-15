@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 data class GetWatchListsUseCaseParams(
-    val movieId: Int,
+    val movieId: Int? = null,
 )
 
 class GetWatchListsUseCase @Inject constructor(
@@ -17,7 +17,11 @@ class GetWatchListsUseCase @Inject constructor(
 
     override fun execute(params: GetWatchListsUseCaseParams): Flow<List<WatchList>> =
         movieRepository.getWatchLists().map {
-            it.filter { !it.movieIds.contains(params.movieId) }
+            it.filter {
+                params.movieId?.let { movieId ->
+                    !it.movieIds.contains(movieId)
+                } ?: true
+            }
         }
 
 }

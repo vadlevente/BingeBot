@@ -102,9 +102,9 @@ abstract class BaseViewModel<S : State>(
         }
         .launchIn(viewModelScope)
 
-    protected fun navigateTo(navDestination: NavDestination) {
+    protected fun navigateTo(navDestination: NavDestination, vararg arguments: Any) {
         viewModelScope.launch {
-            navigationEventChannel.sendEvent(NavigateTo(navDestination.route))
+            navigationEventChannel.sendEvent(NavigateTo(navDestination.route, arguments.toList()))
         }
     }
 

@@ -6,4 +6,6 @@ object Modules {
     const val authentication = ":features:authentication"
     const val list = ":features:list"
     const val search = ":features:search"
+    const val watchlist = ":features:watchlist"
+    const val movieDetails = ":features:moviedetails"
 }

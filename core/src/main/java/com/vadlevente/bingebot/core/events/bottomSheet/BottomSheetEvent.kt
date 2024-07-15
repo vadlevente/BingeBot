@@ -13,4 +13,6 @@ sealed interface BottomSheetEvent {
         val alreadySaved: Boolean,
     ) : BottomSheetEvent
 
+    object ShowWatchListsBottomSheet : BottomSheetEvent
+
 }

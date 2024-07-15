@@ -9,9 +9,11 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.vadlevente.bingebot.authentication.ui.login.LoginScreen
 import com.vadlevente.bingebot.authentication.ui.registration.RegistrationScreen
 import com.vadlevente.bingebot.core.events.navigation.NavigationEvent.NavigateTo
@@ -23,10 +25,13 @@ import com.vadlevente.bingebot.core.ui.composables.BBDialog
 import com.vadlevente.bingebot.core.ui.composables.BBTextFieldDialog
 import com.vadlevente.bingebot.core.ui.composables.MovieBottomSheet
 import com.vadlevente.bingebot.core.ui.composables.Toast
+import com.vadlevente.bingebot.core.ui.composables.WatchListsBottomSheet
 import com.vadlevente.bingebot.list.ui.MovieListScreen
 import com.vadlevente.bingebot.search.ui.SearchMovieScreen
 import com.vadlevente.bingebot.splash.ui.SplashScreen
 import com.vadlevente.bingebot.ui.BingeBotTheme
+import com.vadlevente.moviedetails.MovieDetailsScreen
+import com.vadlevente.watchlist.WatchListScreen
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -57,6 +62,30 @@ fun NavigationHost(
                 }
                 composable(NavDestination.SEARCH_MOVIE.route) {
                     SearchMovieScreen()
+                }
+                composable(
+                    "${NavDestination.MOVIE_DETAILS.route}/{movieId}",
+                    arguments = listOf(
+                        navArgument("movieId") {
+                            type = NavType.IntType
+                        }
+                    )
+                ) {
+                    it.arguments?.getInt("movieId")?.let { movieId ->
+                        MovieDetailsScreen(movieId)
+                    }
+                }
+                composable(
+                    "${NavDestination.WATCH_LIST.route}/{watchListId}",
+                    arguments = listOf(
+                        navArgument("watchListId") {
+                            type = NavType.StringType
+                        }
+                    )
+                ) {
+                    it.arguments?.getString("watchListId")?.let { watchListId ->
+                        WatchListScreen(watchListId)
+                    }
                 }
             }
             UIComponents(this)
@@ -103,6 +132,7 @@ private fun navigate(
             }
             navController.navigate(route)
         }
+
         NavDestination.LIST_MOVIE.route -> {
             navController.popBackStack()
             navController.navigate(route)
@@ -120,6 +150,7 @@ private fun UIComponents(scope: BoxScope) {
         )
         MovieBottomSheet()
         AddMovieToWatchListBottomSheet()
+        WatchListsBottomSheet()
         BBDialog()
         BBTextFieldDialog()
     }

@@ -154,8 +154,10 @@ class MovieBottomSheetViewModel @Inject constructor(
     }
 
     fun onShowDetails() {
-        navigateTo(MOVIE_DETAILS)
-        onDismiss()
+        viewState.value.event?.let { event ->
+            navigateTo(MOVIE_DETAILS, event.movie.movie.id)
+            onDismiss()
+        }
     }
 
     data class ViewState(

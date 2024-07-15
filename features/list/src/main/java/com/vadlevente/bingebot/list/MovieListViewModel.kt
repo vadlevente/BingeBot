@@ -2,6 +2,7 @@ package com.vadlevente.bingebot.list
 
 import androidx.lifecycle.viewModelScope
 import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEvent.ShowMovieBottomSheet
+import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEvent.ShowWatchListsBottomSheet
 import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEventChannel
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
@@ -62,10 +63,6 @@ class MovieListViewModel @Inject constructor(
         navigateTo(SEARCH_MOVIE)
     }
 
-    fun onNavigateToDetails(movieId: Int) {
-
-    }
-
     fun onToggleSearchField() {
         viewState.update {
             it.copy(
@@ -119,6 +116,14 @@ class MovieListViewModel @Inject constructor(
                 modifiedGenres
             )
         ).onStart()
+    }
+
+    fun onOpenWatchLists() {
+        viewModelScope.launch {
+            bottomSheetEventChannel.sendEvent(
+                ShowWatchListsBottomSheet
+            )
+        }
     }
 
     private fun getMovies() {

@@ -51,6 +51,8 @@ dependencies {
     implementation(project(Modules.authentication))
     implementation(project(Modules.list))
     implementation(project(Modules.search))
+    implementation(project(Modules.watchlist))
+    implementation(project(Modules.movieDetails))
 
 // Core
     implementation(Kotlin.kotlinStdLib)

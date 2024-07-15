@@ -14,9 +14,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.Icons.Filled
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
@@ -66,12 +66,12 @@ fun MovieListScreen(
         state = state,
         isInProgress = isInProgress,
         onNavigateToSearch = viewModel::onNavigateToSearch,
-        onNavigateToDetails = viewModel::onNavigateToDetails,
         onToggleSearchField = viewModel::onToggleSearchField,
         onQueryChanged = viewModel::onQueryChanged,
         onNavigateToOptions = viewModel::onNavigateToOptions,
         onClearGenres = viewModel::onClearGenres,
         onToggleGenre = viewModel::onToggleGenre,
+        onOpenWatchLists = viewModel::onOpenWatchLists,
     )
 }
 
@@ -80,12 +80,12 @@ fun MovieListScreenComponent(
     state: ViewState,
     isInProgress: Boolean,
     onNavigateToSearch: () -> Unit,
-    onNavigateToDetails: (Int) -> Unit,
     onToggleSearchField: () -> Unit,
     onQueryChanged: (String) -> Unit,
     onNavigateToOptions: (Int) -> Unit,
     onClearGenres: () -> Unit,
     onToggleGenre: (Genre) -> Unit,
+    onOpenWatchLists: () -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -98,6 +98,14 @@ fun MovieListScreenComponent(
                         tint = lightTextColor,
                         modifier = Modifier
                             .clickable { onToggleSearchField() }
+                            .padding(end = 8.dp)
+                    )
+                    Icon(
+                        imageVector = Icons.Filled.List,
+                        contentDescription = null,
+                        tint = lightTextColor,
+                        modifier = Modifier
+                            .clickable { onOpenWatchLists() }
                             .padding(end = 8.dp)
                     )
                 }
@@ -172,11 +180,8 @@ fun MovieListScreenComponent(
                                 isWatched = movie.watchedDate != null,
                                 rating = movie.voteAverage.asOneDecimalString,
                                 releaseYear = movie.releaseDate?.yearString ?: "",
-                                onClick = { onNavigateToDetails(movie.id) },
-                                onLongClick = { onNavigateToOptions(movie.id) },
-                                onDelete = { /*TODO*/ }) {
-
-                            }
+                                onClick = { onNavigateToOptions(movie.id) },
+                            )
                         }
                     }
                 }
@@ -207,7 +212,7 @@ private fun GenreSelector(
         }
         if (state.isAnyGenreSelected) {
             Icon(
-                imageVector = Filled.Clear,
+                imageVector = Icons.Filled.Clear,
                 contentDescription = null,
                 tint = lightTextColor,
                 modifier = Modifier
