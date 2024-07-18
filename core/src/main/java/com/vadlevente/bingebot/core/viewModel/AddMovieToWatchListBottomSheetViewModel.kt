@@ -33,6 +33,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import com.vadlevente.bingebot.resources.R as Res
 
 @HiltViewModel
 class AddMovieToWatchListBottomSheetViewModel @Inject constructor(
@@ -111,8 +112,8 @@ class AddMovieToWatchListBottomSheetViewModel @Inject constructor(
                 ShowTextFieldDialog(
                     title = stringOf(string.addMovieToWatchListBottomSheet_createWatchListDialogTitle),
                     content = stringOf(string.addMovieToWatchListBottomSheet_createWatchListDialogDescription),
-                    positiveButtonTitle = stringOf(string.common_Create),
-                    negativeButtonTitle = stringOf(string.common_Cancel),
+                    positiveButtonTitle = stringOf(Res.string.common_Create),
+                    negativeButtonTitle = stringOf(Res.string.common_Cancel),
                     onPositiveButtonClicked = { title ->
                         createWatchListUseCase.execute(
                             CreateWatchListUseCaseParams(title)

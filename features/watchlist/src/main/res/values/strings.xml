@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">watchlist</string>
+    <string name="deleteWatchList_confirm_title">Lejátszási lista törlése</string>
+    <string name="deleteWatchList_confirm_description">Biztosan törölni szeretné a ejátszási listát?</string>
 </resources>

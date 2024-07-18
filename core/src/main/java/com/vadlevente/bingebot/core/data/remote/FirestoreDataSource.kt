@@ -203,6 +203,23 @@ class FirestoreDataSource @Inject constructor(
         }
     }
 
+    suspend fun deleteWatchList(watchListId: String) {
+        val profileId = preferencesDataSource.activeProfileId.first() ?: return
+        suspendCoroutine { continuation ->
+            firestore.collection(COLLECTION_MOVIES)
+                .document(profileId)
+                .collection(COLLECTION_WATCHLISTS)
+                .document(watchListId.toString())
+                .delete()
+                .addOnSuccessListener {
+                    continuation.resume(Unit)
+                }
+                .addOnFailureListener {
+                    continuation.resumeWithException(BingeBotException(it, DATA_WRITE_ERROR))
+                }
+        }
+    }
+
 
     companion object {
         const val COLLECTION_MOVIES = "movies"

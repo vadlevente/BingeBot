@@ -26,6 +26,9 @@ interface MovieDao {
     @Query("SELECT * from movie")
     fun getAllMovies(): Flow<List<Movie>>
 
+    @Query("SELECT * from movie WHERE id in (:movieIds)")
+    fun getMovies(movieIds: List<Int>): Flow<List<Movie>>
+
     @Query("SELECT * from movie WHERE localeCode != :localeCode")
     fun getAllIncorrectlyLocalizedMovies(localeCode: String): Flow<List<Movie>>
 

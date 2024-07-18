@@ -15,6 +15,8 @@ import com.vadlevente.bingebot.core.model.NavDestination.MOVIE_DETAILS
 import com.vadlevente.bingebot.core.stringOf
 import com.vadlevente.bingebot.core.usecase.DeleteMovieUseCase
 import com.vadlevente.bingebot.core.usecase.DeleteMovieUseCaseParams
+import com.vadlevente.bingebot.core.usecase.RemoveMovieFromWatchListUseCase
+import com.vadlevente.bingebot.core.usecase.RemoveMovieFromWatchListUseCaseParams
 import com.vadlevente.bingebot.core.usecase.SaveMovieUseCase
 import com.vadlevente.bingebot.core.usecase.SaveMovieUseCaseParams
 import com.vadlevente.bingebot.core.usecase.SetMovieSeenUseCase
@@ -30,6 +32,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.Date
 import javax.inject.Inject
+import com.vadlevente.bingebot.resources.R as Res
 
 @HiltViewModel
 class MovieBottomSheetViewModel @Inject constructor(
@@ -40,6 +43,7 @@ class MovieBottomSheetViewModel @Inject constructor(
     private val deleteMovieUseCase: DeleteMovieUseCase,
     private val saveMovieUseCase: SaveMovieUseCase,
     private val setMovieSeenUseCase: SetMovieSeenUseCase,
+    private val removeMovieFromWatchListUseCase: RemoveMovieFromWatchListUseCase,
 ) : BaseViewModel<ViewState>(
     navigationEventChannel, toastEventChannel
 ) {
@@ -93,6 +97,38 @@ class MovieBottomSheetViewModel @Inject constructor(
         }
     }
 
+    fun removeFromWatchList() {
+        viewState.value.event?.watchListId?.let { watchListId ->
+            viewState.value.event?.movie?.let { movie ->
+                viewModelScope.launch {
+                    dialogEventChannel.sendEvent(
+                        ShowDialog(
+                            title = stringOf(R.string.movieBottomSheet_removeMovieFromWatchListConfirmationTitle),
+                            content = stringOf(R.string.movieBottomSheet_removeMovieFromWatchListConfirmationDescription),
+                            positiveButtonTitle = stringOf(Res.string.common_Yes),
+                            negativeButtonTitle = stringOf(Res.string.common_No),
+                            onPositiveButtonClicked = {
+                                removeMovieFromWatchListUseCase.execute(
+                                    RemoveMovieFromWatchListUseCaseParams(
+                                        movieId = movie.movie.id,
+                                        watchListId = watchListId,
+                                    )
+                                )
+                                    .onValue {
+                                        onDismiss()
+                                        showToast(
+                                            message = stringOf(Res.string.successfulDeleteToast),
+                                            type = INFO,
+                                        )
+                                    }
+                            },
+                        )
+                    )
+                }
+            }
+        }
+    }
+
     fun onDelete() {
         val movieId = viewState.value.event?.movie?.movie?.id ?: return
         viewModelScope.launch {
@@ -100,8 +136,8 @@ class MovieBottomSheetViewModel @Inject constructor(
                 ShowDialog(
                     title = stringOf(R.string.movieBottomSheet_deleteConfirmationTitle),
                     content = stringOf(R.string.movieBottomSheet_deleteConfirmationDescription),
-                    positiveButtonTitle = stringOf(R.string.common_Yes),
-                    negativeButtonTitle = stringOf(R.string.common_No),
+                    positiveButtonTitle = stringOf(Res.string.common_Yes),
+                    negativeButtonTitle = stringOf(Res.string.common_No),
                     onPositiveButtonClicked = {
                         deleteMovieUseCase.execute(
                             DeleteMovieUseCaseParams(movieId)
@@ -109,7 +145,7 @@ class MovieBottomSheetViewModel @Inject constructor(
                             .onValue {
                                 onDismiss()
                                 showToast(
-                                    message = stringOf(R.string.movieBottomSheet_movieDeletedToast),
+                                    message = stringOf(Res.string.successfulDeleteToast),
                                     type = INFO,
                                 )
                             }

@@ -16,6 +16,8 @@ class MovieLocalDataSource @Inject constructor(
 ) {
 
     fun getAllMovies() = movieDao.getAllMovies()
+    fun getMovies(movieIds: List<Int>) = movieDao.getMovies(movieIds)
+
     fun getAllMoviesWithIncorrectLocalization(locale: String) = movieDao.getAllIncorrectlyLocalizedMovies(locale)
     fun getAllGenres() = genreDao.getAllGenres()
     fun getAllWatchLists() = watchListDao.getAllWatchLists()
@@ -51,6 +53,10 @@ class MovieLocalDataSource @Inject constructor(
 
     suspend fun deleteAllWatchLists() {
         watchListDao.deleteAll()
+    }
+
+    suspend fun deleteWatchList(watchListId: String) {
+        watchListDao.delete(watchListId)
     }
 
     suspend fun insertWatchList(watchList: WatchList) {

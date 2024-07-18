@@ -110,7 +110,6 @@ class MovieListViewModel @Inject constructor(
         } else {
             selectedGenres.plus(genre)
         }
-        println("select genres: modify ${modifiedGenres.joinToString { it.name }}")
         setSelectedGenresUseCase.execute(
             SetSelectedGenresUseCaseParams(
                 modifiedGenres

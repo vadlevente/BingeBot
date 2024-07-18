@@ -21,6 +21,9 @@ interface WatchListDao {
     @Query("DELETE from watchList")
     fun deleteAll()
 
+    @Query("DELETE from watchList WHERE watchListId = :watchListId")
+    fun delete(watchListId: String)
+
     @Query("SELECT * from watchList")
     fun getAllWatchLists(): Flow<List<WatchList>>
 

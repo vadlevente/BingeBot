@@ -12,6 +12,7 @@ import com.vadlevente.bingebot.core.model.firestore.StoredMovie
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import java.util.Date
@@ -22,6 +23,7 @@ interface MovieRepository {
     fun getGenres(): Flow<List<Genre>>
     fun getSearchResult(): Flow<List<Movie>>
     fun getWatchLists(): Flow<List<WatchList>>
+    fun getWatchListMovies(watchListId: String): Flow<List<Movie>>
     suspend fun updateConfiguration()
     suspend fun updateGenres()
     suspend fun updateMovies()
@@ -32,7 +34,9 @@ interface MovieRepository {
     suspend fun deleteMovie(movieId: Int)
     suspend fun createWatchList(title: String): String
     suspend fun addMovieToList(movieId: Int, watchListId: String)
+    suspend fun removeMovieFromList(movieId: Int, watchListId: String)
     suspend fun setMovieWatchedDate(movieId: Int, watchedDate: Date?)
+    suspend fun deleteWatchList(watchListId: String)
 }
 
 class MovieRepositoryImpl @Inject constructor(
@@ -53,6 +57,12 @@ class MovieRepositoryImpl @Inject constructor(
 
     override fun getWatchLists(): Flow<List<WatchList>> =
         movieLocalDataSource.getAllWatchLists().flowOn(Dispatchers.IO)
+
+    override fun getWatchListMovies(watchListId: String): Flow<List<Movie>> =
+        movieLocalDataSource.getWatchList(watchListId)
+            .flatMapConcat { watchList ->
+                movieLocalDataSource.getMovies(watchList.movieIds)
+            }.flowOn(Dispatchers.IO)
 
     override suspend fun updateConfiguration() = withContext(Dispatchers.IO) {
         val config = movieRemoteDataSource.getConfiguration()
@@ -162,10 +172,26 @@ class MovieRepositoryImpl @Inject constructor(
             )
         }
 
+    override suspend fun removeMovieFromList(movieId: Int, watchListId: String) =
+        withContext(Dispatchers.IO) {
+            firestoreDataSource.removeMovieFromWatchList(watchListId, movieId)
+            val watchList = movieLocalDataSource.getWatchList(watchListId).first()
+            movieLocalDataSource.insertWatchList(
+                watchList.copy(
+                    movieIds = watchList.movieIds.minus(movieId)
+                )
+            )
+        }
+
     override suspend fun setMovieWatchedDate(movieId: Int, watchedDate: Date?) =
         withContext(Dispatchers.IO) {
             firestoreDataSource.setMovieWatchDate(movieId, watchedDate)
             movieLocalDataSource.setMovieWatchedDate(movieId, watchedDate)
         }
+
+    override suspend fun deleteWatchList(watchListId: String) = withContext(Dispatchers.IO) {
+        firestoreDataSource.deleteWatchList(watchListId)
+        movieLocalDataSource.deleteWatchList(watchListId)
+    }
 
 }

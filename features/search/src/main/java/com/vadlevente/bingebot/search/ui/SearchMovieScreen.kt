@@ -105,7 +105,7 @@ fun SearchMovieScreenComponent(
                             ListItem(
                                 title = movie.title,
                                 iconPath = displayedMovie.backdropUrl,
-                                isWatched = movie.watchedDate != null,
+                                watchedDate = movie.watchedDate,
                                 rating = movie.voteAverage.asOneDecimalString,
                                 releaseYear = movie.releaseDate?.yearString ?: "",
                                 onClick = { onNavigateToOptions(movie.id) },

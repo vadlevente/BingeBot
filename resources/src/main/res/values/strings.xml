@@ -1,0 +1,22 @@
+<resources>
+    <string name="searchFieldHint">Filmek szűrése</string>
+    <string name="emptyQueriedListDescription">Nincs a kulcsszónak megfelelő találat.</string>
+    <string name="emptyListDescription">Nem található film a listában..</string>
+
+    <string name="common_Ok">OK</string>
+    <string name="common_Yes">Igen</string>
+    <string name="common_No">Nem</string>
+    <string name="common_Cancel">Mégsem</string>
+    <string name="common_Create">Létrehozás</string>
+
+    <string name="errorTitle">Hiba</string>
+    <string name="errorMessage_unknown">Ismeretlen hiba</string>
+
+    <string name="exception_authenticationFailed">Sikertelen bejelentkezés! Kérjük, próbálja újra!</string>
+    <string name="exception_weakPassword">A megadott jelszó túl gyenge! Kérjük, adjon meg egy másikat!</string>
+    <string name="exception_sessionExpired">A munkamenet lejárt, kérjük, jelentkezzen be újra!</string>
+    <string name="exception_watchListAlreadyExists">A megadott névvel már létezik lista!</string>
+
+    <string name="successfulDeleteToast">Sikeresen törölve</string>
+
+</resources>

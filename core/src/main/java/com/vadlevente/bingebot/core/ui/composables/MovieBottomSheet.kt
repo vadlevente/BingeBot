@@ -14,6 +14,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddToPhotos
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material.icons.filled.SaveAlt
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
@@ -80,11 +81,19 @@ fun MovieBottomSheet(
                     labelRes = R.string.movieBottomSheet_openDetails,
                     imageVector = Icons.Filled.Info,
                 )
-                BottomSheetAction(
-                    action = { viewModel.onAddToWatchList() },
-                    labelRes = R.string.movieBottomSheet_addToWatchList,
-                    imageVector = Icons.Filled.AddToPhotos,
-                )
+                if (event.watchListId == null) {
+                    BottomSheetAction(
+                        action = { viewModel.onAddToWatchList() },
+                        labelRes = R.string.movieBottomSheet_addToWatchList,
+                        imageVector = Icons.Filled.AddToPhotos,
+                    )
+                } else {
+                    BottomSheetAction(
+                        action = { viewModel.removeFromWatchList() },
+                        labelRes = R.string.movieBottomSheet_removeFromWatchList,
+                        imageVector = Icons.Filled.Remove,
+                    )
+                }
                 if (event.alreadySaved) {
                     if (movie.isWatched) {
                         BottomSheetAction(

@@ -2,7 +2,6 @@ package com.vadlevente.bingebot.core.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.vadlevente.bingebot.core.R.string
 import com.vadlevente.bingebot.core.UIText
 import com.vadlevente.bingebot.core.events.navigation.NavigationEvent.NavigateTo
 import com.vadlevente.bingebot.core.events.navigation.NavigationEvent.NavigateUp
@@ -28,6 +27,7 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import com.vadlevente.bingebot.resources.R as Res
 
 interface State
 
@@ -46,9 +46,9 @@ abstract class BaseViewModel<S : State>(
     open val basicErrorHandler: (Throwable) -> Unit = { t ->
         Timber.e(t)
         val errorMessage = when (t) {
-            is BingeBotException -> t.reason?.reasonText ?: t.errorMessage ?: stringOf(string.errorMessage_unknown)
+            is BingeBotException -> t.reason?.reasonText ?: t.errorMessage ?: stringOf(Res.string.errorMessage_unknown)
             else -> t.localizedMessage?.let { stringOf(it) }
-                ?: stringOf(string.errorMessage_unknown)
+                ?: stringOf(Res.string.errorMessage_unknown)
         }
         viewModelScope.launch {
             toastEventChannel.sendEvent(

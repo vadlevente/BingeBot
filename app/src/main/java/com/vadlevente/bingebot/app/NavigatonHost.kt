@@ -30,8 +30,8 @@ import com.vadlevente.bingebot.list.ui.MovieListScreen
 import com.vadlevente.bingebot.search.ui.SearchMovieScreen
 import com.vadlevente.bingebot.splash.ui.SplashScreen
 import com.vadlevente.bingebot.ui.BingeBotTheme
+import com.vadlevente.bingebot.watchlist.ui.WatchListScreen
 import com.vadlevente.moviedetails.MovieDetailsScreen
-import com.vadlevente.watchlist.WatchListScreen
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 

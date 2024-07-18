@@ -6,6 +6,7 @@ sealed interface BottomSheetEvent {
     data class ShowMovieBottomSheet(
         val movie: DisplayedMovie,
         val alreadySaved: Boolean,
+        val watchListId: String? = null,
     ) : BottomSheetEvent
 
     data class ShowAddMovieToWatchListBottomSheet(

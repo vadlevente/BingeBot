@@ -49,10 +49,11 @@ dependencies {
     implementation(project(Modules.ui))
     implementation(project(Modules.splash))
     implementation(project(Modules.authentication))
-    implementation(project(Modules.list))
+    implementation(project(Modules.movieList))
     implementation(project(Modules.search))
     implementation(project(Modules.watchlist))
     implementation(project(Modules.movieDetails))
+    implementation(project(Modules.resources))
 
 // Core
     implementation(Kotlin.kotlinStdLib)

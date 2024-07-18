@@ -4,6 +4,7 @@ apply {
 
 dependencies {
     "implementation"(project(Modules.ui))
+    "implementation"(project(Modules.resources))
     "implementation"(Testing.junit4)
     "implementation"(Testing.composeUiTest)
     "implementation"(Testing.mockk)
