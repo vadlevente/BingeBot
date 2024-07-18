@@ -1,7 +1,7 @@
 <resources>
     <string name="searchFieldHint">Filmek szűrése</string>
     <string name="emptyQueriedListDescription">Nincs a kulcsszónak megfelelő találat.</string>
-    <string name="emptyListDescription">Nem található film a listában..</string>
+    <string name="emptyListDescription">Nem található film a listában.</string>
 
     <string name="common_Ok">OK</string>
     <string name="common_Yes">Igen</string>
