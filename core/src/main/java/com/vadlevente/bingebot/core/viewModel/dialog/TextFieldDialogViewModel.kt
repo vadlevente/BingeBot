@@ -42,9 +42,7 @@ class TextFieldDialogViewModel @Inject constructor(
 
     fun onDismiss() {
         viewState.update {
-            it.copy(
-                isVisible = false,
-            )
+            ViewState()
         }
     }
 

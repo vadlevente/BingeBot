@@ -33,6 +33,7 @@ import com.vadlevente.bingebot.core.R
 import com.vadlevente.bingebot.core.util.dateString
 import com.vadlevente.bingebot.ui.BingeBotTheme
 import com.vadlevente.bingebot.ui.cardColor
+import com.vadlevente.bingebot.ui.darkCardColor
 import com.vadlevente.bingebot.ui.lightTextColor
 import com.vadlevente.bingebot.ui.listItemSubtitle
 import com.vadlevente.bingebot.ui.listItemTitle
@@ -60,7 +61,7 @@ fun ListItem(
             ),
         shape = RoundedCornerShape(8.dp),
         colors = CardDefaults.cardColors(
-            containerColor = cardColor,
+            containerColor = if (isWatched) darkCardColor else cardColor,
         )
     ) {
         Box(modifier = Modifier.fillMaxSize()) {

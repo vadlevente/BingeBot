@@ -6,7 +6,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.vadlevente.bingebot.ui.buttonLabel
-import com.vadlevente.bingebot.ui.onBackgroundColorFocused
+import com.vadlevente.bingebot.ui.progressColor
 
 @Composable
 fun BBButton(
@@ -18,8 +18,8 @@ fun BBButton(
         modifier = modifier,
         onClick = onClick,
         colors = ButtonDefaults.elevatedButtonColors(
-            containerColor = onBackgroundColorFocused,
-            contentColor = onBackgroundColorFocused,
+            containerColor = progressColor,
+            contentColor = progressColor,
         )
     ) {
         Text(

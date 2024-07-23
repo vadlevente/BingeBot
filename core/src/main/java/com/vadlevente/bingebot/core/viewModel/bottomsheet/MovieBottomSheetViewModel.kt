@@ -157,12 +157,12 @@ class MovieBottomSheetViewModel @Inject constructor(
         }
     }
 
-    fun onSetMovieWatched() {
+    fun onSetMovieWatched(dateMillis: Long) {
         viewState.value.event?.let {
             setMovieSeenUseCase.execute(
                 SetMovieSeenUseCaseParams(
                     movieId = it.movie.movie.id,
-                    watchedDate = Date(),
+                    watchedDate = Date(dateMillis),
                 )
             ).onValue {
                 onDismiss()

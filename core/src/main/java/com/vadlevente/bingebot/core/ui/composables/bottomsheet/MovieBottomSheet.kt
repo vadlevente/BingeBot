@@ -19,27 +19,42 @@ import androidx.compose.material.icons.filled.SaveAlt
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.BottomSheetDefaults
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDefaults
+import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.vadlevente.bingebot.core.R.string
+import com.vadlevente.bingebot.core.R
+import com.vadlevente.bingebot.core.ui.composables.BBButton
+import com.vadlevente.bingebot.core.ui.composables.BBOutlinedButton
+import com.vadlevente.bingebot.core.util.isBeforeTomorrow
 import com.vadlevente.bingebot.core.util.yearString
 import com.vadlevente.bingebot.core.viewModel.bottomsheet.MovieBottomSheetViewModel
 import com.vadlevente.bingebot.ui.bottomSheetAction
 import com.vadlevente.bingebot.ui.cardColor
+import com.vadlevente.bingebot.ui.darkTextColor
+import com.vadlevente.bingebot.ui.dialogDescription
 import com.vadlevente.bingebot.ui.lightTextColor
 import com.vadlevente.bingebot.ui.onBackgroundColor
+import com.vadlevente.bingebot.ui.progressColor
+import java.util.Date
+import com.vadlevente.bingebot.resources.R as Resources
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -52,6 +67,8 @@ fun MovieBottomSheet(
     val displayedMovie = event.movie
     val movie = displayedMovie.movie
     if (!state.isVisible) return
+    val dateState = rememberDatePickerState(initialSelectedDateMillis = Date().time)
+    var showDialog by remember { mutableStateOf(false) }
 
     ModalBottomSheet(
         onDismissRequest = viewModel::onDismiss,
@@ -78,19 +95,19 @@ fun MovieBottomSheet(
             ) {
                 BottomSheetAction(
                     action = { viewModel.onShowDetails() },
-                    labelRes = string.movieBottomSheet_openDetails,
+                    labelRes = R.string.movieBottomSheet_openDetails,
                     imageVector = Filled.Info,
                 )
                 if (event.watchListId == null) {
                     BottomSheetAction(
                         action = { viewModel.onAddToWatchList() },
-                        labelRes = string.movieBottomSheet_addToWatchList,
+                        labelRes = R.string.movieBottomSheet_addToWatchList,
                         imageVector = Filled.AddToPhotos,
                     )
                 } else {
                     BottomSheetAction(
                         action = { viewModel.removeFromWatchList() },
-                        labelRes = string.movieBottomSheet_removeFromWatchList,
+                        labelRes = R.string.movieBottomSheet_removeFromWatchList,
                         imageVector = Filled.Remove,
                     )
                 }
@@ -98,25 +115,25 @@ fun MovieBottomSheet(
                     if (movie.isWatched) {
                         BottomSheetAction(
                             action = { viewModel.onSetMovieNotWatched() },
-                            labelRes = string.movieBottomSheet_revertSeen,
+                            labelRes = R.string.movieBottomSheet_revertSeen,
                             imageVector = Filled.VisibilityOff,
                         )
                     } else {
                         BottomSheetAction(
-                            action = { viewModel.onSetMovieWatched() },
-                            labelRes = string.movieBottomSheet_seen,
+                            action = { showDialog = true },
+                            labelRes = R.string.movieBottomSheet_seen,
                             imageVector = Filled.Visibility,
                         )
                     }
                     BottomSheetAction(
                         action = { viewModel.onDelete() },
-                        labelRes = string.movieBottomSheet_delete,
+                        labelRes = R.string.movieBottomSheet_delete,
                         imageVector = Filled.Delete,
                     )
                 } else {
                     BottomSheetAction(
                         action = { viewModel.onSaveMovie(event.movie.movie) },
-                        labelRes = string.movieBottomSheet_save,
+                        labelRes = R.string.movieBottomSheet_save,
                         imageVector = Filled.SaveAlt,
                     )
                 }
@@ -126,6 +143,63 @@ fun MovieBottomSheet(
     }
     BackHandler {
         viewModel.onDismiss()
+    }
+    if (showDialog) {
+        DatePickerDialog(
+            onDismissRequest = { showDialog = false },
+            confirmButton = {
+                BBButton(
+                    modifier = Modifier.padding(end = 8.dp, bottom = 8.dp),
+                    onClick = {
+                        showDialog = false
+                        dateState.selectedDateMillis?.let {
+                            viewModel.onSetMovieWatched(it)
+                        }
+                    },
+                    text = stringResource(id = Resources.string.common_Ok)
+                )
+            },
+            dismissButton = {
+                BBOutlinedButton(
+                    modifier = Modifier.padding(end = 8.dp, bottom = 8.dp),
+                    text = stringResource(id = Resources.string.common_Cancel),
+                    onClick = { showDialog = false }
+                )
+            },
+            colors = DatePickerDefaults.colors(
+                containerColor = cardColor,
+            )
+        ) {
+            DatePicker(
+                title = {
+                        Text(
+                            modifier = Modifier.padding(16.dp),
+                            text = stringResource(id = R.string.movieBottomSheet_addWatchedDateTitle),
+                            style = dialogDescription
+                        )
+                },
+                state = dateState,
+                showModeToggle = false,
+                colors = DatePickerDefaults.colors(
+                    containerColor = cardColor,
+                    titleContentColor = lightTextColor,
+                    headlineContentColor = lightTextColor,
+                    weekdayContentColor = lightTextColor,
+                    yearContentColor = lightTextColor,
+                    currentYearContentColor = lightTextColor,
+                    selectedYearContentColor = lightTextColor,
+                    dayContentColor = lightTextColor,
+                    selectedDayContentColor = darkTextColor,
+                    todayContentColor = lightTextColor,
+                    todayDateBorderColor = progressColor,
+                    selectedDayContainerColor = progressColor,
+                    subheadContentColor = progressColor,
+                    ),
+                dateValidator = {
+                    it.isBeforeTomorrow
+                }
+            )
+        }
     }
 }
 

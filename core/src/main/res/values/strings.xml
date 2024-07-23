@@ -17,6 +17,7 @@
     <string name="movieBottomSheet_setWatchedDateSuccessful">Megtekintési dátum hozzáadva</string>
     <string name="movieBottomSheet_removeMovieFromWatchListConfirmationTitle">Film eltávolítása</string>
     <string name="movieBottomSheet_removeMovieFromWatchListConfirmationDescription">Biztosan szeretné eltávolítnai a filmet a listáról?</string>
+    <string name="movieBottomSheet_addWatchedDateTitle">Megtekintési dátum kiválasztása</string>
 
     <string name="addMovieToWatchListBottomSheet_createWatchListDialogTitle">Lista létrehozása</string>
     <string name="addMovieToWatchListBottomSheet_createWatchListDialogDescription">Kérjük, adja meg a létrehozni kívánt lista címét!</string>

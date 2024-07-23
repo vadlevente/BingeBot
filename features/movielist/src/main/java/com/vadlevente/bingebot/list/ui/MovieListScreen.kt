@@ -47,7 +47,6 @@ import com.vadlevente.bingebot.list.R
 import com.vadlevente.bingebot.list.domain.model.DisplayedGenre
 import com.vadlevente.bingebot.ui.backgroundColor
 import com.vadlevente.bingebot.ui.darkTextColor
-import com.vadlevente.bingebot.ui.infoColor
 import com.vadlevente.bingebot.ui.lightTextColor
 import com.vadlevente.bingebot.ui.listDescription
 import com.vadlevente.bingebot.ui.onBackgroundColor
@@ -116,7 +115,7 @@ fun MovieListScreenComponent(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = onNavigateToSearch,
-                containerColor = infoColor,
+                containerColor = progressColor,
                 contentColor = white,
             ) {
                 Icon(Icons.Filled.Add, "")

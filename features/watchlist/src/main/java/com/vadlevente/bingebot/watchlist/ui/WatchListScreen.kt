@@ -4,10 +4,8 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -36,7 +34,6 @@ import com.vadlevente.bingebot.core.util.yearString
 import com.vadlevente.bingebot.ui.backgroundColor
 import com.vadlevente.bingebot.ui.lightTextColor
 import com.vadlevente.bingebot.ui.listDescription
-import com.vadlevente.bingebot.ui.onBackgroundColor
 import com.vadlevente.bingebot.watchlist.WatchListViewModel
 import com.vadlevente.bingebot.watchlist.WatchListViewModel.ViewState
 import com.vadlevente.bingebot.resources.R as Res
@@ -109,27 +106,13 @@ fun WatchListScreenComponent(
                 BBOutlinedTextField(
                     modifier = Modifier
                         .padding(horizontal = 8.dp)
-                        .padding(top = 8.dp)
+                        .padding(vertical = 8.dp)
                         .fillMaxWidth(),
                     value = state.searchQuery ?: "",
                     hint = stringOf(Res.string.searchFieldHint),
                     onValueChange = onQueryChanged,
                 )
             }
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(1.dp)
-                    .padding(top = 8.dp)
-                    .background(onBackgroundColor)
-            )
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(1.dp)
-                    .background(onBackgroundColor)
-                    .padding(bottom = 4.dp)
-            )
             ProgressScreen(
                 isProgressVisible = isInProgress,
                 modifier = Modifier.fillMaxSize()

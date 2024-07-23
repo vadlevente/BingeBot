@@ -91,9 +91,7 @@ class WatchListsBottomSheetViewModel @Inject constructor(
                         createWatchListUseCase.execute(
                             CreateWatchListUseCaseParams(title)
                         )
-                            .onValue {
-                                onWatchListSelected(it)
-                            }
+                            .onStart()
                     },
                 )
             )

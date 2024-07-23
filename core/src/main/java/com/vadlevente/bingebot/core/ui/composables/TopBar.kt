@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.text.style.TextOverflow
 import com.vadlevente.bingebot.core.UIText
 import com.vadlevente.bingebot.core.asString
 import com.vadlevente.bingebot.ui.lightTextColor
@@ -29,6 +30,8 @@ fun TopBar(
             Text(
                 text = title.asString(),
                 style = pageTitle,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
             )
         },
         navigationIcon = {

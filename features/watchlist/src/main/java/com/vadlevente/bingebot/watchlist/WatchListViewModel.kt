@@ -9,6 +9,8 @@ import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastType.INFO
 import com.vadlevente.bingebot.core.model.DisplayedMovie
+import com.vadlevente.bingebot.core.model.exception.Reason.DATA_NOT_FOUND
+import com.vadlevente.bingebot.core.model.exception.isBecauseOf
 import com.vadlevente.bingebot.core.stringOf
 import com.vadlevente.bingebot.core.viewModel.BaseViewModel
 import com.vadlevente.bingebot.core.viewModel.State
@@ -42,6 +44,13 @@ class WatchListViewModel @Inject constructor(
 
     private val viewState = MutableStateFlow(ViewState())
     override val state: StateFlow<ViewState> = viewState
+    override val basicErrorHandler: (Throwable) -> Unit = {
+        if (it.isBecauseOf(DATA_NOT_FOUND)) {
+            navigateUp()
+        } else {
+            super.basicErrorHandler(it)
+        }
+    }
 
     private lateinit var watchListId: String
 
@@ -76,7 +85,6 @@ class WatchListViewModel @Inject constructor(
                             )
                         )
                             .onValue {
-                                navigateUp()
                                 showToast(
                                     message = stringOf(Res.string.successfulDeleteToast),
                                     type = INFO,

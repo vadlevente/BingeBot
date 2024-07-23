@@ -126,7 +126,7 @@ val buttonLabel = TextStyle(
     fontSize = 15.sp,
     letterSpacing = 0.6.sp,
     textAlign = TextAlign.Center,
-    color = lightTextColor,
+    color = darkTextColor,
 )
 
 val selectedChipLabel = TextStyle(

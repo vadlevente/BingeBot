@@ -127,7 +127,13 @@ private fun navigate(
         NavDestination.REGISTRATION.route,
         NavDestination.LOGIN.route,
         -> {
-            if (navController.currentBackStackEntry?.destination?.route == NavDestination.SPLASH.route) {
+            if (
+                navController.currentBackStackEntry?.destination?.route in listOf(
+                    NavDestination.SPLASH.route,
+                    NavDestination.REGISTRATION.route,
+                    NavDestination.LOGIN.route,
+                )
+            ) {
                 navController.popBackStack()
             }
             navController.navigate(route)
