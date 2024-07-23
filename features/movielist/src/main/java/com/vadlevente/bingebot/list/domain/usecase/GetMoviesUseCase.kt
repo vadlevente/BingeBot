@@ -1,6 +1,6 @@
 package com.vadlevente.bingebot.list.domain.usecase
 
-import com.vadlevente.bingebot.core.data.cache.SelectedGenresCacheDataSource
+import com.vadlevente.bingebot.core.data.cache.SelectedFiltersCacheDataSource
 import com.vadlevente.bingebot.core.data.local.datastore.PreferencesDataSource
 import com.vadlevente.bingebot.core.data.repository.MovieRepository
 import com.vadlevente.bingebot.core.model.ApiConfiguration
@@ -19,20 +19,29 @@ data class GetMoviesUseCaseParams(
 class GetMoviesUseCase @Inject constructor(
     private val movieRepository: MovieRepository,
     private val preferencesDataSource: PreferencesDataSource,
-    private val selectedGenresCacheDataSource: SelectedGenresCacheDataSource,
+    private val selectedFiltersCacheDataSource: SelectedFiltersCacheDataSource,
 ) : BaseUseCase<GetMoviesUseCaseParams, List<DisplayedMovie>>() {
 
     override fun execute(params: GetMoviesUseCaseParams): Flow<List<DisplayedMovie>> =
         combine(
             movieRepository.getMovies(),
             preferencesDataSource.apiConfiguration,
-            selectedGenresCacheDataSource.genresState,
+            selectedFiltersCacheDataSource.filtersState,
             ::Triple,
-        ).map { (movies, configuration, genres) ->
+        ).map { (movies, configuration, filters) ->
             movies
                 .filter { movie ->
-                    if (genres.isEmpty()) true
-                    else movie.genreCodes.any { genres.map { it.id }.contains(it) }
+                    if (filters.genres.isEmpty()) true
+                    else movie.genreCodes.any { filters.genres.map { it.id }.contains(it) }
+                }
+                .filter { movie ->
+                    filters.isWatched?.let { isWatched ->
+                        if (isWatched) {
+                            movie.watchedDate != null
+                        } else {
+                            movie.watchedDate == null
+                        }
+                    } ?: true
                 }
                 .filter { movie ->
                     params.query?.let { query ->

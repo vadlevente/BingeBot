@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="movieList_pageTitle">Filmek</string>
+    <string name="isWatchedFilter_trueLabel">Megnézett</string>
+    <string name="isWatchedFilter_falseLabel">Megnézésre vár</string>
 </resources>

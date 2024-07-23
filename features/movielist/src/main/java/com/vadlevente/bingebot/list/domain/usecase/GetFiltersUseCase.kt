@@ -1,32 +1,38 @@
 package com.vadlevente.bingebot.list.domain.usecase
 
-import com.vadlevente.bingebot.core.data.cache.SelectedGenresCacheDataSource
+import com.vadlevente.bingebot.core.data.cache.SelectedFiltersCacheDataSource
 import com.vadlevente.bingebot.core.data.repository.MovieRepository
 import com.vadlevente.bingebot.core.ui.BaseUseCase
+import com.vadlevente.bingebot.list.domain.model.DisplayedFilters
 import com.vadlevente.bingebot.list.domain.model.DisplayedGenre
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class GetGenresUseCase @Inject constructor(
+class GetFiltersUseCase @Inject constructor(
     private val movieRepository: MovieRepository,
-    private val selectedGenresCacheDataSource: SelectedGenresCacheDataSource,
-) : BaseUseCase<Unit, List<DisplayedGenre>>() {
+    private val selectedFiltersCacheDataSource: SelectedFiltersCacheDataSource,
+) : BaseUseCase<Unit, DisplayedFilters>() {
 
-    override fun execute(params: Unit): Flow<List<DisplayedGenre>> =
+    override fun execute(params: Unit): Flow<DisplayedFilters> =
         combine(
             movieRepository.getMovies(),
             movieRepository.getGenres(),
-            selectedGenresCacheDataSource.genresState,
+            selectedFiltersCacheDataSource.filtersState,
             ::Triple,
-        ).map { (movies, genres, selectedGenres) ->
+        ).map { (movies, genres, selectedFilters) ->
             genres.filter { genre ->
                 movies.any { it.genreCodes.contains(genre.id) }
             }.map {
                 DisplayedGenre(
                     it,
-                    selectedGenres.map { it.id }.contains(it.id),
+                    selectedFilters.genres.map { it.id }.contains(it.id),
+                )
+            }.let {
+                DisplayedFilters(
+                    it,
+                    selectedFilters.isWatched,
                 )
             }
         }

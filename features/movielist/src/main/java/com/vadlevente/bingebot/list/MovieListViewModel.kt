@@ -13,9 +13,11 @@ import com.vadlevente.bingebot.core.viewModel.BaseViewModel
 import com.vadlevente.bingebot.core.viewModel.State
 import com.vadlevente.bingebot.list.MovieListViewModel.ViewState
 import com.vadlevente.bingebot.list.domain.model.DisplayedGenre
-import com.vadlevente.bingebot.list.domain.usecase.GetGenresUseCase
+import com.vadlevente.bingebot.list.domain.usecase.GetFiltersUseCase
 import com.vadlevente.bingebot.list.domain.usecase.GetMoviesUseCase
 import com.vadlevente.bingebot.list.domain.usecase.GetMoviesUseCaseParams
+import com.vadlevente.bingebot.list.domain.usecase.SetIsWatchedFilterUseCase
+import com.vadlevente.bingebot.list.domain.usecase.SetIsWatchedFilterUseCaseParams
 import com.vadlevente.bingebot.list.domain.usecase.SetSelectedGenresUseCase
 import com.vadlevente.bingebot.list.domain.usecase.SetSelectedGenresUseCaseParams
 import com.vadlevente.bingebot.list.domain.usecase.UpdateMoviesUseCase
@@ -33,10 +35,11 @@ class MovieListViewModel @Inject constructor(
     toastEventChannel: ToastEventChannel,
     updateMoviesUseCase: UpdateMoviesUseCase,
     updateWatchListsUseCase: UpdateWatchListsUseCase,
-    getGenresUseCase: GetGenresUseCase,
+    getFiltersUseCase: GetFiltersUseCase,
     private val getMoviesUseCase: GetMoviesUseCase,
     private val bottomSheetEventChannel: BottomSheetEventChannel,
     private val setSelectedGenresUseCase: SetSelectedGenresUseCase,
+    private val setIsWatchedFilterUseCase: SetIsWatchedFilterUseCase,
 ) : BaseViewModel<ViewState>(
     navigationEventChannel, toastEventChannel
 ) {
@@ -48,12 +51,13 @@ class MovieListViewModel @Inject constructor(
         updateMoviesUseCase.execute(Unit).onStart()
         updateWatchListsUseCase.execute(Unit).onStart()
         getMovies()
-        getGenresUseCase.execute(Unit)
-            .onValue { genres ->
+        getFiltersUseCase.execute(Unit)
+            .onValue { filters ->
                 viewState.update {
                     it.copy(
-                        genres = genres,
-                        isAnyGenreSelected = genres.any { it.isSelected }
+                        genres = filters.displayedGenres,
+                        isAnyGenreSelected = filters.displayedGenres.any { it.isSelected },
+                        isWatchedSelected = filters.isWatchedSelected,
                     )
                 }
             }
@@ -71,6 +75,14 @@ class MovieListViewModel @Inject constructor(
             )
         }
         getMovies()
+    }
+
+    fun onToggleFilters() {
+        viewState.update {
+            it.copy(
+                areFiltersVisible = !it.areFiltersVisible
+            )
+        }
     }
 
     fun onQueryChanged(value: String) {
@@ -98,7 +110,7 @@ class MovieListViewModel @Inject constructor(
     fun onClearGenres() {
         setSelectedGenresUseCase.execute(
             SetSelectedGenresUseCaseParams(
-                emptyList()
+                emptyList(),
             )
         ).onStart()
     }
@@ -112,7 +124,7 @@ class MovieListViewModel @Inject constructor(
         }
         setSelectedGenresUseCase.execute(
             SetSelectedGenresUseCaseParams(
-                modifiedGenres
+                modifiedGenres,
             )
         ).onStart()
     }
@@ -123,6 +135,18 @@ class MovieListViewModel @Inject constructor(
                 ShowWatchListsBottomSheet
             )
         }
+    }
+
+    fun onToggleIsWatched(value: Boolean) {
+        setIsWatchedFilterUseCase.execute(
+            SetIsWatchedFilterUseCaseParams(value)
+        ).onStart()
+    }
+
+    fun onClearIsWatched() {
+        setIsWatchedFilterUseCase.execute(
+            SetIsWatchedFilterUseCaseParams(null)
+        ).onStart()
     }
 
     private fun getMovies() {
@@ -145,6 +169,8 @@ class MovieListViewModel @Inject constructor(
         val isSearchFieldVisible: Boolean = false,
         val searchQuery: String? = null,
         val isAnyGenreSelected: Boolean = false,
+        val isWatchedSelected: Boolean? = null,
+        val areFiltersVisible: Boolean = false,
     ) : State
 
 }

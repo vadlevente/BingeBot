@@ -29,7 +29,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.vadlevente.bingebot.core.R
 import com.vadlevente.bingebot.core.util.dateString
 import com.vadlevente.bingebot.ui.BingeBotTheme
 import com.vadlevente.bingebot.ui.cardColor
@@ -39,6 +38,7 @@ import com.vadlevente.bingebot.ui.listItemSubtitle
 import com.vadlevente.bingebot.ui.listItemTitle
 import com.vadlevente.bingebot.ui.progressColor
 import java.util.Date
+import com.vadlevente.bingebot.resources.R as Resources
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -80,8 +80,8 @@ fun ListItem(
                         modifier = Modifier
                             .alpha(if (isWatched) .5f else 1f)
                             .fillMaxWidth(),
-                        placeholder = painterResource(id = R.drawable.movie_poster_placeholder),
-                        error = painterResource(id = R.drawable.movie_poster_placeholder),
+                        placeholder = painterResource(id = Resources.drawable.ic_placeholder),
+                        error = painterResource(id = Resources.drawable.ic_placeholder),
                         contentDescription = null,
                     )
                     if (isWatched) {

@@ -16,11 +16,12 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.FilterAlt
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilterChip
-import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -35,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.vadlevente.bingebot.core.model.Genre
 import com.vadlevente.bingebot.core.stringOf
+import com.vadlevente.bingebot.core.ui.composables.BBFilterChip
 import com.vadlevente.bingebot.core.ui.composables.BBOutlinedTextField
 import com.vadlevente.bingebot.core.ui.composables.ListItem
 import com.vadlevente.bingebot.core.ui.composables.ProgressScreen
@@ -44,15 +46,11 @@ import com.vadlevente.bingebot.core.util.yearString
 import com.vadlevente.bingebot.list.MovieListViewModel
 import com.vadlevente.bingebot.list.MovieListViewModel.ViewState
 import com.vadlevente.bingebot.list.R
-import com.vadlevente.bingebot.list.domain.model.DisplayedGenre
 import com.vadlevente.bingebot.ui.backgroundColor
-import com.vadlevente.bingebot.ui.darkTextColor
 import com.vadlevente.bingebot.ui.lightTextColor
 import com.vadlevente.bingebot.ui.listDescription
 import com.vadlevente.bingebot.ui.onBackgroundColor
 import com.vadlevente.bingebot.ui.progressColor
-import com.vadlevente.bingebot.ui.selectedChipLabel
-import com.vadlevente.bingebot.ui.unselectedChipLabel
 import com.vadlevente.bingebot.ui.white
 import com.vadlevente.bingebot.resources.R as Res
 
@@ -67,25 +65,32 @@ fun MovieListScreen(
         isInProgress = isInProgress,
         onNavigateToSearch = viewModel::onNavigateToSearch,
         onToggleSearchField = viewModel::onToggleSearchField,
+        onToggleFilters = viewModel::onToggleFilters,
         onQueryChanged = viewModel::onQueryChanged,
         onNavigateToOptions = viewModel::onNavigateToOptions,
         onClearGenres = viewModel::onClearGenres,
         onToggleGenre = viewModel::onToggleGenre,
         onOpenWatchLists = viewModel::onOpenWatchLists,
+        onToggleIsWatched = viewModel::onToggleIsWatched,
+        onClearIsWatched = viewModel::onClearIsWatched,
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MovieListScreenComponent(
     state: ViewState,
     isInProgress: Boolean,
     onNavigateToSearch: () -> Unit,
     onToggleSearchField: () -> Unit,
+    onToggleFilters: () -> Unit,
     onQueryChanged: (String) -> Unit,
     onNavigateToOptions: (Int) -> Unit,
     onClearGenres: () -> Unit,
     onToggleGenre: (Genre) -> Unit,
     onOpenWatchLists: () -> Unit,
+    onToggleIsWatched: (Boolean) -> Unit,
+    onClearIsWatched: () -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -100,6 +105,22 @@ fun MovieListScreenComponent(
                             .clickable { onToggleSearchField() }
                             .padding(end = 8.dp)
                     )
+                    BadgedBox(
+                        modifier = Modifier.padding(end = 8.dp),
+                        badge = {
+                            if (state.isWatchedSelected != null || state.isAnyGenreSelected) {
+                                Badge(containerColor = progressColor)
+                            }
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.FilterAlt,
+                            contentDescription = null,
+                            tint = lightTextColor,
+                            modifier = Modifier
+                                .clickable { onToggleFilters() }
+                        )
+                    }
                     Icon(
                         imageVector = Icons.Filled.List,
                         contentDescription = null,
@@ -145,18 +166,27 @@ fun MovieListScreenComponent(
                     .padding(top = 8.dp)
                     .background(onBackgroundColor)
             )
-            GenreSelector(
-                state = state,
-                onToggleGenre = onToggleGenre,
-                onClearGenres = onClearGenres,
-            )
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(1.dp)
-                    .background(onBackgroundColor)
-                    .padding(bottom = 4.dp)
-            )
+            AnimatedVisibility(visible = state.areFiltersVisible) {
+                Column {
+                    GenreSelector(
+                        state = state,
+                        onToggleGenre = onToggleGenre,
+                        onClearGenres = onClearGenres,
+                    )
+                    IsWatchedSelector(
+                        state = state,
+                        onToggleIsWatched = onToggleIsWatched,
+                        onClearIsWatched = onClearIsWatched,
+                    )
+                    Spacer(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(1.dp)
+                            .background(onBackgroundColor)
+                            .padding(bottom = 4.dp)
+                    )
+                }
+            }
             ProgressScreen(
                 isProgressVisible = isInProgress,
                 modifier = Modifier.fillMaxSize()
@@ -205,9 +235,10 @@ private fun GenreSelector(
     ) {
         LazyRow(modifier = Modifier.weight(1f)) {
             items(state.genres) { genre ->
-                GenreChip(
-                    genre = genre,
-                    onToggleGenre = onToggleGenre,
+                BBFilterChip(
+                    title = genre.genre.name,
+                    isSelected = genre.isSelected,
+                    onClicked = { onToggleGenre(genre.genre) },
                 )
             }
         }
@@ -224,29 +255,36 @@ private fun GenreSelector(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun GenreChip(
-    genre: DisplayedGenre,
-    onToggleGenre: (Genre) -> Unit,
+private fun IsWatchedSelector(
+    state: ViewState,
+    onToggleIsWatched: (Boolean) -> Unit,
+    onClearIsWatched: () -> Unit,
 ) {
-    FilterChip(
-        modifier = Modifier.padding(horizontal = 4.dp),
-        selected = genre.isSelected,
-        onClick = { onToggleGenre(genre.genre) },
-        label = {
-            Text(
-                text = genre.genre.name,
-                style = if (genre.isSelected) selectedChipLabel else unselectedChipLabel
-            )
-        },
-        colors = FilterChipDefaults.filterChipColors(
-            selectedContainerColor = progressColor,
-            labelColor = lightTextColor,
-            selectedLabelColor = darkTextColor,
-        ),
-        border = FilterChipDefaults.filterChipBorder(
-            borderColor = onBackgroundColor,
+    Row(
+        modifier = Modifier
+            .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        BBFilterChip(
+            title = stringResource(id = R.string.isWatchedFilter_trueLabel),
+            isSelected = state.isWatchedSelected == true,
+            onClicked = { onToggleIsWatched(true) },
         )
-    )
+        BBFilterChip(
+            title = stringResource(id = R.string.isWatchedFilter_falseLabel),
+            isSelected = state.isWatchedSelected == false,
+            onClicked = { onToggleIsWatched(false) },
+        )
+        if (state.isWatchedSelected != null) {
+            Icon(
+                imageVector = Icons.Filled.Clear,
+                contentDescription = null,
+                tint = lightTextColor,
+                modifier = Modifier
+                    .clickable { onClearIsWatched() }
+                    .padding(horizontal = 8.dp)
+            )
+        }
+    }
 }

@@ -2,8 +2,8 @@ package com.vadlevente.bingebot.core.inject
 
 import com.vadlevente.bingebot.core.data.cache.MovieCacheDataSource
 import com.vadlevente.bingebot.core.data.cache.MovieCacheDataSourceImpl
-import com.vadlevente.bingebot.core.data.cache.SelectedGenresCacheDataSource
-import com.vadlevente.bingebot.core.data.cache.SelectedGenresCacheDataSourceImpl
+import com.vadlevente.bingebot.core.data.cache.SelectedFiltersCacheDataSource
+import com.vadlevente.bingebot.core.data.cache.SelectedFiltersCacheDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -16,9 +16,9 @@ abstract class CacheModule {
 
     @Binds
     @Singleton
-    abstract fun bindSelectedGenresCacheDataSource(
-        impl: SelectedGenresCacheDataSourceImpl
-    ): SelectedGenresCacheDataSource
+    abstract fun bindSelectedFiltersCacheDataSource(
+        impl: SelectedFiltersCacheDataSourceImpl
+    ): SelectedFiltersCacheDataSource
 
     @Binds
     @Singleton
