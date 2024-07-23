@@ -1,4 +1,4 @@
-package com.vadlevente.bingebot.core.ui.composables
+package com.vadlevente.bingebot.core.ui.composables.bottomsheet
 
 import androidx.activity.compose.BackHandler
 import androidx.annotation.StringRes
@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.Icons.Filled
 import androidx.compose.material.icons.filled.AddToPhotos
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Info
@@ -33,9 +33,9 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.vadlevente.bingebot.core.R
+import com.vadlevente.bingebot.core.R.string
 import com.vadlevente.bingebot.core.util.yearString
-import com.vadlevente.bingebot.core.viewModel.MovieBottomSheetViewModel
+import com.vadlevente.bingebot.core.viewModel.bottomsheet.MovieBottomSheetViewModel
 import com.vadlevente.bingebot.ui.bottomSheetAction
 import com.vadlevente.bingebot.ui.cardColor
 import com.vadlevente.bingebot.ui.lightTextColor
@@ -78,46 +78,46 @@ fun MovieBottomSheet(
             ) {
                 BottomSheetAction(
                     action = { viewModel.onShowDetails() },
-                    labelRes = R.string.movieBottomSheet_openDetails,
-                    imageVector = Icons.Filled.Info,
+                    labelRes = string.movieBottomSheet_openDetails,
+                    imageVector = Filled.Info,
                 )
                 if (event.watchListId == null) {
                     BottomSheetAction(
                         action = { viewModel.onAddToWatchList() },
-                        labelRes = R.string.movieBottomSheet_addToWatchList,
-                        imageVector = Icons.Filled.AddToPhotos,
+                        labelRes = string.movieBottomSheet_addToWatchList,
+                        imageVector = Filled.AddToPhotos,
                     )
                 } else {
                     BottomSheetAction(
                         action = { viewModel.removeFromWatchList() },
-                        labelRes = R.string.movieBottomSheet_removeFromWatchList,
-                        imageVector = Icons.Filled.Remove,
+                        labelRes = string.movieBottomSheet_removeFromWatchList,
+                        imageVector = Filled.Remove,
                     )
                 }
                 if (event.alreadySaved) {
                     if (movie.isWatched) {
                         BottomSheetAction(
                             action = { viewModel.onSetMovieNotWatched() },
-                            labelRes = R.string.movieBottomSheet_revertSeen,
-                            imageVector = Icons.Filled.VisibilityOff,
+                            labelRes = string.movieBottomSheet_revertSeen,
+                            imageVector = Filled.VisibilityOff,
                         )
                     } else {
                         BottomSheetAction(
                             action = { viewModel.onSetMovieWatched() },
-                            labelRes = R.string.movieBottomSheet_seen,
-                            imageVector = Icons.Filled.Visibility,
+                            labelRes = string.movieBottomSheet_seen,
+                            imageVector = Filled.Visibility,
                         )
                     }
                     BottomSheetAction(
                         action = { viewModel.onDelete() },
-                        labelRes = R.string.movieBottomSheet_delete,
-                        imageVector = Icons.Filled.Delete,
+                        labelRes = string.movieBottomSheet_delete,
+                        imageVector = Filled.Delete,
                     )
                 } else {
                     BottomSheetAction(
                         action = { viewModel.onSaveMovie(event.movie.movie) },
-                        labelRes = R.string.movieBottomSheet_save,
-                        imageVector = Icons.Filled.SaveAlt,
+                        labelRes = string.movieBottomSheet_save,
+                        imageVector = Filled.SaveAlt,
                     )
                 }
                 Spacer(modifier = Modifier.height(20.dp))

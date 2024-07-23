@@ -47,7 +47,6 @@ class WatchListViewModel @Inject constructor(
 
     fun onInit(watchListId: String) {
         this.watchListId = watchListId
-        getMovies()
         getWatchListUseCase.execute(
             GetWatchListUseCaseParams(
                 watchListId = watchListId
@@ -58,6 +57,7 @@ class WatchListViewModel @Inject constructor(
                     title = watchList.title,
                 )
             }
+            getMovies()
         }
     }
 

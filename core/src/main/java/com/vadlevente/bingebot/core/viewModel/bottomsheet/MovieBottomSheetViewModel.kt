@@ -1,4 +1,4 @@
-package com.vadlevente.bingebot.core.viewModel
+package com.vadlevente.bingebot.core.viewModel.bottomsheet
 
 import androidx.lifecycle.viewModelScope
 import com.vadlevente.bingebot.core.R
@@ -21,7 +21,9 @@ import com.vadlevente.bingebot.core.usecase.SaveMovieUseCase
 import com.vadlevente.bingebot.core.usecase.SaveMovieUseCaseParams
 import com.vadlevente.bingebot.core.usecase.SetMovieSeenUseCase
 import com.vadlevente.bingebot.core.usecase.SetMovieSeenUseCaseParams
-import com.vadlevente.bingebot.core.viewModel.MovieBottomSheetViewModel.ViewState
+import com.vadlevente.bingebot.core.viewModel.BaseViewModel
+import com.vadlevente.bingebot.core.viewModel.State
+import com.vadlevente.bingebot.core.viewModel.bottomsheet.MovieBottomSheetViewModel.ViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

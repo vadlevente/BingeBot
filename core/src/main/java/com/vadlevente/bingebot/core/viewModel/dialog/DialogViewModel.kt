@@ -1,11 +1,13 @@
-package com.vadlevente.bingebot.core.viewModel
+package com.vadlevente.bingebot.core.viewModel.dialog
 
 import androidx.lifecycle.viewModelScope
-import com.vadlevente.bingebot.core.events.dialog.DialogEvent.ShowTextFieldDialog
+import com.vadlevente.bingebot.core.events.dialog.DialogEvent.ShowDialog
 import com.vadlevente.bingebot.core.events.dialog.DialogEventChannel
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
-import com.vadlevente.bingebot.core.viewModel.TextFieldDialogViewModel.ViewState
+import com.vadlevente.bingebot.core.viewModel.BaseViewModel
+import com.vadlevente.bingebot.core.viewModel.State
+import com.vadlevente.bingebot.core.viewModel.dialog.DialogViewModel.ViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,7 +18,7 @@ import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
-class TextFieldDialogViewModel @Inject constructor(
+class DialogViewModel @Inject constructor(
     navigationEventChannel: NavigationEventChannel,
     toastEventChannel: ToastEventChannel,
     dialogEventChannel: DialogEventChannel,
@@ -28,7 +30,7 @@ class TextFieldDialogViewModel @Inject constructor(
     override val state: StateFlow<ViewState> = viewState
 
     init {
-        dialogEventChannel.events.filterIsInstance<ShowTextFieldDialog>().onEach { event ->
+        dialogEventChannel.events.filterIsInstance<ShowDialog>().onEach { event ->
             viewState.update {
                 it.copy(
                     isVisible = true,
@@ -48,27 +50,21 @@ class TextFieldDialogViewModel @Inject constructor(
 
     fun onPositiveClicked() {
         viewState.value.event?.let {
-            it.onPositiveButtonClicked(viewState.value.text)
+            it.onPositiveButtonClicked()
         }
         onDismiss()
     }
 
     fun onNegativeClicked() {
-        onDismiss()
-    }
-
-    fun onTextChanged(value: String) {
-        viewState.update {
-            it.copy(
-                text = value,
-            )
+        viewState.value.event?.let {
+            it.onNegativeButtonClicked()
         }
+        onDismiss()
     }
 
     data class ViewState(
         val isVisible: Boolean = false,
-        val event: ShowTextFieldDialog? = null,
-        val text: String = "",
+        val event: ShowDialog? = null,
     ) : State
 
 }

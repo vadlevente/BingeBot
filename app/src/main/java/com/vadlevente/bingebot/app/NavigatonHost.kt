@@ -20,12 +20,12 @@ import com.vadlevente.bingebot.core.events.navigation.NavigationEvent.NavigateTo
 import com.vadlevente.bingebot.core.events.navigation.NavigationEvent.NavigateUp
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.model.NavDestination
-import com.vadlevente.bingebot.core.ui.composables.AddMovieToWatchListBottomSheet
-import com.vadlevente.bingebot.core.ui.composables.BBDialog
-import com.vadlevente.bingebot.core.ui.composables.BBTextFieldDialog
-import com.vadlevente.bingebot.core.ui.composables.MovieBottomSheet
 import com.vadlevente.bingebot.core.ui.composables.Toast
-import com.vadlevente.bingebot.core.ui.composables.WatchListsBottomSheet
+import com.vadlevente.bingebot.core.ui.composables.bottomsheet.AddMovieToWatchListBottomSheet
+import com.vadlevente.bingebot.core.ui.composables.bottomsheet.MovieBottomSheet
+import com.vadlevente.bingebot.core.ui.composables.bottomsheet.WatchListsBottomSheet
+import com.vadlevente.bingebot.core.ui.composables.dialog.BBDialog
+import com.vadlevente.bingebot.core.ui.composables.dialog.BBTextFieldDialog
 import com.vadlevente.bingebot.list.ui.MovieListScreen
 import com.vadlevente.bingebot.search.ui.SearchMovieScreen
 import com.vadlevente.bingebot.splash.ui.SplashScreen

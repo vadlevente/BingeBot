@@ -1,4 +1,4 @@
-package com.vadlevente.bingebot.core.ui.composables
+package com.vadlevente.bingebot.core.ui.composables.bottomsheet
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row

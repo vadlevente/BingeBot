@@ -1,33 +1,27 @@
-package com.vadlevente.bingebot.core.viewModel
+package com.vadlevente.bingebot.core.viewModel.bottomsheet
 
 import androidx.lifecycle.viewModelScope
-import com.vadlevente.bingebot.core.R
 import com.vadlevente.bingebot.core.R.string
-import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEvent.ShowAddMovieToWatchListBottomSheet
+import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEvent.ShowWatchListsBottomSheet
 import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEventChannel
 import com.vadlevente.bingebot.core.events.dialog.DialogEvent.ShowTextFieldDialog
 import com.vadlevente.bingebot.core.events.dialog.DialogEventChannel
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
-import com.vadlevente.bingebot.core.events.toast.ToastType.INFO
+import com.vadlevente.bingebot.core.model.NavDestination.WATCH_LIST
 import com.vadlevente.bingebot.core.model.WatchList
 import com.vadlevente.bingebot.core.stringOf
-import com.vadlevente.bingebot.core.usecase.AddMovieToWatchListUseCase
-import com.vadlevente.bingebot.core.usecase.AddMovieToWatchListUseCaseParams
 import com.vadlevente.bingebot.core.usecase.CreateWatchListUseCase
 import com.vadlevente.bingebot.core.usecase.CreateWatchListUseCaseParams
 import com.vadlevente.bingebot.core.usecase.GetWatchListsUseCase
 import com.vadlevente.bingebot.core.usecase.GetWatchListsUseCaseParams
-import com.vadlevente.bingebot.core.usecase.SaveMovieUseCase
-import com.vadlevente.bingebot.core.usecase.SaveMovieUseCaseParams
-import com.vadlevente.bingebot.core.viewModel.AddMovieToWatchListBottomSheetViewModel.ViewState
+import com.vadlevente.bingebot.core.viewModel.BaseViewModel
+import com.vadlevente.bingebot.core.viewModel.State
+import com.vadlevente.bingebot.core.viewModel.bottomsheet.WatchListsBottomSheetViewModel.ViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filterIsInstance
-import kotlinx.coroutines.flow.flatMapConcat
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
@@ -36,15 +30,13 @@ import javax.inject.Inject
 import com.vadlevente.bingebot.resources.R as Res
 
 @HiltViewModel
-class AddMovieToWatchListBottomSheetViewModel @Inject constructor(
+class WatchListsBottomSheetViewModel @Inject constructor(
     navigationEventChannel: NavigationEventChannel,
     toastEventChannel: ToastEventChannel,
     bottomSheetEventChannel: BottomSheetEventChannel,
     getWatchListsUseCase: GetWatchListsUseCase,
     private val dialogEventChannel: DialogEventChannel,
     private val createWatchListUseCase: CreateWatchListUseCase,
-    private val addMovieToWatchListUseCase: AddMovieToWatchListUseCase,
-    private val saveMovieUseCase: SaveMovieUseCase,
 ) : BaseViewModel<ViewState>(
     navigationEventChannel, toastEventChannel
 ) {
@@ -53,16 +45,15 @@ class AddMovieToWatchListBottomSheetViewModel @Inject constructor(
     override val state: StateFlow<ViewState> = viewState
 
     init {
-        bottomSheetEventChannel.events.filterIsInstance<ShowAddMovieToWatchListBottomSheet>()
-            .onEach { event ->
+        bottomSheetEventChannel.events.filterIsInstance<ShowWatchListsBottomSheet>()
+            .onEach {
                 viewState.update {
                     it.copy(
                         isVisible = true,
-                        event = event,
                     )
                 }
                 getWatchListsUseCase.execute(
-                    GetWatchListsUseCaseParams(event.movie.movie.id)
+                    GetWatchListsUseCaseParams()
                 )
                     .onValue { watchLists ->
                         viewState.update {
@@ -83,27 +74,9 @@ class AddMovieToWatchListBottomSheetViewModel @Inject constructor(
         }
     }
 
-    @OptIn(FlowPreview::class)
-    fun onAddToWatchList(watchListId: String) {
-        viewState.value.event?.let { event ->
-            val startFlow = if (event.alreadySaved) {
-                flowOf(Unit)
-            } else saveMovieUseCase.execute(SaveMovieUseCaseParams(event.movie.movie))
-            startFlow.flatMapConcat {
-                addMovieToWatchListUseCase.execute(
-                    AddMovieToWatchListUseCaseParams(
-                        event.movie.movie.id, watchListId,
-                    )
-                )
-            }
-                .onValue {
-                    onDismiss()
-                    showToast(
-                        message = stringOf(R.string.addMovieToWatchListBottomSheet_movieAddedToWatchList),
-                        type = INFO,
-                    )
-                }
-        }
+    fun onWatchListSelected(watchListId: String) {
+        navigateTo(WATCH_LIST, watchListId)
+        onDismiss()
     }
 
     fun onCreateWatchList() {
@@ -119,7 +92,7 @@ class AddMovieToWatchListBottomSheetViewModel @Inject constructor(
                             CreateWatchListUseCaseParams(title)
                         )
                             .onValue {
-                                onAddToWatchList(it)
+                                onWatchListSelected(it)
                             }
                     },
                 )
@@ -129,7 +102,6 @@ class AddMovieToWatchListBottomSheetViewModel @Inject constructor(
 
     data class ViewState(
         val isVisible: Boolean = false,
-        val event: ShowAddMovieToWatchListBottomSheet? = null,
         val watchLists: List<WatchList> = emptyList(),
     ) : State
 

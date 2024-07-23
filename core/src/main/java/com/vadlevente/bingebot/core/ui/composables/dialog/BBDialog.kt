@@ -1,4 +1,4 @@
-package com.vadlevente.bingebot.core.ui.composables
+package com.vadlevente.bingebot.core.ui.composables.dialog
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -18,14 +18,16 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.vadlevente.bingebot.core.asString
-import com.vadlevente.bingebot.core.viewModel.TextFieldDialogViewModel
+import com.vadlevente.bingebot.core.ui.composables.BBButton
+import com.vadlevente.bingebot.core.ui.composables.BBOutlinedButton
+import com.vadlevente.bingebot.core.viewModel.dialog.DialogViewModel
 import com.vadlevente.bingebot.ui.cardColor
 import com.vadlevente.bingebot.ui.dialogDescription
 import com.vadlevente.bingebot.ui.dialogTitle
 
 @Composable
-fun BBTextFieldDialog(
-    viewModel: TextFieldDialogViewModel = hiltViewModel(),
+fun BBDialog(
+    viewModel: DialogViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsState()
     val event = state.event ?: return
@@ -58,14 +60,6 @@ fun BBTextFieldDialog(
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
             }
-            BBOutlinedTextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 8.dp),
-                value = state.text,
-                onValueChange = viewModel::onTextChanged,
-                maxLines = 1,
-            )
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
