@@ -5,7 +5,8 @@ import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEvent.ShowItem
 import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEventChannel
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
-import com.vadlevente.bingebot.core.model.DisplayedMovie
+import com.vadlevente.bingebot.core.model.DisplayedItem
+import com.vadlevente.bingebot.core.model.Movie
 import com.vadlevente.bingebot.core.util.Constants.QUERY_MINIMUM_LENGTH
 import com.vadlevente.bingebot.core.viewModel.BaseViewModel
 import com.vadlevente.bingebot.core.viewModel.State
@@ -76,7 +77,7 @@ class SearchMovieViewModel @Inject constructor(
 
     data class ViewState(
         val query: String = "",
-        val movies: List<DisplayedMovie> = emptyList(),
+        val movies: List<DisplayedItem<Movie>> = emptyList(),
     ) : State
 
 }

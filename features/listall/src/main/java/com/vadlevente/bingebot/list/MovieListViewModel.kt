@@ -6,7 +6,6 @@ import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEvent.ShowWatc
 import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEventChannel
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
-import com.vadlevente.bingebot.core.model.DisplayedMovie
 import com.vadlevente.bingebot.core.model.Movie
 import com.vadlevente.bingebot.core.model.NavDestination.SEARCH_MOVIE
 import com.vadlevente.bingebot.list.domain.usecase.ItemListUseCases
@@ -30,7 +29,6 @@ class MovieListViewModel @Inject constructor(
 
     override fun onNavigateToOptions(itemId: Int) {
         baseViewState.value.items
-            .filterIsInstance(DisplayedMovie::class.java)
             .firstOrNull { it.item.id == itemId }
             ?.let {
                 viewModelScope.launch {

@@ -42,7 +42,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.vadlevente.bingebot.bottomsheet.R
 import com.vadlevente.bingebot.bottomsheet.viewmodel.movie.MovieBottomSheetViewModel
-import com.vadlevente.bingebot.core.model.DisplayedMovie
 import com.vadlevente.bingebot.core.ui.composables.BBButton
 import com.vadlevente.bingebot.core.ui.composables.BBOutlinedButton
 import com.vadlevente.bingebot.core.util.isBeforeTomorrow
@@ -65,7 +64,7 @@ fun MovieBottomSheet(
     val modalBottomSheetState = rememberModalBottomSheetState()
     val state by viewModel.state.collectAsState()
     val event = state.event ?: return
-    val displayedMovie = event.item as DisplayedMovie
+    val displayedMovie = event.item
     val movie = displayedMovie.item
     if (!state.isVisible) return
     val dateState = rememberDatePickerState(initialSelectedDateMillis = Date().time)

@@ -9,9 +9,9 @@ import com.vadlevente.bingebot.core.viewModel.BaseViewModel
 import com.vadlevente.bingebot.core.viewModel.State
 import com.vadlevente.bingebot.list.ListViewModelBase.ViewState
 import com.vadlevente.bingebot.list.domain.model.DisplayedGenre
-import com.vadlevente.bingebot.list.domain.usecase.GetItemsUseCaseParams
 import com.vadlevente.bingebot.list.domain.usecase.ItemListUseCases
 import com.vadlevente.bingebot.list.domain.usecase.SetIsWatchedFilterUseCaseParams
+import com.vadlevente.bingebot.list.domain.usecase.SetQueryFilterUseCaseParams
 import com.vadlevente.bingebot.list.domain.usecase.SetSelectedGenresUseCaseParams
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -39,6 +39,7 @@ abstract class ListViewModelBase <T: Item> (
                         genres = filters.displayedGenres,
                         isAnyGenreSelected = filters.displayedGenres.any { it.isSelected },
                         isWatchedSelected = filters.isWatchedSelected,
+                        searchQuery = filters.searchQuery,
                     )
                 }
             }
@@ -49,13 +50,12 @@ abstract class ListViewModelBase <T: Item> (
     abstract fun onOpenWatchLists()
 
     fun onToggleSearchField() {
+        onQueryChanged(if (baseViewState.value.isSearchFieldVisible) null else "")
         baseViewState.update {
             it.copy(
                 isSearchFieldVisible = !it.isSearchFieldVisible,
-                searchQuery = if (it.isSearchFieldVisible) null else "",
             )
         }
-        getItems()
     }
 
     fun onToggleFilters() {
@@ -66,13 +66,10 @@ abstract class ListViewModelBase <T: Item> (
         }
     }
 
-    fun onQueryChanged(value: String) {
-        baseViewState.update {
-            it.copy(
-                searchQuery = value,
-            )
-        }
-        getItems()
+    fun onQueryChanged(value: String?) {
+        useCases.setQueryFilterUseCase.execute(
+            SetQueryFilterUseCaseParams(value)
+        ).onStart()
     }
 
     fun onClearGenres() {
@@ -110,11 +107,7 @@ abstract class ListViewModelBase <T: Item> (
     }
 
     private fun getItems() {
-        useCases.getItemsUseCase.execute(
-            GetItemsUseCaseParams(
-                query = baseViewState.value.searchQuery,
-            )
-        ).onValue { items ->
+        useCases.getItemsUseCase.execute(Unit).onValue { items ->
             baseViewState.update {
                 it.copy(
                     items = items

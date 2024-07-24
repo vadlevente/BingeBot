@@ -16,6 +16,9 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.vadlevente.bingebot.authentication.ui.login.LoginScreen
 import com.vadlevente.bingebot.authentication.ui.registration.RegistrationScreen
+import com.vadlevente.bingebot.bottomsheet.ui.AddMovieToWatchListBottomSheet
+import com.vadlevente.bingebot.bottomsheet.ui.MovieBottomSheet
+import com.vadlevente.bingebot.bottomsheet.ui.WatchListsBottomSheet
 import com.vadlevente.bingebot.core.events.navigation.NavigationEvent.NavigateTo
 import com.vadlevente.bingebot.core.events.navigation.NavigationEvent.NavigateUp
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
@@ -153,5 +156,8 @@ private fun UIComponents(scope: BoxScope) {
         )
         BBDialog()
         BBTextFieldDialog()
+        MovieBottomSheet()
+        AddMovieToWatchListBottomSheet()
+        WatchListsBottomSheet()
     }
 }

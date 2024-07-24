@@ -46,6 +46,7 @@ abstract class ItemBottomSheetViewModel <T: Item> (
         viewState.update {
             it.copy(
                 isVisible = false,
+                event = null,
             )
         }
     }

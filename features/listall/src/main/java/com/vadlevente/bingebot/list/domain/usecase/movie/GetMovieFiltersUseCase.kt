@@ -33,6 +33,7 @@ class GetMovieFiltersUseCase @Inject constructor(
                 DisplayedFilters(
                     it,
                     selectedFilters.isWatched,
+                    selectedFilters.query,
                 )
             }
         }

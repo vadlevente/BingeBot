@@ -3,7 +3,7 @@ package com.vadlevente.bingebot.watchlist.domain.usecase
 import com.vadlevente.bingebot.core.data.local.datastore.PreferencesDataSource
 import com.vadlevente.bingebot.core.data.repository.MovieRepository
 import com.vadlevente.bingebot.core.model.ApiConfiguration
-import com.vadlevente.bingebot.core.model.DisplayedMovie
+import com.vadlevente.bingebot.core.model.DisplayedItem
 import com.vadlevente.bingebot.core.model.Movie
 import com.vadlevente.bingebot.core.ui.BaseUseCase
 import kotlinx.coroutines.flow.Flow
@@ -19,9 +19,9 @@ data class GetWatchListMoviesUseCaseParams(
 class GetWatchListMoviesUseCase @Inject constructor(
     private val movieRepository: MovieRepository,
     private val preferencesDataSource: PreferencesDataSource,
-) : BaseUseCase<GetWatchListMoviesUseCaseParams, List<DisplayedMovie>> {
+) : BaseUseCase<GetWatchListMoviesUseCaseParams, List<DisplayedItem<Movie>>> {
 
-    override fun execute(params: GetWatchListMoviesUseCaseParams): Flow<List<DisplayedMovie>> =
+    override fun execute(params: GetWatchListMoviesUseCaseParams): Flow<List<DisplayedItem<Movie>>> =
         combine(
             movieRepository.getWatchListMovies(params.watchListId),
             preferencesDataSource.apiConfiguration,
@@ -36,7 +36,7 @@ class GetWatchListMoviesUseCase @Inject constructor(
                     } ?: true
                 }
                 .map { movie ->
-                    DisplayedMovie(
+                    DisplayedItem(
                         item = movie,
                         thumbnailUrl = getThumbnailUrl(configuration, movie),
                     )

@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Clear
@@ -32,6 +33,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.vadlevente.bingebot.core.model.Genre
@@ -158,6 +160,9 @@ fun MovieListScreenComponent(
                     value = state.searchQuery ?: "",
                     hint = stringOf(Res.string.searchFieldHint),
                     onValueChange = onQueryChanged,
+                    keyboardOptions = KeyboardOptions(
+                        imeAction = ImeAction.Done,
+                    )
                 )
             }
             Spacer(
@@ -204,7 +209,7 @@ fun MovieListScreenComponent(
                 } else {
                     LazyColumn {
                         items(state.items) { displayedMovie ->
-                            val movie = displayedMovie.item as Movie
+                            val movie = displayedMovie.item
                             ListItem(
                                 title = movie.title,
                                 iconPath = displayedMovie.thumbnailUrl,

@@ -7,6 +7,7 @@ data class ItemListUseCases <T: Item> (
     val getFiltersUseCase: GetFiltersUseCase,
     val setIsWatchedFilterUseCase: SetIsWatchedFilterUseCase,
     val setSelectedGenresUseCase: SetSelectedGenresUseCase,
+    val setQueryFilterUseCase: SetQueryFilterUseCase,
     val updateItemsUseCase: UpdateItemsUseCase,
     val updateWatchListsUseCase: UpdateWatchListsUseCase,
 )

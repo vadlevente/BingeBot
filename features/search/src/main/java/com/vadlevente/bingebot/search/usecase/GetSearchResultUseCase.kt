@@ -3,7 +3,7 @@ package com.vadlevente.bingebot.search.usecase
 import com.vadlevente.bingebot.core.data.local.datastore.PreferencesDataSource
 import com.vadlevente.bingebot.core.data.repository.MovieRepository
 import com.vadlevente.bingebot.core.model.ApiConfiguration
-import com.vadlevente.bingebot.core.model.DisplayedMovie
+import com.vadlevente.bingebot.core.model.DisplayedItem
 import com.vadlevente.bingebot.core.model.Movie
 import com.vadlevente.bingebot.core.ui.BaseUseCase
 import kotlinx.coroutines.flow.combine
@@ -13,7 +13,7 @@ import javax.inject.Inject
 class GetSearchResultUseCase @Inject constructor(
     private val movieRepository: MovieRepository,
     private val preferencesDataSource: PreferencesDataSource,
-) : BaseUseCase<Unit, List<DisplayedMovie>> {
+) : BaseUseCase<Unit, List<DisplayedItem<Movie>>> {
 
     override fun execute(params: Unit) =
         combine(
@@ -22,7 +22,7 @@ class GetSearchResultUseCase @Inject constructor(
             ::Pair,
         ).map { (movies, configuration) ->
             movies.map { movie ->
-                DisplayedMovie(
+                DisplayedItem(
                     item = movie,
                     thumbnailUrl = getThumbnailUrl(configuration, movie),
                 )

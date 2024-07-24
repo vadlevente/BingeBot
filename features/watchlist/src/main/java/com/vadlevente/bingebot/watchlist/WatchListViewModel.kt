@@ -8,7 +8,8 @@ import com.vadlevente.bingebot.core.events.dialog.DialogEventChannel
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastType.INFO
-import com.vadlevente.bingebot.core.model.DisplayedMovie
+import com.vadlevente.bingebot.core.model.DisplayedItem
+import com.vadlevente.bingebot.core.model.Movie
 import com.vadlevente.bingebot.core.model.NavDestination.SEARCH_MOVIE
 import com.vadlevente.bingebot.core.model.exception.Reason.DATA_NOT_FOUND
 import com.vadlevente.bingebot.core.model.exception.isBecauseOf
@@ -155,7 +156,7 @@ class WatchListViewModel @Inject constructor(
 
     data class ViewState(
         val title: String? = null,
-        val movies: List<DisplayedMovie> = emptyList(),
+        val movies: List<DisplayedItem<Movie>> = emptyList(),
         val isSearchFieldVisible: Boolean = false,
         val searchQuery: String? = null,
     ) : State

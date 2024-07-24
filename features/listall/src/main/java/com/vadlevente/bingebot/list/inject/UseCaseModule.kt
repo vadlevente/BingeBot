@@ -5,6 +5,7 @@ import com.vadlevente.bingebot.list.domain.usecase.ItemListUseCases
 import com.vadlevente.bingebot.list.domain.usecase.movie.GetMovieFiltersUseCase
 import com.vadlevente.bingebot.list.domain.usecase.movie.GetMoviesUseCase
 import com.vadlevente.bingebot.list.domain.usecase.movie.SetIsWatchedMovieFilterUseCase
+import com.vadlevente.bingebot.list.domain.usecase.movie.SetQueryMovieFilterUseCase
 import com.vadlevente.bingebot.list.domain.usecase.movie.SetSelectedMovieGenresUseCase
 import com.vadlevente.bingebot.list.domain.usecase.movie.UpdateMovieWatchListsUseCase
 import com.vadlevente.bingebot.list.domain.usecase.movie.UpdateMoviesUseCase
@@ -18,15 +19,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object UseCaseModule {
 
-//    @Singleton
-//    @Provides
-//    fun provideGetItemsUseCase(
-//        movieRepository: MovieRepository,
-//        preferencesDataSource: PreferencesDataSource,
-//        selectedFiltersCacheDataSource: SelectedFiltersCacheDataSource,
-//    ): GetItemsUseCase<Movie> = GetMoviesUseCase(
-//        movieRepository, preferencesDataSource, selectedFiltersCacheDataSource
-//    )
 
     @Singleton
     @Provides
@@ -35,6 +27,7 @@ object UseCaseModule {
         getFiltersUseCase: GetMovieFiltersUseCase,
         setIsWatchedFilterUseCase: SetIsWatchedMovieFilterUseCase,
         setSelectedGenresUseCase: SetSelectedMovieGenresUseCase,
+        setQueryFilterUseCase: SetQueryMovieFilterUseCase,
         updateItemsUseCase: UpdateMoviesUseCase,
         updateWatchListsUseCase: UpdateMovieWatchListsUseCase,
     ): ItemListUseCases<Movie> = ItemListUseCases(
@@ -42,6 +35,7 @@ object UseCaseModule {
         getFiltersUseCase,
         setIsWatchedFilterUseCase,
         setSelectedGenresUseCase,
+        setQueryFilterUseCase,
         updateItemsUseCase,
         updateWatchListsUseCase,
     )

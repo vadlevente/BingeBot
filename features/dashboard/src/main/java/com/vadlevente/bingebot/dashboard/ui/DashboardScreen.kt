@@ -28,9 +28,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.vadlevente.bingebot.bottomsheet.ui.AddMovieToWatchListBottomSheet
-import com.vadlevente.bingebot.bottomsheet.ui.MovieBottomSheet
-import com.vadlevente.bingebot.bottomsheet.ui.WatchListsBottomSheet
 import com.vadlevente.bingebot.core.model.NavDestination
 import com.vadlevente.bingebot.dashboard.R
 import com.vadlevente.bingebot.list.ui.MovieListScreen
@@ -66,9 +63,6 @@ fun DashboardScreen(
             }
         }
     }
-    MovieBottomSheet()
-    AddMovieToWatchListBottomSheet()
-    WatchListsBottomSheet()
 }
 
 @Composable

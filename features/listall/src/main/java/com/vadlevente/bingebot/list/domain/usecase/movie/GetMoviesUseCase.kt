@@ -4,10 +4,9 @@ import com.vadlevente.bingebot.core.data.cache.SelectedFiltersCacheDataSource
 import com.vadlevente.bingebot.core.data.local.datastore.PreferencesDataSource
 import com.vadlevente.bingebot.core.data.repository.MovieRepository
 import com.vadlevente.bingebot.core.model.ApiConfiguration
-import com.vadlevente.bingebot.core.model.DisplayedMovie
+import com.vadlevente.bingebot.core.model.DisplayedItem
 import com.vadlevente.bingebot.core.model.Movie
 import com.vadlevente.bingebot.list.domain.usecase.GetItemsUseCase
-import com.vadlevente.bingebot.list.domain.usecase.GetItemsUseCaseParams
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
@@ -19,7 +18,7 @@ class GetMoviesUseCase @Inject constructor(
     private val selectedFiltersCacheDataSource: SelectedFiltersCacheDataSource,
 ) : GetItemsUseCase<Movie> {
 
-    override fun execute(params: GetItemsUseCaseParams): Flow<List<DisplayedMovie>> =
+    override fun execute(params: Unit): Flow<List<DisplayedItem<Movie>>> =
         combine(
             movieRepository.getMovies(),
             preferencesDataSource.apiConfiguration,
@@ -41,14 +40,14 @@ class GetMoviesUseCase @Inject constructor(
                     } ?: true
                 }
                 .filter { movie ->
-                    params.query?.let { query ->
+                    filters.query?.let { query ->
                         if (query.isEmpty()) return@let false
                         movie.title.lowercase().contains(query.lowercase()) ||
                             movie.originalTitle.lowercase().contains(query.lowercase())
                     } ?: true
                 }
                 .map { movie ->
-                    DisplayedMovie(
+                    DisplayedItem(
                         item = movie,
                         thumbnailUrl = getThumbnailUrl(configuration, movie),
                     )

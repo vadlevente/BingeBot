@@ -10,7 +10,6 @@ import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEventChannel
 import com.vadlevente.bingebot.core.events.dialog.DialogEventChannel
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
-import com.vadlevente.bingebot.core.model.DisplayedMovie
 import com.vadlevente.bingebot.core.model.Movie
 import com.vadlevente.bingebot.core.model.NavDestination.MOVIE_DETAILS
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -53,7 +52,7 @@ class MovieBottomSheetViewModel @Inject constructor(
 
     override fun onAddToWatchList() {
         viewState.value.event?.let { event ->
-            val displayedMovie = event.item as DisplayedMovie
+            val displayedMovie = event.item
             viewModelScope.launch {
                 bottomSheetEventChannel.sendEvent(
                     ShowAddItemToWatchListBottomSheet(

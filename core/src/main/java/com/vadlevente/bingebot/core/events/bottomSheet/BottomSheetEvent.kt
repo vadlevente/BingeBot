@@ -1,7 +1,6 @@
 package com.vadlevente.bingebot.core.events.bottomSheet
 
 import com.vadlevente.bingebot.core.model.DisplayedItem
-import com.vadlevente.bingebot.core.model.DisplayedMovie
 import com.vadlevente.bingebot.core.model.Item
 import com.vadlevente.bingebot.core.model.Movie
 
@@ -12,7 +11,7 @@ sealed interface BottomSheetEvent {
         val alreadySaved: Boolean
         val watchListId: String?
         data class ShowMovieBottomSheet(
-            override val item: DisplayedMovie,
+            override val item: DisplayedItem<Movie>,
             override val alreadySaved: Boolean,
             override val watchListId: String? = null,
         ) : ShowItemBottomSheet<Movie>
@@ -20,7 +19,7 @@ sealed interface BottomSheetEvent {
     }
 
     data class ShowAddItemToWatchListBottomSheet(
-        val movie: DisplayedMovie,
+        val movie: DisplayedItem<Movie>,
         val alreadySaved: Boolean,
     ) : BottomSheetEvent
 

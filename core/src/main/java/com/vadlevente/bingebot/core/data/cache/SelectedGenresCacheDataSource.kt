@@ -12,6 +12,7 @@ interface SelectedFiltersCacheDataSource {
     val filtersState: StateFlow<SelectedFilters>
     fun updateGenres(genres: List<Genre>)
     fun updateIsWatched(value: Boolean?)
+    fun updateQuery(value: String?)
 }
 class SelectedFiltersCacheDataSourceImpl @Inject constructor() : SelectedFiltersCacheDataSource {
     private var _filtersState = MutableStateFlow(SelectedFilters())
@@ -29,6 +30,14 @@ class SelectedFiltersCacheDataSourceImpl @Inject constructor() : SelectedFilters
         _filtersState.update {
             it.copy(
                 isWatched = value,
+            )
+        }
+    }
+
+    override fun updateQuery(value: String?) {
+        _filtersState.update {
+            it.copy(
+                query = value,
             )
         }
     }

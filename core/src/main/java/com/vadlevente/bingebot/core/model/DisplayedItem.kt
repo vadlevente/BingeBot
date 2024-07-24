@@ -2,10 +2,10 @@ package com.vadlevente.bingebot.core.model
 
 import java.util.Date
 
-interface DisplayedItem<T: Item> {
-    val item: T
-    val thumbnailUrl: String?
-}
+data class DisplayedItem<T: Item>(
+    val item: T,
+    val thumbnailUrl: String?,
+)
 
 interface Item {
     val id: Int
