@@ -11,7 +11,7 @@ data class DeleteWatchListUseCaseParams(
 
 class DeleteWatchListUseCase @Inject constructor(
     private val movieRepository: MovieRepository,
-) : BaseUseCase<DeleteWatchListUseCaseParams, Unit>() {
+) : BaseUseCase<DeleteWatchListUseCaseParams, Unit> {
 
     override fun execute(params: DeleteWatchListUseCaseParams): Flow<Unit> = emptyFlow {
         movieRepository.deleteWatchList(params.watchListId)

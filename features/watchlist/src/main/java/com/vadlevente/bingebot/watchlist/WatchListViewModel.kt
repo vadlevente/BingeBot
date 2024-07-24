@@ -1,7 +1,7 @@
 package com.vadlevente.bingebot.watchlist
 
 import androidx.lifecycle.viewModelScope
-import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEvent.ShowMovieBottomSheet
+import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEvent.ShowItemBottomSheet.ShowMovieBottomSheet
 import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEventChannel
 import com.vadlevente.bingebot.core.events.dialog.DialogEvent.ShowDialog
 import com.vadlevente.bingebot.core.events.dialog.DialogEventChannel
@@ -121,11 +121,11 @@ class WatchListViewModel @Inject constructor(
     }
 
     fun onNavigateToOptions(movieId: Int) {
-        viewState.value.movies.firstOrNull { it.movie.id == movieId }?.let {
+        viewState.value.movies.firstOrNull { it.item.id == movieId }?.let {
             viewModelScope.launch {
                 bottomSheetEventChannel.sendEvent(
                     ShowMovieBottomSheet(
-                        movie = it,
+                        item = it,
                         alreadySaved = true,
                         watchListId = watchListId,
                     )

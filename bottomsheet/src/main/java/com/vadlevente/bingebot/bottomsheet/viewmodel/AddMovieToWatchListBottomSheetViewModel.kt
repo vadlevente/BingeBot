@@ -2,16 +2,16 @@ package com.vadlevente.bingebot.bottomsheet.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import com.vadlevente.bingebot.bottomsheet.R
-import com.vadlevente.bingebot.bottomsheet.domain.usecases.AddMovieToWatchListUseCase
-import com.vadlevente.bingebot.bottomsheet.domain.usecases.AddMovieToWatchListUseCaseParams
-import com.vadlevente.bingebot.bottomsheet.domain.usecases.CreateWatchListUseCase
+import com.vadlevente.bingebot.bottomsheet.domain.usecases.AddItemToWatchListUseCaseParams
 import com.vadlevente.bingebot.bottomsheet.domain.usecases.CreateWatchListUseCaseParams
-import com.vadlevente.bingebot.bottomsheet.domain.usecases.GetWatchListsUseCase
 import com.vadlevente.bingebot.bottomsheet.domain.usecases.GetWatchListsUseCaseParams
-import com.vadlevente.bingebot.bottomsheet.domain.usecases.SaveMovieUseCase
-import com.vadlevente.bingebot.bottomsheet.domain.usecases.SaveMovieUseCaseParams
+import com.vadlevente.bingebot.bottomsheet.domain.usecases.SaveItemUseCaseParams
+import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.AddMovieToWatchListUseCase
+import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.CreateMovieWatchListUseCase
+import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.GetMovieWatchListsUseCase
+import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.SaveMovieUseCase
 import com.vadlevente.bingebot.bottomsheet.viewmodel.AddMovieToWatchListBottomSheetViewModel.ViewState
-import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEvent.ShowAddMovieToWatchListBottomSheet
+import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEvent.ShowAddItemToWatchListBottomSheet
 import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEventChannel
 import com.vadlevente.bingebot.core.events.dialog.DialogEvent.ShowTextFieldDialog
 import com.vadlevente.bingebot.core.events.dialog.DialogEventChannel
@@ -41,9 +41,9 @@ class AddMovieToWatchListBottomSheetViewModel @Inject constructor(
     navigationEventChannel: NavigationEventChannel,
     toastEventChannel: ToastEventChannel,
     bottomSheetEventChannel: BottomSheetEventChannel,
-    getWatchListsUseCase: GetWatchListsUseCase,
+    getWatchListsUseCase: GetMovieWatchListsUseCase,
     private val dialogEventChannel: DialogEventChannel,
-    private val createWatchListUseCase: CreateWatchListUseCase,
+    private val createWatchListUseCase: CreateMovieWatchListUseCase,
     private val addMovieToWatchListUseCase: AddMovieToWatchListUseCase,
     private val saveMovieUseCase: SaveMovieUseCase,
 ) : BaseViewModel<ViewState>(
@@ -54,7 +54,7 @@ class AddMovieToWatchListBottomSheetViewModel @Inject constructor(
     override val state: StateFlow<ViewState> = viewState
 
     init {
-        bottomSheetEventChannel.events.filterIsInstance<ShowAddMovieToWatchListBottomSheet>()
+        bottomSheetEventChannel.events.filterIsInstance<ShowAddItemToWatchListBottomSheet>()
             .onEach { event ->
                 viewState.update {
                     it.copy(
@@ -63,7 +63,7 @@ class AddMovieToWatchListBottomSheetViewModel @Inject constructor(
                     )
                 }
                 getWatchListsUseCase.execute(
-                    GetWatchListsUseCaseParams(event.movie.movie.id)
+                    GetWatchListsUseCaseParams(event.movie.item.id)
                 )
                     .onValue { watchLists ->
                         viewState.update {
@@ -89,11 +89,11 @@ class AddMovieToWatchListBottomSheetViewModel @Inject constructor(
         viewState.value.event?.let { event ->
             val startFlow = if (event.alreadySaved) {
                 flowOf(Unit)
-            } else saveMovieUseCase.execute(SaveMovieUseCaseParams(event.movie.movie))
+            } else saveMovieUseCase.execute(SaveItemUseCaseParams(event.movie.item))
             startFlow.flatMapConcat {
                 addMovieToWatchListUseCase.execute(
-                    AddMovieToWatchListUseCaseParams(
-                        event.movie.movie.id, watchListId,
+                    AddItemToWatchListUseCaseParams(
+                        event.movie.item.id, watchListId,
                     )
                 )
             }
@@ -135,7 +135,7 @@ class AddMovieToWatchListBottomSheetViewModel @Inject constructor(
 
     data class ViewState(
         val isVisible: Boolean = false,
-        val event: ShowAddMovieToWatchListBottomSheet? = null,
+        val event: ShowAddItemToWatchListBottomSheet? = null,
         val watchLists: List<WatchList> = emptyList(),
     ) : State
 

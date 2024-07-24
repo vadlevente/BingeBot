@@ -10,7 +10,7 @@ data class SearchMovieUseCaseParams(
 
 class SearchMovieUseCase @Inject constructor(
     private val movieRepository: MovieRepository,
-) : BaseUseCase<SearchMovieUseCaseParams, Unit>() {
+) : BaseUseCase<SearchMovieUseCaseParams, Unit> {
 
     override fun execute(params: SearchMovieUseCaseParams) = emptyFlow {
         movieRepository.searchMovies(params.query)

@@ -143,10 +143,10 @@ fun WatchListScreenComponent(
                 } else {
                     LazyColumn {
                         items(state.movies) { displayedMovie ->
-                            val movie = displayedMovie.movie
+                            val movie = displayedMovie.item
                             ListItem(
                                 title = movie.title,
-                                iconPath = displayedMovie.backdropUrl,
+                                iconPath = displayedMovie.thumbnailUrl,
                                 watchedDate = movie.watchedDate,
                                 rating = movie.voteAverage.asOneDecimalString,
                                 releaseYear = movie.releaseDate?.yearString ?: "",

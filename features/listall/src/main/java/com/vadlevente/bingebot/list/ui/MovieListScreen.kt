@@ -35,6 +35,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.vadlevente.bingebot.core.model.Genre
+import com.vadlevente.bingebot.core.model.Movie
 import com.vadlevente.bingebot.core.stringOf
 import com.vadlevente.bingebot.core.ui.composables.BBFilterChip
 import com.vadlevente.bingebot.core.ui.composables.BBOutlinedTextField
@@ -43,8 +44,8 @@ import com.vadlevente.bingebot.core.ui.composables.ProgressScreen
 import com.vadlevente.bingebot.core.ui.composables.TopBar
 import com.vadlevente.bingebot.core.util.asOneDecimalString
 import com.vadlevente.bingebot.core.util.yearString
+import com.vadlevente.bingebot.list.ListViewModelBase.ViewState
 import com.vadlevente.bingebot.list.MovieListViewModel
-import com.vadlevente.bingebot.list.MovieListViewModel.ViewState
 import com.vadlevente.bingebot.list.R
 import com.vadlevente.bingebot.ui.backgroundColor
 import com.vadlevente.bingebot.ui.lightTextColor
@@ -79,7 +80,7 @@ fun MovieListScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MovieListScreenComponent(
-    state: ViewState,
+    state: ViewState<Movie>,
     isInProgress: Boolean,
     onNavigateToSearch: () -> Unit,
     onToggleSearchField: () -> Unit,
@@ -191,7 +192,7 @@ fun MovieListScreenComponent(
                 isProgressVisible = isInProgress,
                 modifier = Modifier.fillMaxSize()
             ) {
-                if (state.movies.isEmpty()) {
+                if (state.items.isEmpty()) {
                     val descriptionStringRes =
                         if (state.searchQuery == null) Res.string.emptyListDescription
                         else Res.string.emptyQueriedListDescription
@@ -202,11 +203,11 @@ fun MovieListScreenComponent(
                     )
                 } else {
                     LazyColumn {
-                        items(state.movies) { displayedMovie ->
-                            val movie = displayedMovie.movie
+                        items(state.items) { displayedMovie ->
+                            val movie = displayedMovie.item as Movie
                             ListItem(
                                 title = movie.title,
-                                iconPath = displayedMovie.backdropUrl,
+                                iconPath = displayedMovie.thumbnailUrl,
                                 watchedDate = movie.watchedDate,
                                 rating = movie.voteAverage.asOneDecimalString,
                                 releaseYear = movie.releaseDate?.yearString ?: "",
@@ -224,7 +225,7 @@ fun MovieListScreenComponent(
 
 @Composable
 private fun GenreSelector(
-    state: ViewState,
+    state: ViewState<*>,
     onToggleGenre: (Genre) -> Unit,
     onClearGenres: () -> Unit,
 ) {
@@ -257,7 +258,7 @@ private fun GenreSelector(
 
 @Composable
 private fun IsWatchedSelector(
-    state: ViewState,
+    state: ViewState<*>,
     onToggleIsWatched: (Boolean) -> Unit,
     onClearIsWatched: () -> Unit,
 ) {

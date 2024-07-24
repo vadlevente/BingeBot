@@ -15,7 +15,7 @@ data class GetWatchListUseCaseParams(
 
 class GetWatchListUseCase @Inject constructor(
     private val movieRepository: MovieRepository,
-) : BaseUseCase<GetWatchListUseCaseParams, WatchList>() {
+) : BaseUseCase<GetWatchListUseCaseParams, WatchList> {
 
     override fun execute(params: GetWatchListUseCaseParams): Flow<WatchList> =
         movieRepository.getWatchLists().map {

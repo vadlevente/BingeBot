@@ -45,7 +45,7 @@ fun AddMovieToWatchListBottomSheet(
     val state by viewModel.state.collectAsState()
     val isInProgress by viewModel.isInProgress.collectAsState()
     val displayedMovie = state.event?.movie ?: return
-    val movie = displayedMovie.movie
+    val movie = displayedMovie.item
     if (!state.isVisible) return
 
     ModalBottomSheet(
@@ -60,7 +60,7 @@ fun AddMovieToWatchListBottomSheet(
                 .background(cardColor)
         ) {
             MovieBottomSheetHeader(
-                thumbnailUrl = displayedMovie.backdropUrl,
+                thumbnailUrl = displayedMovie.thumbnailUrl,
                 title = movie.title,
                 releaseYear = movie.releaseDate?.yearString ?: "",
             )

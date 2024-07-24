@@ -12,7 +12,7 @@ data class LoginUseCaseParams(
 
 class LoginUseCase @Inject constructor(
     private val authenticationService: AuthenticationService,
-) : BaseUseCase<LoginUseCaseParams, Unit>() {
+) : BaseUseCase<LoginUseCaseParams, Unit> {
 
     override fun execute(params: LoginUseCaseParams): Flow<Unit> =
         emptyFlow {

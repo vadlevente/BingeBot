@@ -13,7 +13,7 @@ import javax.inject.Inject
 class GetSearchResultUseCase @Inject constructor(
     private val movieRepository: MovieRepository,
     private val preferencesDataSource: PreferencesDataSource,
-) : BaseUseCase<Unit, List<DisplayedMovie>>() {
+) : BaseUseCase<Unit, List<DisplayedMovie>> {
 
     override fun execute(params: Unit) =
         combine(
@@ -23,8 +23,8 @@ class GetSearchResultUseCase @Inject constructor(
         ).map { (movies, configuration) ->
             movies.map { movie ->
                 DisplayedMovie(
-                    movie = movie,
-                    backdropUrl = getThumbnailUrl(configuration, movie),
+                    item = movie,
+                    thumbnailUrl = getThumbnailUrl(configuration, movie),
                 )
             }
         }

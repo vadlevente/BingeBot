@@ -9,25 +9,25 @@ import java.util.Date
 @Entity(tableName = "movie")
 data class Movie(
     @PrimaryKey
-    val id: Int,
-    val title: String,
+    override val id: Int,
+    override val title: String,
     @SerializedName("original_title")
-    val originalTitle: String,
+    override val originalTitle: String,
     @SerializedName("genre_ids")
-    val genreCodes: List<Int>,
-    val overview: String,
+    override val genreCodes: List<Int>,
+    override val overview: String,
     @SerializedName("backdrop_path")
-    val backdropPath: String?,
+    override val backdropPath: String?,
     @SerializedName("poster_path")
-    val posterPath: String?,
+    override val posterPath: String?,
     @SerializedName("vote_average")
-    val voteAverage: Float,
+    override val voteAverage: Float,
     @SerializedName("release_date")
-    val releaseDate: Date? = null,
+    override val releaseDate: Date? = null,
     val localeCode: String = SelectedLanguage.default.code,
-    val watchedDate: Date? = null,
-    val createdDate: Date? = null,
-) {
+    override val watchedDate: Date? = null,
+    override val createdDate: Date? = null,
+) : Item {
     @Ignore
     val localization: SelectedLanguage = SelectedLanguage.from(localeCode)
     val isWatched: Boolean

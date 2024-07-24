@@ -19,7 +19,7 @@ data class GetWatchListMoviesUseCaseParams(
 class GetWatchListMoviesUseCase @Inject constructor(
     private val movieRepository: MovieRepository,
     private val preferencesDataSource: PreferencesDataSource,
-) : BaseUseCase<GetWatchListMoviesUseCaseParams, List<DisplayedMovie>>() {
+) : BaseUseCase<GetWatchListMoviesUseCaseParams, List<DisplayedMovie>> {
 
     override fun execute(params: GetWatchListMoviesUseCaseParams): Flow<List<DisplayedMovie>> =
         combine(
@@ -37,8 +37,8 @@ class GetWatchListMoviesUseCase @Inject constructor(
                 }
                 .map { movie ->
                     DisplayedMovie(
-                        movie = movie,
-                        backdropUrl = getThumbnailUrl(configuration, movie),
+                        item = movie,
+                        thumbnailUrl = getThumbnailUrl(configuration, movie),
                     )
                 }
         }

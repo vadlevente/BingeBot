@@ -10,7 +10,7 @@
     <string name="movieBottomSheet_deleteConfirmationTitle">Film törlése</string>
     <string name="movieBottomSheet_deleteConfirmationDescription">Biztosan szeretné törölni a filmet? Így minden listájáról is törlődni fog.</string>
     <string name="movieBottomSheet_saveSuccessful">Sikeresen hozzáadva a megnézendő filmekhez</string>
-    <string name="movieBottomSheet_revertWatchedDateSuccessful">Sikeresen törölve a megnézett filmek közül</string>
+    <string name="movieBottomSheet_revertWatchedDateSuccessful">Megtekintési dátum eltávolítva</string>
     <string name="movieBottomSheet_setWatchedDateSuccessful">Megtekintési dátum hozzáadva</string>
     <string name="movieBottomSheet_removeMovieFromWatchListConfirmationTitle">Film eltávolítása</string>
     <string name="movieBottomSheet_removeMovieFromWatchListConfirmationDescription">Biztosan szeretné eltávolítnai a filmet a listáról?</string>

@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 class GetConfigurationUseCase @Inject constructor(
     private val movieRepository: MovieRepository,
-) : BaseUseCase<Unit, Unit>() {
+) : BaseUseCase<Unit, Unit> {
 
     override fun execute(params: Unit): Flow<Unit> = emptyFlow {
         movieRepository.updateConfiguration()

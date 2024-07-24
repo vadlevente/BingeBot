@@ -1,4 +1,4 @@
-package com.vadlevente.bingebot.list.domain.usecase
+package com.vadlevente.bingebot.list.domain.usecase.movie
 
 import com.vadlevente.bingebot.core.data.cache.SelectedFiltersCacheDataSource
 import com.vadlevente.bingebot.core.data.local.datastore.PreferencesDataSource
@@ -6,23 +6,20 @@ import com.vadlevente.bingebot.core.data.repository.MovieRepository
 import com.vadlevente.bingebot.core.model.ApiConfiguration
 import com.vadlevente.bingebot.core.model.DisplayedMovie
 import com.vadlevente.bingebot.core.model.Movie
-import com.vadlevente.bingebot.core.ui.BaseUseCase
+import com.vadlevente.bingebot.list.domain.usecase.GetItemsUseCase
+import com.vadlevente.bingebot.list.domain.usecase.GetItemsUseCaseParams
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-data class GetMoviesUseCaseParams(
-    val query: String? = null,
-)
-
 class GetMoviesUseCase @Inject constructor(
     private val movieRepository: MovieRepository,
     private val preferencesDataSource: PreferencesDataSource,
     private val selectedFiltersCacheDataSource: SelectedFiltersCacheDataSource,
-) : BaseUseCase<GetMoviesUseCaseParams, List<DisplayedMovie>>() {
+) : GetItemsUseCase<Movie> {
 
-    override fun execute(params: GetMoviesUseCaseParams): Flow<List<DisplayedMovie>> =
+    override fun execute(params: GetItemsUseCaseParams): Flow<List<DisplayedMovie>> =
         combine(
             movieRepository.getMovies(),
             preferencesDataSource.apiConfiguration,
@@ -52,8 +49,8 @@ class GetMoviesUseCase @Inject constructor(
                 }
                 .map { movie ->
                     DisplayedMovie(
-                        movie = movie,
-                        backdropUrl = getThumbnailUrl(configuration, movie),
+                        item = movie,
+                        thumbnailUrl = getThumbnailUrl(configuration, movie),
                     )
                 }
         }

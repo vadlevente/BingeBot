@@ -41,7 +41,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.vadlevente.bingebot.bottomsheet.R
-import com.vadlevente.bingebot.bottomsheet.viewmodel.MovieBottomSheetViewModel
+import com.vadlevente.bingebot.bottomsheet.viewmodel.movie.MovieBottomSheetViewModel
+import com.vadlevente.bingebot.core.model.DisplayedMovie
 import com.vadlevente.bingebot.core.ui.composables.BBButton
 import com.vadlevente.bingebot.core.ui.composables.BBOutlinedButton
 import com.vadlevente.bingebot.core.util.isBeforeTomorrow
@@ -64,8 +65,8 @@ fun MovieBottomSheet(
     val modalBottomSheetState = rememberModalBottomSheetState()
     val state by viewModel.state.collectAsState()
     val event = state.event ?: return
-    val displayedMovie = event.movie
-    val movie = displayedMovie.movie
+    val displayedMovie = event.item as DisplayedMovie
+    val movie = displayedMovie.item
     if (!state.isVisible) return
     val dateState = rememberDatePickerState(initialSelectedDateMillis = Date().time)
     var showDialog by remember { mutableStateOf(false) }
@@ -78,7 +79,7 @@ fun MovieBottomSheet(
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
             MovieBottomSheetHeader(
-                thumbnailUrl = displayedMovie.backdropUrl,
+                thumbnailUrl = displayedMovie.thumbnailUrl,
                 title = movie.title,
                 releaseYear = movie.releaseDate?.yearString ?: "",
             )
@@ -114,7 +115,7 @@ fun MovieBottomSheet(
                 if (event.alreadySaved) {
                     if (movie.isWatched) {
                         BottomSheetAction(
-                            action = { viewModel.onSetMovieNotWatched() },
+                            action = { viewModel.onSetItemNotWatched() },
                             labelRes = R.string.movieBottomSheet_revertSeen,
                             imageVector = Filled.VisibilityOff,
                         )
@@ -132,7 +133,7 @@ fun MovieBottomSheet(
                     )
                 } else {
                     BottomSheetAction(
-                        action = { viewModel.onSaveMovie(event.movie.movie) },
+                        action = { viewModel.onSaveItem(event.item.item) },
                         labelRes = R.string.movieBottomSheet_save,
                         imageVector = Filled.SaveAlt,
                     )
@@ -153,7 +154,7 @@ fun MovieBottomSheet(
                     onClick = {
                         showDialog = false
                         dateState.selectedDateMillis?.let {
-                            viewModel.onSetMovieWatched(it)
+                            viewModel.onSetItemWatched(it)
                         }
                     },
                     text = stringResource(id = Resources.string.common_Ok)

@@ -14,7 +14,7 @@ data class RegistrationUseCaseParams(
 class RegistrationUseCase @Inject constructor(
     private val authenticationService: AuthenticationService,
     private val firestoreDataSource: FirestoreDataSource,
-) : BaseUseCase<RegistrationUseCaseParams, Unit>() {
+) : BaseUseCase<RegistrationUseCaseParams, Unit> {
 
     override fun execute(params: RegistrationUseCaseParams): Flow<Unit> =
         emptyFlow {

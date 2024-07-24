@@ -1,6 +1,6 @@
 package com.vadlevente.bingebot.core.model
 
 data class DisplayedMovie(
-    val movie: Movie,
-    val backdropUrl: String?,
-)
+    override val item: Movie,
+    override val thumbnailUrl: String?,
+) : DisplayedItem<Movie>

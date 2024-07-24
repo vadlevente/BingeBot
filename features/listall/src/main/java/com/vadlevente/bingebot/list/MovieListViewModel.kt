@@ -1,31 +1,16 @@
 package com.vadlevente.bingebot.list
 
 import androidx.lifecycle.viewModelScope
-import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEvent.ShowMovieBottomSheet
+import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEvent.ShowItemBottomSheet.ShowMovieBottomSheet
 import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEvent.ShowWatchListsBottomSheet
 import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEventChannel
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
 import com.vadlevente.bingebot.core.model.DisplayedMovie
-import com.vadlevente.bingebot.core.model.Genre
+import com.vadlevente.bingebot.core.model.Movie
 import com.vadlevente.bingebot.core.model.NavDestination.SEARCH_MOVIE
-import com.vadlevente.bingebot.core.viewModel.BaseViewModel
-import com.vadlevente.bingebot.core.viewModel.State
-import com.vadlevente.bingebot.list.MovieListViewModel.ViewState
-import com.vadlevente.bingebot.list.domain.model.DisplayedGenre
-import com.vadlevente.bingebot.list.domain.usecase.GetFiltersUseCase
-import com.vadlevente.bingebot.list.domain.usecase.GetMoviesUseCase
-import com.vadlevente.bingebot.list.domain.usecase.GetMoviesUseCaseParams
-import com.vadlevente.bingebot.list.domain.usecase.SetIsWatchedFilterUseCase
-import com.vadlevente.bingebot.list.domain.usecase.SetIsWatchedFilterUseCaseParams
-import com.vadlevente.bingebot.list.domain.usecase.SetSelectedGenresUseCase
-import com.vadlevente.bingebot.list.domain.usecase.SetSelectedGenresUseCaseParams
-import com.vadlevente.bingebot.list.domain.usecase.UpdateMoviesUseCase
-import com.vadlevente.bingebot.list.domain.usecase.UpdateWatchListsUseCase
+import com.vadlevente.bingebot.list.domain.usecase.ItemListUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -33,144 +18,38 @@ import javax.inject.Inject
 class MovieListViewModel @Inject constructor(
     navigationEventChannel: NavigationEventChannel,
     toastEventChannel: ToastEventChannel,
-    updateMoviesUseCase: UpdateMoviesUseCase,
-    updateWatchListsUseCase: UpdateWatchListsUseCase,
-    getFiltersUseCase: GetFiltersUseCase,
-    private val getMoviesUseCase: GetMoviesUseCase,
+    useCases: ItemListUseCases<Movie>,
     private val bottomSheetEventChannel: BottomSheetEventChannel,
-    private val setSelectedGenresUseCase: SetSelectedGenresUseCase,
-    private val setIsWatchedFilterUseCase: SetIsWatchedFilterUseCase,
-) : BaseViewModel<ViewState>(
-    navigationEventChannel, toastEventChannel
+) : ListViewModelBase<Movie>(
+    navigationEventChannel, toastEventChannel, useCases
 ) {
 
-    private val viewState = MutableStateFlow(ViewState())
-    override val state: StateFlow<ViewState> = viewState
+    override fun onNavigateToSearch() {
+        navigateTo(SEARCH_MOVIE)
+    }
 
-    init {
-        updateMoviesUseCase.execute(Unit).onStart()
-        updateWatchListsUseCase.execute(Unit).onStart()
-        getMovies()
-        getFiltersUseCase.execute(Unit)
-            .onValue { filters ->
-                viewState.update {
-                    it.copy(
-                        genres = filters.displayedGenres,
-                        isAnyGenreSelected = filters.displayedGenres.any { it.isSelected },
-                        isWatchedSelected = filters.isWatchedSelected,
+    override fun onNavigateToOptions(itemId: Int) {
+        baseViewState.value.items
+            .filterIsInstance(DisplayedMovie::class.java)
+            .firstOrNull { it.item.id == itemId }
+            ?.let {
+                viewModelScope.launch {
+                    bottomSheetEventChannel.sendEvent(
+                        ShowMovieBottomSheet(
+                            item = it,
+                            alreadySaved = true,
+                        )
                     )
                 }
             }
     }
 
-    fun onNavigateToSearch() {
-        navigateTo(SEARCH_MOVIE)
-    }
-
-    fun onToggleSearchField() {
-        viewState.update {
-            it.copy(
-                isSearchFieldVisible = !it.isSearchFieldVisible,
-                searchQuery = if (it.isSearchFieldVisible) null else "",
-            )
-        }
-        getMovies()
-    }
-
-    fun onToggleFilters() {
-        viewState.update {
-            it.copy(
-                areFiltersVisible = !it.areFiltersVisible
-            )
-        }
-    }
-
-    fun onQueryChanged(value: String) {
-        viewState.update {
-            it.copy(
-                searchQuery = value,
-            )
-        }
-        getMovies()
-    }
-
-    fun onNavigateToOptions(movieId: Int) {
-        viewState.value.movies.firstOrNull { it.movie.id == movieId }?.let {
-            viewModelScope.launch {
-                bottomSheetEventChannel.sendEvent(
-                    ShowMovieBottomSheet(
-                        movie = it,
-                        alreadySaved = true,
-                    )
-                )
-            }
-        }
-    }
-
-    fun onClearGenres() {
-        setSelectedGenresUseCase.execute(
-            SetSelectedGenresUseCaseParams(
-                emptyList(),
-            )
-        ).onStart()
-    }
-
-    fun onToggleGenre(genre: Genre) {
-        val selectedGenres = viewState.value.genres.filter { it.isSelected }.map { it.genre }
-        val modifiedGenres = if (selectedGenres.contains(genre)) {
-            selectedGenres.minus(genre)
-        } else {
-            selectedGenres.plus(genre)
-        }
-        setSelectedGenresUseCase.execute(
-            SetSelectedGenresUseCaseParams(
-                modifiedGenres,
-            )
-        ).onStart()
-    }
-
-    fun onOpenWatchLists() {
+    override fun onOpenWatchLists() {
         viewModelScope.launch {
             bottomSheetEventChannel.sendEvent(
                 ShowWatchListsBottomSheet
             )
         }
     }
-
-    fun onToggleIsWatched(value: Boolean) {
-        setIsWatchedFilterUseCase.execute(
-            SetIsWatchedFilterUseCaseParams(value)
-        ).onStart()
-    }
-
-    fun onClearIsWatched() {
-        setIsWatchedFilterUseCase.execute(
-            SetIsWatchedFilterUseCaseParams(null)
-        ).onStart()
-    }
-
-    private fun getMovies() {
-        getMoviesUseCase.execute(
-            GetMoviesUseCaseParams(
-                query = viewState.value.searchQuery,
-            )
-        ).onValue { movies ->
-            viewState.update {
-                it.copy(
-                    movies = movies
-                )
-            }
-        }
-    }
-
-    data class ViewState(
-        val movies: List<DisplayedMovie> = emptyList(),
-        val genres: List<DisplayedGenre> = emptyList(),
-        val isSearchFieldVisible: Boolean = false,
-        val searchQuery: String? = null,
-        val isAnyGenreSelected: Boolean = false,
-        val isWatchedSelected: Boolean? = null,
-        val areFiltersVisible: Boolean = false,
-    ) : State
 
 }

@@ -99,12 +99,12 @@ fun SearchMovieScreenComponent(
                         }
                         items(
                             items = state.movies,
-                            key = { it.movie.id }
+                            key = { it.item.id }
                         ) { displayedMovie ->
-                            val movie = displayedMovie.movie
+                            val movie = displayedMovie.item
                             ListItem(
                                 title = movie.title,
-                                iconPath = displayedMovie.backdropUrl,
+                                iconPath = displayedMovie.thumbnailUrl,
                                 watchedDate = movie.watchedDate,
                                 rating = movie.voteAverage.asOneDecimalString,
                                 releaseYear = movie.releaseDate?.yearString ?: "",
