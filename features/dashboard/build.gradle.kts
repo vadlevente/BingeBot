@@ -1,0 +1,10 @@
+apply{
+    from("$rootDir/compose-module.gradle")
+}
+dependencies{
+    "implementation"(project(Modules.core))
+    "implementation"(project(Modules.ui))
+    "implementation"(project(Modules.resources))
+    "implementation"(project(Modules.bottomSheet))
+    "implementation"(project(Modules.listAll))
+}

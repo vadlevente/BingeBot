@@ -3,7 +3,7 @@ package com.vadlevente.bingebot.splash.usecase
 import com.vadlevente.bingebot.core.data.local.datastore.PreferencesDataSource
 import com.vadlevente.bingebot.core.data.service.AuthenticationService
 import com.vadlevente.bingebot.core.model.NavDestination
-import com.vadlevente.bingebot.core.model.NavDestination.LIST_MOVIE
+import com.vadlevente.bingebot.core.model.NavDestination.DASHBOARD
 import com.vadlevente.bingebot.core.model.NavDestination.LOGIN
 import com.vadlevente.bingebot.core.model.NavDestination.REGISTRATION
 import com.vadlevente.bingebot.core.ui.BaseUseCase
@@ -21,7 +21,7 @@ class GetNavDestinationToStartScreenUseCase @Inject constructor(
         return preferencesDataSource.activeProfileId
             .flatMapLatest { profileId ->
                 profileId?.let {
-                    if (authenticationService.isProfileSignedIn(it)) flowOf(LIST_MOVIE)
+                    if (authenticationService.isProfileSignedIn(it)) flowOf(DASHBOARD)
                     else flowOf(LOGIN)
                 } ?: flowOf(REGISTRATION)
             }

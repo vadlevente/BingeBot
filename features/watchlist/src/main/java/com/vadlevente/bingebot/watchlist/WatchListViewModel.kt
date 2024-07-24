@@ -9,6 +9,7 @@ import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastType.INFO
 import com.vadlevente.bingebot.core.model.DisplayedMovie
+import com.vadlevente.bingebot.core.model.NavDestination.SEARCH_MOVIE
 import com.vadlevente.bingebot.core.model.exception.Reason.DATA_NOT_FOUND
 import com.vadlevente.bingebot.core.model.exception.isBecauseOf
 import com.vadlevente.bingebot.core.stringOf
@@ -68,6 +69,10 @@ class WatchListViewModel @Inject constructor(
             }
             getMovies()
         }
+    }
+
+    fun onNavigateToSearch() {
+        navigateTo(SEARCH_MOVIE)
     }
 
     fun onDeleteWatchList() {

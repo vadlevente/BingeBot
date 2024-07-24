@@ -10,8 +10,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons.Filled
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -34,6 +36,8 @@ import com.vadlevente.bingebot.core.util.yearString
 import com.vadlevente.bingebot.ui.backgroundColor
 import com.vadlevente.bingebot.ui.lightTextColor
 import com.vadlevente.bingebot.ui.listDescription
+import com.vadlevente.bingebot.ui.progressColor
+import com.vadlevente.bingebot.ui.white
 import com.vadlevente.bingebot.watchlist.WatchListViewModel
 import com.vadlevente.bingebot.watchlist.WatchListViewModel.ViewState
 import com.vadlevente.bingebot.resources.R as Res
@@ -56,6 +60,7 @@ fun WatchListScreen(
         onNavigateToOptions = viewModel::onNavigateToOptions,
         onDeleteWatchList = viewModel::onDeleteWatchList,
         onBackPressed = viewModel::onBackPressed,
+        onNavigateToSearch = viewModel::onNavigateToSearch,
     )
 }
 
@@ -68,6 +73,7 @@ fun WatchListScreenComponent(
     onNavigateToOptions: (Int) -> Unit,
     onDeleteWatchList: () -> Unit,
     onBackPressed: () -> Unit,
+    onNavigateToSearch: () -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -95,7 +101,15 @@ fun WatchListScreenComponent(
                 }
             )
         },
-        bottomBar = {},
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = onNavigateToSearch,
+                containerColor = progressColor,
+                contentColor = white,
+            ) {
+                Icon(Filled.Add, "")
+            }
+        }
     ) { paddingValues ->
         Column(
             modifier = Modifier

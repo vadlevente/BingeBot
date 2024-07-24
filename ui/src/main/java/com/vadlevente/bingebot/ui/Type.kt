@@ -146,3 +146,21 @@ val unselectedChipLabel = TextStyle(
     textAlign = TextAlign.Center,
     color = lightTextColor,
 )
+
+val navigationBarItemTitleSelected = TextStyle(
+    fontFamily = fontFamily,
+    fontWeight = FontWeight.Bold,
+    fontSize = 14.sp,
+    letterSpacing = 0.6.sp,
+    textAlign = TextAlign.Center,
+    color = lightNavItemColor,
+)
+
+val navigationBarItemTitleUnselected = TextStyle(
+    fontFamily = fontFamily,
+    fontWeight = FontWeight.Normal,
+    fontSize = 14.sp,
+    letterSpacing = 0.6.sp,
+    textAlign = TextAlign.Center,
+    color = darkNavItemColor,
+)

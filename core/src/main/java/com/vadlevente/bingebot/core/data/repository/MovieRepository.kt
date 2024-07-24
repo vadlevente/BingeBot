@@ -33,7 +33,7 @@ interface MovieRepository {
     suspend fun saveMovie(movie: Movie)
     suspend fun deleteMovie(movieId: Int)
     suspend fun createWatchList(title: String): String
-    suspend fun addMovieToList(movieId: Int, watchListId: String)
+    suspend fun addMovieToList(movieId: Int, watchListId: String): Boolean
     suspend fun removeMovieFromList(movieId: Int, watchListId: String)
     suspend fun setMovieWatchedDate(movieId: Int, watchedDate: Date?)
     suspend fun deleteWatchList(watchListId: String)
@@ -163,13 +163,17 @@ class MovieRepositoryImpl @Inject constructor(
 
     override suspend fun addMovieToList(movieId: Int, watchListId: String) =
         withContext(Dispatchers.IO) {
-            firestoreDataSource.addMovieToWatchList(watchListId, movieId)
             val watchList = movieLocalDataSource.getWatchList(watchListId).first()
+            if (watchList.movieIds.contains(movieId)) {
+                return@withContext false
+            }
             movieLocalDataSource.insertWatchList(
                 watchList.copy(
                     movieIds = watchList.movieIds.plus(movieId)
                 )
             )
+            firestoreDataSource.addMovieToWatchList(watchListId, movieId)
+            return@withContext true
         }
 
     override suspend fun removeMovieFromList(movieId: Int, watchListId: String) =

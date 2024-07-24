@@ -21,12 +21,9 @@ import com.vadlevente.bingebot.core.events.navigation.NavigationEvent.NavigateUp
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.model.NavDestination
 import com.vadlevente.bingebot.core.ui.composables.Toast
-import com.vadlevente.bingebot.core.ui.composables.bottomsheet.AddMovieToWatchListBottomSheet
-import com.vadlevente.bingebot.core.ui.composables.bottomsheet.MovieBottomSheet
-import com.vadlevente.bingebot.core.ui.composables.bottomsheet.WatchListsBottomSheet
 import com.vadlevente.bingebot.core.ui.composables.dialog.BBDialog
 import com.vadlevente.bingebot.core.ui.composables.dialog.BBTextFieldDialog
-import com.vadlevente.bingebot.list.ui.MovieListScreen
+import com.vadlevente.bingebot.dashboard.ui.DashboardScreen
 import com.vadlevente.bingebot.search.ui.SearchMovieScreen
 import com.vadlevente.bingebot.splash.ui.SplashScreen
 import com.vadlevente.bingebot.ui.BingeBotTheme
@@ -57,8 +54,8 @@ fun NavigationHost(
                 composable(NavDestination.LOGIN.route) {
                     LoginScreen()
                 }
-                composable(NavDestination.LIST_MOVIE.route) {
-                    MovieListScreen()
+                composable(NavDestination.DASHBOARD.route) {
+                    DashboardScreen()
                 }
                 composable(NavDestination.SEARCH_MOVIE.route) {
                     SearchMovieScreen()
@@ -154,9 +151,6 @@ private fun UIComponents(scope: BoxScope) {
         Toast(
             modifier = Modifier.align(Alignment.TopCenter),
         )
-        MovieBottomSheet()
-        AddMovieToWatchListBottomSheet()
-        WatchListsBottomSheet()
         BBDialog()
         BBTextFieldDialog()
     }

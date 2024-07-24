@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tab_title_movieList">Filmek</string>
+    <string name="tab_title_tvList">Sorozatok</string>
+    <string name="tab_title_settings">Beállítások</string>
+</resources>

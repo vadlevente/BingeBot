@@ -1,29 +1,3 @@
 <resources>
     <string name="app_name">BingeBot</string>
-
-
-
-    <string name="movieBottomSheet_addToWatchList">Hozzáadás listához</string>
-    <string name="movieBottomSheet_removeFromWatchList">Eltávolítás a listáról</string>
-    <string name="movieBottomSheet_save">Film mentése</string>
-    <string name="movieBottomSheet_delete">Törlés</string>
-    <string name="movieBottomSheet_seen">Megtekintve</string>
-    <string name="movieBottomSheet_revertSeen">Megtekintés visszavonása</string>
-    <string name="movieBottomSheet_openDetails">Részletek megjelenítése</string>
-    <string name="movieBottomSheet_deleteConfirmationTitle">Film törlése</string>
-    <string name="movieBottomSheet_deleteConfirmationDescription">Biztosan szeretné törölni a filmet? Így minden listájáról is törlődni fog.</string>
-    <string name="movieBottomSheet_saveSuccessful">Sikeresen hozzáadva a megnézendő filmekhez</string>
-    <string name="movieBottomSheet_revertWatchedDateSuccessful">Sikeresen törölve a megnézett filmek közül</string>
-    <string name="movieBottomSheet_setWatchedDateSuccessful">Megtekintési dátum hozzáadva</string>
-    <string name="movieBottomSheet_removeMovieFromWatchListConfirmationTitle">Film eltávolítása</string>
-    <string name="movieBottomSheet_removeMovieFromWatchListConfirmationDescription">Biztosan szeretné eltávolítnai a filmet a listáról?</string>
-    <string name="movieBottomSheet_addWatchedDateTitle">Megtekintési dátum kiválasztása</string>
-
-    <string name="addMovieToWatchListBottomSheet_createWatchListDialogTitle">Lista létrehozása</string>
-    <string name="addMovieToWatchListBottomSheet_createWatchListDialogDescription">Kérjük, adja meg a létrehozni kívánt lista címét!</string>
-    <string name="addMovieToWatchListBottomSheet_movieAddedToWatchList">Sikeresen hozzáadva a listához!</string>
-    <string name="addMovieToWatchListBottomSheet_createWatchListLabel">Új lista létrehozása</string>
-
-    <string name="watchListBottomSheet_title">Megnézendő filmek listája</string>
-
 </resources>
