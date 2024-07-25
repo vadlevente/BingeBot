@@ -2,7 +2,7 @@ package com.vadlevente.bingebot.core.events.bottomSheet
 
 import com.vadlevente.bingebot.core.model.DisplayedItem
 import com.vadlevente.bingebot.core.model.Item
-import com.vadlevente.bingebot.core.model.Movie
+import com.vadlevente.bingebot.core.model.Item.Movie
 
 sealed interface BottomSheetEvent {
 

@@ -7,7 +7,9 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
 import com.vadlevente.bingebot.core.BuildConfig
+import com.vadlevente.bingebot.core.data.api.ConfigurationApi
 import com.vadlevente.bingebot.core.data.api.MovieApi
+import com.vadlevente.bingebot.core.data.api.TvApi
 import com.vadlevente.bingebot.core.data.remote.interceptor.ApiKeyInterceptor
 import dagger.Module
 import dagger.Provides
@@ -61,5 +63,17 @@ class RemoteModule {
     fun provideMovieApi(
         retrofit: Retrofit
     ): MovieApi = retrofit.create(MovieApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideTvApi(
+        retrofit: Retrofit
+    ): TvApi = retrofit.create(TvApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideConfigurationApi(
+        retrofit: Retrofit
+    ): ConfigurationApi = retrofit.create(ConfigurationApi::class.java)
 
 }

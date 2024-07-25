@@ -56,7 +56,7 @@ class RegistrationViewModel @Inject constructor(
                 stringOf(R.string.registrationSuccessful),
                 INFO,
             )
-            navigateTo(NavDestination.LIST_MOVIE)
+            navigateTo(NavDestination.DASHBOARD)
         }
     }
 

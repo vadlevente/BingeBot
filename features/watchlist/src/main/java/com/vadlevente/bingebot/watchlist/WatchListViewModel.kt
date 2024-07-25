@@ -9,7 +9,7 @@ import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastType.INFO
 import com.vadlevente.bingebot.core.model.DisplayedItem
-import com.vadlevente.bingebot.core.model.Movie
+import com.vadlevente.bingebot.core.model.Item.Movie
 import com.vadlevente.bingebot.core.model.NavDestination.SEARCH_MOVIE
 import com.vadlevente.bingebot.core.model.exception.Reason.DATA_NOT_FOUND
 import com.vadlevente.bingebot.core.model.exception.isBecauseOf
@@ -19,8 +19,8 @@ import com.vadlevente.bingebot.core.viewModel.State
 import com.vadlevente.bingebot.watchlist.WatchListViewModel.ViewState
 import com.vadlevente.bingebot.watchlist.domain.usecase.DeleteWatchListUseCase
 import com.vadlevente.bingebot.watchlist.domain.usecase.DeleteWatchListUseCaseParams
+import com.vadlevente.bingebot.watchlist.domain.usecase.GetWatchListItemsUseCaseParams
 import com.vadlevente.bingebot.watchlist.domain.usecase.GetWatchListMoviesUseCase
-import com.vadlevente.bingebot.watchlist.domain.usecase.GetWatchListMoviesUseCaseParams
 import com.vadlevente.bingebot.watchlist.domain.usecase.GetWatchListUseCase
 import com.vadlevente.bingebot.watchlist.domain.usecase.GetWatchListUseCaseParams
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -35,10 +35,10 @@ import com.vadlevente.bingebot.resources.R as Res
 class WatchListViewModel @Inject constructor(
     navigationEventChannel: NavigationEventChannel,
     toastEventChannel: ToastEventChannel,
-    private val getWatchListMoviesUseCase: GetWatchListMoviesUseCase,
+    private val getWatchListMoviesUseCase: GetWatchListMoviesUseCase<Movie>,
     private val bottomSheetEventChannel: BottomSheetEventChannel,
-    private val getWatchListUseCase: GetWatchListUseCase,
-    private val deleteWatchListUseCase: DeleteWatchListUseCase,
+    private val getWatchListUseCase: GetWatchListUseCase<Movie>,
+    private val deleteWatchListUseCase: DeleteWatchListUseCase<Movie>,
     private val dialogEventChannel: DialogEventChannel,
 ) : BaseViewModel<ViewState>(
     navigationEventChannel, toastEventChannel
@@ -141,7 +141,7 @@ class WatchListViewModel @Inject constructor(
 
     private fun getMovies() {
         getWatchListMoviesUseCase.execute(
-            GetWatchListMoviesUseCaseParams(
+            GetWatchListItemsUseCaseParams(
                 watchListId = watchListId,
                 query = viewState.value.searchQuery,
             )

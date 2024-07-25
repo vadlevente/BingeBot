@@ -4,10 +4,10 @@ import com.vadlevente.bingebot.core.model.Item
 
 data class ItemListUseCases <T: Item> (
     val getItemsUseCase: GetItemsUseCase<T>,
-    val getFiltersUseCase: GetFiltersUseCase,
+    val getFiltersUseCase: GetItemFiltersUseCase<T>,
     val setIsWatchedFilterUseCase: SetIsWatchedFilterUseCase,
     val setSelectedGenresUseCase: SetSelectedGenresUseCase,
     val setQueryFilterUseCase: SetQueryFilterUseCase,
-    val updateItemsUseCase: UpdateItemsUseCase,
-    val updateWatchListsUseCase: UpdateWatchListsUseCase,
+    val updateItemsUseCase: UpdateItemsUseCase<T>,
+    val updateWatchListsUseCase: UpdateWatchListsUseCase<T>,
 )

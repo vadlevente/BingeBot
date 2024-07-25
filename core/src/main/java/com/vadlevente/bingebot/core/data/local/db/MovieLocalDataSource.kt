@@ -3,72 +3,35 @@ package com.vadlevente.bingebot.core.data.local.db
 import com.vadlevente.bingebot.core.data.dao.GenreDao
 import com.vadlevente.bingebot.core.data.dao.MovieDao
 import com.vadlevente.bingebot.core.data.dao.WatchListDao
-import com.vadlevente.bingebot.core.model.Genre
-import com.vadlevente.bingebot.core.model.Movie
+import com.vadlevente.bingebot.core.model.Item.Movie
+import com.vadlevente.bingebot.core.model.ItemType.MOVIE
 import com.vadlevente.bingebot.core.model.WatchList
-import java.util.Date
 import javax.inject.Inject
 
 class MovieLocalDataSource @Inject constructor(
-    private val movieDao: MovieDao,
-    private val genreDao: GenreDao,
+    movieDao: MovieDao,
+    genreDao: GenreDao,
     private val watchListDao: WatchListDao,
+) : ItemLocalDataSource<Movie>(
+    movieDao, genreDao, watchListDao
 ) {
+    override fun getAllWatchLists() = watchListDao.getAllWatchLists(MOVIE)
 
-    fun getAllMovies() = movieDao.getAllMovies()
-    fun getMovies(movieIds: List<Int>) = movieDao.getMovies(movieIds)
-
-    fun getAllMoviesWithIncorrectLocalization(locale: String) = movieDao.getAllIncorrectlyLocalizedMovies(locale)
-    fun getAllGenres() = genreDao.getAllGenres()
-    fun getAllWatchLists() = watchListDao.getAllWatchLists()
-    fun getWatchList(watchListId: String) = watchListDao.getWatchList(watchListId)
-
-    suspend fun updateMovie(movie: Movie) {
-        movieDao.insertMovie(movie)
+    override suspend fun deleteAllWatchLists() {
+        watchListDao.deleteAll(MOVIE)
     }
 
-    suspend fun updateMovies(movies: List<Movie>) {
-        movieDao.insertMovies(movies)
+    override suspend fun insertWatchList(watchList: WatchList) {
+        watchListDao.insertWatchList(watchList.copy(type = MOVIE))
     }
 
-    suspend fun insertMovie(movie: Movie) {
-        movieDao.insertMovie(movie)
+    override suspend fun insertWatchLists(watchLists: List<WatchList>) {
+        watchListDao.insertWatchLists(
+            watchLists.map {
+                it.copy(type = MOVIE)
+            }
+        )
     }
 
-    suspend fun deleteMovie(movie: Movie) {
-        movieDao.deleteMovie(movie)
-    }
-
-    suspend fun deleteMovie(movieId: Int) {
-        movieDao.deleteMovie(movieId)
-    }
-
-    suspend fun insertGenres(genres: List<Genre>) {
-        genreDao.insertGenres(genres)
-    }
-
-    suspend fun deleteAllGenres() {
-        genreDao.deleteAll()
-    }
-
-    suspend fun deleteAllWatchLists() {
-        watchListDao.deleteAll()
-    }
-
-    suspend fun deleteWatchList(watchListId: String) {
-        watchListDao.delete(watchListId)
-    }
-
-    suspend fun insertWatchList(watchList: WatchList) {
-        watchListDao.insertWatchList(watchList)
-    }
-
-    suspend fun insertWatchLists(watchLists: List<WatchList>) {
-        watchListDao.insertWatchLists(watchLists)
-    }
-
-    suspend fun setMovieWatchedDate(movieId: Int, watchedDate: Date?) {
-        movieDao.setMovieWatchedDate(movieId, watchedDate)
-    }
 
 }

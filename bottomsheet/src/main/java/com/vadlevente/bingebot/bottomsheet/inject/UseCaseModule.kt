@@ -1,11 +1,11 @@
 package com.vadlevente.bingebot.bottomsheet.inject
 
 import com.vadlevente.bingebot.bottomsheet.domain.usecases.ItemBottomSheetUseCases
-import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.DeleteMovieUseCase
-import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.RemoveMovieFromWatchListUseCase
-import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.SaveMovieUseCase
-import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.SetMovieSeenUseCase
-import com.vadlevente.bingebot.core.model.Movie
+import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.DeleteItemUseCase
+import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.RemoveItemFromWatchListUseCase
+import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.SaveItemUseCase
+import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.SetItemSeenUseCase
+import com.vadlevente.bingebot.core.model.Item.Movie
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,15 +19,15 @@ object UseCaseModule {
     @Singleton
     @Provides
     fun provideMovieBottomSheetUseCases(
-        deleteMovieUseCase: DeleteMovieUseCase,
-        saveMovieUseCase: SaveMovieUseCase,
-        setMovieSeenUseCase: SetMovieSeenUseCase,
-        removeMovieFromWatchListUseCase: RemoveMovieFromWatchListUseCase,
+        deleteItemUseCase: DeleteItemUseCase<Movie>,
+        saveItemUseCase: SaveItemUseCase<Movie>,
+        setItemSeenUseCase: SetItemSeenUseCase<Movie>,
+        removeItemFromWatchListUseCase: RemoveItemFromWatchListUseCase<Movie>,
     ): ItemBottomSheetUseCases<Movie> = ItemBottomSheetUseCases(
-        deleteMovieUseCase,
-        saveMovieUseCase,
-        setMovieSeenUseCase,
-        removeMovieFromWatchListUseCase,
+        deleteItemUseCase,
+        saveItemUseCase,
+        setItemSeenUseCase,
+        removeItemFromWatchListUseCase,
     )
 
 }

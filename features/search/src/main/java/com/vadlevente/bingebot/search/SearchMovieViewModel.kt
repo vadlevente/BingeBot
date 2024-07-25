@@ -6,14 +6,14 @@ import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEventChannel
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
 import com.vadlevente.bingebot.core.model.DisplayedItem
-import com.vadlevente.bingebot.core.model.Movie
+import com.vadlevente.bingebot.core.model.Item.Movie
 import com.vadlevente.bingebot.core.util.Constants.QUERY_MINIMUM_LENGTH
 import com.vadlevente.bingebot.core.viewModel.BaseViewModel
 import com.vadlevente.bingebot.core.viewModel.State
 import com.vadlevente.bingebot.search.SearchMovieViewModel.ViewState
 import com.vadlevente.bingebot.search.usecase.GetSearchResultUseCase
-import com.vadlevente.bingebot.search.usecase.SearchMovieUseCase
-import com.vadlevente.bingebot.search.usecase.SearchMovieUseCaseParams
+import com.vadlevente.bingebot.search.usecase.SearchItemUseCase
+import com.vadlevente.bingebot.search.usecase.SearchItemUseCaseParams
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -25,8 +25,8 @@ import javax.inject.Inject
 class SearchMovieViewModel @Inject constructor(
     navigationEventChannel: NavigationEventChannel,
     toastEventChannel: ToastEventChannel,
-    private val getSearchResultUseCase: GetSearchResultUseCase,
-    private val searchMovieUseCase: SearchMovieUseCase,
+    private val getSearchResultUseCase: GetSearchResultUseCase<Movie>,
+    private val searchItemUseCase: SearchItemUseCase<Movie>,
     private val bottomSheetEventChannel: BottomSheetEventChannel,
 ) : BaseViewModel<ViewState>(
     navigationEventChannel, toastEventChannel
@@ -53,8 +53,8 @@ class SearchMovieViewModel @Inject constructor(
             )
         }
         if (query.length < QUERY_MINIMUM_LENGTH) return
-        searchMovieUseCase.execute(
-            SearchMovieUseCaseParams(query)
+        searchItemUseCase.execute(
+            SearchItemUseCaseParams(query)
         ).onStart()
     }
 

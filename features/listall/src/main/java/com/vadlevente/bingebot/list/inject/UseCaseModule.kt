@@ -1,14 +1,14 @@
 package com.vadlevente.bingebot.list.inject
 
-import com.vadlevente.bingebot.core.model.Movie
+import com.vadlevente.bingebot.core.model.Item.Movie
+import com.vadlevente.bingebot.list.domain.usecase.GetItemFiltersUseCase
+import com.vadlevente.bingebot.list.domain.usecase.GetItemsUseCase
 import com.vadlevente.bingebot.list.domain.usecase.ItemListUseCases
-import com.vadlevente.bingebot.list.domain.usecase.movie.GetMovieFiltersUseCase
-import com.vadlevente.bingebot.list.domain.usecase.movie.GetMoviesUseCase
-import com.vadlevente.bingebot.list.domain.usecase.movie.SetIsWatchedMovieFilterUseCase
-import com.vadlevente.bingebot.list.domain.usecase.movie.SetQueryMovieFilterUseCase
-import com.vadlevente.bingebot.list.domain.usecase.movie.SetSelectedMovieGenresUseCase
-import com.vadlevente.bingebot.list.domain.usecase.movie.UpdateMovieWatchListsUseCase
-import com.vadlevente.bingebot.list.domain.usecase.movie.UpdateMoviesUseCase
+import com.vadlevente.bingebot.list.domain.usecase.SetIsWatchedFilterUseCase
+import com.vadlevente.bingebot.list.domain.usecase.SetQueryFilterUseCase
+import com.vadlevente.bingebot.list.domain.usecase.SetSelectedGenresUseCase
+import com.vadlevente.bingebot.list.domain.usecase.UpdateItemsUseCase
+import com.vadlevente.bingebot.list.domain.usecase.UpdateWatchListsUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,13 +23,13 @@ object UseCaseModule {
     @Singleton
     @Provides
     fun provideMovieListUseCases(
-        getItemsUseCase: GetMoviesUseCase,
-        getFiltersUseCase: GetMovieFiltersUseCase,
-        setIsWatchedFilterUseCase: SetIsWatchedMovieFilterUseCase,
-        setSelectedGenresUseCase: SetSelectedMovieGenresUseCase,
-        setQueryFilterUseCase: SetQueryMovieFilterUseCase,
-        updateItemsUseCase: UpdateMoviesUseCase,
-        updateWatchListsUseCase: UpdateMovieWatchListsUseCase,
+        getItemsUseCase: GetItemsUseCase<Movie>,
+        getFiltersUseCase: GetItemFiltersUseCase<Movie>,
+        setIsWatchedFilterUseCase: SetIsWatchedFilterUseCase,
+        setSelectedGenresUseCase: SetSelectedGenresUseCase,
+        setQueryFilterUseCase: SetQueryFilterUseCase,
+        updateItemsUseCase: UpdateItemsUseCase<Movie>,
+        updateWatchListsUseCase: UpdateWatchListsUseCase<Movie>,
     ): ItemListUseCases<Movie> = ItemListUseCases(
         getItemsUseCase,
         getFiltersUseCase,

@@ -5,34 +5,34 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.vadlevente.bingebot.core.model.Movie
+import com.vadlevente.bingebot.core.model.Item.Movie
 import kotlinx.coroutines.flow.Flow
 import java.util.Date
 
 @Dao
-interface MovieDao {
+interface MovieDao : ItemDao<Movie> {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertMovie(movie: Movie)
+    override suspend fun insertItem(item: Movie)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertMovies(movies: List<Movie>)
+    override suspend fun insertItems(items: List<Movie>)
 
     @Delete
-    suspend fun deleteMovie(movie: Movie)
+    override suspend fun deleteItem(item: Movie)
 
-    @Query("DELETE from movie WHERE id = :movieId")
-    fun deleteMovie(movieId: Int)
+    @Query("DELETE from movie WHERE id = :itemId")
+    override suspend fun deleteItem(itemId: Int)
 
     @Query("SELECT * from movie")
-    fun getAllMovies(): Flow<List<Movie>>
+    override fun getAllItems(): Flow<List<Movie>>
 
-    @Query("SELECT * from movie WHERE id in (:movieIds)")
-    fun getMovies(movieIds: List<Int>): Flow<List<Movie>>
+    @Query("SELECT * from movie WHERE id in (:itemIds)")
+    override fun getItems(itemIds: List<Int>): Flow<List<Movie>>
 
     @Query("SELECT * from movie WHERE localeCode != :localeCode")
-    fun getAllIncorrectlyLocalizedMovies(localeCode: String): Flow<List<Movie>>
+    override fun getAllIncorrectlyLocalizedItems(localeCode: String): Flow<List<Movie>>
 
-    @Query("UPDATE movie SET watchedDate = :watchedDate WHERE id = :movieId")
-    suspend fun setMovieWatchedDate(movieId: Int, watchedDate: Date?)
+    @Query("UPDATE movie SET watchedDate = :watchedDate WHERE id = :itemId")
+    override suspend fun setItemWatchedDate(itemId: Int, watchedDate: Date?)
 
 }

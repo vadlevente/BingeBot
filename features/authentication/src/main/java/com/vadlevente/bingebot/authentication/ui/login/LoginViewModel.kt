@@ -44,7 +44,7 @@ class LoginViewModel @Inject constructor(
             viewState.value.password,
         )
         ).onValue {
-            navigateTo(NavDestination.LIST_MOVIE)
+            navigateTo(NavDestination.DASHBOARD)
         }
     }
 

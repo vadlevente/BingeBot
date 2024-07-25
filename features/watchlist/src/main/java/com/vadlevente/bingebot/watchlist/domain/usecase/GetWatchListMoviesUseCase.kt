@@ -1,29 +1,29 @@
 package com.vadlevente.bingebot.watchlist.domain.usecase
 
 import com.vadlevente.bingebot.core.data.local.datastore.PreferencesDataSource
-import com.vadlevente.bingebot.core.data.repository.MovieRepository
+import com.vadlevente.bingebot.core.data.repository.ItemRepository
 import com.vadlevente.bingebot.core.model.ApiConfiguration
 import com.vadlevente.bingebot.core.model.DisplayedItem
-import com.vadlevente.bingebot.core.model.Movie
+import com.vadlevente.bingebot.core.model.Item
 import com.vadlevente.bingebot.core.ui.BaseUseCase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-data class GetWatchListMoviesUseCaseParams(
+data class GetWatchListItemsUseCaseParams(
     val watchListId: String,
     val query: String? = null,
 )
 
-class GetWatchListMoviesUseCase @Inject constructor(
-    private val movieRepository: MovieRepository,
+class GetWatchListMoviesUseCase <T : Item> @Inject constructor(
+    private val itemRepository: ItemRepository<T>,
     private val preferencesDataSource: PreferencesDataSource,
-) : BaseUseCase<GetWatchListMoviesUseCaseParams, List<DisplayedItem<Movie>>> {
+) : BaseUseCase<GetWatchListItemsUseCaseParams, List<DisplayedItem<T>>> {
 
-    override fun execute(params: GetWatchListMoviesUseCaseParams): Flow<List<DisplayedItem<Movie>>> =
+    override fun execute(params: GetWatchListItemsUseCaseParams): Flow<List<DisplayedItem<T>>> =
         combine(
-            movieRepository.getWatchListMovies(params.watchListId),
+            itemRepository.getWatchListItems(params.watchListId),
             preferencesDataSource.apiConfiguration,
             ::Pair,
         ).map { (movies, configuration) ->
@@ -45,8 +45,8 @@ class GetWatchListMoviesUseCase @Inject constructor(
 
     private fun getThumbnailUrl(
         configuration: ApiConfiguration,
-        movie: Movie,
-    ) = movie.posterPath?.let {
+        item: T,
+    ) = item.posterPath?.let {
         "${configuration.imageConfiguration.thumbnailBaseUrl}${it}"
     }
 

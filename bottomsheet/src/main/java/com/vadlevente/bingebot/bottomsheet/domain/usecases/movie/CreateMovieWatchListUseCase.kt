@@ -1,18 +1,22 @@
 package com.vadlevente.bingebot.bottomsheet.domain.usecases.movie
 
-import com.vadlevente.bingebot.bottomsheet.domain.usecases.CreateWatchListUseCase
-import com.vadlevente.bingebot.bottomsheet.domain.usecases.CreateWatchListUseCaseParams
-import com.vadlevente.bingebot.core.data.repository.MovieRepository
+import com.vadlevente.bingebot.core.data.repository.ItemRepository
+import com.vadlevente.bingebot.core.model.Item
+import com.vadlevente.bingebot.core.ui.BaseUseCase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class CreateMovieWatchListUseCase @Inject constructor(
-    private val movieRepository: MovieRepository,
-) : CreateWatchListUseCase {
+data class CreateWatchListUseCaseParams(
+    val title: String,
+)
+
+class CreateMovieWatchListUseCase <T : Item> @Inject constructor(
+    private val itemRepository: ItemRepository<T>,
+) : BaseUseCase<CreateWatchListUseCaseParams, String> {
 
     override fun execute(params: CreateWatchListUseCaseParams): Flow<String> = flow {
-        val watchListId = movieRepository.createWatchList(params.title)
+        val watchListId = itemRepository.createWatchList(params.title)
         emit(watchListId)
     }
 

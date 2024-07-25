@@ -2,14 +2,14 @@ package com.vadlevente.bingebot.bottomsheet.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import com.vadlevente.bingebot.bottomsheet.R
-import com.vadlevente.bingebot.bottomsheet.domain.usecases.AddItemToWatchListUseCaseParams
-import com.vadlevente.bingebot.bottomsheet.domain.usecases.CreateWatchListUseCaseParams
-import com.vadlevente.bingebot.bottomsheet.domain.usecases.GetWatchListsUseCaseParams
-import com.vadlevente.bingebot.bottomsheet.domain.usecases.SaveItemUseCaseParams
-import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.AddMovieToWatchListUseCase
+import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.AddItemToWatchListUseCase
+import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.AddItemToWatchListUseCaseParams
 import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.CreateMovieWatchListUseCase
+import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.CreateWatchListUseCaseParams
 import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.GetMovieWatchListsUseCase
-import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.SaveMovieUseCase
+import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.GetWatchListsUseCaseParams
+import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.SaveItemUseCase
+import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.SaveItemUseCaseParams
 import com.vadlevente.bingebot.bottomsheet.viewmodel.AddMovieToWatchListBottomSheetViewModel.ViewState
 import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEvent.ShowAddItemToWatchListBottomSheet
 import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEventChannel
@@ -18,6 +18,7 @@ import com.vadlevente.bingebot.core.events.dialog.DialogEventChannel
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastType.INFO
+import com.vadlevente.bingebot.core.model.Item.Movie
 import com.vadlevente.bingebot.core.model.WatchList
 import com.vadlevente.bingebot.core.stringOf
 import com.vadlevente.bingebot.core.viewModel.BaseViewModel
@@ -41,11 +42,11 @@ class AddMovieToWatchListBottomSheetViewModel @Inject constructor(
     navigationEventChannel: NavigationEventChannel,
     toastEventChannel: ToastEventChannel,
     bottomSheetEventChannel: BottomSheetEventChannel,
-    getWatchListsUseCase: GetMovieWatchListsUseCase,
+    getWatchListsUseCase: GetMovieWatchListsUseCase<Movie>,
     private val dialogEventChannel: DialogEventChannel,
-    private val createWatchListUseCase: CreateMovieWatchListUseCase,
-    private val addMovieToWatchListUseCase: AddMovieToWatchListUseCase,
-    private val saveMovieUseCase: SaveMovieUseCase,
+    private val createWatchListUseCase: CreateMovieWatchListUseCase<Movie>,
+    private val addItemToWatchListUseCase: AddItemToWatchListUseCase<Movie>,
+    private val saveItemUseCase: SaveItemUseCase<Movie>,
 ) : BaseViewModel<ViewState>(
     navigationEventChannel, toastEventChannel
 ) {
@@ -89,9 +90,9 @@ class AddMovieToWatchListBottomSheetViewModel @Inject constructor(
         viewState.value.event?.let { event ->
             val startFlow = if (event.alreadySaved) {
                 flowOf(Unit)
-            } else saveMovieUseCase.execute(SaveItemUseCaseParams(event.movie.item))
+            } else saveItemUseCase.execute(SaveItemUseCaseParams(event.movie.item))
             startFlow.flatMapConcat {
-                addMovieToWatchListUseCase.execute(
+                addItemToWatchListUseCase.execute(
                     AddItemToWatchListUseCaseParams(
                         event.movie.item.id, watchListId,
                     )

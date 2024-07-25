@@ -2,11 +2,11 @@ package com.vadlevente.bingebot.bottomsheet.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import com.vadlevente.bingebot.bottomsheet.R
-import com.vadlevente.bingebot.bottomsheet.domain.usecases.DeleteItemUseCaseParams
 import com.vadlevente.bingebot.bottomsheet.domain.usecases.ItemBottomSheetUseCases
-import com.vadlevente.bingebot.bottomsheet.domain.usecases.RemoveItemFromWatchListUseCaseParams
-import com.vadlevente.bingebot.bottomsheet.domain.usecases.SaveItemUseCaseParams
-import com.vadlevente.bingebot.bottomsheet.domain.usecases.SetItemSeenUseCaseParams
+import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.DeleteItemUseCaseParams
+import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.RemoveItemFromWatchListUseCaseParams
+import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.SaveItemUseCaseParams
+import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.SetItemSeenUseCaseParams
 import com.vadlevente.bingebot.bottomsheet.viewmodel.ItemBottomSheetViewModel.ViewState
 import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEvent.ShowItemBottomSheet
 import com.vadlevente.bingebot.core.events.dialog.DialogEvent.ShowDialog
@@ -51,7 +51,7 @@ abstract class ItemBottomSheetViewModel <T: Item> (
         }
     }
 
-    fun onSaveItem(item: Item) {
+    fun onSaveItem(item: T) {
         useCases.saveItemUseCase.execute(SaveItemUseCaseParams(item))
             .onValue {
                 showToast(

@@ -2,10 +2,10 @@ package com.vadlevente.bingebot.bottomsheet.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import com.vadlevente.bingebot.bottomsheet.R
-import com.vadlevente.bingebot.bottomsheet.domain.usecases.CreateWatchListUseCaseParams
-import com.vadlevente.bingebot.bottomsheet.domain.usecases.GetWatchListsUseCaseParams
 import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.CreateMovieWatchListUseCase
+import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.CreateWatchListUseCaseParams
 import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.GetMovieWatchListsUseCase
+import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.GetWatchListsUseCaseParams
 import com.vadlevente.bingebot.bottomsheet.viewmodel.WatchListsBottomSheetViewModel.ViewState
 import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEvent.ShowWatchListsBottomSheet
 import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEventChannel
@@ -13,6 +13,7 @@ import com.vadlevente.bingebot.core.events.dialog.DialogEvent.ShowTextFieldDialo
 import com.vadlevente.bingebot.core.events.dialog.DialogEventChannel
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
+import com.vadlevente.bingebot.core.model.Item.Movie
 import com.vadlevente.bingebot.core.model.NavDestination.WATCH_LIST
 import com.vadlevente.bingebot.core.model.WatchList
 import com.vadlevente.bingebot.core.stringOf
@@ -34,9 +35,9 @@ class WatchListsBottomSheetViewModel @Inject constructor(
     navigationEventChannel: NavigationEventChannel,
     toastEventChannel: ToastEventChannel,
     bottomSheetEventChannel: BottomSheetEventChannel,
-    getWatchListsUseCase: GetMovieWatchListsUseCase,
+    getWatchListsUseCase: GetMovieWatchListsUseCase<Movie>,
     private val dialogEventChannel: DialogEventChannel,
-    private val createWatchListUseCase: CreateMovieWatchListUseCase,
+    private val createWatchListUseCase: CreateMovieWatchListUseCase<Movie>,
 ) : BaseViewModel<ViewState>(
     navigationEventChannel, toastEventChannel
 ) {
