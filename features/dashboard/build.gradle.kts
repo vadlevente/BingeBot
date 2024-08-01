@@ -6,4 +6,5 @@ dependencies{
     "implementation"(project(Modules.ui))
     "implementation"(project(Modules.resources))
     "implementation"(project(Modules.listAll))
+    "implementation"(project(Modules.settings))
 }

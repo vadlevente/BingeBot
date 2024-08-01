@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_pageTitle">Settings</string>
+    <string name="settings_selectLanguageTitle">Select language</string>
+    <string name="settings_logout">Sign out</string>
+    <string name="settings_selectLanguageLabel">Application language</string>
+    <string name="logoutDialog_title">Sign out</string>
+    <string name="logoutDialog_description">Are you sure to sign out of the application?</string>
+</resources>

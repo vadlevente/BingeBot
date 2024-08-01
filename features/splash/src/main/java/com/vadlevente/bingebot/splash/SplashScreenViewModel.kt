@@ -1,4 +1,4 @@
-package com.vadlevente.bingebot.splash.ui
+package com.vadlevente.bingebot.splash
 
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel

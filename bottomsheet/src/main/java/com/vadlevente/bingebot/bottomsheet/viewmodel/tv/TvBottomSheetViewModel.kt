@@ -33,8 +33,8 @@ class TvBottomSheetViewModel @Inject constructor(
 
     override val stringResources = StringResources(
         saveSuccessfulToast = R.string.tvBottomSheet_saveSuccessful,
-        removeFromWatchListTitle = R.string.tvBottomSheet_removeMovieFromWatchListConfirmationTitle,
-        removeFromWatchListDescription = R.string.tvBottomSheet_removeMovieFromWatchListConfirmationDescription,
+        removeFromWatchListTitle = R.string.tvBottomSheet_removeItemFromWatchListConfirmationTitle,
+        removeFromWatchListDescription = R.string.tvBottomSheet_removeItemFromWatchListConfirmationDescription,
         deleteTitle = R.string.tvBottomSheet_deleteConfirmationTitle,
         deleteDescription = R.string.tvBottomSheet_deleteConfirmationDescription
     )

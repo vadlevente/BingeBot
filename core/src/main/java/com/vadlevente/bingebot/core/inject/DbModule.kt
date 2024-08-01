@@ -8,6 +8,7 @@ import com.vadlevente.bingebot.core.data.dao.TvDao
 import com.vadlevente.bingebot.core.data.dao.WatchListDao
 import com.vadlevente.bingebot.core.data.local.db.DbTypeConverters
 import com.vadlevente.bingebot.core.data.local.db.MovieDatabase
+import com.vadlevente.bingebot.core.util.Constants.DATABASE_NAME
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,7 +26,7 @@ object DbModule {
         typeConverters: DbTypeConverters,
     ): MovieDatabase =
         Room.databaseBuilder(application,
-            MovieDatabase::class.java, "movieDatabase.db")
+            MovieDatabase::class.java, DATABASE_NAME)
             .addTypeConverter(typeConverters)
             .fallbackToDestructiveMigration()
             .build()

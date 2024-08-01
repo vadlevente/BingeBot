@@ -16,5 +16,6 @@ sealed interface NavigationEvent {
     }
 
     object NavigateUp : NavigationEvent
+    object ExitApplication : NavigationEvent
 
 }

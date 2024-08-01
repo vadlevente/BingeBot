@@ -15,6 +15,7 @@ import com.vadlevente.bingebot.core.model.exception.BingeBotException
 import com.vadlevente.bingebot.core.model.exception.Reason.SESSION_EXPIRED
 import com.vadlevente.bingebot.core.model.exception.isBecauseOf
 import com.vadlevente.bingebot.core.stringOf
+import com.vadlevente.bingebot.resources.R.string
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

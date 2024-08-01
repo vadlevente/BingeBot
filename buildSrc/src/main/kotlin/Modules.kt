@@ -11,4 +11,5 @@ object Modules {
     const val watchlist = ":features:watchlist"
     const val movieDetails = ":features:moviedetails"
     const val dashboard = ":features:dashboard"
+    const val settings = ":features:settings"
 }

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="isWatchedFilter_trueLabel">Seen</string>
+    <string name="isWatchedFilter_falseLabel">Not seen</string>
+
+    <string name="movieList_pageTitle">Movies</string>
+    <string name="tvList_pageTitle">Series</string>
+
+</resources>

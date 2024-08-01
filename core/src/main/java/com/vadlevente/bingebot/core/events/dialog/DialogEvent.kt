@@ -10,7 +10,7 @@ sealed interface DialogEvent {
         val positiveButtonTitle: UIText?,
         val negativeButtonTitle: UIText? = null,
         val isCancelable: Boolean = true,
-        val onPositiveButtonClicked: () -> Unit = {},
+        val onPositiveButtonClicked: suspend () -> Unit = {},
         val onNegativeButtonClicked: () -> Unit = {},
     ) : DialogEvent
 

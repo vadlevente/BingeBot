@@ -21,4 +21,7 @@
 
     <string name="successfulDeleteToast">Sikeresen törölve</string>
 
+    <string name="exit_dialogTitle">Kilépés</string>
+    <string name="exit_dialogDesciption">Biztosan ki szeretne lépni az alkalmazásból?</string>
+
 </resources>

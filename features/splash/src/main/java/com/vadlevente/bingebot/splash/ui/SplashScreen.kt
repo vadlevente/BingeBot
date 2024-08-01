@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.vadlevente.bingebot.splash.SplashScreenViewModel
 import com.vadlevente.bingebot.ui.backgroundColor
 import com.vadlevente.bingebot.ui.progressColor
 

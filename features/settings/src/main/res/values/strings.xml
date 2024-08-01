@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_pageTitle">Beállítások</string>
+    <string name="settings_selectLanguageTitle">Nyelv módosítása</string>
+    <string name="settings_logout">Kijelentkezés</string>
+    <string name="settings_selectLanguageLabel">Alkalmazás nyelve</string>
+    <string name="logoutDialog_title">Kijelentkezés</string>
+    <string name="logoutDialog_description">Biztosan szeretne kijelentkezni az alkalmazásból?</string>
+</resources>

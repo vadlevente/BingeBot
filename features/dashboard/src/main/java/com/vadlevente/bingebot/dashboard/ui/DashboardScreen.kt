@@ -15,7 +15,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -32,6 +32,7 @@ import com.vadlevente.bingebot.core.model.NavDestination
 import com.vadlevente.bingebot.dashboard.R
 import com.vadlevente.bingebot.list.ui.MovieListScreen
 import com.vadlevente.bingebot.list.ui.TvListScreen
+import com.vadlevente.bingebot.settings.SettingsScreen
 import com.vadlevente.bingebot.ui.cardColor
 import com.vadlevente.bingebot.ui.darkNavItemColor
 import com.vadlevente.bingebot.ui.lightNavItemColor
@@ -60,7 +61,7 @@ fun DashboardScreen(
                 TvListScreen()
             }
             composable(NavDestination.SETTINGS.route) {
-                Text(text = "BEÁLLÍTÁSOK!!")
+                SettingsScreen()
             }
         }
     }
@@ -68,8 +69,17 @@ fun DashboardScreen(
 
 @Composable
 fun BottomNavigationBar(navController: NavController) {
-    var selectedTabIndex by rememberSaveable { mutableStateOf(0) }
-
+    var selectedTabIndex by rememberSaveable { mutableIntStateOf(0) }
+    navController.addOnDestinationChangedListener { _, destination, _ ->
+        when (destination.route) {
+            NavDestination.LIST_MOVIE.route -> 0
+            NavDestination.LIST_TV.route -> 1
+            NavDestination.SETTINGS.route -> 2
+            else -> null
+        }?.let { newIndex ->
+            selectedTabIndex = newIndex
+        }
+    }
     NavigationBar(
         containerColor = cardColor,
         modifier = Modifier.graphicsLayer {
@@ -83,8 +93,9 @@ fun BottomNavigationBar(navController: NavController) {
             title = stringResource(id = R.string.tab_title_movieList),
             icon = Icons.Filled.Movie
         ) {
-            selectedTabIndex = 0
-            navController.navigate(NavDestination.LIST_MOVIE.route)
+            navController.navigate(NavDestination.LIST_MOVIE.route) {
+                launchSingleTop = true
+            }
         }
         BottomNavigationItem(
             scope = this,
@@ -92,8 +103,9 @@ fun BottomNavigationBar(navController: NavController) {
             title = stringResource(id = R.string.tab_title_tvList),
             icon = Icons.Filled.Tv
         ) {
-            selectedTabIndex = 1
-            navController.navigate(NavDestination.LIST_TV.route)
+            navController.navigate(NavDestination.LIST_TV.route) {
+                launchSingleTop = true
+            }
         }
         BottomNavigationItem(
             scope = this,
@@ -101,8 +113,9 @@ fun BottomNavigationBar(navController: NavController) {
             title = stringResource(id = R.string.tab_title_settings),
             icon = Icons.Filled.Settings
         ) {
-            selectedTabIndex = 2
-            navController.navigate(NavDestination.SETTINGS.route)
+            navController.navigate(NavDestination.SETTINGS.route) {
+                launchSingleTop = true
+            }
         }
     }
 }

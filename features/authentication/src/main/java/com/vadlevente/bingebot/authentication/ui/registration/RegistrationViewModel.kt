@@ -4,6 +4,7 @@ import com.vadlevente.bingebot.authentication.R
 import com.vadlevente.bingebot.authentication.domain.usecase.RegistrationUseCase
 import com.vadlevente.bingebot.authentication.domain.usecase.RegistrationUseCaseParams
 import com.vadlevente.bingebot.authentication.ui.registration.RegistrationViewModel.ViewState
+import com.vadlevente.bingebot.core.delegates.AppCloserDelegate
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastType.INFO
@@ -23,9 +24,10 @@ class RegistrationViewModel @Inject constructor(
     navigationEventChannel: NavigationEventChannel,
     toastEventChannel: ToastEventChannel,
     private val registrationUseCase: RegistrationUseCase,
+    private val appCloserDelegate: AppCloserDelegate,
 ) : BaseViewModel<ViewState>(
     navigationEventChannel, toastEventChannel
-) {
+), AppCloserDelegate by appCloserDelegate {
 
     private val viewState = MutableStateFlow(ViewState())
     override val state: StateFlow<ViewState> = viewState

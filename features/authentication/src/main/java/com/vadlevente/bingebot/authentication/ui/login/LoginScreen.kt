@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -19,6 +20,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
@@ -92,6 +95,10 @@ fun LoginScreenComponent(
                 label = stringOf(R.string.loginEmailLabel),
                 hint = stringOf(R.string.loginEmailLabel),
                 onValueChange = onEmailChanged,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Email,
+                    imeAction = ImeAction.Next,
+                ),
             )
             Spacer(modifier = Modifier.fillMaxHeight(.2f))
             BBOutlinedTextField(
@@ -106,7 +113,10 @@ fun LoginScreenComponent(
                     PasswordTrailingIcon(isPasswordVisible = passwordVisible) {
                         passwordVisible = !passwordVisible
                     }
-                }
+                },
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Done,
+                ),
             )
             Spacer(modifier = Modifier.fillMaxHeight(.2f))
             BBOutlinedButton(

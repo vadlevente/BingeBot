@@ -3,6 +3,7 @@ package com.vadlevente.bingebot.authentication.ui.login
 import com.vadlevente.bingebot.authentication.domain.usecase.LoginUseCase
 import com.vadlevente.bingebot.authentication.domain.usecase.LoginUseCaseParams
 import com.vadlevente.bingebot.authentication.ui.login.LoginViewModel.ViewState
+import com.vadlevente.bingebot.core.delegates.AppCloserDelegate
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
 import com.vadlevente.bingebot.core.model.NavDestination
@@ -20,9 +21,10 @@ class LoginViewModel @Inject constructor(
     navigationEventChannel: NavigationEventChannel,
     toastEventChannel: ToastEventChannel,
     private val loginUseCase: LoginUseCase,
+    private val appCloserDelegate: AppCloserDelegate,
 ) : BaseViewModel<ViewState>(
     navigationEventChannel, toastEventChannel
-) {
+), AppCloserDelegate by appCloserDelegate {
 
     private val viewState = MutableStateFlow(ViewState())
     override val state: StateFlow<ViewState> = viewState

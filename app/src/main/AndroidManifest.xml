@@ -12,11 +12,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BingeBot"
+        android:localeConfig="@xml/locales_config"
         tools:targetApi="31">
         <activity
             android:name="com.vadlevente.bingebot.app.MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
+            android:windowSoftInputMode="adjustResize"
+            android:configChanges="locale|colorMode|layoutDirection"
             android:theme="@style/Theme.BingeBot">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,6 +26,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service
+            android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"
+            android:enabled="false"
+            android:exported="false">
+            <meta-data
+                android:name="autoStoreLocales"
+                android:value="true" />
+        </service>
     </application>
 
 </manifest>

@@ -42,6 +42,11 @@ android {
             kotlinCompilerExtensionVersion = Config.composeCompilerExtensionVersion
         }
     }
+    bundle {
+        language {
+            enableSplit = false
+        }
+    }
 }
 
 dependencies {
@@ -56,6 +61,7 @@ dependencies {
     implementation(project(Modules.resources))
     implementation(project(Modules.dashboard))
     implementation(project(Modules.bottomSheet))
+    implementation(project(Modules.settings))
 
 // Core
     implementation(Kotlin.kotlinStdLib)

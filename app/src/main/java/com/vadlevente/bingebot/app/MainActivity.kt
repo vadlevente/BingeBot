@@ -3,9 +3,12 @@ package com.vadlevente.bingebot.app
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import com.vadlevente.bingebot.core.events.navigation.NavigationEvent.ExitApplication
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.ui.BingeBotTheme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -21,6 +24,13 @@ class MainActivity : AppCompatActivity() {
                 NavigationHost(
                     navigationEventChannel = navigationEventChannel,
                 )
+            }
+        }
+        lifecycleScope.launch {
+            navigationEventChannel.events.collect {
+                if (it is ExitApplication) {
+                    finish()
+                }
             }
         }
     }

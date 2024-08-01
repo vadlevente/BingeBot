@@ -124,7 +124,8 @@ private fun CollectEvents(
             navigationEventChannel.events.collectLatest { event ->
                 when (event) {
                     is NavigateTo -> navigate(navController, event.route)
-                    NavigateUp -> navController.navigateUp()
+                    NavigateUp -> navController.popBackStack()
+                    else -> {}
                 }
             }
         }
@@ -136,34 +137,18 @@ private fun navigate(
     route: String,
 ) {
     when (route) {
-        NavDestination.SPLASH.route -> {
+        NavDestination.SPLASH.route,
+        NavDestination.REGISTRATION.route,
+        NavDestination.LOGIN.route,
+        NavDestination.DASHBOARD.route -> {
+            navController.popBackStack(NavDestination.SPLASH.route, true)
             navController.navigate(route) {
                 popUpTo(NavDestination.SPLASH.route) {
                     inclusive = true
                 }
+                launchSingleTop = true
             }
         }
-
-        NavDestination.REGISTRATION.route,
-        NavDestination.LOGIN.route,
-        -> {
-            if (
-                navController.currentBackStackEntry?.destination?.route in listOf(
-                    NavDestination.SPLASH.route,
-                    NavDestination.REGISTRATION.route,
-                    NavDestination.LOGIN.route,
-                )
-            ) {
-                navController.popBackStack()
-            }
-            navController.navigate(route)
-        }
-
-        NavDestination.LIST_MOVIE.route -> {
-            navController.popBackStack()
-            navController.navigate(route)
-        }
-
         else -> navController.navigate(route)
     }
 }

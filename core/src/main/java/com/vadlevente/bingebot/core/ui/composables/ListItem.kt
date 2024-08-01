@@ -114,7 +114,7 @@ fun ListItem(
                         style = listItemSubtitle,
                     )
                 }
-                Row {
+                Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         text = rating,
                         style = listItemSubtitle,

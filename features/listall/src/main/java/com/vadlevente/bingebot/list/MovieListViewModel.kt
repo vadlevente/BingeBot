@@ -1,6 +1,7 @@
 package com.vadlevente.bingebot.list
 
 import androidx.lifecycle.viewModelScope
+import com.vadlevente.bingebot.core.delegates.AppCloserDelegate
 import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEvent.ShowItemBottomSheet.ShowMovieBottomSheet
 import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEvent.ShowWatchListsBottomSheet.ShowMovieWatchListsBottomSheet
 import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEventChannel
@@ -19,9 +20,10 @@ class MovieListViewModel @Inject constructor(
     toastEventChannel: ToastEventChannel,
     useCases: ItemListUseCases<Movie>,
     private val bottomSheetEventChannel: BottomSheetEventChannel,
+    private val appCloserDelegate: AppCloserDelegate,
 ) : ItemListViewModel<Movie>(
     navigationEventChannel, toastEventChannel, useCases
-) {
+), AppCloserDelegate by appCloserDelegate {
 
     override fun onNavigateToSearch() {
         navigateTo(SEARCH_MOVIE)

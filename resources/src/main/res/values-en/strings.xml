@@ -1,0 +1,26 @@
+<resources>
+    <string name="searchField_movieHint">Search movie</string>
+    <string name="searchField_tvHint">Search series</string>
+    <string name="emptyQueriedListDescription">No result found for this keyword</string>
+    <string name="emptyList_movie_Description">No movies found</string>
+    <string name="emptyList_tv_Description">No series found</string>
+
+    <string name="common_Ok">OK</string>
+    <string name="common_Yes">Yes</string>
+    <string name="common_No">No</string>
+    <string name="common_Cancel">Cancel</string>
+    <string name="common_Create">Create</string>
+
+    <string name="errorTitle">Error</string>
+    <string name="errorMessage_unknown">Unknown error</string>
+
+    <string name="exception_authenticationFailed">Login failed! Please, try again!</string>
+    <string name="exception_weakPassword">Password is too weak! Please try another one!</string>
+    <string name="exception_sessionExpired">Session expired, please log in again!</string>
+    <string name="exception_watchListAlreadyExists">A watchlist with the given name already exists!</string>
+
+    <string name="successfulDeleteToast">Deletion successful</string>
+
+    <string name="exit_dialogTitle">Exit</string>
+    <string name="exit_dialogDesciption">Are you sure to exit the application?</string>
+</resources>

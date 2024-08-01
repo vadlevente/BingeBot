@@ -1,0 +1,4 @@
+<resources>
+    <string name="deleteWatchList_confirm_title">Delete watchlist</string>
+    <string name="deleteWatchList_confirm_description">Are you sure to delete the watchlist?</string>
+</resources>

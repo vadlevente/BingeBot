@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="loginEmailLabel">E-mail address</string>
+    <string name="loginPasswordLabel">Password</string>
+    <string name="loginSubmitButtonTitle">Login</string>
+    <string name="loginNavigateToRegistrationTitle">Not registered? Try it here!</string>
+    <string name="loginTitle">Please provide the login data!</string>
+
+    <string name="registrationEmailLabel">E-mail address</string>
+    <string name="registrationPasswordLabel">Password</string>
+    <string name="registrationConfirmPasswordLabel">Password again</string>
+    <string name="registrationSubmitButtonTitle">Registration</string>
+    <string name="registrationPasswordsDoNotMatchLabel">The passwords do not match</string>
+    <string name="registrationTitle">Please provide the registration data!</string>
+    <string name="registrationNavigateToLoginTitle">Log in with existing user</string>
+
+    <string name="registrationSuccessful">Registration successful</string>
+
+</resources>

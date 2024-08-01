@@ -21,6 +21,7 @@ interface AuthenticationService {
     suspend fun login(email: String, password: String)
     suspend fun register(email: String, password: String): String
     suspend fun isProfileSignedIn(profileId: String): Boolean
+    suspend fun logout()
 }
 
 class AuthenticationServiceImpl @Inject constructor(
@@ -64,6 +65,10 @@ class AuthenticationServiceImpl @Inject constructor(
                     }
                 }
         }
+    }
+
+    override suspend fun logout() {
+        firebaseAuth.get().signOut()
     }
 
     private suspend fun saveCurrentUserId() {

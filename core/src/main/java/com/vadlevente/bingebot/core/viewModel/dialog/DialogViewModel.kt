@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -50,7 +51,9 @@ class DialogViewModel @Inject constructor(
 
     fun onPositiveClicked() {
         viewState.value.event?.let {
-            it.onPositiveButtonClicked()
+            viewModelScope.launch {
+                it.onPositiveButtonClicked()
+            }
         }
         onDismiss()
     }

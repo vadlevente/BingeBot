@@ -33,8 +33,8 @@ class MovieBottomSheetViewModel @Inject constructor(
 
     override val stringResources = StringResources(
         saveSuccessfulToast = string.movieBottomSheet_saveSuccessful,
-        removeFromWatchListTitle = string.movieBottomSheet_removeMovieFromWatchListConfirmationTitle,
-        removeFromWatchListDescription = string.movieBottomSheet_removeMovieFromWatchListConfirmationDescription,
+        removeFromWatchListTitle = string.movieBottomSheet_removeItemFromWatchListConfirmationTitle,
+        removeFromWatchListDescription = string.movieBottomSheet_removeItemFromWatchListConfirmationDescription,
         deleteTitle = string.movieBottomSheet_deleteConfirmationTitle,
         deleteDescription = string.movieBottomSheet_deleteConfirmationDescription
     )

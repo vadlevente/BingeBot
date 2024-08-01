@@ -64,8 +64,8 @@ class AddMovieToWatchListBottomSheetViewModel @Inject constructor(
         showToast(
             message = stringOf(
                 if (isNewlyAdded) {
-                    R.string.addItemToWatchListBottomSheet_movieAddedToWatchList
-                } else R.string.addMovieToWatchListBottomSheet_movieAlreadyOnWatchList
+                    R.string.addItemToWatchListBottomSheet_itemAddedToWatchList
+                } else R.string.addMovieToWatchListBottomSheet_itemAlreadyOnWatchList
             ),
             type = INFO,
         )

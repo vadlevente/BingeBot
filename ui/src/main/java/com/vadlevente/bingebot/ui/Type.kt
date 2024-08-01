@@ -163,3 +163,19 @@ val navigationBarItemTitleUnselected = TextStyle(
     textAlign = TextAlign.Center,
     color = darkNavItemColor,
 )
+
+val settingsLabel = TextStyle(
+    fontFamily = fontFamily,
+    fontWeight = FontWeight.Bold,
+    fontSize = 19.sp,
+    letterSpacing = 0.6.sp,
+    color = lightTextColor,
+)
+
+val settingsValue = TextStyle(
+    fontFamily = fontFamily,
+    fontWeight = FontWeight.Normal,
+    fontSize = 19.sp,
+    letterSpacing = 0.6.sp,
+    color = lightTextColor,
+)

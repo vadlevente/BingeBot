@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="itemBottomSheet_addToWatchList">Add to watchlist</string>
+    <string name="itemBottomSheet_removeFromWatchList">Remove from watchlist</string>
+    <string name="itemBottomSheet_delete">Delete</string>
+    <string name="itemBottomSheet_seen">Set watch date</string>
+    <string name="itemBottomSheet_revertSeen">Reset watch date</string>
+    <string name="itemBottomSheet_openDetails">Open details</string>
+    <string name="itemBottomSheet_revertWatchedDateSuccessful">Watch date removed</string>
+    <string name="itemBottomSheet_setWatchedDateSuccessful">Watch date added</string>
+    <string name="itemBottomSheet_addWatchedDateTitle">Pick watch date</string>
+
+    <string name="movieBottomSheet_save">Save movie</string>
+    <string name="movieBottomSheet_deleteConfirmationTitle">Delete movie</string>
+    <string name="movieBottomSheet_deleteConfirmationDescription">Are you sure to delete the movie? It will be removed from the watchlists as well.</string>
+    <string name="movieBottomSheet_saveSuccessful">Added to movies to watch</string>
+    <string name="movieBottomSheet_removeItemFromWatchListConfirmationTitle">Remove movie from watchlist</string>
+    <string name="movieBottomSheet_removeItemFromWatchListConfirmationDescription">Are you sure to remove the movie from the watchlist?</string>
+
+    <string name="tvBottomSheet_save">Save series</string>
+    <string name="tvBottomSheet_deleteConfirmationTitle">Delete series</string>
+    <string name="tvBottomSheet_deleteConfirmationDescription">Are you sure to delete the series? It will be removed from the watchlists as well.</string>
+    <string name="tvBottomSheet_saveSuccessful">Added to series to watch</string>
+    <string name="tvBottomSheet_removeItemFromWatchListConfirmationTitle">Remove series from watchlist</string>
+    <string name="tvBottomSheet_removeItemFromWatchListConfirmationDescription">Are you sure to remove the series from the watchlist?</string>
+
+    <string name="addItemToWatchListBottomSheet_createWatchListDialogTitle">Create watchlist</string>
+    <string name="addItemToWatchListBottomSheet_createWatchListDialogDescription">Please provide a name for the watchlist</string>
+    <string name="addItemToWatchListBottomSheet_itemAddedToWatchList">Added to watchlist</string>
+    <string name="addItemToWatchListBottomSheet_createWatchListLabel">Create watchlist</string>
+
+    <string name="addMovieToWatchListBottomSheet_itemAlreadyOnWatchList">The movie is already on this watchlist!</string>
+    <string name="addTvToWatchListBottomSheet_itemAlreadyOnWatchList">The series is already on this watchlist!</string>
+
+    <string name="movieWatchListBottomSheet_title">Movies to watch</string>
+
+    <string name="tvWatchListBottomSheet_title">Series to watch</string>
+
+</resources>
