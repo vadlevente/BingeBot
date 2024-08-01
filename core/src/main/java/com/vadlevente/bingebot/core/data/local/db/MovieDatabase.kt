@@ -5,14 +5,17 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.vadlevente.bingebot.core.data.dao.GenreDao
 import com.vadlevente.bingebot.core.data.dao.MovieDao
+import com.vadlevente.bingebot.core.data.dao.TvDao
 import com.vadlevente.bingebot.core.data.dao.WatchListDao
 import com.vadlevente.bingebot.core.model.Genre
 import com.vadlevente.bingebot.core.model.Item.Movie
+import com.vadlevente.bingebot.core.model.Item.Tv
 import com.vadlevente.bingebot.core.model.WatchList
 
 @Database(
     entities = [
         Movie::class,
+        Tv::class,
         Genre::class,
         WatchList::class,
     ],
@@ -21,6 +24,7 @@ import com.vadlevente.bingebot.core.model.WatchList
 @TypeConverters(DbTypeConverters::class)
 abstract class MovieDatabase : RoomDatabase() {
     abstract fun movieDao(): MovieDao
+    abstract fun tvDao(): TvDao
     abstract fun genreDao(): GenreDao
     abstract fun watchListDao(): WatchListDao
 }

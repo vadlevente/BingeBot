@@ -1,6 +1,7 @@
 package com.vadlevente.bingebot.list.inject
 
 import com.vadlevente.bingebot.core.model.Item.Movie
+import com.vadlevente.bingebot.core.model.Item.Tv
 import com.vadlevente.bingebot.list.domain.usecase.GetItemFiltersUseCase
 import com.vadlevente.bingebot.list.domain.usecase.GetItemsUseCase
 import com.vadlevente.bingebot.list.domain.usecase.ItemListUseCases
@@ -25,12 +26,32 @@ object UseCaseModule {
     fun provideMovieListUseCases(
         getItemsUseCase: GetItemsUseCase<Movie>,
         getFiltersUseCase: GetItemFiltersUseCase<Movie>,
-        setIsWatchedFilterUseCase: SetIsWatchedFilterUseCase,
-        setSelectedGenresUseCase: SetSelectedGenresUseCase,
-        setQueryFilterUseCase: SetQueryFilterUseCase,
+        setIsWatchedFilterUseCase: SetIsWatchedFilterUseCase<Movie>,
+        setSelectedGenresUseCase: SetSelectedGenresUseCase<Movie>,
+        setQueryFilterUseCase: SetQueryFilterUseCase<Movie>,
         updateItemsUseCase: UpdateItemsUseCase<Movie>,
         updateWatchListsUseCase: UpdateWatchListsUseCase<Movie>,
     ): ItemListUseCases<Movie> = ItemListUseCases(
+        getItemsUseCase,
+        getFiltersUseCase,
+        setIsWatchedFilterUseCase,
+        setSelectedGenresUseCase,
+        setQueryFilterUseCase,
+        updateItemsUseCase,
+        updateWatchListsUseCase,
+    )
+
+    @Singleton
+    @Provides
+    fun provideTvListUseCases(
+        getItemsUseCase: GetItemsUseCase<Tv>,
+        getFiltersUseCase: GetItemFiltersUseCase<Tv>,
+        setIsWatchedFilterUseCase: SetIsWatchedFilterUseCase<Tv>,
+        setSelectedGenresUseCase: SetSelectedGenresUseCase<Tv>,
+        setQueryFilterUseCase: SetQueryFilterUseCase<Tv>,
+        updateItemsUseCase: UpdateItemsUseCase<Tv>,
+        updateWatchListsUseCase: UpdateWatchListsUseCase<Tv>,
+    ): ItemListUseCases<Tv> = ItemListUseCases(
         getItemsUseCase,
         getFiltersUseCase,
         setIsWatchedFilterUseCase,

@@ -24,11 +24,16 @@
     <string name="tvBottomSheet_removeMovieFromWatchListConfirmationTitle">Sorozat eltávolítása</string>
     <string name="tvBottomSheet_removeMovieFromWatchListConfirmationDescription">Biztosan szeretné eltávolítnai a sorozatot a listáról?</string>
 
-    <string name="addMovieToWatchListBottomSheet_createWatchListDialogTitle">Lista létrehozása</string>
-    <string name="addMovieToWatchListBottomSheet_createWatchListDialogDescription">Kérjük, adja meg a létrehozni kívánt lista címét!</string>
-    <string name="addMovieToWatchListBottomSheet_movieAddedToWatchList">Sikeresen hozzáadva a listához!</string>
-    <string name="addMovieToWatchListBottomSheet_movieAlreadyOnWatchList">A film már szerepel a listán!</string>
-    <string name="addMovieToWatchListBottomSheet_createWatchListLabel">Új lista létrehozása</string>
+    <string name="addItemToWatchListBottomSheet_createWatchListDialogTitle">Lista létrehozása</string>
+    <string name="addItemToWatchListBottomSheet_createWatchListDialogDescription">Kérjük, adja meg a létrehozni kívánt lista címét!</string>
+    <string name="addItemToWatchListBottomSheet_movieAddedToWatchList">Sikeresen hozzáadva a listához!</string>
+    <string name="addItemToWatchListBottomSheet_createWatchListLabel">Új lista létrehozása</string>
 
-    <string name="watchListBottomSheet_title">Megnézendő filmek listája</string>
+    <string name="addMovieToWatchListBottomSheet_movieAlreadyOnWatchList">A film már szerepel a listán!</string>
+    <string name="addTvToWatchListBottomSheet_movieAlreadyOnWatchList">A sorozat már szerepel a listán!</string>
+
+    <string name="movieWatchListBottomSheet_title">Megnézendő filmek listája</string>
+
+    <string name="tvWatchListBottomSheet_title">Megnézendő sorozatok listája</string>
+
 </resources>

@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 class GetItemFiltersUseCase <T : Item> @Inject constructor(
     private val itemRepository: ItemRepository<T>,
-    private val selectedFiltersCacheDataSource: SelectedFiltersCacheDataSource,
+    private val selectedFiltersCacheDataSource: SelectedFiltersCacheDataSource<T>,
 ) : BaseUseCase<Unit, DisplayedFilters> {
 
     override fun execute(params: Unit): Flow<DisplayedFilters> =

@@ -19,7 +19,7 @@ class TvListViewModel @Inject constructor(
     toastEventChannel: ToastEventChannel,
     useCases: ItemListUseCases<Tv>,
     private val bottomSheetEventChannel: BottomSheetEventChannel,
-) : ListViewModelBase<Tv>(
+) : ItemListViewModel<Tv>(
     navigationEventChannel, toastEventChannel, useCases
 ) {
 

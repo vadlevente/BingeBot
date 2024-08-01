@@ -14,7 +14,7 @@ sealed interface FirebaseCollectionPaths<T: Item> {
     }
 
     object TvFirebaseCollectionPaths : FirebaseCollectionPaths<Tv> {
-        override val ITEM_COLLECTION_PATH: String = "tv"
+        override val ITEM_COLLECTION_PATH: String = "tvs"
         override val ITEM_WATCHLIST_PATH: String = "tvWatchLists"
     }
 }

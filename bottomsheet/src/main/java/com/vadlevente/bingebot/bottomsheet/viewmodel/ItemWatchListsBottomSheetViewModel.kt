@@ -4,68 +4,34 @@ import androidx.lifecycle.viewModelScope
 import com.vadlevente.bingebot.bottomsheet.R
 import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.CreateMovieWatchListUseCase
 import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.CreateWatchListUseCaseParams
-import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.GetMovieWatchListsUseCase
-import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.GetWatchListsUseCaseParams
-import com.vadlevente.bingebot.bottomsheet.viewmodel.WatchListsBottomSheetViewModel.ViewState
-import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEvent.ShowWatchListsBottomSheet
-import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEventChannel
+import com.vadlevente.bingebot.bottomsheet.viewmodel.ItemWatchListsBottomSheetViewModel.ViewState
 import com.vadlevente.bingebot.core.events.dialog.DialogEvent.ShowTextFieldDialog
 import com.vadlevente.bingebot.core.events.dialog.DialogEventChannel
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
-import com.vadlevente.bingebot.core.model.Item.Movie
-import com.vadlevente.bingebot.core.model.NavDestination.MOVIE_WATCH_LIST
+import com.vadlevente.bingebot.core.model.Item
 import com.vadlevente.bingebot.core.model.WatchList
 import com.vadlevente.bingebot.core.stringOf
 import com.vadlevente.bingebot.core.viewModel.BaseViewModel
 import com.vadlevente.bingebot.core.viewModel.State
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.filterIsInstance
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 import com.vadlevente.bingebot.resources.R as Res
 
-@HiltViewModel
-class WatchListsBottomSheetViewModel @Inject constructor(
+abstract class ItemWatchListsBottomSheetViewModel <T : Item>(
     navigationEventChannel: NavigationEventChannel,
     toastEventChannel: ToastEventChannel,
-    bottomSheetEventChannel: BottomSheetEventChannel,
-    getWatchListsUseCase: GetMovieWatchListsUseCase<Movie>,
     private val dialogEventChannel: DialogEventChannel,
-    private val createWatchListUseCase: CreateMovieWatchListUseCase<Movie>,
+    private val createWatchListUseCase: CreateMovieWatchListUseCase<T>,
 ) : BaseViewModel<ViewState>(
     navigationEventChannel, toastEventChannel
 ) {
 
-    private val viewState = MutableStateFlow(ViewState())
+    protected val viewState = MutableStateFlow(ViewState())
     override val state: StateFlow<ViewState> = viewState
-
-    init {
-        bottomSheetEventChannel.events.filterIsInstance<ShowWatchListsBottomSheet>()
-            .onEach {
-                viewState.update {
-                    it.copy(
-                        isVisible = true,
-                    )
-                }
-                getWatchListsUseCase.execute(
-                    GetWatchListsUseCaseParams()
-                )
-                    .onValue { watchLists ->
-                        viewState.update {
-                            it.copy(
-                                watchLists = watchLists,
-                            )
-                        }
-                    }
-            }.launchIn(viewModelScope)
-
-    }
+    abstract fun onWatchListSelected(watchListId: String)
 
     fun onDismiss() {
         viewState.update {
@@ -75,17 +41,13 @@ class WatchListsBottomSheetViewModel @Inject constructor(
         }
     }
 
-    fun onWatchListSelected(watchListId: String) {
-        navigateTo(MOVIE_WATCH_LIST, watchListId)
-        onDismiss()
-    }
 
     fun onCreateWatchList() {
         viewModelScope.launch {
             dialogEventChannel.sendEvent(
                 ShowTextFieldDialog(
-                    title = stringOf(R.string.addMovieToWatchListBottomSheet_createWatchListDialogTitle),
-                    content = stringOf(R.string.addMovieToWatchListBottomSheet_createWatchListDialogDescription),
+                    title = stringOf(R.string.addItemToWatchListBottomSheet_createWatchListDialogTitle),
+                    content = stringOf(R.string.addItemToWatchListBottomSheet_createWatchListDialogDescription),
                     positiveButtonTitle = stringOf(Res.string.common_Create),
                     negativeButtonTitle = stringOf(Res.string.common_Cancel),
                     onPositiveButtonClicked = { title ->

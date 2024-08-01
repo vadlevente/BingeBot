@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.vadlevente.bingebot.bottomsheet.R
 import com.vadlevente.bingebot.bottomsheet.domain.usecases.ItemBottomSheetUseCases
 import com.vadlevente.bingebot.bottomsheet.viewmodel.ItemBottomSheetViewModel
+import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEvent.ShowAddItemToWatchListBottomSheet.ShowAddTvToWatchListBottomSheet
 import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEvent.ShowItemBottomSheet.ShowTvBottomSheet
 import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEventChannel
 import com.vadlevente.bingebot.core.events.dialog.DialogEventChannel
@@ -54,7 +55,7 @@ class TvBottomSheetViewModel @Inject constructor(
             val displayedTv = event.item
             viewModelScope.launch {
                 bottomSheetEventChannel.sendEvent(
-                    ShowTvBottomSheet(
+                    ShowAddTvToWatchListBottomSheet(
                         item = displayedTv,
                         alreadySaved = event.alreadySaved,
                     )

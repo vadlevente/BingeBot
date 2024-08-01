@@ -24,6 +24,7 @@ sealed interface Item {
     val watchedDate: Date?
     val createdDate: Date?
     val localeCode: String
+    val isWatched: Boolean
 
     fun <T : Item> copyLocale(
         localeCode: String
@@ -70,7 +71,7 @@ sealed interface Item {
     ) : Item {
         @Ignore
         val localization: SelectedLanguage = SelectedLanguage.from(localeCode)
-        val isWatched: Boolean
+        override val isWatched: Boolean
             get() = watchedDate != null
     }
 
@@ -99,7 +100,7 @@ sealed interface Item {
     ) : Item {
         @Ignore
         val localization: SelectedLanguage = SelectedLanguage.from(localeCode)
-        val isWatched: Boolean
+        override val isWatched: Boolean
             get() = watchedDate != null
     }
 

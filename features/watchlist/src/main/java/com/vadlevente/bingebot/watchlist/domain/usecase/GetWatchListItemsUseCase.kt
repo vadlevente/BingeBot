@@ -16,7 +16,7 @@ data class GetWatchListItemsUseCaseParams(
     val query: String? = null,
 )
 
-class GetWatchListMoviesUseCase <T : Item> @Inject constructor(
+class GetWatchListItemsUseCase <T : Item> @Inject constructor(
     private val itemRepository: ItemRepository<T>,
     private val preferencesDataSource: PreferencesDataSource,
 ) : BaseUseCase<GetWatchListItemsUseCaseParams, List<DisplayedItem<T>>> {

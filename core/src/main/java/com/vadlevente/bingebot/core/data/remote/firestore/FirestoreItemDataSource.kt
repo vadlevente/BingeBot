@@ -47,7 +47,7 @@ class FirestoreItemDataSourceImpl <T : Item> @Inject constructor(
     override suspend fun getItems(): Flow<List<StoredItem>> {
         return flow {
             val profileId = preferencesDataSource.activeProfileId.first() ?: return@flow
-            val movies = suspendCoroutine { continuation ->
+            val items = suspendCoroutine { continuation ->
                 firestore.collection(FIREBASE_COLLECTION_ROOT)
                     .document(profileId)
                     .collection(firebaseCollectionPaths.ITEM_COLLECTION_PATH)
@@ -62,7 +62,7 @@ class FirestoreItemDataSourceImpl <T : Item> @Inject constructor(
                         continuation.resumeWithException(BingeBotException(it, DATA_READ_ERROR))
                     }
             }
-            emit(movies)
+            emit(items)
         }
     }
 
@@ -70,7 +70,7 @@ class FirestoreItemDataSourceImpl <T : Item> @Inject constructor(
         return flow {
             val profileId = preferencesDataSource.activeProfileId.first() ?: return@flow
             val watchLists = suspendCoroutine { continuation ->
-                firestore.collection(firebaseCollectionPaths.ITEM_COLLECTION_PATH)
+                firestore.collection(FIREBASE_COLLECTION_ROOT)
                     .document(profileId)
                     .collection(firebaseCollectionPaths.ITEM_WATCHLIST_PATH)
                     .get()

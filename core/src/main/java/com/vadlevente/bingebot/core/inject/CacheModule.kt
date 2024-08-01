@@ -18,9 +18,15 @@ abstract class CacheModule {
 
     @Binds
     @Singleton
-    abstract fun bindSelectedFiltersCacheDataSource(
-        impl: SelectedFiltersCacheDataSourceImpl
-    ): SelectedFiltersCacheDataSource
+    abstract fun bindSelectedMovieFiltersCacheDataSource(
+        impl: SelectedFiltersCacheDataSourceImpl<Movie>
+    ): SelectedFiltersCacheDataSource<Movie>
+
+    @Binds
+    @Singleton
+    abstract fun bindSelectedTvFiltersCacheDataSource(
+        impl: SelectedFiltersCacheDataSourceImpl<Tv>
+    ): SelectedFiltersCacheDataSource<Tv>
 
     @Binds
     @Singleton

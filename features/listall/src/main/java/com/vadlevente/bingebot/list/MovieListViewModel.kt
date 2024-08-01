@@ -19,7 +19,7 @@ class MovieListViewModel @Inject constructor(
     toastEventChannel: ToastEventChannel,
     useCases: ItemListUseCases<Movie>,
     private val bottomSheetEventChannel: BottomSheetEventChannel,
-) : ListViewModelBase<Movie>(
+) : ItemListViewModel<Movie>(
     navigationEventChannel, toastEventChannel, useCases
 ) {
 

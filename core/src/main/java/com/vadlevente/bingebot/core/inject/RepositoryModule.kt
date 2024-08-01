@@ -5,6 +5,7 @@ import com.vadlevente.bingebot.core.data.repository.ConfigurationRepositoryImpl
 import com.vadlevente.bingebot.core.data.repository.ItemRepository
 import com.vadlevente.bingebot.core.data.repository.ItemRepositoryImpl
 import com.vadlevente.bingebot.core.model.Item.Movie
+import com.vadlevente.bingebot.core.model.Item.Tv
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -20,6 +21,12 @@ abstract class RepositoryModule {
     abstract fun bindMovieRepository(
         impl: ItemRepositoryImpl<Movie>
     ): ItemRepository<Movie>
+
+    @Binds
+    @Singleton
+    abstract fun bindTvRepository(
+        impl: ItemRepositoryImpl<Tv>
+    ): ItemRepository<Tv>
 
     @Binds
     @Singleton

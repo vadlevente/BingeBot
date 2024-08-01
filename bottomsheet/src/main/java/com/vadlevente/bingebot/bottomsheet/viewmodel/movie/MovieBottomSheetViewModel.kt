@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.vadlevente.bingebot.bottomsheet.R.string
 import com.vadlevente.bingebot.bottomsheet.domain.usecases.ItemBottomSheetUseCases
 import com.vadlevente.bingebot.bottomsheet.viewmodel.ItemBottomSheetViewModel
-import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEvent.ShowAddItemToWatchListBottomSheet
+import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEvent.ShowAddItemToWatchListBottomSheet.ShowAddMovieToWatchListBottomSheet
 import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEvent.ShowItemBottomSheet.ShowMovieBottomSheet
 import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEventChannel
 import com.vadlevente.bingebot.core.events.dialog.DialogEventChannel
@@ -55,8 +55,8 @@ class MovieBottomSheetViewModel @Inject constructor(
             val displayedMovie = event.item
             viewModelScope.launch {
                 bottomSheetEventChannel.sendEvent(
-                    ShowAddItemToWatchListBottomSheet(
-                        movie = displayedMovie,
+                    ShowAddMovieToWatchListBottomSheet(
+                        item = displayedMovie,
                         alreadySaved = event.alreadySaved,
                     )
                 )

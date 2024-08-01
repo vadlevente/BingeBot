@@ -5,7 +5,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -23,25 +25,28 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.vadlevente.bingebot.bottomsheet.R
-import com.vadlevente.bingebot.bottomsheet.viewmodel.WatchListsBottomSheetViewModel
+import com.vadlevente.bingebot.bottomsheet.ui.composables.ItemBottomSheetHeader
+import com.vadlevente.bingebot.bottomsheet.viewmodel.AddItemToWatchListBottomSheetViewModel
+import com.vadlevente.bingebot.core.model.Item
 import com.vadlevente.bingebot.core.ui.composables.ProgressScreen
+import com.vadlevente.bingebot.core.util.yearString
 import com.vadlevente.bingebot.ui.bottomSheetAction
 import com.vadlevente.bingebot.ui.cardColor
-import com.vadlevente.bingebot.ui.dialogTitle
 import com.vadlevente.bingebot.ui.lightTextColor
+import com.vadlevente.bingebot.ui.onBackgroundColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WatchListsBottomSheet(
-    viewModel: WatchListsBottomSheetViewModel = hiltViewModel(),
+fun <T : Item> AddItemToWatchListBottomSheet(
+    viewModel: AddItemToWatchListBottomSheetViewModel<T>,
 ) {
     val modalBottomSheetState = rememberModalBottomSheetState()
     val state by viewModel.state.collectAsState()
     val isInProgress by viewModel.isInProgress.collectAsState()
+    val displayedItem = state.event?.item ?: return
+    val movie = displayedItem.item
     if (!state.isVisible) return
 
     ModalBottomSheet(
@@ -52,16 +57,19 @@ fun WatchListsBottomSheet(
     ) {
         Column(
             modifier = Modifier
-                .fillMaxWidth()
+            .fillMaxWidth()
                 .background(cardColor)
         ) {
-            Text(
+            ItemBottomSheetHeader(
+                thumbnailUrl = displayedItem.thumbnailUrl,
+                title = movie.title,
+                releaseYear = movie.releaseDate?.yearString ?: "",
+            )
+            Spacer(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 16.dp),
-                text = stringResource(id = R.string.watchListBottomSheet_title),
-                style = dialogTitle,
-                textAlign = TextAlign.Center
+                    .height(1.dp)
+                    .background(onBackgroundColor)
             )
             Row(
                 modifier = Modifier
@@ -77,7 +85,7 @@ fun WatchListsBottomSheet(
                 )
                 Text(
                     modifier = Modifier.padding(start = 12.dp),
-                    text = stringResource(id = R.string.addMovieToWatchListBottomSheet_createWatchListLabel),
+                    text = stringResource(id = R.string.addItemToWatchListBottomSheet_createWatchListLabel),
                     style = bottomSheetAction,
                 )
             }
@@ -95,7 +103,7 @@ fun WatchListsBottomSheet(
                                 .padding(bottom = 16.dp)
                                 .padding(horizontal = 16.dp)
                                 .clickable {
-                                    viewModel.onWatchListSelected(watchList.watchListId)
+                                    viewModel.onAddToWatchList(watchList.watchListId)
                                 },
                             text = watchList.title,
                             style = bottomSheetAction,

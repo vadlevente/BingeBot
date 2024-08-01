@@ -36,10 +36,12 @@ import com.vadlevente.bingebot.ui.listDescription
 @Composable
 fun <T : Item> SearchItemScreen(
     viewModel: SearchItemViewModel<T>,
+    resources: SearchItemScreenResources,
 ) {
     val state by viewModel.state.collectAsState()
     SearchItemScreenComponent(
         state = state,
+        resources = resources,
         onQueryChanged = viewModel::onQueryChanged,
         onNavigateToOptions = viewModel::onNavigateToOptions,
         onBackPressed = viewModel::onBackPressed,
@@ -49,6 +51,7 @@ fun <T : Item> SearchItemScreen(
 @Composable
 fun <T : Item> SearchItemScreenComponent(
     state: ViewState<T>,
+    resources: SearchItemScreenResources,
     onQueryChanged: (String) -> Unit,
     onNavigateToOptions: (Int) -> Unit,
     onBackPressed: () -> Unit,
@@ -56,7 +59,7 @@ fun <T : Item> SearchItemScreenComponent(
     Scaffold(
         topBar = {
             TopBar(
-                title = stringOf(R.string.searchMovies_pageTitle),
+                title = stringOf(resources.title),
                 canNavigateBack = true,
                 onBackPressed = onBackPressed,
             )
@@ -73,19 +76,19 @@ fun <T : Item> SearchItemScreenComponent(
                     .padding(top = 8.dp)
                     .fillMaxWidth(),
                 value = state.query,
-                hint = stringOf(R.string.searchMovies_searchFieldHint),
+                hint = stringOf(resources.searchFieldHint),
                 onValueChange = onQueryChanged,
             )
             Box(modifier = Modifier.fillMaxSize()) {
                 if (state.query.length < QUERY_MINIMUM_LENGTH) {
                     Text(
-                        text = stringResource(R.string.searchMovies_shortQueryDescription),
+                        text = stringResource(resources.queryDescription),
                         style = listDescription,
                         modifier = Modifier.align(Alignment.Center),
                     )
-                } else if (state.movies.isEmpty()) {
+                } else if (state.items.isEmpty()) {
                     Text(
-                        text = stringResource(R.string.searchMovies_emptyListDescription),
+                        text = stringResource(R.string.searchItems_emptyListDescription),
                         style = listDescription,
                         modifier = Modifier.align(Alignment.Center),
                     )
@@ -98,17 +101,17 @@ fun <T : Item> SearchItemScreenComponent(
                             Spacer(modifier = Modifier.height(8.dp))
                         }
                         items(
-                            items = state.movies,
+                            items = state.items,
                             key = { it.item.id }
-                        ) { displayedMovie ->
-                            val movie = displayedMovie.item
+                        ) { displayedItem ->
+                            val item = displayedItem.item
                             ListItem(
-                                title = movie.title,
-                                iconPath = displayedMovie.thumbnailUrl,
-                                watchedDate = movie.watchedDate,
-                                rating = movie.voteAverage.asOneDecimalString,
-                                releaseYear = movie.releaseDate?.yearString ?: "",
-                                onClick = { onNavigateToOptions(movie.id) },
+                                title = item.title,
+                                iconPath = displayedItem.thumbnailUrl,
+                                watchedDate = item.watchedDate,
+                                rating = item.voteAverage.asOneDecimalString,
+                                releaseYear = item.releaseDate?.yearString ?: "",
+                                onClick = { onNavigateToOptions(item.id) },
                             )
                         }
                     }
@@ -121,5 +124,5 @@ fun <T : Item> SearchItemScreenComponent(
 data class SearchItemScreenResources(
     val title: Int,
     val searchFieldHint: Int,
-    val emptyListDescription: Int,
+    val queryDescription: Int,
 )

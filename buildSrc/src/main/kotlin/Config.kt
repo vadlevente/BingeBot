@@ -1,5 +1,5 @@
 object Config {
-    const val compileSdkVersion = 33
+    const val compileSdkVersion = 34
     const val minSdkVersion = 24
     const val targetSdkVersion = 33
     const val composeCompilerExtensionVersion = "1.4.4"

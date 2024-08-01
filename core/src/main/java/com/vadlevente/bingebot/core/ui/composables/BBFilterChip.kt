@@ -39,6 +39,8 @@ fun BBFilterChip(
         ),
         border = FilterChipDefaults.filterChipBorder(
             borderColor = onBackgroundColor,
+            enabled = true,
+            selected = isSelected,
         )
     )
 }

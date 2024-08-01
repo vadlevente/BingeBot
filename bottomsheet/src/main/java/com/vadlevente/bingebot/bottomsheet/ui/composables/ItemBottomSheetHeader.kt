@@ -1,4 +1,4 @@
-package com.vadlevente.bingebot.bottomsheet.ui
+package com.vadlevente.bingebot.bottomsheet.ui.composables
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,7 +20,7 @@ import com.vadlevente.bingebot.ui.listItemTitle
 import com.vadlevente.bingebot.resources.R as Resources
 
 @Composable
-fun MovieBottomSheetHeader(
+fun ItemBottomSheetHeader(
     thumbnailUrl: String?,
     title: String,
     releaseYear: String,

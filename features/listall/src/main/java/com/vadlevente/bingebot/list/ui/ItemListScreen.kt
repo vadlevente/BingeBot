@@ -45,8 +45,8 @@ import com.vadlevente.bingebot.core.ui.composables.ProgressScreen
 import com.vadlevente.bingebot.core.ui.composables.TopBar
 import com.vadlevente.bingebot.core.util.asOneDecimalString
 import com.vadlevente.bingebot.core.util.yearString
-import com.vadlevente.bingebot.list.ListViewModelBase
-import com.vadlevente.bingebot.list.ListViewModelBase.ViewState
+import com.vadlevente.bingebot.list.ItemListViewModel
+import com.vadlevente.bingebot.list.ItemListViewModel.ViewState
 import com.vadlevente.bingebot.list.R
 import com.vadlevente.bingebot.ui.backgroundColor
 import com.vadlevente.bingebot.ui.lightTextColor
@@ -58,7 +58,7 @@ import com.vadlevente.bingebot.resources.R as Res
 
 @Composable
 fun <T : Item> ItemListScreen(
-    viewModel: ListViewModelBase<T>,
+    viewModel: ItemListViewModel<T>,
     resources: ItemListScreenResources,
 ) {
     val state by viewModel.state.collectAsState()

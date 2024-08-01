@@ -6,6 +6,7 @@ import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.RemoveItemFromW
 import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.SaveItemUseCase
 import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.SetItemSeenUseCase
 import com.vadlevente.bingebot.core.model.Item.Movie
+import com.vadlevente.bingebot.core.model.Item.Tv
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,6 +25,20 @@ object UseCaseModule {
         setItemSeenUseCase: SetItemSeenUseCase<Movie>,
         removeItemFromWatchListUseCase: RemoveItemFromWatchListUseCase<Movie>,
     ): ItemBottomSheetUseCases<Movie> = ItemBottomSheetUseCases(
+        deleteItemUseCase,
+        saveItemUseCase,
+        setItemSeenUseCase,
+        removeItemFromWatchListUseCase,
+    )
+
+    @Singleton
+    @Provides
+    fun provideTvBottomSheetUseCases(
+        deleteItemUseCase: DeleteItemUseCase<Tv>,
+        saveItemUseCase: SaveItemUseCase<Tv>,
+        setItemSeenUseCase: SetItemSeenUseCase<Tv>,
+        removeItemFromWatchListUseCase: RemoveItemFromWatchListUseCase<Tv>,
+    ): ItemBottomSheetUseCases<Tv> = ItemBottomSheetUseCases(
         deleteItemUseCase,
         saveItemUseCase,
         setItemSeenUseCase,

@@ -16,9 +16,12 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.vadlevente.bingebot.authentication.ui.login.LoginScreen
 import com.vadlevente.bingebot.authentication.ui.registration.RegistrationScreen
-import com.vadlevente.bingebot.bottomsheet.ui.AddMovieToWatchListBottomSheet
-import com.vadlevente.bingebot.bottomsheet.ui.MovieBottomSheet
-import com.vadlevente.bingebot.bottomsheet.ui.WatchListsBottomSheet
+import com.vadlevente.bingebot.bottomsheet.ui.movie.AddMovieToWatchListBottomSheet
+import com.vadlevente.bingebot.bottomsheet.ui.movie.MovieBottomSheet
+import com.vadlevente.bingebot.bottomsheet.ui.movie.MovieWatchListsBottomSheet
+import com.vadlevente.bingebot.bottomsheet.ui.tv.AddTvToWatchListBottomSheet
+import com.vadlevente.bingebot.bottomsheet.ui.tv.TvBottomSheet
+import com.vadlevente.bingebot.bottomsheet.ui.tv.TvWatchListsBottomSheet
 import com.vadlevente.bingebot.core.events.navigation.NavigationEvent.NavigateTo
 import com.vadlevente.bingebot.core.events.navigation.NavigationEvent.NavigateUp
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
@@ -28,9 +31,11 @@ import com.vadlevente.bingebot.core.ui.composables.dialog.BBDialog
 import com.vadlevente.bingebot.core.ui.composables.dialog.BBTextFieldDialog
 import com.vadlevente.bingebot.dashboard.ui.DashboardScreen
 import com.vadlevente.bingebot.search.ui.SearchMovieScreen
+import com.vadlevente.bingebot.search.ui.SearchTvScreen
 import com.vadlevente.bingebot.splash.ui.SplashScreen
 import com.vadlevente.bingebot.ui.BingeBotTheme
-import com.vadlevente.bingebot.watchlist.ui.WatchListScreen
+import com.vadlevente.bingebot.watchlist.ui.movie.MovieWatchListScreen
+import com.vadlevente.bingebot.watchlist.ui.tv.TvWatchListScreen
 import com.vadlevente.moviedetails.MovieDetailsScreen
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -63,6 +68,9 @@ fun NavigationHost(
                 composable(NavDestination.SEARCH_MOVIE.route) {
                     SearchMovieScreen()
                 }
+                composable(NavDestination.SEARCH_TV.route) {
+                    SearchTvScreen()
+                }
                 composable(
                     "${NavDestination.MOVIE_DETAILS.route}/{movieId}",
                     arguments = listOf(
@@ -84,7 +92,19 @@ fun NavigationHost(
                     )
                 ) {
                     it.arguments?.getString("watchListId")?.let { watchListId ->
-                        WatchListScreen(watchListId)
+                        MovieWatchListScreen(watchListId)
+                    }
+                }
+                composable(
+                    "${NavDestination.TV_WATCH_LIST.route}/{watchListId}",
+                    arguments = listOf(
+                        navArgument("watchListId") {
+                            type = NavType.StringType
+                        }
+                    )
+                ) {
+                    it.arguments?.getString("watchListId")?.let { watchListId ->
+                        TvWatchListScreen(watchListId)
                     }
                 }
             }
@@ -154,10 +174,23 @@ private fun UIComponents(scope: BoxScope) {
         Toast(
             modifier = Modifier.align(Alignment.TopCenter),
         )
-        BBDialog()
-        BBTextFieldDialog()
-        MovieBottomSheet()
-        AddMovieToWatchListBottomSheet()
-        WatchListsBottomSheet()
+        Dialogs()
+        BottomSheets()
     }
+}
+
+@Composable
+private fun Dialogs() {
+    BBDialog()
+    BBTextFieldDialog()
+}
+
+@Composable
+private fun BottomSheets() {
+    MovieBottomSheet()
+    TvBottomSheet()
+    AddMovieToWatchListBottomSheet()
+    AddTvToWatchListBottomSheet()
+    MovieWatchListsBottomSheet()
+    TvWatchListsBottomSheet()
 }

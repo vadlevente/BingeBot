@@ -25,6 +25,7 @@ import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -39,9 +40,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.vadlevente.bingebot.bottomsheet.R
-import com.vadlevente.bingebot.bottomsheet.viewmodel.movie.MovieBottomSheetViewModel
+import com.vadlevente.bingebot.bottomsheet.ui.composables.ItemBottomSheetHeader
+import com.vadlevente.bingebot.bottomsheet.viewmodel.ItemBottomSheetViewModel
+import com.vadlevente.bingebot.core.model.Item
 import com.vadlevente.bingebot.core.ui.composables.BBButton
 import com.vadlevente.bingebot.core.ui.composables.BBOutlinedButton
 import com.vadlevente.bingebot.core.util.isBeforeTomorrow
@@ -53,21 +55,34 @@ import com.vadlevente.bingebot.ui.dialogDescription
 import com.vadlevente.bingebot.ui.lightTextColor
 import com.vadlevente.bingebot.ui.onBackgroundColor
 import com.vadlevente.bingebot.ui.progressColor
+import java.util.Calendar
 import java.util.Date
 import com.vadlevente.bingebot.resources.R as Resources
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MovieBottomSheet(
-    viewModel: MovieBottomSheetViewModel = hiltViewModel(),
+fun <T : Item> ItemBottomSheet(
+    viewModel: ItemBottomSheetViewModel<T>,
+    resources: ItemBottomSheetResources,
 ) {
     val modalBottomSheetState = rememberModalBottomSheetState()
     val state by viewModel.state.collectAsState()
     val event = state.event ?: return
-    val displayedMovie = event.item
-    val movie = displayedMovie.item
+    val displayedItem = event.item
+    val item = displayedItem.item
     if (!state.isVisible) return
-    val dateState = rememberDatePickerState(initialSelectedDateMillis = Date().time)
+    val dateState = rememberDatePickerState(
+        initialSelectedDateMillis = Date().time,
+        selectableDates = object: SelectableDates {
+            override fun isSelectableYear(year: Int): Boolean {
+                return year >= Calendar.getInstance().get(Calendar.YEAR)
+            }
+
+            override fun isSelectableDate(utcTimeMillis: Long): Boolean {
+                return utcTimeMillis.isBeforeTomorrow
+            }
+        }
+    )
     var showDialog by remember { mutableStateOf(false) }
 
     ModalBottomSheet(
@@ -77,10 +92,10 @@ fun MovieBottomSheet(
         containerColor = cardColor,
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
-            MovieBottomSheetHeader(
-                thumbnailUrl = displayedMovie.thumbnailUrl,
-                title = movie.title,
-                releaseYear = movie.releaseDate?.yearString ?: "",
+            ItemBottomSheetHeader(
+                thumbnailUrl = displayedItem.thumbnailUrl,
+                title = item.title,
+                releaseYear = item.releaseDate?.yearString ?: "",
             )
             Spacer(
                 modifier = Modifier
@@ -112,7 +127,7 @@ fun MovieBottomSheet(
                     )
                 }
                 if (event.alreadySaved) {
-                    if (movie.isWatched) {
+                    if (item.isWatched) {
                         BottomSheetAction(
                             action = { viewModel.onSetItemNotWatched() },
                             labelRes = R.string.itemBottomSheet_revertSeen,
@@ -133,7 +148,7 @@ fun MovieBottomSheet(
                 } else {
                     BottomSheetAction(
                         action = { viewModel.onSaveItem(event.item.item) },
-                        labelRes = R.string.movieBottomSheet_save,
+                        labelRes = resources.deleteTitle,
                         imageVector = Filled.SaveAlt,
                     )
                 }
@@ -195,9 +210,6 @@ fun MovieBottomSheet(
                     selectedDayContainerColor = progressColor,
                     subheadContentColor = progressColor,
                     ),
-                dateValidator = {
-                    it.isBeforeTomorrow
-                }
             )
         }
     }
@@ -228,3 +240,7 @@ private fun BottomSheetAction(
         )
     }
 }
+
+data class ItemBottomSheetResources(
+    val deleteTitle: Int
+)

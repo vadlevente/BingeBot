@@ -7,7 +7,7 @@ import com.vadlevente.bingebot.core.model.Genre
 import com.vadlevente.bingebot.core.model.Item
 import com.vadlevente.bingebot.core.viewModel.BaseViewModel
 import com.vadlevente.bingebot.core.viewModel.State
-import com.vadlevente.bingebot.list.ListViewModelBase.ViewState
+import com.vadlevente.bingebot.list.ItemListViewModel.ViewState
 import com.vadlevente.bingebot.list.domain.model.DisplayedGenre
 import com.vadlevente.bingebot.list.domain.usecase.ItemListUseCases
 import com.vadlevente.bingebot.list.domain.usecase.SetIsWatchedFilterUseCaseParams
@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 
-abstract class ListViewModelBase <T: Item> (
+abstract class ItemListViewModel <T: Item> (
     navigationEventChannel: NavigationEventChannel,
     toastEventChannel: ToastEventChannel,
     private val useCases: ItemListUseCases<T>,

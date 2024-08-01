@@ -93,9 +93,11 @@ class ItemRepositoryImpl<T : Item> @Inject constructor(
             .minus(storedItems.map { it.id }
                 .toSet())
             .map { id ->
+                val remoteItem = remoteItems.first { it.id.toInt() == id }
                 itemRemoteDataSource.getItemDetails(id, language).toItem()
                     .copyLocale<T>(language.code)
-                    .copyCreatedDate<T>(remoteItems.first { it.id.toInt() == id }.createdDate)
+                    .copyCreatedDate<T>(remoteItem.createdDate)
+                    .copyWatchedDate<T>(remoteItem.watchDate)
             }
         itemLocalDataSource.updateItems(itemsToUpdate.plus(itemsToInsert))
     }

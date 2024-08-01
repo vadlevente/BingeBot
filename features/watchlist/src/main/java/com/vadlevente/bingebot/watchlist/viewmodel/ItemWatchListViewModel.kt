@@ -1,51 +1,45 @@
-package com.vadlevente.bingebot.watchlist
+package com.vadlevente.bingebot.watchlist.viewmodel
 
 import androidx.lifecycle.viewModelScope
-import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEvent.ShowItemBottomSheet.ShowMovieBottomSheet
-import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEventChannel
 import com.vadlevente.bingebot.core.events.dialog.DialogEvent.ShowDialog
 import com.vadlevente.bingebot.core.events.dialog.DialogEventChannel
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastType.INFO
 import com.vadlevente.bingebot.core.model.DisplayedItem
-import com.vadlevente.bingebot.core.model.Item.Movie
-import com.vadlevente.bingebot.core.model.NavDestination.SEARCH_MOVIE
+import com.vadlevente.bingebot.core.model.Item
 import com.vadlevente.bingebot.core.model.exception.Reason.DATA_NOT_FOUND
 import com.vadlevente.bingebot.core.model.exception.isBecauseOf
 import com.vadlevente.bingebot.core.stringOf
 import com.vadlevente.bingebot.core.viewModel.BaseViewModel
 import com.vadlevente.bingebot.core.viewModel.State
-import com.vadlevente.bingebot.watchlist.WatchListViewModel.ViewState
+import com.vadlevente.bingebot.watchlist.R.string
 import com.vadlevente.bingebot.watchlist.domain.usecase.DeleteWatchListUseCase
 import com.vadlevente.bingebot.watchlist.domain.usecase.DeleteWatchListUseCaseParams
+import com.vadlevente.bingebot.watchlist.domain.usecase.GetWatchListItemsUseCase
 import com.vadlevente.bingebot.watchlist.domain.usecase.GetWatchListItemsUseCaseParams
-import com.vadlevente.bingebot.watchlist.domain.usecase.GetWatchListMoviesUseCase
 import com.vadlevente.bingebot.watchlist.domain.usecase.GetWatchListUseCase
 import com.vadlevente.bingebot.watchlist.domain.usecase.GetWatchListUseCaseParams
-import dagger.hilt.android.lifecycle.HiltViewModel
+import com.vadlevente.bingebot.watchlist.viewmodel.ItemWatchListViewModel.ViewState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 import com.vadlevente.bingebot.resources.R as Res
 
-@HiltViewModel
-class WatchListViewModel @Inject constructor(
+abstract class ItemWatchListViewModel <T : Item>(
     navigationEventChannel: NavigationEventChannel,
     toastEventChannel: ToastEventChannel,
-    private val getWatchListMoviesUseCase: GetWatchListMoviesUseCase<Movie>,
-    private val bottomSheetEventChannel: BottomSheetEventChannel,
-    private val getWatchListUseCase: GetWatchListUseCase<Movie>,
-    private val deleteWatchListUseCase: DeleteWatchListUseCase<Movie>,
+    private val getWatchListItemsUseCase: GetWatchListItemsUseCase<T>,
+    private val getWatchListUseCase: GetWatchListUseCase<T>,
+    private val deleteWatchListUseCase: DeleteWatchListUseCase<T>,
     private val dialogEventChannel: DialogEventChannel,
-) : BaseViewModel<ViewState>(
+) : BaseViewModel<ViewState<T>>(
     navigationEventChannel, toastEventChannel
 ) {
 
-    private val viewState = MutableStateFlow(ViewState())
-    override val state: StateFlow<ViewState> = viewState
+    protected val viewState = MutableStateFlow(ViewState<T>())
+    override val state: StateFlow<ViewState<T>> = viewState
     override val basicErrorHandler: (Throwable) -> Unit = {
         if (it.isBecauseOf(DATA_NOT_FOUND)) {
             navigateUp()
@@ -54,7 +48,10 @@ class WatchListViewModel @Inject constructor(
         }
     }
 
-    private lateinit var watchListId: String
+    protected lateinit var watchListId: String
+
+    abstract fun onNavigateToSearch()
+    abstract fun onNavigateToOptions(itemId: Int)
 
     fun onInit(watchListId: String) {
         this.watchListId = watchListId
@@ -68,20 +65,16 @@ class WatchListViewModel @Inject constructor(
                     title = watchList.title,
                 )
             }
-            getMovies()
+            getItems()
         }
-    }
-
-    fun onNavigateToSearch() {
-        navigateTo(SEARCH_MOVIE)
     }
 
     fun onDeleteWatchList() {
         viewModelScope.launch {
             dialogEventChannel.sendEvent(
                 ShowDialog(
-                    title = stringOf(R.string.deleteWatchList_confirm_title),
-                    content = stringOf(R.string.deleteWatchList_confirm_description),
+                    title = stringOf(string.deleteWatchList_confirm_title),
+                    content = stringOf(string.deleteWatchList_confirm_description),
                     positiveButtonTitle = stringOf(Res.string.common_Yes),
                     negativeButtonTitle = stringOf(Res.string.common_No),
                     onPositiveButtonClicked = {
@@ -109,7 +102,7 @@ class WatchListViewModel @Inject constructor(
                 searchQuery = if (it.isSearchFieldVisible) null else "",
             )
         }
-        getMovies()
+        getItems()
     }
 
     fun onQueryChanged(value: String) {
@@ -118,45 +111,31 @@ class WatchListViewModel @Inject constructor(
                 searchQuery = value,
             )
         }
-        getMovies()
-    }
-
-    fun onNavigateToOptions(movieId: Int) {
-        viewState.value.movies.firstOrNull { it.item.id == movieId }?.let {
-            viewModelScope.launch {
-                bottomSheetEventChannel.sendEvent(
-                    ShowMovieBottomSheet(
-                        item = it,
-                        alreadySaved = true,
-                        watchListId = watchListId,
-                    )
-                )
-            }
-        }
+        getItems()
     }
 
     fun onBackPressed() {
         navigateUp()
     }
 
-    private fun getMovies() {
-        getWatchListMoviesUseCase.execute(
+    private fun getItems() {
+        getWatchListItemsUseCase.execute(
             GetWatchListItemsUseCaseParams(
                 watchListId = watchListId,
                 query = viewState.value.searchQuery,
             )
-        ).onValue { movies ->
+        ).onValue { items ->
             viewState.update {
                 it.copy(
-                    movies = movies
+                    items = items
                 )
             }
         }
     }
 
-    data class ViewState(
+    data class ViewState<T : Item>(
         val title: String? = null,
-        val movies: List<DisplayedItem<Movie>> = emptyList(),
+        val items: List<DisplayedItem<T>> = emptyList(),
         val isSearchFieldVisible: Boolean = false,
         val searchQuery: String? = null,
     ) : State

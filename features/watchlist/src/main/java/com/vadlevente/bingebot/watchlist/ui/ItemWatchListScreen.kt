@@ -25,7 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import com.vadlevente.bingebot.core.model.Item
 import com.vadlevente.bingebot.core.stringOf
 import com.vadlevente.bingebot.core.ui.composables.BBOutlinedTextField
 import com.vadlevente.bingebot.core.ui.composables.ListItem
@@ -38,22 +38,24 @@ import com.vadlevente.bingebot.ui.lightTextColor
 import com.vadlevente.bingebot.ui.listDescription
 import com.vadlevente.bingebot.ui.progressColor
 import com.vadlevente.bingebot.ui.white
-import com.vadlevente.bingebot.watchlist.WatchListViewModel
-import com.vadlevente.bingebot.watchlist.WatchListViewModel.ViewState
+import com.vadlevente.bingebot.watchlist.viewmodel.ItemWatchListViewModel
+import com.vadlevente.bingebot.watchlist.viewmodel.ItemWatchListViewModel.ViewState
 import com.vadlevente.bingebot.resources.R as Res
 
 @Composable
-fun WatchListScreen(
+fun <T : Item> ItemWatchListScreen(
     watchListId: String,
-    viewModel: WatchListViewModel = hiltViewModel(),
+    viewModel: ItemWatchListViewModel<T>,
+    resources: ItemWatchListResources,
 ) {
     val state by viewModel.state.collectAsState()
     val isInProgress by viewModel.isInProgress.collectAsState()
     LaunchedEffect(true) {
         viewModel.onInit(watchListId)
     }
-    WatchListScreenComponent(
+    ItemWatchListScreenComponent(
         state = state,
+        resources = resources,
         isInProgress = isInProgress,
         onToggleSearchField = viewModel::onToggleSearchField,
         onQueryChanged = viewModel::onQueryChanged,
@@ -65,8 +67,9 @@ fun WatchListScreen(
 }
 
 @Composable
-fun WatchListScreenComponent(
-    state: ViewState,
+fun <T : Item> ItemWatchListScreenComponent(
+    state: ViewState<T>,
+    resources: ItemWatchListResources,
     isInProgress: Boolean,
     onToggleSearchField: () -> Unit,
     onQueryChanged: (String) -> Unit,
@@ -123,7 +126,7 @@ fun WatchListScreenComponent(
                         .padding(vertical = 8.dp)
                         .fillMaxWidth(),
                     value = state.searchQuery ?: "",
-                    hint = stringOf(Res.string.searchField_movieHint),
+                    hint = stringOf(resources.searchFieldHint),
                     onValueChange = onQueryChanged,
                 )
             }
@@ -131,9 +134,9 @@ fun WatchListScreenComponent(
                 isProgressVisible = isInProgress,
                 modifier = Modifier.fillMaxSize()
             ) {
-                if (state.movies.isEmpty()) {
+                if (state.items.isEmpty()) {
                     val descriptionStringRes =
-                        if (state.searchQuery == null) Res.string.emptyList_movie_Description
+                        if (state.searchQuery == null) resources.emptyList
                         else Res.string.emptyQueriedListDescription
                     Text(
                         text = stringResource(descriptionStringRes),
@@ -142,15 +145,15 @@ fun WatchListScreenComponent(
                     )
                 } else {
                     LazyColumn {
-                        items(state.movies) { displayedMovie ->
-                            val movie = displayedMovie.item
+                        items(state.items) { displayedItem ->
+                            val item = displayedItem.item
                             ListItem(
-                                title = movie.title,
-                                iconPath = displayedMovie.thumbnailUrl,
-                                watchedDate = movie.watchedDate,
-                                rating = movie.voteAverage.asOneDecimalString,
-                                releaseYear = movie.releaseDate?.yearString ?: "",
-                                onClick = { onNavigateToOptions(movie.id) },
+                                title = item.title,
+                                iconPath = displayedItem.thumbnailUrl,
+                                watchedDate = item.watchedDate,
+                                rating = item.voteAverage.asOneDecimalString,
+                                releaseYear = item.releaseDate?.yearString ?: "",
+                                onClick = { onNavigateToOptions(item.id) },
                             )
                         }
                     }
@@ -161,3 +164,8 @@ fun WatchListScreenComponent(
     }
 
 }
+
+data class ItemWatchListResources(
+    val searchFieldHint: Int,
+    val emptyList: Int,
+)

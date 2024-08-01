@@ -15,7 +15,7 @@ import javax.inject.Inject
 class GetItemsUseCase <T : Item> @Inject constructor(
     private val itemRepository: ItemRepository<T>,
     private val preferencesDataSource: PreferencesDataSource,
-    private val selectedFiltersCacheDataSource: SelectedFiltersCacheDataSource,
+    private val selectedFiltersCacheDataSource: SelectedFiltersCacheDataSource<T>,
 ) : BaseUseCase<Unit, List<DisplayedItem<T>>> {
 
     override fun execute(params: Unit): Flow<List<DisplayedItem<T>>> =

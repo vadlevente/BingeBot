@@ -5,9 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -25,27 +23,26 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.vadlevente.bingebot.bottomsheet.R
-import com.vadlevente.bingebot.bottomsheet.viewmodel.AddMovieToWatchListBottomSheetViewModel
+import com.vadlevente.bingebot.bottomsheet.viewmodel.ItemWatchListsBottomSheetViewModel
+import com.vadlevente.bingebot.core.model.Item
 import com.vadlevente.bingebot.core.ui.composables.ProgressScreen
-import com.vadlevente.bingebot.core.util.yearString
 import com.vadlevente.bingebot.ui.bottomSheetAction
 import com.vadlevente.bingebot.ui.cardColor
+import com.vadlevente.bingebot.ui.dialogTitle
 import com.vadlevente.bingebot.ui.lightTextColor
-import com.vadlevente.bingebot.ui.onBackgroundColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddMovieToWatchListBottomSheet(
-    viewModel: AddMovieToWatchListBottomSheetViewModel = hiltViewModel(),
+fun <T : Item> ItemWatchListsBottomSheet(
+    viewModel: ItemWatchListsBottomSheetViewModel<T>,
+    resources: ItemWatchListsBottomSheetResources,
 ) {
     val modalBottomSheetState = rememberModalBottomSheetState()
     val state by viewModel.state.collectAsState()
     val isInProgress by viewModel.isInProgress.collectAsState()
-    val displayedMovie = state.event?.movie ?: return
-    val movie = displayedMovie.item
     if (!state.isVisible) return
 
     ModalBottomSheet(
@@ -56,19 +53,16 @@ fun AddMovieToWatchListBottomSheet(
     ) {
         Column(
             modifier = Modifier
-            .fillMaxWidth()
+                .fillMaxWidth()
                 .background(cardColor)
         ) {
-            MovieBottomSheetHeader(
-                thumbnailUrl = displayedMovie.thumbnailUrl,
-                title = movie.title,
-                releaseYear = movie.releaseDate?.yearString ?: "",
-            )
-            Spacer(
+            Text(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(1.dp)
-                    .background(onBackgroundColor)
+                    .padding(bottom = 16.dp),
+                text = stringResource(id = resources.title),
+                style = dialogTitle,
+                textAlign = TextAlign.Center
             )
             Row(
                 modifier = Modifier
@@ -84,7 +78,7 @@ fun AddMovieToWatchListBottomSheet(
                 )
                 Text(
                     modifier = Modifier.padding(start = 12.dp),
-                    text = stringResource(id = R.string.addMovieToWatchListBottomSheet_createWatchListLabel),
+                    text = stringResource(id = R.string.addItemToWatchListBottomSheet_createWatchListLabel),
                     style = bottomSheetAction,
                 )
             }
@@ -102,7 +96,7 @@ fun AddMovieToWatchListBottomSheet(
                                 .padding(bottom = 16.dp)
                                 .padding(horizontal = 16.dp)
                                 .clickable {
-                                    viewModel.onAddToWatchList(watchList.watchListId)
+                                    viewModel.onWatchListSelected(watchList.watchListId)
                                 },
                             text = watchList.title,
                             style = bottomSheetAction,
@@ -117,3 +111,6 @@ fun AddMovieToWatchListBottomSheet(
     }
 }
 
+data class ItemWatchListsBottomSheetResources(
+    val title: Int
+)
