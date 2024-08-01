@@ -1,20 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="movieBottomSheet_addToWatchList">Hozzáadás listához</string>
-    <string name="movieBottomSheet_removeFromWatchList">Eltávolítás a listáról</string>
+    <string name="itemBottomSheet_addToWatchList">Hozzáadás listához</string>
+    <string name="itemBottomSheet_removeFromWatchList">Eltávolítás a listáról</string>
+    <string name="itemBottomSheet_delete">Törlés</string>
+    <string name="itemBottomSheet_seen">Megtekintve</string>
+    <string name="itemBottomSheet_revertSeen">Megtekintés visszavonása</string>
+    <string name="itemBottomSheet_openDetails">Részletek megjelenítése</string>
+    <string name="itemBottomSheet_revertWatchedDateSuccessful">Megtekintési dátum eltávolítva</string>
+    <string name="itemBottomSheet_setWatchedDateSuccessful">Megtekintési dátum hozzáadva</string>
+    <string name="itemBottomSheet_addWatchedDateTitle">Megtekintési dátum kiválasztása</string>
+
     <string name="movieBottomSheet_save">Film mentése</string>
-    <string name="movieBottomSheet_delete">Törlés</string>
-    <string name="movieBottomSheet_seen">Megtekintve</string>
-    <string name="movieBottomSheet_revertSeen">Megtekintés visszavonása</string>
-    <string name="movieBottomSheet_openDetails">Részletek megjelenítése</string>
     <string name="movieBottomSheet_deleteConfirmationTitle">Film törlése</string>
     <string name="movieBottomSheet_deleteConfirmationDescription">Biztosan szeretné törölni a filmet? Így minden listájáról is törlődni fog.</string>
     <string name="movieBottomSheet_saveSuccessful">Sikeresen hozzáadva a megnézendő filmekhez</string>
-    <string name="movieBottomSheet_revertWatchedDateSuccessful">Megtekintési dátum eltávolítva</string>
-    <string name="movieBottomSheet_setWatchedDateSuccessful">Megtekintési dátum hozzáadva</string>
     <string name="movieBottomSheet_removeMovieFromWatchListConfirmationTitle">Film eltávolítása</string>
     <string name="movieBottomSheet_removeMovieFromWatchListConfirmationDescription">Biztosan szeretné eltávolítnai a filmet a listáról?</string>
-    <string name="movieBottomSheet_addWatchedDateTitle">Megtekintési dátum kiválasztása</string>
+
+    <string name="tvBottomSheet_save">Sorozat mentése</string>
+    <string name="tvBottomSheet_deleteConfirmationTitle">Sorozat törlése</string>
+    <string name="tvBottomSheet_deleteConfirmationDescription">Biztosan szeretné törölni a sorozatot? Így minden listájáról is törlődni fog.</string>
+    <string name="tvBottomSheet_saveSuccessful">Sikeresen hozzáadva a megnézendő sorozatokhoz</string>
+    <string name="tvBottomSheet_removeMovieFromWatchListConfirmationTitle">Sorozat eltávolítása</string>
+    <string name="tvBottomSheet_removeMovieFromWatchListConfirmationDescription">Biztosan szeretné eltávolítnai a sorozatot a listáról?</string>
 
     <string name="addMovieToWatchListBottomSheet_createWatchListDialogTitle">Lista létrehozása</string>
     <string name="addMovieToWatchListBottomSheet_createWatchListDialogDescription">Kérjük, adja meg a létrehozni kívánt lista címét!</string>

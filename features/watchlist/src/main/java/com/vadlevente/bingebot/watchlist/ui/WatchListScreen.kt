@@ -123,7 +123,7 @@ fun WatchListScreenComponent(
                         .padding(vertical = 8.dp)
                         .fillMaxWidth(),
                     value = state.searchQuery ?: "",
-                    hint = stringOf(Res.string.searchFieldHint),
+                    hint = stringOf(Res.string.searchField_movieHint),
                     onValueChange = onQueryChanged,
                 )
             }
@@ -133,7 +133,7 @@ fun WatchListScreenComponent(
             ) {
                 if (state.movies.isEmpty()) {
                     val descriptionStringRes =
-                        if (state.searchQuery == null) Res.string.emptyListDescription
+                        if (state.searchQuery == null) Res.string.emptyList_movie_Description
                         else Res.string.emptyQueriedListDescription
                     Text(
                         text = stringResource(descriptionStringRes),

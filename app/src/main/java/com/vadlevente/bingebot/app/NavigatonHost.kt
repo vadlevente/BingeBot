@@ -76,7 +76,7 @@ fun NavigationHost(
                     }
                 }
                 composable(
-                    "${NavDestination.WATCH_LIST.route}/{watchListId}",
+                    "${NavDestination.MOVIE_WATCH_LIST.route}/{watchListId}",
                     arguments = listOf(
                         navArgument("watchListId") {
                             type = NavType.StringType

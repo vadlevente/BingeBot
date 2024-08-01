@@ -31,6 +31,7 @@ import androidx.navigation.compose.rememberNavController
 import com.vadlevente.bingebot.core.model.NavDestination
 import com.vadlevente.bingebot.dashboard.R
 import com.vadlevente.bingebot.list.ui.MovieListScreen
+import com.vadlevente.bingebot.list.ui.TvListScreen
 import com.vadlevente.bingebot.ui.cardColor
 import com.vadlevente.bingebot.ui.darkNavItemColor
 import com.vadlevente.bingebot.ui.lightNavItemColor
@@ -56,7 +57,7 @@ fun DashboardScreen(
                 MovieListScreen()
             }
             composable(NavDestination.LIST_TV.route) {
-                Text(text = "SOROZAT LISTA!!")
+                TvListScreen()
             }
             composable(NavDestination.SETTINGS.route) {
                 Text(text = "BEÁLLÍTÁSOK!!")

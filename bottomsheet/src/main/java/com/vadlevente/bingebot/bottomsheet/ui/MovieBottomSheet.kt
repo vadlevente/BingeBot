@@ -95,19 +95,19 @@ fun MovieBottomSheet(
             ) {
                 BottomSheetAction(
                     action = { viewModel.onShowDetails() },
-                    labelRes = R.string.movieBottomSheet_openDetails,
+                    labelRes = R.string.itemBottomSheet_openDetails,
                     imageVector = Filled.Info,
                 )
                 if (event.watchListId == null) {
                     BottomSheetAction(
                         action = { viewModel.onAddToWatchList() },
-                        labelRes = R.string.movieBottomSheet_addToWatchList,
+                        labelRes = R.string.itemBottomSheet_addToWatchList,
                         imageVector = Filled.AddToPhotos,
                     )
                 } else {
                     BottomSheetAction(
                         action = { viewModel.removeFromWatchList() },
-                        labelRes = R.string.movieBottomSheet_removeFromWatchList,
+                        labelRes = R.string.itemBottomSheet_removeFromWatchList,
                         imageVector = Filled.Remove,
                     )
                 }
@@ -115,19 +115,19 @@ fun MovieBottomSheet(
                     if (movie.isWatched) {
                         BottomSheetAction(
                             action = { viewModel.onSetItemNotWatched() },
-                            labelRes = R.string.movieBottomSheet_revertSeen,
+                            labelRes = R.string.itemBottomSheet_revertSeen,
                             imageVector = Filled.VisibilityOff,
                         )
                     } else {
                         BottomSheetAction(
                             action = { showDialog = true },
-                            labelRes = R.string.movieBottomSheet_seen,
+                            labelRes = R.string.itemBottomSheet_seen,
                             imageVector = Filled.Visibility,
                         )
                     }
                     BottomSheetAction(
                         action = { viewModel.onDelete() },
-                        labelRes = R.string.movieBottomSheet_delete,
+                        labelRes = R.string.itemBottomSheet_delete,
                         imageVector = Filled.Delete,
                     )
                 } else {
@@ -174,7 +174,7 @@ fun MovieBottomSheet(
                 title = {
                         Text(
                             modifier = Modifier.padding(16.dp),
-                            text = stringResource(id = R.string.movieBottomSheet_addWatchedDateTitle),
+                            text = stringResource(id = R.string.itemBottomSheet_addWatchedDateTitle),
                             style = dialogDescription
                         )
                 },

@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -28,6 +27,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.vadlevente.bingebot.authentication.R
 import com.vadlevente.bingebot.authentication.ui.login.LoginViewModel.ViewState
 import com.vadlevente.bingebot.core.stringOf
+import com.vadlevente.bingebot.core.ui.composables.BBOutlinedButton
 import com.vadlevente.bingebot.core.ui.composables.BBOutlinedTextField
 import com.vadlevente.bingebot.core.ui.composables.PasswordTrailingIcon
 import com.vadlevente.bingebot.ui.BingeBotTheme
@@ -63,8 +63,8 @@ fun LoginScreenComponent(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(margin16)
             .background(backgroundColor)
+            .padding(margin16)
     ) {
         Box(
             modifier = Modifier
@@ -109,21 +109,20 @@ fun LoginScreenComponent(
                 }
             )
             Spacer(modifier = Modifier.fillMaxHeight(.2f))
-            OutlinedButton(
+            BBOutlinedButton(
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .padding(vertical = margin8),
                 enabled = state.isSubmitEnabled,
-                onClick = onSubmit
-            ) {
-                Text(text = stringResource(id = R.string.loginSubmitButtonTitle))
-            }
+                onClick = onSubmit,
+                text = stringResource(id = R.string.loginSubmitButtonTitle)
+            )
             Text(
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .clickable {
-                    onNavigateToRegistration()
-                },
+                        onNavigateToRegistration()
+                    },
                 text = stringResource(id = R.string.loginNavigateToRegistrationTitle),
                 style = link,
             )

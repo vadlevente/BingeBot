@@ -14,7 +14,7 @@ import com.vadlevente.bingebot.core.events.dialog.DialogEventChannel
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
 import com.vadlevente.bingebot.core.model.Item.Movie
-import com.vadlevente.bingebot.core.model.NavDestination.WATCH_LIST
+import com.vadlevente.bingebot.core.model.NavDestination.MOVIE_WATCH_LIST
 import com.vadlevente.bingebot.core.model.WatchList
 import com.vadlevente.bingebot.core.stringOf
 import com.vadlevente.bingebot.core.viewModel.BaseViewModel
@@ -76,7 +76,7 @@ class WatchListsBottomSheetViewModel @Inject constructor(
     }
 
     fun onWatchListSelected(watchListId: String) {
-        navigateTo(WATCH_LIST, watchListId)
+        navigateTo(MOVIE_WATCH_LIST, watchListId)
         onDismiss()
     }
 

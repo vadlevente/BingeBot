@@ -1,7 +1,9 @@
 <resources>
-    <string name="searchFieldHint">Filmek szűrése</string>
+    <string name="searchField_movieHint">Filmek szűrése</string>
+    <string name="searchField_tvHint">Sorozatok szűrése</string>
     <string name="emptyQueriedListDescription">Nincs a kulcsszónak megfelelő találat.</string>
-    <string name="emptyListDescription">Nem található film a listában.</string>
+    <string name="emptyList_movie_Description">Nem található film a listában.</string>
+    <string name="emptyList_tv_Description">Nem található sorozat a listában.</string>
 
     <string name="common_Ok">OK</string>
     <string name="common_Yes">Igen</string>

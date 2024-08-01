@@ -3,10 +3,10 @@ package com.vadlevente.bingebot.list.domain.usecase
 import com.vadlevente.bingebot.core.data.cache.SelectedFiltersCacheDataSource
 import com.vadlevente.bingebot.core.data.local.datastore.PreferencesDataSource
 import com.vadlevente.bingebot.core.data.repository.ItemRepository
-import com.vadlevente.bingebot.core.model.ApiConfiguration
 import com.vadlevente.bingebot.core.model.DisplayedItem
 import com.vadlevente.bingebot.core.model.Item
 import com.vadlevente.bingebot.core.ui.BaseUseCase
+import com.vadlevente.bingebot.core.util.getThumbnailUrl
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
@@ -26,39 +26,32 @@ class GetItemsUseCase <T : Item> @Inject constructor(
             ::Triple,
         ).map { (items, configuration, filters) ->
             items
-                .filter { movie ->
+                .filter { item ->
                     if (filters.genres.isEmpty()) true
-                    else movie.genreCodes.any { filters.genres.map { it.id }.contains(it) }
+                    else item.genreCodes.any { filters.genres.map { it.id }.contains(it) }
                 }
-                .filter { movie ->
+                .filter { item ->
                     filters.isWatched?.let { isWatched ->
                         if (isWatched) {
-                            movie.watchedDate != null
+                            item.watchedDate != null
                         } else {
-                            movie.watchedDate == null
+                            item.watchedDate == null
                         }
                     } ?: true
                 }
-                .filter { movie ->
+                .filter { item ->
                     filters.query?.let { query ->
                         if (query.isEmpty()) return@let false
-                        movie.title.lowercase().contains(query.lowercase()) ||
-                            movie.originalTitle.lowercase().contains(query.lowercase())
+                        item.title.lowercase().contains(query.lowercase()) ||
+                            item.originalTitle.lowercase().contains(query.lowercase())
                     } ?: true
                 }
-                .map { movie ->
+                .map { item ->
                     DisplayedItem(
-                        item = movie,
-                        thumbnailUrl = getThumbnailUrl(configuration, movie),
+                        item = item,
+                        thumbnailUrl = item.getThumbnailUrl(configuration),
                     )
                 }
         }
-
-    private fun getThumbnailUrl(
-        configuration: ApiConfiguration,
-        item: T,
-    ) = item.posterPath?.let {
-        "${configuration.imageConfiguration.thumbnailBaseUrl}${it}"
-    }
 
 }

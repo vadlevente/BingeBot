@@ -1,30 +1,30 @@
 package com.vadlevente.bingebot.list
 
 import androidx.lifecycle.viewModelScope
-import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEvent.ShowItemBottomSheet.ShowMovieBottomSheet
-import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEvent.ShowWatchListsBottomSheet.ShowMovieWatchListsBottomSheet
+import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEvent.ShowItemBottomSheet.ShowTvBottomSheet
+import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEvent.ShowWatchListsBottomSheet.ShowTvWatchListsBottomSheet
 import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEventChannel
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
-import com.vadlevente.bingebot.core.model.Item.Movie
-import com.vadlevente.bingebot.core.model.NavDestination.SEARCH_MOVIE
+import com.vadlevente.bingebot.core.model.Item.Tv
+import com.vadlevente.bingebot.core.model.NavDestination.SEARCH_TV
 import com.vadlevente.bingebot.list.domain.usecase.ItemListUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MovieListViewModel @Inject constructor(
+class TvListViewModel @Inject constructor(
     navigationEventChannel: NavigationEventChannel,
     toastEventChannel: ToastEventChannel,
-    useCases: ItemListUseCases<Movie>,
+    useCases: ItemListUseCases<Tv>,
     private val bottomSheetEventChannel: BottomSheetEventChannel,
-) : ListViewModelBase<Movie>(
+) : ListViewModelBase<Tv>(
     navigationEventChannel, toastEventChannel, useCases
 ) {
 
     override fun onNavigateToSearch() {
-        navigateTo(SEARCH_MOVIE)
+        navigateTo(SEARCH_TV)
     }
 
     override fun onNavigateToOptions(itemId: Int) {
@@ -33,7 +33,7 @@ class MovieListViewModel @Inject constructor(
             ?.let {
                 viewModelScope.launch {
                     bottomSheetEventChannel.sendEvent(
-                        ShowMovieBottomSheet(
+                        ShowTvBottomSheet(
                             item = it,
                             alreadySaved = true,
                         )
@@ -45,7 +45,7 @@ class MovieListViewModel @Inject constructor(
     override fun onOpenWatchLists() {
         viewModelScope.launch {
             bottomSheetEventChannel.sendEvent(
-                ShowMovieWatchListsBottomSheet
+                ShowTvWatchListsBottomSheet
             )
         }
     }

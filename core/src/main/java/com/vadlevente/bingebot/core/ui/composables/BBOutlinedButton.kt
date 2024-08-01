@@ -10,11 +10,13 @@ import com.vadlevente.bingebot.ui.outlinedButtonLabel
 fun BBOutlinedButton(
     modifier: Modifier = Modifier,
     text: String,
+    enabled: Boolean = true,
     onClick: () -> Unit,
 ) {
     OutlinedButton(
         modifier = modifier,
         onClick = onClick,
+        enabled = enabled,
     ) {
         Text(
             text = text,

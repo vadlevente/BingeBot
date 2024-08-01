@@ -2,10 +2,10 @@ package com.vadlevente.bingebot.watchlist.domain.usecase
 
 import com.vadlevente.bingebot.core.data.local.datastore.PreferencesDataSource
 import com.vadlevente.bingebot.core.data.repository.ItemRepository
-import com.vadlevente.bingebot.core.model.ApiConfiguration
 import com.vadlevente.bingebot.core.model.DisplayedItem
 import com.vadlevente.bingebot.core.model.Item
 import com.vadlevente.bingebot.core.ui.BaseUseCase
+import com.vadlevente.bingebot.core.util.getThumbnailUrl
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
@@ -26,28 +26,21 @@ class GetWatchListMoviesUseCase <T : Item> @Inject constructor(
             itemRepository.getWatchListItems(params.watchListId),
             preferencesDataSource.apiConfiguration,
             ::Pair,
-        ).map { (movies, configuration) ->
-            movies
-                .filter { movie ->
+        ).map { (items, configuration) ->
+            items
+                .filter { item ->
                     params.query?.let { query ->
                         if (query.isEmpty()) return@let false
-                        movie.title.lowercase().contains(query.lowercase()) ||
-                            movie.originalTitle.lowercase().contains(query.lowercase())
+                        item.title.lowercase().contains(query.lowercase()) ||
+                            item.originalTitle.lowercase().contains(query.lowercase())
                     } ?: true
                 }
-                .map { movie ->
+                .map { item ->
                     DisplayedItem(
-                        item = movie,
-                        thumbnailUrl = getThumbnailUrl(configuration, movie),
+                        item = item,
+                        thumbnailUrl = item.getThumbnailUrl(configuration),
                     )
                 }
         }
-
-    private fun getThumbnailUrl(
-        configuration: ApiConfiguration,
-        item: T,
-    ) = item.posterPath?.let {
-        "${configuration.imageConfiguration.thumbnailBaseUrl}${it}"
-    }
 
 }

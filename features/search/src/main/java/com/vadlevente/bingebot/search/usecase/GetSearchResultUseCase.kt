@@ -2,10 +2,10 @@ package com.vadlevente.bingebot.search.usecase
 
 import com.vadlevente.bingebot.core.data.local.datastore.PreferencesDataSource
 import com.vadlevente.bingebot.core.data.repository.ItemRepository
-import com.vadlevente.bingebot.core.model.ApiConfiguration
 import com.vadlevente.bingebot.core.model.DisplayedItem
 import com.vadlevente.bingebot.core.model.Item
 import com.vadlevente.bingebot.core.ui.BaseUseCase
+import com.vadlevente.bingebot.core.util.getThumbnailUrl
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -20,20 +20,13 @@ class GetSearchResultUseCase <T : Item> @Inject constructor(
             itemRepository.getSearchResult(),
             preferencesDataSource.apiConfiguration,
             ::Pair,
-        ).map { (movies, configuration) ->
-            movies.map { movie ->
+        ).map { (items, configuration) ->
+            items.map { item ->
                 DisplayedItem(
-                    item = movie,
-                    thumbnailUrl = getThumbnailUrl(configuration, movie),
+                    item = item,
+                    thumbnailUrl = item.getThumbnailUrl(configuration),
                 )
             }
         }
-
-    private fun getThumbnailUrl(
-        configuration: ApiConfiguration,
-        item: T,
-    ) = item.posterPath?.let {
-        "${configuration.imageConfiguration.thumbnailBaseUrl}${it}"
-    }
 
 }

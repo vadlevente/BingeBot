@@ -10,5 +10,8 @@ enum class NavDestination(val route: String) {
     SETTINGS("settings"),
     SEARCH_MOVIE("searchMovie"),
     MOVIE_DETAILS("movieDetails"),
-    WATCH_LIST("watchList"),
+    MOVIE_WATCH_LIST("movieWatchList"),
+    SEARCH_TV("searchTv"),
+    TV_DETAILS("tvDetails"),
+    TV_WATCH_LIST("tvWatchList"),
 }

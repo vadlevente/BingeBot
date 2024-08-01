@@ -1,5 +1,6 @@
 package com.vadlevente.bingebot.authentication.ui.registration
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -28,11 +28,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.vadlevente.bingebot.authentication.R
+import com.vadlevente.bingebot.authentication.R.string
 import com.vadlevente.bingebot.authentication.ui.registration.RegistrationViewModel.ViewState
 import com.vadlevente.bingebot.core.stringOf
+import com.vadlevente.bingebot.core.ui.composables.BBOutlinedButton
 import com.vadlevente.bingebot.core.ui.composables.BBOutlinedTextField
 import com.vadlevente.bingebot.core.ui.composables.PasswordTrailingIcon
 import com.vadlevente.bingebot.ui.BingeBotTheme
+import com.vadlevente.bingebot.ui.backgroundColor
 import com.vadlevente.bingebot.ui.errorLabel
 import com.vadlevente.bingebot.ui.link
 import com.vadlevente.bingebot.ui.margin16
@@ -68,6 +71,7 @@ fun RegistrationScreenComponent(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(backgroundColor)
             .padding(margin16)
     ) {
         Box(
@@ -142,15 +146,14 @@ fun RegistrationScreenComponent(
                 )
             }
             Spacer(modifier = Modifier.fillMaxHeight(.1f))
-            OutlinedButton(
+            BBOutlinedButton(
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .padding(vertical = margin8),
                 enabled = state.isSubmitEnabled,
-                onClick = onSubmit
-            ) {
-                Text(text = stringResource(id = R.string.registrationSubmitButtonTitle))
-            }
+                onClick = onSubmit,
+                text = stringResource(id = string.registrationSubmitButtonTitle)
+            )
             Spacer(modifier = Modifier.fillMaxHeight(.1f))
             Text(
                 modifier = Modifier

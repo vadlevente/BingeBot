@@ -131,7 +131,7 @@ abstract class ItemBottomSheetViewModel <T: Item> (
             ).onValue {
                 onDismiss()
                 showToast(
-                    message = stringOf(R.string.movieBottomSheet_setWatchedDateSuccessful),
+                    message = stringOf(R.string.itemBottomSheet_setWatchedDateSuccessful),
                     type = INFO,
                 )
             }
@@ -148,7 +148,7 @@ abstract class ItemBottomSheetViewModel <T: Item> (
             ).onValue {
                 onDismiss()
                 showToast(
-                    message = stringOf(R.string.movieBottomSheet_revertWatchedDateSuccessful),
+                    message = stringOf(R.string.itemBottomSheet_revertWatchedDateSuccessful),
                     type = INFO,
                 )
             }
