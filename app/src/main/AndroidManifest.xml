@@ -17,7 +17,6 @@
         <activity
             android:name="com.vadlevente.bingebot.app.MainActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustResize"
             android:configChanges="locale|colorMode|layoutDirection"
             android:theme="@style/Theme.BingeBot">
             <intent-filter>

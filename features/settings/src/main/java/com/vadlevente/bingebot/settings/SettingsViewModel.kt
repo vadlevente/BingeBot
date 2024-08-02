@@ -13,12 +13,14 @@ import com.vadlevente.bingebot.core.viewModel.State
 import com.vadlevente.bingebot.resources.R.string
 import com.vadlevente.bingebot.settings.SettingsViewModel.ViewState
 import com.vadlevente.bingebot.settings.domain.usecases.GetLanguagesUseCase
+import com.vadlevente.bingebot.settings.domain.usecases.GetUserEmailUseCase
 import com.vadlevente.bingebot.settings.domain.usecases.LogoutUseCase
 import com.vadlevente.bingebot.settings.domain.usecases.SetLanguageUseCase
 import com.vadlevente.bingebot.settings.domain.usecases.SetLanguageUseCaseParams
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -28,6 +30,7 @@ class SettingsViewModel @Inject constructor(
     navigationEventChannel: NavigationEventChannel,
     toastEventChannel: ToastEventChannel,
     getLanguagesUseCase: GetLanguagesUseCase,
+    getUserEmailUseCase: GetUserEmailUseCase,
     private val setLanguageUseCase: SetLanguageUseCase,
     private val logoutUseCase: LogoutUseCase,
     private val dialogEventChannel: DialogEventChannel,
@@ -39,14 +42,18 @@ class SettingsViewModel @Inject constructor(
     override val state: StateFlow<ViewState> = viewState
 
     init {
-        getLanguagesUseCase.execute(Unit)
-            .onValue { languages ->
-                viewState.update {
-                    it.copy(
-                        languages = languages
-                    )
-                }
+        combine(
+            getLanguagesUseCase.execute(Unit),
+            getUserEmailUseCase.execute(Unit),
+            ::Pair
+        ).onValue { (languages, email) ->
+            viewState.update {
+                it.copy(
+                    languages = languages,
+                    email = email?.substringBefore("@"),
+                )
             }
+        }
     }
 
     fun onLanguageChanged(language: SelectedLanguage) {
@@ -92,6 +99,7 @@ class SettingsViewModel @Inject constructor(
     data class ViewState(
         val languages: Map<SelectedLanguage, Boolean> = emptyMap(),
         val showSelectLanguageBottomSheet: Boolean = false,
+        val email: String? = null,
     ) : State
 
 }

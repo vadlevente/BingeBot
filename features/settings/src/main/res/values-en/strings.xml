@@ -4,6 +4,7 @@
     <string name="settings_selectLanguageTitle">Select language</string>
     <string name="settings_logout">Sign out</string>
     <string name="settings_selectLanguageLabel">Application language</string>
+    <string name="settings_user">User</string>
     <string name="logoutDialog_title">Sign out</string>
     <string name="logoutDialog_description">Are you sure to sign out of the application?</string>
 </resources>

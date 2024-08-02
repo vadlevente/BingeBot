@@ -19,7 +19,7 @@ import com.vadlevente.bingebot.core.model.WatchList
 import com.vadlevente.bingebot.core.stringOf
 import com.vadlevente.bingebot.core.viewModel.BaseViewModel
 import com.vadlevente.bingebot.core.viewModel.State
-import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flatMapConcat
@@ -52,7 +52,7 @@ abstract class AddItemToWatchListBottomSheetViewModel <T : Item>(
         }
     }
 
-    @OptIn(FlowPreview::class)
+    @OptIn(ExperimentalCoroutinesApi::class)
     fun onAddToWatchList(watchListId: String) {
         viewState.value.event?.let { event ->
             val startFlow = if (event.alreadySaved) {

@@ -1,5 +1,6 @@
 package com.vadlevente.bingebot.authentication.ui.login
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -16,6 +17,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,18 +41,25 @@ import com.vadlevente.bingebot.ui.link
 import com.vadlevente.bingebot.ui.margin16
 import com.vadlevente.bingebot.ui.margin8
 import com.vadlevente.bingebot.ui.pageTitle
+import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(
     viewModel: LoginViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsState()
+    val coroutineScope = rememberCoroutineScope()
     LoginScreenComponent(
-        state,
-        viewModel::onEmailChanged,
-        viewModel::onPasswordChanged,
-        viewModel::onSubmit,
-        viewModel::onNavigateToRegistration,
+        state = state,
+        onEmailChanged = viewModel::onEmailChanged,
+        onPasswordChanged = viewModel::onPasswordChanged,
+        onSubmit = viewModel::onSubmit,
+        onNavigateToRegistration = viewModel::onNavigateToRegistration,
+        onBackPressed = {
+            coroutineScope.launch {
+                viewModel.showExitConfirmation()
+            }
+        },
     )
 }
 
@@ -61,6 +70,7 @@ fun LoginScreenComponent(
     onPasswordChanged: (String) -> Unit,
     onSubmit: () -> Unit,
     onNavigateToRegistration: () -> Unit,
+    onBackPressed: () -> Unit = {},
 ) {
     var passwordVisible by remember { mutableStateOf(false) }
     Column(
@@ -137,6 +147,10 @@ fun LoginScreenComponent(
                 style = link,
             )
         }
+    }
+
+    BackHandler {
+        onBackPressed()
     }
 
 }

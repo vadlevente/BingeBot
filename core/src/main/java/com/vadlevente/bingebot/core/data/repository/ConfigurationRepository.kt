@@ -18,6 +18,7 @@ interface ConfigurationRepository {
     suspend fun updateConfiguration()
     suspend fun logout()
     suspend fun setSelectedLanguage(language: SelectedLanguage)
+    fun getUserEmail(): String?
 
 }
 
@@ -51,6 +52,8 @@ class ConfigurationRepositoryImpl @Inject constructor(
             tvRepository.updateGenres()
             setLocale(language.code)
         }
+
+    override fun getUserEmail() = authenticationService.currentUserEmail
 
     private fun setLocale(code: String) {
         AppCompatDelegate.setApplicationLocales(

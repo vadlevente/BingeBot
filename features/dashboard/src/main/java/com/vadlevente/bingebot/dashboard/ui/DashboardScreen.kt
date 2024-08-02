@@ -1,5 +1,6 @@
 package com.vadlevente.bingebot.dashboard.ui
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -29,6 +30,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.vadlevente.bingebot.core.model.NavDestination
+import com.vadlevente.bingebot.core.model.NavDestination.LIST_MOVIE
 import com.vadlevente.bingebot.dashboard.R
 import com.vadlevente.bingebot.list.ui.MovieListScreen
 import com.vadlevente.bingebot.list.ui.TvListScreen
@@ -65,6 +67,7 @@ fun DashboardScreen(
             }
         }
     }
+
 }
 
 @Composable
@@ -115,6 +118,13 @@ fun BottomNavigationBar(navController: NavController) {
         ) {
             navController.navigate(NavDestination.SETTINGS.route) {
                 launchSingleTop = true
+            }
+        }
+    }
+    if (selectedTabIndex != 0) {
+        BackHandler {
+            navController.navigate(LIST_MOVIE.route) {
+                popUpTo(0)
             }
         }
     }

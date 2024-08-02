@@ -141,12 +141,8 @@ private fun navigate(
         NavDestination.REGISTRATION.route,
         NavDestination.LOGIN.route,
         NavDestination.DASHBOARD.route -> {
-            navController.popBackStack(NavDestination.SPLASH.route, true)
             navController.navigate(route) {
-                popUpTo(NavDestination.SPLASH.route) {
-                    inclusive = true
-                }
-                launchSingleTop = true
+                popUpTo(0)
             }
         }
         else -> navController.navigate(route)

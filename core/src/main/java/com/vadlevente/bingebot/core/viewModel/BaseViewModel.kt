@@ -78,6 +78,20 @@ abstract class BaseViewModel<S : State>(
             .onEach(action)
             .launchIn(viewModelScope)
 
+    protected fun <T : Any> Flow<T?>.onValueOrNull(
+        action: suspend (T?) -> Unit,
+    ) =
+        this
+            .onStart { isInProgressMutable.update { true } }
+            .onCompletion { isInProgressMutable.update { false } }
+            .onEmpty { isInProgressMutable.update { false } }
+            .catch {
+                basicErrorHandler(it)
+            }
+            .onEach { isInProgressMutable.update { false } }
+            .onEach(action)
+            .launchIn(viewModelScope)
+
     protected fun <T : Any> Flow<T>.onValueSilent(
         action: (T) -> Unit,
     ) = this

@@ -12,6 +12,7 @@ import com.vadlevente.bingebot.core.asString
 import com.vadlevente.bingebot.ui.lightTextColor
 import com.vadlevente.bingebot.ui.onBackgroundColor
 import com.vadlevente.bingebot.ui.onBackgroundColorFocused
+import com.vadlevente.bingebot.ui.textFieldLabel
 
 @Composable
 fun BBOutlinedTextField(
@@ -30,7 +31,12 @@ fun BBOutlinedTextField(
         modifier = modifier,
         value = value,
         label = label?.let {
-            { Text(text = it.asString()) }
+            {
+                Text(
+                    text = it.asString(),
+                    style = textFieldLabel,
+                )
+            }
         },
         placeholder = hint?.let {
             { Text(text = it.asString()) }

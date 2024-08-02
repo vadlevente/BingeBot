@@ -4,6 +4,7 @@
     <string name="settings_selectLanguageTitle">Nyelv módosítása</string>
     <string name="settings_logout">Kijelentkezés</string>
     <string name="settings_selectLanguageLabel">Alkalmazás nyelve</string>
+    <string name="settings_user">Felhasználó</string>
     <string name="logoutDialog_title">Kijelentkezés</string>
     <string name="logoutDialog_description">Biztosan szeretne kijelentkezni az alkalmazásból?</string>
 </resources>

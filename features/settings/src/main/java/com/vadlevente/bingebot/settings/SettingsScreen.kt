@@ -12,6 +12,7 @@ import androidx.compose.material.icons.Icons.AutoMirrored
 import androidx.compose.material.icons.Icons.Filled
 import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.Language
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -81,6 +82,34 @@ fun SettingsScreenComponent(
                     .background(backgroundColor)
                     .padding(margin16)
             ) {
+                state.email?.let { email ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 16.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Icon(
+                            modifier = Modifier.size(30.dp),
+                            imageVector = Filled.Person,
+                            tint = lightTextColor,
+                            contentDescription = null,
+                        )
+                        Text(
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(horizontal = 16.dp),
+                            text = stringResource(id = R.string.settings_user),
+                            style = settingsLabel,
+                        )
+                        Text(
+                            modifier = Modifier
+                                .padding(horizontal = 16.dp),
+                            text = email,
+                            style = settingsValue,
+                        )
+                    }
+                }
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
