@@ -16,6 +16,7 @@
 
     <string name="exception_authenticationFailed">Sikertelen bejelentkezés! Kérjük, próbálja újra!</string>
     <string name="exception_weakPassword">A megadott jelszó túl gyenge! Kérjük, adjon meg egy másikat!</string>
+    <string name="exception_invalidCredentials">A megadott bejelentkezési adatok nem megfelelőek!</string>
     <string name="exception_sessionExpired">A munkamenet lejárt, kérjük, jelentkezzen be újra!</string>
     <string name="exception_watchListAlreadyExists">A megadott névvel már létezik lista!</string>
 

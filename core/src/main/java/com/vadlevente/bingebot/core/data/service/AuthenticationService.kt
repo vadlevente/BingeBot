@@ -3,10 +3,12 @@ package com.vadlevente.bingebot.core.data.service
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.vadlevente.bingebot.core.data.local.datastore.PreferencesDataSource
 import com.vadlevente.bingebot.core.model.exception.BingeBotException
 import com.vadlevente.bingebot.core.model.exception.Reason.AUTHENTICATION_FAILED
+import com.vadlevente.bingebot.core.model.exception.Reason.INVALID_CREDENTIALS
 import com.vadlevente.bingebot.core.model.exception.Reason.SESSION_EXPIRED
 import com.vadlevente.bingebot.core.model.exception.Reason.WEAK_PASSWORD
 import dagger.Lazy
@@ -87,9 +89,11 @@ class AuthenticationServiceImpl @Inject constructor(
                 continuation.resume(Unit)
             } else {
                 it.exception?.let { throwable ->
-                    val exception = if (throwable is FirebaseAuthWeakPasswordException) {
-                        BingeBotException(throwable, WEAK_PASSWORD)
-                    } else throwable
+                    val exception = when (throwable) {
+                        is FirebaseAuthWeakPasswordException -> BingeBotException(throwable, WEAK_PASSWORD)
+                        is FirebaseAuthInvalidCredentialsException -> BingeBotException(throwable, INVALID_CREDENTIALS)
+                        else -> throwable
+                    }
                     continuation.resumeWithException(exception)
                 } ?: continuation.resume(Unit)
             }
