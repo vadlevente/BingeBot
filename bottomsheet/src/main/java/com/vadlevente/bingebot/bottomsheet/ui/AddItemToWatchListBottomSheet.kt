@@ -33,6 +33,7 @@ import com.vadlevente.bingebot.core.model.Item
 import com.vadlevente.bingebot.core.ui.composables.ProgressScreen
 import com.vadlevente.bingebot.core.util.yearString
 import com.vadlevente.bingebot.ui.bottomSheetAction
+import com.vadlevente.bingebot.ui.bottomSheetBottomPadding
 import com.vadlevente.bingebot.ui.cardColor
 import com.vadlevente.bingebot.ui.lightTextColor
 import com.vadlevente.bingebot.ui.onBackgroundColor
@@ -111,6 +112,7 @@ fun <T : Item> AddItemToWatchListBottomSheet(
                     }
                 }
             }
+            Spacer(modifier = Modifier.height(bottomSheetBottomPadding))
         }
     }
     BackHandler {

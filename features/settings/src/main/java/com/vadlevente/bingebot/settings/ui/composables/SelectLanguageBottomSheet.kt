@@ -5,7 +5,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -26,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import com.vadlevente.bingebot.core.model.SelectedLanguage
 import com.vadlevente.bingebot.settings.R
 import com.vadlevente.bingebot.ui.bottomSheetAction
+import com.vadlevente.bingebot.ui.bottomSheetBottomPadding
 import com.vadlevente.bingebot.ui.cardColor
 import com.vadlevente.bingebot.ui.dialogTitle
 import com.vadlevente.bingebot.ui.progressColor
@@ -93,6 +96,7 @@ fun SelectLanguageBottomSheet(
                     }
                 }
             }
+            Spacer(modifier = Modifier.height(bottomSheetBottomPadding))
         }
     }
 

@@ -49,6 +49,7 @@ import com.vadlevente.bingebot.core.ui.composables.BBOutlinedButton
 import com.vadlevente.bingebot.core.util.isBeforeTomorrow
 import com.vadlevente.bingebot.core.util.yearString
 import com.vadlevente.bingebot.ui.bottomSheetAction
+import com.vadlevente.bingebot.ui.bottomSheetBottomPadding
 import com.vadlevente.bingebot.ui.cardColor
 import com.vadlevente.bingebot.ui.darkTextColor
 import com.vadlevente.bingebot.ui.dialogDescription
@@ -152,7 +153,7 @@ fun <T : Item> ItemBottomSheet(
                         imageVector = Filled.SaveAlt,
                     )
                 }
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(bottomSheetBottomPadding))
             }
         }
     }
