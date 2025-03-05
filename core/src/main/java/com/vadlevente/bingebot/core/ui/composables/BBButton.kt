@@ -2,11 +2,11 @@ package com.vadlevente.bingebot.core.ui.composables
 
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ElevatedButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.vadlevente.bingebot.ui.buttonLabel
-import com.vadlevente.bingebot.ui.progressColor
+import com.vadlevente.bingebot.ui.BingeBotTheme
 
 @Composable
 fun BBButton(
@@ -18,13 +18,14 @@ fun BBButton(
         modifier = modifier,
         onClick = onClick,
         colors = ButtonDefaults.elevatedButtonColors(
-            containerColor = progressColor,
-            contentColor = progressColor,
+            containerColor = BingeBotTheme.colors.highlight,
+            contentColor = BingeBotTheme.colors.highlight,
         )
     ) {
         Text(
             text = text,
-            style = buttonLabel,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onPrimary
         )
     }
 }

@@ -15,6 +15,7 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,6 +25,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.vadlevente.bingebot.core.model.Item
 import com.vadlevente.bingebot.core.stringOf
@@ -33,11 +35,7 @@ import com.vadlevente.bingebot.core.ui.composables.ProgressScreen
 import com.vadlevente.bingebot.core.ui.composables.TopBar
 import com.vadlevente.bingebot.core.util.asOneDecimalString
 import com.vadlevente.bingebot.core.util.yearString
-import com.vadlevente.bingebot.ui.backgroundColor
-import com.vadlevente.bingebot.ui.lightTextColor
-import com.vadlevente.bingebot.ui.listDescription
-import com.vadlevente.bingebot.ui.progressColor
-import com.vadlevente.bingebot.ui.white
+import com.vadlevente.bingebot.ui.BingeBotTheme
 import com.vadlevente.bingebot.watchlist.viewmodel.ItemWatchListViewModel
 import com.vadlevente.bingebot.watchlist.viewmodel.ItemWatchListViewModel.ViewState
 import com.vadlevente.bingebot.resources.R as Res
@@ -88,7 +86,7 @@ fun <T : Item> ItemWatchListScreenComponent(
                     Icon(
                         imageVector = Filled.Search,
                         contentDescription = null,
-                        tint = lightTextColor,
+                        tint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier
                             .clickable { onToggleSearchField() }
                             .padding(end = 8.dp)
@@ -96,7 +94,7 @@ fun <T : Item> ItemWatchListScreenComponent(
                     Icon(
                         imageVector = Filled.Delete,
                         contentDescription = null,
-                        tint = lightTextColor,
+                        tint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier
                             .clickable { onDeleteWatchList() }
                             .padding(end = 8.dp)
@@ -107,8 +105,8 @@ fun <T : Item> ItemWatchListScreenComponent(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = onNavigateToSearch,
-                containerColor = progressColor,
-                contentColor = white,
+                containerColor = BingeBotTheme.colors.highlight,
+                contentColor = MaterialTheme.colorScheme.onPrimary,
             ) {
                 Icon(Filled.Add, "")
             }
@@ -117,7 +115,7 @@ fun <T : Item> ItemWatchListScreenComponent(
         Column(
             modifier = Modifier
                 .padding(paddingValues)
-                .background(backgroundColor)
+                .background(MaterialTheme.colorScheme.background)
         ) {
             AnimatedVisibility(visible = state.isSearchFieldVisible) {
                 BBOutlinedTextField(
@@ -140,7 +138,10 @@ fun <T : Item> ItemWatchListScreenComponent(
                         else Res.string.emptyQueriedListDescription
                     Text(
                         text = stringResource(descriptionStringRes),
-                        style = listDescription,
+                        style = MaterialTheme.typography.bodyLarge.copy(
+                            textAlign = TextAlign.Center
+                        ),
+                        color = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.align(Alignment.Center),
                     )
                 } else {

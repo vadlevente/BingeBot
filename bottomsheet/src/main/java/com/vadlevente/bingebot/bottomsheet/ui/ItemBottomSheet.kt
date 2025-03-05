@@ -24,6 +24,7 @@ import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.Text
@@ -48,14 +49,8 @@ import com.vadlevente.bingebot.core.ui.composables.BBButton
 import com.vadlevente.bingebot.core.ui.composables.BBOutlinedButton
 import com.vadlevente.bingebot.core.util.isBeforeTomorrow
 import com.vadlevente.bingebot.core.util.yearString
-import com.vadlevente.bingebot.ui.bottomSheetAction
+import com.vadlevente.bingebot.ui.BingeBotTheme
 import com.vadlevente.bingebot.ui.bottomSheetBottomPadding
-import com.vadlevente.bingebot.ui.cardColor
-import com.vadlevente.bingebot.ui.darkTextColor
-import com.vadlevente.bingebot.ui.dialogDescription
-import com.vadlevente.bingebot.ui.lightTextColor
-import com.vadlevente.bingebot.ui.onBackgroundColor
-import com.vadlevente.bingebot.ui.progressColor
 import java.util.Calendar
 import java.util.Date
 import com.vadlevente.bingebot.resources.R as Resources
@@ -90,7 +85,7 @@ fun <T : Item> ItemBottomSheet(
         onDismissRequest = viewModel::onDismiss,
         sheetState = modalBottomSheetState,
         dragHandle = { BottomSheetDefaults.DragHandle() },
-        containerColor = cardColor,
+        containerColor = MaterialTheme.colorScheme.surface,
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
             ItemBottomSheetHeader(
@@ -102,7 +97,7 @@ fun <T : Item> ItemBottomSheet(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(1.dp)
-                    .background(onBackgroundColor)
+                    .background(MaterialTheme.colorScheme.onSurface)
             )
             Column(
                 modifier = Modifier
@@ -183,7 +178,7 @@ fun <T : Item> ItemBottomSheet(
                 )
             },
             colors = DatePickerDefaults.colors(
-                containerColor = cardColor,
+                containerColor = MaterialTheme.colorScheme.surface,
             )
         ) {
             DatePicker(
@@ -191,25 +186,26 @@ fun <T : Item> ItemBottomSheet(
                         Text(
                             modifier = Modifier.padding(16.dp),
                             text = stringResource(id = R.string.itemBottomSheet_addWatchedDateTitle),
-                            style = dialogDescription
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.primary
                         )
                 },
                 state = dateState,
                 showModeToggle = false,
                 colors = DatePickerDefaults.colors(
-                    containerColor = cardColor,
-                    titleContentColor = lightTextColor,
-                    headlineContentColor = lightTextColor,
-                    weekdayContentColor = lightTextColor,
-                    yearContentColor = lightTextColor,
-                    currentYearContentColor = lightTextColor,
-                    selectedYearContentColor = lightTextColor,
-                    dayContentColor = lightTextColor,
-                    selectedDayContentColor = darkTextColor,
-                    todayContentColor = lightTextColor,
-                    todayDateBorderColor = progressColor,
-                    selectedDayContainerColor = progressColor,
-                    subheadContentColor = progressColor,
+                    containerColor = MaterialTheme.colorScheme.surface,
+                    titleContentColor = MaterialTheme.colorScheme.primary,
+                    headlineContentColor = MaterialTheme.colorScheme.primary,
+                    weekdayContentColor = MaterialTheme.colorScheme.primary,
+                    yearContentColor = MaterialTheme.colorScheme.primary,
+                    currentYearContentColor = MaterialTheme.colorScheme.primary,
+                    selectedYearContentColor = MaterialTheme.colorScheme.primary,
+                    dayContentColor = MaterialTheme.colorScheme.primary,
+                    selectedDayContentColor = MaterialTheme.colorScheme.onSurface,
+                    todayContentColor = MaterialTheme.colorScheme.primary,
+                    todayDateBorderColor = BingeBotTheme.colors.highlight,
+                    selectedDayContainerColor = BingeBotTheme.colors.highlight,
+                    subheadContentColor = BingeBotTheme.colors.highlight,
                     ),
             )
         }
@@ -231,13 +227,14 @@ private fun BottomSheetAction(
     ) {
         Icon(
             imageVector = imageVector,
-            tint = lightTextColor,
+            tint = MaterialTheme.colorScheme.primary,
             contentDescription = null,
         )
         Text(
             modifier = Modifier.padding(start = 12.dp),
             text = stringResource(id = labelRes),
-            style = bottomSheetAction,
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.primary
         )
     }
 }

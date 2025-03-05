@@ -16,6 +16,7 @@ import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -27,11 +28,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.vadlevente.bingebot.core.model.SelectedLanguage
 import com.vadlevente.bingebot.settings.R
-import com.vadlevente.bingebot.ui.bottomSheetAction
+import com.vadlevente.bingebot.ui.BingeBotTheme
 import com.vadlevente.bingebot.ui.bottomSheetBottomPadding
-import com.vadlevente.bingebot.ui.cardColor
-import com.vadlevente.bingebot.ui.dialogTitle
-import com.vadlevente.bingebot.ui.progressColor
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -48,19 +46,20 @@ fun SelectLanguageBottomSheet(
         onDismissRequest = onDismiss,
         sheetState = modalBottomSheetState,
         dragHandle = { BottomSheetDefaults.DragHandle() },
-        containerColor = cardColor,
+        containerColor = MaterialTheme.colorScheme.surface,
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(cardColor)
+                .background(MaterialTheme.colorScheme.surface)
         ) {
             Text(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 16.dp),
                 text = stringResource(id = R.string.settings_selectLanguageTitle),
-                style = dialogTitle,
+                style = MaterialTheme.typography.titleSmall,
+                color = MaterialTheme.colorScheme.primary,
                 textAlign = TextAlign.Center
             )
             LazyColumn(
@@ -83,14 +82,15 @@ fun SelectLanguageBottomSheet(
                                 .padding(bottom = 16.dp)
                                 .padding(horizontal = 16.dp),
                             text = language.displayName,
-                            style = bottomSheetAction,
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.primary,
                         )
                         if (languages[language] == true) {
                             Icon(
                                 modifier = Modifier.padding(horizontal = 16.dp),
                                 imageVector = Filled.Done,
                                 contentDescription = null,
-                                tint = progressColor,
+                                tint = BingeBotTheme.colors.highlight,
                             )
                         }
                     }

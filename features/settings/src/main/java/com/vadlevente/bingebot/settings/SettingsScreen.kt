@@ -14,6 +14,7 @@ import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,11 +31,7 @@ import com.vadlevente.bingebot.core.ui.composables.ProgressScreen
 import com.vadlevente.bingebot.core.ui.composables.TopBar
 import com.vadlevente.bingebot.settings.SettingsViewModel.ViewState
 import com.vadlevente.bingebot.settings.ui.composables.SelectLanguageBottomSheet
-import com.vadlevente.bingebot.ui.backgroundColor
-import com.vadlevente.bingebot.ui.lightTextColor
 import com.vadlevente.bingebot.ui.margin16
-import com.vadlevente.bingebot.ui.settingsLabel
-import com.vadlevente.bingebot.ui.settingsValue
 
 @Composable
 fun SettingsScreen(
@@ -73,13 +70,13 @@ fun SettingsScreenComponent(
             isProgressVisible = isInProgress,
             modifier = Modifier
                 .fillMaxSize()
-                .background(backgroundColor)
+                .background(MaterialTheme.colorScheme.background)
                 .padding(paddingValues)
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(backgroundColor)
+                    .background(MaterialTheme.colorScheme.background)
                     .padding(margin16)
             ) {
                 state.email?.let { email ->
@@ -92,7 +89,7 @@ fun SettingsScreenComponent(
                         Icon(
                             modifier = Modifier.size(30.dp),
                             imageVector = Filled.Person,
-                            tint = lightTextColor,
+                            tint = MaterialTheme.colorScheme.primary,
                             contentDescription = null,
                         )
                         Text(
@@ -100,13 +97,15 @@ fun SettingsScreenComponent(
                                 .weight(1f)
                                 .padding(horizontal = 16.dp),
                             text = stringResource(id = R.string.settings_user),
-                            style = settingsLabel,
+                            style = MaterialTheme.typography.titleMedium,
+                            color = MaterialTheme.colorScheme.primary,
                         )
                         Text(
                             modifier = Modifier
                                 .padding(horizontal = 16.dp),
                             text = email,
-                            style = settingsValue,
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.primary,
                         )
                     }
                 }
@@ -122,7 +121,7 @@ fun SettingsScreenComponent(
                     Icon(
                         modifier = Modifier.size(30.dp),
                         imageVector = Filled.Language,
-                        tint = lightTextColor,
+                        tint = MaterialTheme.colorScheme.primary,
                         contentDescription = null,
                     )
                     Text(
@@ -130,13 +129,15 @@ fun SettingsScreenComponent(
                             .weight(1f)
                             .padding(horizontal = 16.dp),
                         text = stringResource(id = R.string.settings_selectLanguageLabel),
-                        style = settingsLabel,
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.primary,
                     )
                     Text(
                         modifier = Modifier
                             .padding(horizontal = 16.dp),
                         text = state.languages.entries.first { it.value }.key.displayName,
-                        style = settingsValue,
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.primary,
                     )
                 }
 
@@ -152,7 +153,7 @@ fun SettingsScreenComponent(
                     Icon(
                         modifier = Modifier.size(30.dp),
                         imageVector = AutoMirrored.Filled.Logout,
-                        tint = lightTextColor,
+                        tint = MaterialTheme.colorScheme.primary,
                         contentDescription = null,
                     )
                     Text(
@@ -160,7 +161,8 @@ fun SettingsScreenComponent(
                             .weight(1f)
                             .padding(horizontal = 16.dp),
                         text = stringResource(id = R.string.settings_logout),
-                        style = settingsLabel,
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.primary,
                     )
                 }
             }

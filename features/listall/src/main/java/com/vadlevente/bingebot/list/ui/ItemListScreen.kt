@@ -25,6 +25,7 @@ import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -34,6 +35,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.vadlevente.bingebot.core.model.Genre
 import com.vadlevente.bingebot.core.model.Item
@@ -48,12 +50,7 @@ import com.vadlevente.bingebot.core.util.yearString
 import com.vadlevente.bingebot.list.ItemListViewModel
 import com.vadlevente.bingebot.list.ItemListViewModel.ViewState
 import com.vadlevente.bingebot.list.R
-import com.vadlevente.bingebot.ui.backgroundColor
-import com.vadlevente.bingebot.ui.lightTextColor
-import com.vadlevente.bingebot.ui.listDescription
-import com.vadlevente.bingebot.ui.onBackgroundColor
-import com.vadlevente.bingebot.ui.progressColor
-import com.vadlevente.bingebot.ui.white
+import com.vadlevente.bingebot.ui.BingeBotTheme
 import com.vadlevente.bingebot.resources.R as Res
 
 @Composable
@@ -105,7 +102,7 @@ fun <T : Item> ItemListScreenComponent(
                     Icon(
                         imageVector = Icons.Filled.Search,
                         contentDescription = null,
-                        tint = lightTextColor,
+                        tint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier
                             .clickable { onToggleSearchField() }
                             .padding(end = 8.dp)
@@ -114,14 +111,14 @@ fun <T : Item> ItemListScreenComponent(
                         modifier = Modifier.padding(end = 8.dp),
                         badge = {
                             if (state.isWatchedSelected != null || state.isAnyGenreSelected) {
-                                Badge(containerColor = progressColor)
+                                Badge(containerColor = BingeBotTheme.colors.highlight)
                             }
                         }
                     ) {
                         Icon(
                             imageVector = Icons.Filled.FilterAlt,
                             contentDescription = null,
-                            tint = lightTextColor,
+                            tint = MaterialTheme.colorScheme.primary,
                             modifier = Modifier
                                 .clickable { onToggleFilters() }
                         )
@@ -129,7 +126,7 @@ fun <T : Item> ItemListScreenComponent(
                     Icon(
                         imageVector = Icons.Filled.List,
                         contentDescription = null,
-                        tint = lightTextColor,
+                        tint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier
                             .clickable { onOpenWatchLists() }
                             .padding(end = 8.dp)
@@ -141,8 +138,8 @@ fun <T : Item> ItemListScreenComponent(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = onNavigateToSearch,
-                containerColor = progressColor,
-                contentColor = white,
+                containerColor = BingeBotTheme.colors.highlight,
+                contentColor = MaterialTheme.colorScheme.onPrimary,
             ) {
                 Icon(Icons.Filled.Add, "")
             }
@@ -151,7 +148,7 @@ fun <T : Item> ItemListScreenComponent(
         Column(
             modifier = Modifier
                 .padding(paddingValues)
-                .background(backgroundColor)
+                .background(MaterialTheme.colorScheme.background)
         ) {
             AnimatedVisibility(visible = state.isSearchFieldVisible) {
                 BBOutlinedTextField(
@@ -172,7 +169,7 @@ fun <T : Item> ItemListScreenComponent(
                     .fillMaxWidth()
                     .height(1.dp)
                     .padding(top = 8.dp)
-                    .background(onBackgroundColor)
+                    .background(MaterialTheme.colorScheme.onBackground)
             )
             AnimatedVisibility(visible = state.areFiltersVisible) {
                 Column {
@@ -190,7 +187,7 @@ fun <T : Item> ItemListScreenComponent(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(1.dp)
-                            .background(onBackgroundColor)
+                            .background(MaterialTheme.colorScheme.onBackground)
                             .padding(bottom = 4.dp)
                     )
                 }
@@ -205,7 +202,10 @@ fun <T : Item> ItemListScreenComponent(
                         else Res.string.emptyQueriedListDescription
                     Text(
                         text = stringResource(descriptionStringRes),
-                        style = listDescription,
+                        style = MaterialTheme.typography.bodyLarge.copy(
+                            textAlign = TextAlign.Center
+                        ),
+                        color = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.align(Alignment.Center),
                     )
                 } else {
@@ -254,7 +254,7 @@ private fun GenreSelector(
             Icon(
                 imageVector = Icons.Filled.Clear,
                 contentDescription = null,
-                tint = lightTextColor,
+                tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier
                     .clickable { onClearGenres() }
                     .padding(horizontal = 8.dp)
@@ -288,7 +288,7 @@ private fun IsWatchedSelector(
             Icon(
                 imageVector = Icons.Filled.Clear,
                 contentDescription = null,
-                tint = lightTextColor,
+                tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier
                     .clickable { onClearIsWatched() }
                     .padding(horizontal = 8.dp)

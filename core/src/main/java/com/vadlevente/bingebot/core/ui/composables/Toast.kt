@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -27,9 +28,7 @@ import com.vadlevente.bingebot.core.events.toast.ToastType.ERROR
 import com.vadlevente.bingebot.core.events.toast.ToastType.INFO
 import com.vadlevente.bingebot.core.events.toast.ToastType.WARNING
 import com.vadlevente.bingebot.core.viewModel.ToastViewModel
-import com.vadlevente.bingebot.ui.errorColor
-import com.vadlevente.bingebot.ui.infoColor
-import com.vadlevente.bingebot.ui.warningColor
+import com.vadlevente.bingebot.ui.BingeBotTheme
 import kotlinx.coroutines.delay
 import kotlin.time.Duration.Companion.seconds
 
@@ -64,9 +63,9 @@ fun Toast(
                 .clip(RoundedCornerShape(8.dp))
                 .background(
                     when (viewState.type) {
-                        INFO -> infoColor
-                        WARNING -> warningColor
-                        ERROR -> errorColor
+                        INFO -> BingeBotTheme.colors.info
+                        WARNING -> BingeBotTheme.colors.warning
+                        ERROR -> MaterialTheme.colorScheme.error
                     }
                 ),
             contentAlignment = Alignment.Center,
@@ -74,6 +73,8 @@ fun Toast(
             Text(
                 modifier = Modifier.padding(16.dp),
                 text = viewState.text.asString(),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onPrimary
             )
         }
     }

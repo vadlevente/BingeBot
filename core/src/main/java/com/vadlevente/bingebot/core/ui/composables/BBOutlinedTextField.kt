@@ -1,6 +1,7 @@
 package com.vadlevente.bingebot.core.ui.composables
 
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -9,10 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.VisualTransformation
 import com.vadlevente.bingebot.core.UIText
 import com.vadlevente.bingebot.core.asString
-import com.vadlevente.bingebot.ui.lightTextColor
-import com.vadlevente.bingebot.ui.onBackgroundColor
-import com.vadlevente.bingebot.ui.onBackgroundColorFocused
-import com.vadlevente.bingebot.ui.textFieldLabel
 
 @Composable
 fun BBOutlinedTextField(
@@ -34,7 +31,8 @@ fun BBOutlinedTextField(
             {
                 Text(
                     text = it.asString(),
-                    style = textFieldLabel,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.primary
                 )
             }
         },
@@ -74,11 +72,11 @@ private fun BBOutlinedTextField(
         keyboardOptions = keyboardOptions,
         trailingIcon = trailingIcon,
         colors = OutlinedTextFieldDefaults.colors(
-            cursorColor = onBackgroundColor,
-            focusedBorderColor = onBackgroundColorFocused,
-            unfocusedBorderColor = onBackgroundColor,
-            focusedTextColor = lightTextColor,
-            unfocusedTextColor = onBackgroundColor,
+            cursorColor = MaterialTheme.colorScheme.onBackground,
+            focusedBorderColor = MaterialTheme.colorScheme.onBackground,
+            unfocusedBorderColor = MaterialTheme.colorScheme.onBackground,
+            focusedTextColor = MaterialTheme.colorScheme.primary,
+            unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
         ),
         maxLines = maxLines,
     )

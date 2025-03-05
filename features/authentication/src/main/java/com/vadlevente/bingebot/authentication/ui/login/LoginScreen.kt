@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -36,11 +37,8 @@ import com.vadlevente.bingebot.core.ui.composables.BBOutlinedButton
 import com.vadlevente.bingebot.core.ui.composables.BBOutlinedTextField
 import com.vadlevente.bingebot.core.ui.composables.PasswordTrailingIcon
 import com.vadlevente.bingebot.ui.BingeBotTheme
-import com.vadlevente.bingebot.ui.backgroundColor
-import com.vadlevente.bingebot.ui.link
 import com.vadlevente.bingebot.ui.margin16
 import com.vadlevente.bingebot.ui.margin8
-import com.vadlevente.bingebot.ui.pageTitle
 import kotlinx.coroutines.launch
 
 @Composable
@@ -76,7 +74,7 @@ fun LoginScreenComponent(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(backgroundColor)
+            .background(MaterialTheme.colorScheme.background)
             .padding(margin16)
     ) {
         Box(
@@ -89,7 +87,8 @@ fun LoginScreenComponent(
                 modifier = Modifier.align(Alignment.Center),
                 text = stringResource(id = R.string.loginTitle),
                 textAlign = TextAlign.Center,
-                style = pageTitle,
+                style = MaterialTheme.typography.headlineLarge,
+                color = MaterialTheme.colorScheme.primary,
             )
         }
         Column(
@@ -144,7 +143,8 @@ fun LoginScreenComponent(
                         onNavigateToRegistration()
                     },
                 text = stringResource(id = R.string.loginNavigateToRegistrationTitle),
-                style = link,
+                style = MaterialTheme.typography.bodySmall,
+                color = BingeBotTheme.colors.highlight,
             )
         }
     }

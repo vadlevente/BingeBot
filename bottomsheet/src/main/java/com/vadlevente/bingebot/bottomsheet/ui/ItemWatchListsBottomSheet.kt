@@ -16,6 +16,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -31,11 +32,7 @@ import com.vadlevente.bingebot.bottomsheet.R
 import com.vadlevente.bingebot.bottomsheet.viewmodel.ItemWatchListsBottomSheetViewModel
 import com.vadlevente.bingebot.core.model.Item
 import com.vadlevente.bingebot.core.ui.composables.ProgressScreen
-import com.vadlevente.bingebot.ui.bottomSheetAction
 import com.vadlevente.bingebot.ui.bottomSheetBottomPadding
-import com.vadlevente.bingebot.ui.cardColor
-import com.vadlevente.bingebot.ui.dialogTitle
-import com.vadlevente.bingebot.ui.lightTextColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -52,19 +49,20 @@ fun <T : Item> ItemWatchListsBottomSheet(
         onDismissRequest = viewModel::onDismiss,
         sheetState = modalBottomSheetState,
         dragHandle = { BottomSheetDefaults.DragHandle() },
-        containerColor = cardColor,
+        containerColor = MaterialTheme.colorScheme.surface,
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(cardColor)
+                .background(MaterialTheme.colorScheme.surface)
         ) {
             Text(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 16.dp),
                 text = stringResource(id = resources.title),
-                style = dialogTitle,
+                style = MaterialTheme.typography.titleSmall,
+                color = MaterialTheme.colorScheme.primary,
                 textAlign = TextAlign.Center
             )
             Row(
@@ -77,12 +75,13 @@ fun <T : Item> ItemWatchListsBottomSheet(
                 Icon(
                     imageVector = Icons.Filled.Add,
                     contentDescription = null,
-                    tint = lightTextColor,
+                    tint = MaterialTheme.colorScheme.primary,
                 )
                 Text(
                     modifier = Modifier.padding(start = 12.dp),
                     text = stringResource(id = R.string.addItemToWatchListBottomSheet_createWatchListLabel),
-                    style = bottomSheetAction,
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.primary,
                 )
             }
             ProgressScreen(
@@ -102,7 +101,8 @@ fun <T : Item> ItemWatchListsBottomSheet(
                                     viewModel.onWatchListSelected(watchList.watchListId)
                                 },
                             text = watchList.title,
-                            style = bottomSheetAction,
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.primary,
                         )
                     }
                 }

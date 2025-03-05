@@ -1,10 +1,10 @@
 package com.vadlevente.bingebot.core.ui.composables
 
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.vadlevente.bingebot.ui.outlinedButtonLabel
 
 @Composable
 fun BBOutlinedButton(
@@ -20,7 +20,8 @@ fun BBOutlinedButton(
     ) {
         Text(
             text = text,
-            style = outlinedButtonLabel,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.primary
         )
     }
 }

@@ -16,6 +16,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -32,11 +33,7 @@ import com.vadlevente.bingebot.bottomsheet.viewmodel.AddItemToWatchListBottomShe
 import com.vadlevente.bingebot.core.model.Item
 import com.vadlevente.bingebot.core.ui.composables.ProgressScreen
 import com.vadlevente.bingebot.core.util.yearString
-import com.vadlevente.bingebot.ui.bottomSheetAction
 import com.vadlevente.bingebot.ui.bottomSheetBottomPadding
-import com.vadlevente.bingebot.ui.cardColor
-import com.vadlevente.bingebot.ui.lightTextColor
-import com.vadlevente.bingebot.ui.onBackgroundColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -54,12 +51,12 @@ fun <T : Item> AddItemToWatchListBottomSheet(
         onDismissRequest = viewModel::onDismiss,
         sheetState = modalBottomSheetState,
         dragHandle = { BottomSheetDefaults.DragHandle() },
-        containerColor = cardColor,
+        containerColor = MaterialTheme.colorScheme.surface,
     ) {
         Column(
             modifier = Modifier
             .fillMaxWidth()
-                .background(cardColor)
+                .background(MaterialTheme.colorScheme.surface)
         ) {
             ItemBottomSheetHeader(
                 thumbnailUrl = displayedItem.thumbnailUrl,
@@ -70,7 +67,7 @@ fun <T : Item> AddItemToWatchListBottomSheet(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(1.dp)
-                    .background(onBackgroundColor)
+                    .background(MaterialTheme.colorScheme.onSurface)
             )
             Row(
                 modifier = Modifier
@@ -82,12 +79,13 @@ fun <T : Item> AddItemToWatchListBottomSheet(
                 Icon(
                     imageVector = Icons.Filled.Add,
                     contentDescription = null,
-                    tint = lightTextColor,
+                    tint = MaterialTheme.colorScheme.primary,
                 )
                 Text(
                     modifier = Modifier.padding(start = 12.dp),
                     text = stringResource(id = R.string.addItemToWatchListBottomSheet_createWatchListLabel),
-                    style = bottomSheetAction,
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.primary,
                 )
             }
             ProgressScreen(
@@ -107,7 +105,8 @@ fun <T : Item> AddItemToWatchListBottomSheet(
                                     viewModel.onAddToWatchList(watchList.watchListId)
                                 },
                             text = watchList.title,
-                            style = bottomSheetAction,
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.primary,
                         )
                     }
                 }

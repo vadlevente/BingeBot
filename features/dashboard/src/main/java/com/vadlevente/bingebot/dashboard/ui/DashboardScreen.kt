@@ -9,6 +9,7 @@ import androidx.compose.material.icons.filled.Movie
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Tv
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
@@ -30,16 +31,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.vadlevente.bingebot.core.model.NavDestination
-import com.vadlevente.bingebot.core.model.NavDestination.LIST_MOVIE
 import com.vadlevente.bingebot.dashboard.R
 import com.vadlevente.bingebot.list.ui.MovieListScreen
 import com.vadlevente.bingebot.list.ui.TvListScreen
 import com.vadlevente.bingebot.settings.SettingsScreen
-import com.vadlevente.bingebot.ui.cardColor
-import com.vadlevente.bingebot.ui.darkNavItemColor
-import com.vadlevente.bingebot.ui.lightNavItemColor
-import com.vadlevente.bingebot.ui.navigationBarItemTitleSelected
-import com.vadlevente.bingebot.ui.navigationBarItemTitleUnselected
+import com.vadlevente.bingebot.ui.BingeBotTheme
 
 @Composable
 fun DashboardScreen(
@@ -84,7 +80,7 @@ fun BottomNavigationBar(navController: NavController) {
         }
     }
     NavigationBar(
-        containerColor = cardColor,
+        containerColor = MaterialTheme.colorScheme.surface,
         modifier = Modifier.graphicsLayer {
             shape = RectangleShape
             shadowElevation = 20f
@@ -123,7 +119,7 @@ fun BottomNavigationBar(navController: NavController) {
     }
     if (selectedTabIndex != 0) {
         BackHandler {
-            navController.navigate(LIST_MOVIE.route) {
+            navController.navigate(NavDestination.LIST_MOVIE.route) {
                 popUpTo(0)
             }
         }
@@ -145,18 +141,19 @@ fun BottomNavigationItem(
             icon = {
                 Icon(
                     imageVector = icon,
-                    tint = if (isSelected) lightNavItemColor else darkNavItemColor,
+                    tint = if (isSelected) BingeBotTheme.colors.highlight else MaterialTheme.colorScheme.surface,
                     contentDescription = null,
                 )
             },
             label = {
                 Text(
                     text = title,
-                    style = if (isSelected) navigationBarItemTitleSelected else navigationBarItemTitleUnselected,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = if (isSelected) BingeBotTheme.colors.highlight else MaterialTheme.colorScheme.primary
                 )
             },
             colors = NavigationBarItemDefaults.colors(
-                indicatorColor = cardColor,
+                indicatorColor = MaterialTheme.colorScheme.surface,
             ),
         )
     }

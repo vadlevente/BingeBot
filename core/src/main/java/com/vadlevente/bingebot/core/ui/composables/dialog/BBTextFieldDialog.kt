@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -24,9 +25,6 @@ import com.vadlevente.bingebot.core.ui.composables.BBButton
 import com.vadlevente.bingebot.core.ui.composables.BBOutlinedButton
 import com.vadlevente.bingebot.core.ui.composables.BBOutlinedTextField
 import com.vadlevente.bingebot.core.viewModel.dialog.TextFieldDialogViewModel
-import com.vadlevente.bingebot.ui.cardColor
-import com.vadlevente.bingebot.ui.dialogDescription
-import com.vadlevente.bingebot.ui.dialogTitle
 
 @Composable
 fun BBTextFieldDialog(
@@ -46,20 +44,22 @@ fun BBTextFieldDialog(
             .fillMaxWidth()
             .padding(12.dp)
             .clip(RoundedCornerShape(8.dp))
-            .background(cardColor)
+            .background(MaterialTheme.colorScheme.surface)
             .padding(24.dp)
         ) {
             event.title?.asString()?.let {
                 Text(
                     text = it,
-                    style = dialogTitle,
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
             }
             event.content?.asString()?.let {
                 Text(
                     text = it,
-                    style = dialogDescription,
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
             }

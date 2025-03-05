@@ -17,6 +17,7 @@ import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -31,12 +32,6 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.vadlevente.bingebot.core.util.dateString
 import com.vadlevente.bingebot.ui.BingeBotTheme
-import com.vadlevente.bingebot.ui.cardColor
-import com.vadlevente.bingebot.ui.darkCardColor
-import com.vadlevente.bingebot.ui.lightTextColor
-import com.vadlevente.bingebot.ui.listItemSubtitle
-import com.vadlevente.bingebot.ui.listItemTitle
-import com.vadlevente.bingebot.ui.progressColor
 import java.util.Date
 import com.vadlevente.bingebot.resources.R as Resources
 
@@ -58,11 +53,12 @@ fun ListItem(
             .combinedClickable(
                 onClick = onClick,
                 onLongClick = onLongClick,
-            ),
+            )
+            .alpha(if (isWatched) .8f else 1f),
         shape = RoundedCornerShape(8.dp),
         colors = CardDefaults.cardColors(
-            containerColor = if (isWatched) darkCardColor else cardColor,
-        )
+            containerColor = MaterialTheme.colorScheme.surface,
+        ),
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             Row(
@@ -91,7 +87,7 @@ fun ListItem(
                                 .size(80.dp),
                             imageVector = Icons.Filled.Done,
                             contentDescription = null,
-                            tint = progressColor,
+                            tint = BingeBotTheme.colors.highlight,
                         )
                     }
                 }
@@ -104,20 +100,20 @@ fun ListItem(
                         text = title,
                         maxLines = 3,
                         overflow = TextOverflow.Ellipsis,
-                        style = listItemTitle
-                            .copy(
-                                color = if (isWatched) progressColor else lightTextColor,
-                            ),
+                        style = MaterialTheme.typography.titleMedium,
+                        color = if (isWatched) BingeBotTheme.colors.highlight else MaterialTheme.colorScheme.primary,
                     )
                     Text(
                         text = releaseYear,
-                        style = listItemSubtitle,
+                        style = MaterialTheme.typography.titleSmall,
+                        color = MaterialTheme.colorScheme.primary
                     )
                 }
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         text = rating,
-                        style = listItemSubtitle,
+                        style = MaterialTheme.typography.titleSmall,
+                        color = MaterialTheme.colorScheme.primary
                     )
                     Icon(
                         modifier = Modifier.padding(end = 8.dp),
@@ -133,9 +129,8 @@ fun ListItem(
                         .align(Alignment.BottomEnd)
                         .padding(bottom = 8.dp, end = 8.dp),
                     text = it.dateString,
-                    style = listItemSubtitle.copy(
-                        color = progressColor,
-                    ),
+                    style = MaterialTheme.typography.titleSmall,
+                    color = BingeBotTheme.colors.highlight,
                 )
             }
         }
