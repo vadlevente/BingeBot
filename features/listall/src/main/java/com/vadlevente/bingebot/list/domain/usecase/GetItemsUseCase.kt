@@ -5,6 +5,7 @@ import com.vadlevente.bingebot.core.data.local.datastore.PreferencesDataSource
 import com.vadlevente.bingebot.core.data.repository.ItemRepository
 import com.vadlevente.bingebot.core.model.DisplayedItem
 import com.vadlevente.bingebot.core.model.Item
+import com.vadlevente.bingebot.core.model.OrderBy
 import com.vadlevente.bingebot.core.ui.BaseUseCase
 import com.vadlevente.bingebot.core.util.getThumbnailUrl
 import kotlinx.coroutines.flow.Flow
@@ -37,20 +38,28 @@ class GetItemsUseCase <T : Item> @Inject constructor(
                         } else {
                             item.watchedDate == null
                         }
-                    } ?: true
+                    } != false
                 }
                 .filter { item ->
                     filters.query?.let { query ->
                         if (query.isEmpty()) return@let false
                         item.title.lowercase().contains(query.lowercase()) ||
                             item.originalTitle.lowercase().contains(query.lowercase())
-                    } ?: true
+                    } != false
                 }
                 .map { item ->
                     DisplayedItem(
                         item = item,
                         thumbnailUrl = item.getThumbnailUrl(configuration),
                     )
+                }
+                .let { items ->
+                    when (filters.orderBy) {
+                        OrderBy.DATE_ADDED_ASCENDING -> items.sortedBy { it.item.createdDate }
+                        OrderBy.DATE_ADDED_DESCENDING -> items.sortedByDescending { it.item.createdDate }
+                        OrderBy.RATING_ASCENDING -> items.sortedBy { it.item.voteAverage }
+                        OrderBy.RATING_DESCENDING -> items.sortedByDescending { it.item.voteAverage }
+                    }
                 }
         }
 

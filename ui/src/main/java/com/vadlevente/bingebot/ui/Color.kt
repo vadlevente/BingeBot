@@ -9,23 +9,6 @@ import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 
-//val darkGray = Color.DarkGray
-//val backgroundColor = Color(0xFF1B1B1B)
-//val onBackgroundColor = Color(0xFF5E5E5E)
-//val onBackgroundColorFocused = Color(0xFF7A7A7A)
-//val toolbarColor = Color(0xFF363636)
-//val cardColor = Color(0xFF292929)
-//val darkCardColor = Color(0xFF1F1E1E)
-//val lightTextColor = Color(0xFFC0C0C0)
-//val darkTextColor = Color(0xFF424242)
-//val lightNavItemColor = Color(0xFFC0C0C0)
-//val darkNavItemColor = Color(0xFF555555)
-//val infoColor = Color(0xFF038603)
-//val warningColor = Color(0xFFA0CC27)
-//val errorColor = Color(0xFFC90000)
-//val progressColor = Color(0xFF12B612)
-//val white = Color.White
-
 // Define colors
 val SoftTerracotta = Color(0xFFD88C65)
 val DeepRust = Color(0xFF9C4221)

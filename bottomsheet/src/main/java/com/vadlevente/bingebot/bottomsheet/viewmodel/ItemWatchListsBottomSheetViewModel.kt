@@ -2,8 +2,8 @@ package com.vadlevente.bingebot.bottomsheet.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import com.vadlevente.bingebot.bottomsheet.R
-import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.CreateMovieWatchListUseCase
-import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.CreateWatchListUseCaseParams
+import com.vadlevente.bingebot.bottomsheet.domain.usecases.CreateWatchListUseCase
+import com.vadlevente.bingebot.bottomsheet.domain.usecases.CreateWatchListUseCaseParams
 import com.vadlevente.bingebot.bottomsheet.viewmodel.ItemWatchListsBottomSheetViewModel.ViewState
 import com.vadlevente.bingebot.core.events.dialog.DialogEvent.ShowTextFieldDialog
 import com.vadlevente.bingebot.core.events.dialog.DialogEventChannel
@@ -24,7 +24,7 @@ abstract class ItemWatchListsBottomSheetViewModel <T : Item>(
     navigationEventChannel: NavigationEventChannel,
     toastEventChannel: ToastEventChannel,
     private val dialogEventChannel: DialogEventChannel,
-    private val createWatchListUseCase: CreateMovieWatchListUseCase<T>,
+    private val createWatchListUseCase: CreateWatchListUseCase<T>,
 ) : BaseViewModel<ViewState>(
     navigationEventChannel, toastEventChannel
 ) {

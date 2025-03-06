@@ -18,9 +18,11 @@ import com.vadlevente.bingebot.authentication.ui.login.LoginScreen
 import com.vadlevente.bingebot.authentication.ui.registration.RegistrationScreen
 import com.vadlevente.bingebot.bottomsheet.ui.movie.AddMovieToWatchListBottomSheet
 import com.vadlevente.bingebot.bottomsheet.ui.movie.MovieBottomSheet
+import com.vadlevente.bingebot.bottomsheet.ui.movie.MovieOrderByBottomSheet
 import com.vadlevente.bingebot.bottomsheet.ui.movie.MovieWatchListsBottomSheet
 import com.vadlevente.bingebot.bottomsheet.ui.tv.AddTvToWatchListBottomSheet
 import com.vadlevente.bingebot.bottomsheet.ui.tv.TvBottomSheet
+import com.vadlevente.bingebot.bottomsheet.ui.tv.TvOrderByBottomSheet
 import com.vadlevente.bingebot.bottomsheet.ui.tv.TvWatchListsBottomSheet
 import com.vadlevente.bingebot.core.events.navigation.NavigationEvent.NavigateTo
 import com.vadlevente.bingebot.core.events.navigation.NavigationEvent.NavigateUp
@@ -174,4 +176,6 @@ private fun BottomSheets() {
     AddTvToWatchListBottomSheet()
     MovieWatchListsBottomSheet()
     TvWatchListsBottomSheet()
+    MovieOrderByBottomSheet()
+    TvOrderByBottomSheet()
 }

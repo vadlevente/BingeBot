@@ -2,12 +2,12 @@ package com.vadlevente.bingebot.bottomsheet.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import com.vadlevente.bingebot.bottomsheet.R
-import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.AddItemToWatchListUseCase
-import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.AddItemToWatchListUseCaseParams
-import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.CreateMovieWatchListUseCase
-import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.CreateWatchListUseCaseParams
-import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.SaveItemUseCase
-import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.SaveItemUseCaseParams
+import com.vadlevente.bingebot.bottomsheet.domain.usecases.AddItemToWatchListUseCase
+import com.vadlevente.bingebot.bottomsheet.domain.usecases.AddItemToWatchListUseCaseParams
+import com.vadlevente.bingebot.bottomsheet.domain.usecases.CreateWatchListUseCase
+import com.vadlevente.bingebot.bottomsheet.domain.usecases.CreateWatchListUseCaseParams
+import com.vadlevente.bingebot.bottomsheet.domain.usecases.SaveItemUseCase
+import com.vadlevente.bingebot.bottomsheet.domain.usecases.SaveItemUseCaseParams
 import com.vadlevente.bingebot.bottomsheet.viewmodel.AddItemToWatchListBottomSheetViewModel.ViewState
 import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEvent.ShowAddItemToWatchListBottomSheet
 import com.vadlevente.bingebot.core.events.dialog.DialogEvent.ShowTextFieldDialog
@@ -32,7 +32,7 @@ abstract class AddItemToWatchListBottomSheetViewModel <T : Item>(
     navigationEventChannel: NavigationEventChannel,
     toastEventChannel: ToastEventChannel,
     private val dialogEventChannel: DialogEventChannel,
-    private val createWatchListUseCase: CreateMovieWatchListUseCase<T>,
+    private val createWatchListUseCase: CreateWatchListUseCase<T>,
     private val addItemToWatchListUseCase: AddItemToWatchListUseCase<T>,
     private val saveItemUseCase: SaveItemUseCase<T>,
 ) : BaseViewModel<ViewState<T>>(

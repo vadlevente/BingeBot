@@ -36,4 +36,10 @@
 
     <string name="tvWatchListBottomSheet_title">Megnézendő sorozatok listája</string>
 
+    <string name="orderByBottomSheet_title">Rendezés</string>
+    <string name="orderByBottomSheet_date_descending">Dátum szerint csökkenő</string>
+    <string name="orderByBottomSheet_date_ascending">Dátum szerint növekvő</string>
+    <string name="orderByBottomSheet_rating_descending">Értékelés szerint csökkenő</string>
+    <string name="orderByBottomSheet_rating_ascending">Értékelés szerint növekvő</string>
+
 </resources>

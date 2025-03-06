@@ -1,9 +1,9 @@
 package com.vadlevente.bingebot.bottomsheet.viewmodel.tv
 
 import androidx.lifecycle.viewModelScope
-import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.CreateMovieWatchListUseCase
-import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.GetMovieWatchListsUseCase
-import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.GetWatchListsUseCaseParams
+import com.vadlevente.bingebot.bottomsheet.domain.usecases.CreateWatchListUseCase
+import com.vadlevente.bingebot.bottomsheet.domain.usecases.GetItemWatchListsUseCase
+import com.vadlevente.bingebot.bottomsheet.domain.usecases.GetWatchListsUseCaseParams
 import com.vadlevente.bingebot.bottomsheet.viewmodel.ItemWatchListsBottomSheetViewModel
 import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEvent.ShowWatchListsBottomSheet.ShowTvWatchListsBottomSheet
 import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEventChannel
@@ -24,9 +24,9 @@ class TvWatchListsBottomSheetViewModel @Inject constructor(
     navigationEventChannel: NavigationEventChannel,
     toastEventChannel: ToastEventChannel,
     bottomSheetEventChannel: BottomSheetEventChannel,
-    getWatchListsUseCase: GetMovieWatchListsUseCase<Tv>,
+    getWatchListsUseCase: GetItemWatchListsUseCase<Tv>,
     dialogEventChannel: DialogEventChannel,
-    createWatchListUseCase: CreateMovieWatchListUseCase<Tv>,
+    createWatchListUseCase: CreateWatchListUseCase<Tv>,
 ) : ItemWatchListsBottomSheetViewModel<Tv>(
     navigationEventChannel, toastEventChannel, dialogEventChannel, createWatchListUseCase
 ) {

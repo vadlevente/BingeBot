@@ -28,6 +28,8 @@ abstract class ItemListViewModel <T: Item> (
     protected val baseViewState = MutableStateFlow(ViewState<T>())
     override val state: StateFlow<ViewState<T>> = baseViewState
 
+    private var isInitialized = false
+
     init {
         useCases.updateItemsUseCase.execute(Unit).onStart()
         useCases.updateWatchListsUseCase.execute(Unit).onStart()
@@ -42,12 +44,22 @@ abstract class ItemListViewModel <T: Item> (
                         searchQuery = filters.searchQuery,
                     )
                 }
+                if (!isInitialized) {
+                    baseViewState.update {
+                        it.copy(
+                            isSearchFieldVisible = !filters.searchQuery.isNullOrEmpty(),
+                            areFiltersVisible = filters.displayedGenres.any { it.isSelected } || filters.isWatchedSelected != null
+                        )
+                    }
+                    isInitialized = true
+                }
             }
     }
 
     abstract fun onNavigateToSearch()
     abstract fun onNavigateToOptions(itemId: Int)
     abstract fun onOpenWatchLists()
+    abstract fun onOpenOrderBy()
 
     fun onToggleSearchField() {
         onQueryChanged(if (baseViewState.value.isSearchFieldVisible) null else "")
@@ -104,6 +116,12 @@ abstract class ItemListViewModel <T: Item> (
         useCases.setIsWatchedFilterUseCase.execute(
             SetIsWatchedFilterUseCaseParams(null)
         ).onStart()
+    }
+
+    fun onDestroyScreen() {
+        onClearIsWatched()
+        onClearGenres()
+        onQueryChanged(null)
     }
 
     private fun getItems() {

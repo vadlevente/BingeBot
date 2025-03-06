@@ -15,10 +15,11 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.List
+import androidx.compose.material.icons.automirrored.filled.Sort
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.FilterAlt
-import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
@@ -42,6 +43,7 @@ import com.vadlevente.bingebot.core.model.Item
 import com.vadlevente.bingebot.core.stringOf
 import com.vadlevente.bingebot.core.ui.composables.BBFilterChip
 import com.vadlevente.bingebot.core.ui.composables.BBOutlinedTextField
+import com.vadlevente.bingebot.core.ui.composables.LifecycleEvents
 import com.vadlevente.bingebot.core.ui.composables.ListItem
 import com.vadlevente.bingebot.core.ui.composables.ProgressScreen
 import com.vadlevente.bingebot.core.ui.composables.TopBar
@@ -58,6 +60,9 @@ fun <T : Item> ItemListScreen(
     viewModel: ItemListViewModel<T>,
     resources: ItemListScreenResources,
 ) {
+    LifecycleEvents(
+        onDestroy = viewModel::onDestroyScreen
+    )
     val state by viewModel.state.collectAsState()
     val isInProgress by viewModel.isInProgress.collectAsState()
     ItemListScreenComponent(
@@ -74,6 +79,7 @@ fun <T : Item> ItemListScreen(
         onOpenWatchLists = viewModel::onOpenWatchLists,
         onToggleIsWatched = viewModel::onToggleIsWatched,
         onClearIsWatched = viewModel::onClearIsWatched,
+        onOpenOrderBy = viewModel::onOpenOrderBy
     )
 }
 
@@ -93,6 +99,7 @@ fun <T : Item> ItemListScreenComponent(
     onOpenWatchLists: () -> Unit,
     onToggleIsWatched: (Boolean) -> Unit,
     onClearIsWatched: () -> Unit,
+    onOpenOrderBy: () -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -100,9 +107,17 @@ fun <T : Item> ItemListScreenComponent(
                 title = stringOf(resources.title),
                 actions = {
                     Icon(
-                        imageVector = Icons.Filled.Search,
+                        imageVector = Icons.AutoMirrored.Filled.Sort,
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier
+                            .clickable { onOpenOrderBy() }
+                            .padding(end = 8.dp)
+                    )
+                    Icon(
+                        imageVector = Icons.Filled.Search,
+                        contentDescription = null,
+                        tint = if (state.isSearchFieldVisible) BingeBotTheme.colors.highlight else MaterialTheme.colorScheme.primary,
                         modifier = Modifier
                             .clickable { onToggleSearchField() }
                             .padding(end = 8.dp)
@@ -118,13 +133,13 @@ fun <T : Item> ItemListScreenComponent(
                         Icon(
                             imageVector = Icons.Filled.FilterAlt,
                             contentDescription = null,
-                            tint = MaterialTheme.colorScheme.primary,
+                            tint = if (state.areFiltersVisible) BingeBotTheme.colors.highlight else MaterialTheme.colorScheme.primary,
                             modifier = Modifier
                                 .clickable { onToggleFilters() }
                         )
                     }
                     Icon(
-                        imageVector = Icons.Filled.List,
+                        imageVector = Icons.AutoMirrored.Filled.List,
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier

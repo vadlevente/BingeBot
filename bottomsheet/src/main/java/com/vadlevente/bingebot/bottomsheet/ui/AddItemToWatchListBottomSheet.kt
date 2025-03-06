@@ -1,7 +1,6 @@
 package com.vadlevente.bingebot.bottomsheet.ui
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -56,18 +55,11 @@ fun <T : Item> AddItemToWatchListBottomSheet(
         Column(
             modifier = Modifier
             .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.surface)
         ) {
             ItemBottomSheetHeader(
                 thumbnailUrl = displayedItem.thumbnailUrl,
                 title = movie.title,
                 releaseYear = movie.releaseDate?.yearString ?: "",
-            )
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(1.dp)
-                    .background(MaterialTheme.colorScheme.onSurface)
             )
             Row(
                 modifier = Modifier

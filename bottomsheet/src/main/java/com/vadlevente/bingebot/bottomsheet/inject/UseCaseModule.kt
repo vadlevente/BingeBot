@@ -1,10 +1,10 @@
 package com.vadlevente.bingebot.bottomsheet.inject
 
+import com.vadlevente.bingebot.bottomsheet.domain.usecases.DeleteItemUseCase
 import com.vadlevente.bingebot.bottomsheet.domain.usecases.ItemBottomSheetUseCases
-import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.DeleteItemUseCase
-import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.RemoveItemFromWatchListUseCase
-import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.SaveItemUseCase
-import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.SetItemSeenUseCase
+import com.vadlevente.bingebot.bottomsheet.domain.usecases.RemoveItemFromWatchListUseCase
+import com.vadlevente.bingebot.bottomsheet.domain.usecases.SaveItemUseCase
+import com.vadlevente.bingebot.bottomsheet.domain.usecases.SetItemSeenUseCase
 import com.vadlevente.bingebot.core.model.Item.Movie
 import com.vadlevente.bingebot.core.model.Item.Tv
 import dagger.Module

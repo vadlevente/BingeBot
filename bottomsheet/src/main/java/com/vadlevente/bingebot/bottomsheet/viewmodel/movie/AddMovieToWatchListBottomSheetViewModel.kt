@@ -2,11 +2,11 @@ package com.vadlevente.bingebot.bottomsheet.viewmodel.movie
 
 import androidx.lifecycle.viewModelScope
 import com.vadlevente.bingebot.bottomsheet.R
-import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.AddItemToWatchListUseCase
-import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.CreateMovieWatchListUseCase
-import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.GetMovieWatchListsUseCase
-import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.GetWatchListsUseCaseParams
-import com.vadlevente.bingebot.bottomsheet.domain.usecases.movie.SaveItemUseCase
+import com.vadlevente.bingebot.bottomsheet.domain.usecases.AddItemToWatchListUseCase
+import com.vadlevente.bingebot.bottomsheet.domain.usecases.CreateWatchListUseCase
+import com.vadlevente.bingebot.bottomsheet.domain.usecases.GetItemWatchListsUseCase
+import com.vadlevente.bingebot.bottomsheet.domain.usecases.GetWatchListsUseCaseParams
+import com.vadlevente.bingebot.bottomsheet.domain.usecases.SaveItemUseCase
 import com.vadlevente.bingebot.bottomsheet.viewmodel.AddItemToWatchListBottomSheetViewModel
 import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEvent.ShowAddItemToWatchListBottomSheet.ShowAddMovieToWatchListBottomSheet
 import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEventChannel
@@ -28,9 +28,9 @@ class AddMovieToWatchListBottomSheetViewModel @Inject constructor(
     navigationEventChannel: NavigationEventChannel,
     toastEventChannel: ToastEventChannel,
     bottomSheetEventChannel: BottomSheetEventChannel,
-    getWatchListsUseCase: GetMovieWatchListsUseCase<Movie>,
+    getWatchListsUseCase: GetItemWatchListsUseCase<Movie>,
     dialogEventChannel: DialogEventChannel,
-    createWatchListUseCase: CreateMovieWatchListUseCase<Movie>,
+    createWatchListUseCase: CreateWatchListUseCase<Movie>,
     addItemToWatchListUseCase: AddItemToWatchListUseCase<Movie>,
     saveItemUseCase: SaveItemUseCase<Movie>,
 ) : AddItemToWatchListBottomSheetViewModel<Movie>(

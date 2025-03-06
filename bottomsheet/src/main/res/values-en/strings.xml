@@ -36,4 +36,10 @@
 
     <string name="tvWatchListBottomSheet_title">Series to watch</string>
 
+    <string name="orderByBottomSheet_title">Sort</string>
+    <string name="orderByBottomSheet_date_descending">By date descending</string>
+    <string name="orderByBottomSheet_date_ascending">By date ascending</string>
+    <string name="orderByBottomSheet_rating_descending">By rating descending</string>
+    <string name="orderByBottomSheet_rating_ascending">By rating ascending</string>
+
 </resources>

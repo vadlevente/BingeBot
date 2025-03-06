@@ -1,4 +1,4 @@
-package com.vadlevente.bingebot.bottomsheet.domain.usecases.movie
+package com.vadlevente.bingebot.bottomsheet.domain.usecases
 
 import com.vadlevente.bingebot.core.data.repository.ItemRepository
 import com.vadlevente.bingebot.core.model.Item
@@ -12,16 +12,16 @@ data class GetWatchListsUseCaseParams(
     val itemId: Int? = null,
 )
 
-class GetMovieWatchListsUseCase <T : Item> @Inject constructor(
+class GetItemWatchListsUseCase <T : Item> @Inject constructor(
     private val itemRepository: ItemRepository<T>,
 ) : BaseUseCase<GetWatchListsUseCaseParams, List<WatchList>> {
 
     override fun execute(params: GetWatchListsUseCaseParams): Flow<List<WatchList>> =
         itemRepository.getWatchLists().map {
             it.filter {
-                params.itemId?.let { movieId ->
-                    !it.itemIds.contains(movieId)
-                } ?: true
+                params.itemId?.let { itemId ->
+                    !it.itemIds.contains(itemId)
+                } != false
             }
         }
 

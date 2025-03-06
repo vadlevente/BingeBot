@@ -11,7 +11,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
 import com.vadlevente.bingebot.core.UIText
 import com.vadlevente.bingebot.core.asString
 
@@ -24,6 +27,10 @@ fun TopBar(
     onBackPressed: () -> Unit = {},
 ) {
     TopAppBar(
+        modifier = Modifier.shadow(
+            elevation = 5.dp,
+            spotColor = MaterialTheme.colorScheme.background
+        ),
         title = {
             Text(
                 text = title.asString(),

@@ -45,4 +45,9 @@ sealed interface BottomSheetEvent {
         object ShowTvWatchListsBottomSheet : ShowWatchListsBottomSheet<Tv>
     }
 
+    sealed interface ShowOrderByBottomSheet<T: Item> : BottomSheetEvent {
+        object ShowMovieOrderByBottomSheet : ShowOrderByBottomSheet<Movie>
+        object ShowTvOrderByBottomSheet : ShowOrderByBottomSheet<Tv>
+    }
+
 }

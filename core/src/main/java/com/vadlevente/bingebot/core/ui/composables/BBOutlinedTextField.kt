@@ -72,11 +72,11 @@ private fun BBOutlinedTextField(
         keyboardOptions = keyboardOptions,
         trailingIcon = trailingIcon,
         colors = OutlinedTextFieldDefaults.colors(
-            cursorColor = MaterialTheme.colorScheme.onBackground,
-            focusedBorderColor = MaterialTheme.colorScheme.onBackground,
-            unfocusedBorderColor = MaterialTheme.colorScheme.onBackground,
+            cursorColor = MaterialTheme.colorScheme.primary,
+            focusedBorderColor = MaterialTheme.colorScheme.primary,
+            unfocusedBorderColor = MaterialTheme.colorScheme.primary,
             focusedTextColor = MaterialTheme.colorScheme.primary,
-            unfocusedTextColor = MaterialTheme.colorScheme.onBackground,
+            unfocusedTextColor = MaterialTheme.colorScheme.primary,
         ),
         maxLines = maxLines,
     )

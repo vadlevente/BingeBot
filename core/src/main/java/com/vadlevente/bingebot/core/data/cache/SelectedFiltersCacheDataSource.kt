@@ -2,6 +2,7 @@ package com.vadlevente.bingebot.core.data.cache
 
 import com.vadlevente.bingebot.core.model.Genre
 import com.vadlevente.bingebot.core.model.Item
+import com.vadlevente.bingebot.core.model.OrderBy
 import com.vadlevente.bingebot.core.model.SelectedFilters
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -14,6 +15,7 @@ interface SelectedFiltersCacheDataSource <T : Item> {
     fun updateGenres(genres: List<Genre>)
     fun updateIsWatched(value: Boolean?)
     fun updateQuery(value: String?)
+    fun updateOrderBy(orderBy: OrderBy)
 }
 class SelectedFiltersCacheDataSourceImpl <T : Item> @Inject constructor() : SelectedFiltersCacheDataSource<T> {
     private var _filtersState = MutableStateFlow(SelectedFilters())
@@ -39,6 +41,14 @@ class SelectedFiltersCacheDataSourceImpl <T : Item> @Inject constructor() : Sele
         _filtersState.update {
             it.copy(
                 query = value,
+            )
+        }
+    }
+
+    override fun updateOrderBy(orderBy: OrderBy) {
+        _filtersState.update {
+            it.copy(
+                orderBy = orderBy,
             )
         }
     }

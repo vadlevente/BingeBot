@@ -141,7 +141,7 @@ fun BottomNavigationItem(
             icon = {
                 Icon(
                     imageVector = icon,
-                    tint = if (isSelected) BingeBotTheme.colors.highlight else MaterialTheme.colorScheme.surface,
+                    tint = if (isSelected) BingeBotTheme.colors.highlight else MaterialTheme.colorScheme.primary,
                     contentDescription = null,
                 )
             },

@@ -3,6 +3,7 @@ package com.vadlevente.bingebot.list
 import androidx.lifecycle.viewModelScope
 import com.vadlevente.bingebot.core.delegates.AppCloserDelegate
 import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEvent.ShowItemBottomSheet.ShowMovieBottomSheet
+import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEvent.ShowOrderByBottomSheet.ShowMovieOrderByBottomSheet
 import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEvent.ShowWatchListsBottomSheet.ShowMovieWatchListsBottomSheet
 import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEventChannel
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
@@ -48,6 +49,14 @@ class MovieListViewModel @Inject constructor(
         viewModelScope.launch {
             bottomSheetEventChannel.sendEvent(
                 ShowMovieWatchListsBottomSheet
+            )
+        }
+    }
+
+    override fun onOpenOrderBy() {
+        viewModelScope.launch {
+            bottomSheetEventChannel.sendEvent(
+                ShowMovieOrderByBottomSheet
             )
         }
     }

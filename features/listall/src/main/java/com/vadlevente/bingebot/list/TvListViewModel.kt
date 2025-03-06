@@ -2,6 +2,7 @@ package com.vadlevente.bingebot.list
 
 import androidx.lifecycle.viewModelScope
 import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEvent.ShowItemBottomSheet.ShowTvBottomSheet
+import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEvent.ShowOrderByBottomSheet.ShowTvOrderByBottomSheet
 import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEvent.ShowWatchListsBottomSheet.ShowTvWatchListsBottomSheet
 import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEventChannel
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
@@ -46,6 +47,14 @@ class TvListViewModel @Inject constructor(
         viewModelScope.launch {
             bottomSheetEventChannel.sendEvent(
                 ShowTvWatchListsBottomSheet
+            )
+        }
+    }
+
+    override fun onOpenOrderBy() {
+        viewModelScope.launch {
+            bottomSheetEventChannel.sendEvent(
+                ShowTvOrderByBottomSheet
             )
         }
     }

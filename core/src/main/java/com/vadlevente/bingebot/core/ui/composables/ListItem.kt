@@ -53,14 +53,19 @@ fun ListItem(
             .combinedClickable(
                 onClick = onClick,
                 onLongClick = onLongClick,
-            )
-            .alpha(if (isWatched) .8f else 1f),
+            ),
         shape = RoundedCornerShape(8.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface,
         ),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 4.dp
+        )
     ) {
-        Box(modifier = Modifier.fillMaxSize()) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),

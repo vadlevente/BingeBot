@@ -1,7 +1,6 @@
 package com.vadlevente.bingebot.settings.ui.composables
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -51,7 +50,6 @@ fun SelectLanguageBottomSheet(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.surface)
         ) {
             Text(
                 modifier = Modifier

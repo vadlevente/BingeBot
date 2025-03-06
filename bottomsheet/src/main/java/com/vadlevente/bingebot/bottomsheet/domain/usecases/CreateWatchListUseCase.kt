@@ -1,4 +1,4 @@
-package com.vadlevente.bingebot.bottomsheet.domain.usecases.movie
+package com.vadlevente.bingebot.bottomsheet.domain.usecases
 
 import com.vadlevente.bingebot.core.data.repository.ItemRepository
 import com.vadlevente.bingebot.core.model.Item
@@ -11,7 +11,7 @@ data class CreateWatchListUseCaseParams(
     val title: String,
 )
 
-class CreateMovieWatchListUseCase <T : Item> @Inject constructor(
+class CreateWatchListUseCase <T : Item> @Inject constructor(
     private val itemRepository: ItemRepository<T>,
 ) : BaseUseCase<CreateWatchListUseCaseParams, String> {
 

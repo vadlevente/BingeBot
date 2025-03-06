@@ -2,7 +2,6 @@ package com.vadlevente.bingebot.bottomsheet.ui
 
 import androidx.activity.compose.BackHandler
 import androidx.annotation.StringRes
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -92,12 +91,6 @@ fun <T : Item> ItemBottomSheet(
                 thumbnailUrl = displayedItem.thumbnailUrl,
                 title = item.title,
                 releaseYear = item.releaseDate?.yearString ?: "",
-            )
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(1.dp)
-                    .background(MaterialTheme.colorScheme.onSurface)
             )
             Column(
                 modifier = Modifier
