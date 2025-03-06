@@ -3,12 +3,13 @@ package com.vadlevente.bingebot.splash.usecase
 import com.vadlevente.bingebot.core.data.local.datastore.PreferencesDataSource
 import com.vadlevente.bingebot.core.data.service.AuthenticationService
 import com.vadlevente.bingebot.core.model.NavDestination
-import com.vadlevente.bingebot.core.model.NavDestination.DASHBOARD
+import com.vadlevente.bingebot.core.model.NavDestination.AUTHENTICATE
 import com.vadlevente.bingebot.core.model.NavDestination.LOGIN
 import com.vadlevente.bingebot.core.model.NavDestination.REGISTRATION
 import com.vadlevente.bingebot.core.ui.BaseUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import javax.inject.Inject
@@ -20,10 +21,14 @@ class GetNavDestinationToStartScreenUseCase @Inject constructor(
 
     @OptIn(ExperimentalCoroutinesApi::class)
     override fun execute(params: Unit): Flow<NavDestination> {
-        return preferencesDataSource.activeProfileId
-            .flatMapLatest { profileId ->
+        return combine(
+            preferencesDataSource.activeProfileId,
+            preferencesDataSource.pinEncryptedSecret,
+            ::Pair
+        )
+            .flatMapLatest { (profileId, pinSecret) ->
                 profileId?.let {
-                    if (authenticationService.isProfileSignedIn(it)) flowOf(DASHBOARD)
+                    if (authenticationService.isProfileSignedIn(it) && pinSecret != null) flowOf(AUTHENTICATE)
                     else flowOf(LOGIN)
                 } ?: flowOf(REGISTRATION)
             }

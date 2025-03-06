@@ -16,6 +16,7 @@ interface SelectedFiltersCacheDataSource <T : Item> {
     fun updateIsWatched(value: Boolean?)
     fun updateQuery(value: String?)
     fun updateOrderBy(orderBy: OrderBy)
+    fun clear()
 }
 class SelectedFiltersCacheDataSourceImpl <T : Item> @Inject constructor() : SelectedFiltersCacheDataSource<T> {
     private var _filtersState = MutableStateFlow(SelectedFilters())
@@ -51,5 +52,9 @@ class SelectedFiltersCacheDataSourceImpl <T : Item> @Inject constructor() : Sele
                 orderBy = orderBy,
             )
         }
+    }
+
+    override fun clear() {
+        _filtersState.value = SelectedFilters()
     }
 }

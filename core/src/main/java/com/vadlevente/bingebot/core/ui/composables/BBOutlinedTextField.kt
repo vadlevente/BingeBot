@@ -77,6 +77,8 @@ private fun BBOutlinedTextField(
             unfocusedBorderColor = MaterialTheme.colorScheme.primary,
             focusedTextColor = MaterialTheme.colorScheme.primary,
             unfocusedTextColor = MaterialTheme.colorScheme.primary,
+            errorBorderColor = MaterialTheme.colorScheme.error,
+            errorLabelColor = MaterialTheme.colorScheme.error,
         ),
         maxLines = maxLines,
     )

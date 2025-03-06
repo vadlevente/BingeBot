@@ -14,7 +14,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.vadlevente.bingebot.authentication.ui.authentication.AuthenticationScreen
 import com.vadlevente.bingebot.authentication.ui.login.LoginScreen
+import com.vadlevente.bingebot.authentication.ui.pin.RegisterPinConfirmationScreen
+import com.vadlevente.bingebot.authentication.ui.pin.RegisterPinScreen
 import com.vadlevente.bingebot.authentication.ui.registration.RegistrationScreen
 import com.vadlevente.bingebot.bottomsheet.ui.movie.AddMovieToWatchListBottomSheet
 import com.vadlevente.bingebot.bottomsheet.ui.movie.MovieBottomSheet
@@ -63,6 +66,15 @@ fun NavigationHost(
                 }
                 composable(NavDestination.LOGIN.route) {
                     LoginScreen()
+                }
+                composable(NavDestination.REGISTER_PIN.route) {
+                    RegisterPinScreen()
+                }
+                composable(NavDestination.REGISTER_PIN_CONFIRM.route) {
+                    RegisterPinConfirmationScreen()
+                }
+                composable(NavDestination.AUTHENTICATE.route) {
+                    AuthenticationScreen()
                 }
                 composable(NavDestination.DASHBOARD.route) {
                     DashboardScreen()

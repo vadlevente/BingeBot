@@ -58,7 +58,7 @@ class RegistrationViewModel @Inject constructor(
                 stringOf(R.string.registrationSuccessful),
                 INFO,
             )
-            navigateTo(NavDestination.DASHBOARD)
+            navigateTo(NavDestination.REGISTER_PIN)
         }
     }
 

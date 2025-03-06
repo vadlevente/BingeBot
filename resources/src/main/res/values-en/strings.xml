@@ -19,6 +19,9 @@
     <string name="exception_invalidCredentials">Invalid credentials!</string>
     <string name="exception_sessionExpired">Session expired, please log in again!</string>
     <string name="exception_watchListAlreadyExists">A watchlist with the given name already exists!</string>
+    <string name="exception_emailAlreadyInUse">The e-mail address is already in use!</string>
+    <string name="exception_nonExistentUser">No user was found with given credentials!</string>
+    <string name="exception_wrongPin">Incorrect PIN code!</string>
 
     <string name="successfulDeleteToast">Deletion successful</string>
 

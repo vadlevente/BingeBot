@@ -21,7 +21,7 @@ import com.vadlevente.bingebot.core.asString
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBar(
-    title: UIText,
+    title: UIText? = null,
     canNavigateBack: Boolean = false,
     actions: @Composable RowScope.() -> Unit = {},
     onBackPressed: () -> Unit = {},
@@ -32,13 +32,15 @@ fun TopBar(
             spotColor = MaterialTheme.colorScheme.background
         ),
         title = {
-            Text(
-                text = title.asString(),
-                style = MaterialTheme.typography.headlineLarge,
-                color = MaterialTheme.colorScheme.primary,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
+            title?.let {
+                Text(
+                    text = title.asString(),
+                    style = MaterialTheme.typography.headlineLarge,
+                    color = MaterialTheme.colorScheme.primary,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
         },
         navigationIcon = {
             if (canNavigateBack) {

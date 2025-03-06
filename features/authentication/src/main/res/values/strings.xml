@@ -16,4 +16,12 @@
 
     <string name="registrationSuccessful">Sikeres regisztráció</string>
 
+    <string name="pin_codesNotEqual">A megadott kódok nem egyeznek meg!</string>
+
+    <string name="pin_register_title">Kérjük, adjon meg egy erős PIN kódot!</string>
+    <string name="pin_confirm_title">Kérjük, ismételje meg a PIN kódot!</string>
+    <string name="pin_authentication_title">Kérjük, adja meg a PIN kódját!</string>
+
+    <string name="pin_register_exitDescription">Biztosan kilép </string>
+
 </resources>

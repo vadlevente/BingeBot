@@ -26,6 +26,8 @@ class PreferencesDataSource @Inject constructor(
         private const val ACTIVE_PROFILE_ID = "activeProfileId"
         private const val API_CONFIGURATION = "apiConfiguration"
         private const val LANGUAGE = "language"
+        private const val PIN_ENCRYPTED_SECRET = "pinEncryptedSecret"
+        private const val BIOMETRICS_ENCRYPTED_SECRET = "biometricsEncryptedSecret"
 
     }
 
@@ -47,6 +49,14 @@ class PreferencesDataSource @Inject constructor(
         } ?: SelectedLanguage.default
     }
 
+    val pinEncryptedSecret: Flow<String?> = data.map {
+        it[stringPreferencesKey(PIN_ENCRYPTED_SECRET)]
+    }
+
+    val biometricsEncryptedSecret: Flow<String?> = data.map {
+        it[stringPreferencesKey(BIOMETRICS_ENCRYPTED_SECRET)]
+    }
+
     suspend fun saveActiveProfileId(value: String?) {
         value?.let {
             savePreference(stringPreferencesKey(ACTIVE_PROFILE_ID), value)
@@ -59,6 +69,14 @@ class PreferencesDataSource @Inject constructor(
 
     suspend fun saveSelectedLanguage(value: SelectedLanguage) {
         savePreference(stringPreferencesKey(LANGUAGE), value.code)
+    }
+
+    suspend fun savePinEncryptedSecret(value: String) {
+        savePreference(stringPreferencesKey(PIN_ENCRYPTED_SECRET), value)
+    }
+
+    suspend fun saveBiometricsEncryptedSecret(value: String) {
+        savePreference(stringPreferencesKey(BIOMETRICS_ENCRYPTED_SECRET), value)
     }
 
     private suspend fun <T> savePreference(

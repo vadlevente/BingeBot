@@ -5,4 +5,5 @@ object Constants {
     const val MOVIE_BACKDROP_PLACEHOLDER = "https://cringemdb.com/img/movie-poster-placeholder.png"
     const val FIREBASE_COLLECTION_ROOT = "movies"
     const val DATABASE_NAME = "movieDatabase.db"
+    const val PIN_LENGTH = 6
 }

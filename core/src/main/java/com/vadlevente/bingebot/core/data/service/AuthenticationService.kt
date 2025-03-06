@@ -4,11 +4,15 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.vadlevente.bingebot.core.data.local.datastore.PreferencesDataSource
 import com.vadlevente.bingebot.core.model.exception.BingeBotException
 import com.vadlevente.bingebot.core.model.exception.Reason.AUTHENTICATION_FAILED
+import com.vadlevente.bingebot.core.model.exception.Reason.EMAIL_ALREADY_IN_USE
 import com.vadlevente.bingebot.core.model.exception.Reason.INVALID_CREDENTIALS
+import com.vadlevente.bingebot.core.model.exception.Reason.NON_EXISTENT_USER
 import com.vadlevente.bingebot.core.model.exception.Reason.SESSION_EXPIRED
 import com.vadlevente.bingebot.core.model.exception.Reason.WEAK_PASSWORD
 import dagger.Lazy
@@ -92,6 +96,8 @@ class AuthenticationServiceImpl @Inject constructor(
                     val exception = when (throwable) {
                         is FirebaseAuthWeakPasswordException -> BingeBotException(throwable, WEAK_PASSWORD)
                         is FirebaseAuthInvalidCredentialsException -> BingeBotException(throwable, INVALID_CREDENTIALS)
+                        is FirebaseAuthUserCollisionException -> BingeBotException(throwable, EMAIL_ALREADY_IN_USE)
+                        is FirebaseAuthInvalidUserException -> BingeBotException(throwable, NON_EXISTENT_USER)
                         else -> throwable
                     }
                     continuation.resumeWithException(exception)

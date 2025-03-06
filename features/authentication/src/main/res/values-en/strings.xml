@@ -16,4 +16,6 @@
 
     <string name="registrationSuccessful">Registration successful</string>
 
+    <string name="pin_codesNotEqual">The entered PIN codes are not the same!</string>
+
 </resources>

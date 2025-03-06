@@ -19,6 +19,9 @@
     <string name="exception_invalidCredentials">A megadott bejelentkezési adatok nem megfelelőek!</string>
     <string name="exception_sessionExpired">A munkamenet lejárt, kérjük, jelentkezzen be újra!</string>
     <string name="exception_watchListAlreadyExists">A megadott névvel már létezik lista!</string>
+    <string name="exception_emailAlreadyInUse">A megadott e-mail címmel már létezik regisztrált felhasználó!</string>
+    <string name="exception_nonExistentUser">A megadott adatokkal nem található felhasználó!</string>
+    <string name="exception_wrongPin">Hibás PIN kód!</string>
 
     <string name="successfulDeleteToast">Sikeresen törölve</string>
 

@@ -17,7 +17,10 @@ enum class Reason(val reasonText: UIText? = null) {
     DATA_WRITE_ERROR,
     WEAK_PASSWORD(stringOf(Res.string.exception_weakPassword)),
     INVALID_CREDENTIALS(stringOf(Res.string.exception_invalidCredentials)),
+    EMAIL_ALREADY_IN_USE(stringOf(Res.string.exception_emailAlreadyInUse)),
+    NON_EXISTENT_USER(stringOf(Res.string.exception_nonExistentUser)),
     SESSION_EXPIRED(stringOf(Res.string.exception_sessionExpired)),
+    WRONG_PIN_CODE(stringOf(Res.string.exception_wrongPin)),
     WATCHLIST_ALREADY_EXISTS(stringOf(Res.string.exception_sessionExpired)),
     DATA_NOT_FOUND,
 }
