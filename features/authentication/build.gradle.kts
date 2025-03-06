@@ -4,4 +4,6 @@ apply{
 dependencies{
     "implementation"(project(Modules.core))
     "implementation"(project(Modules.ui))
+    "implementation"(project(Modules.resources))
+    "implementation"(Biometrics.biometrics)
 }

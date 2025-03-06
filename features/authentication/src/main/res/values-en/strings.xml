@@ -18,4 +18,10 @@
 
     <string name="pin_codesNotEqual">The entered PIN codes are not the same!</string>
 
+    <string name="pin_register_title">Please enter a strong PIN code!</string>
+    <string name="pin_confirm_title">Please confirm the PIN code!</string>
+    <string name="pin_authentication_title">Please enter your PIN code!</string>
+
+    <string name="biometrics_registration_description">Would you like to setup biometric authentication?</string>
+
 </resources>

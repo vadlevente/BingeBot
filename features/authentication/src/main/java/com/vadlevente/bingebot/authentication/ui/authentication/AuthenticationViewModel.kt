@@ -1,6 +1,10 @@
 package com.vadlevente.bingebot.authentication.ui.authentication
 
 import androidx.lifecycle.viewModelScope
+import com.vadlevente.bingebot.authentication.domain.usecase.GetDecryptionCipherUseCase
+import com.vadlevente.bingebot.authentication.domain.usecase.IsBiometricsEnrolledUseCase
+import com.vadlevente.bingebot.authentication.domain.usecase.RetrieveSecretWithBiometricsUseCase
+import com.vadlevente.bingebot.authentication.domain.usecase.RetrieveSecretWithBiometricsUseCaseParams
 import com.vadlevente.bingebot.authentication.domain.usecase.RetrieveSecretWithPinUseCase
 import com.vadlevente.bingebot.authentication.domain.usecase.RetrieveSecretWithPinUseCaseParams
 import com.vadlevente.bingebot.core.delegates.AppCloserDelegate
@@ -13,16 +17,21 @@ import com.vadlevente.bingebot.core.viewModel.State
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.crypto.Cipher
 import javax.inject.Inject
 
 @HiltViewModel
 class AuthenticationViewModel @Inject constructor(
     navigationEventChannel: NavigationEventChannel,
     toastEventChannel: ToastEventChannel,
+    isBiometricsEnrolledUseCase: IsBiometricsEnrolledUseCase,
+    getDecryptionCipherUseCase: GetDecryptionCipherUseCase,
     private val appCloserDelegate: AppCloserDelegate,
     private val retrieveSecretWithPinUseCase: RetrieveSecretWithPinUseCase,
+    private val retrieveSecretWithBiometricsUseCase: RetrieveSecretWithBiometricsUseCase,
 ) : BaseViewModel<AuthenticationViewModel.ViewState>(
     navigationEventChannel, toastEventChannel
 ), AppCloserDelegate by appCloserDelegate {
@@ -36,6 +45,23 @@ class AuthenticationViewModel @Inject constructor(
             it.copy(
                 pin = ""
             )
+        }
+    }
+
+    init {
+        combine(
+            isBiometricsEnrolledUseCase.execute(Unit),
+            getDecryptionCipherUseCase.execute(Unit),
+            ::Pair
+        ).onValue { (isBiometricsEnrolled, cipher) ->
+            if (isBiometricsEnrolled) {
+                viewState.update {
+                    it.copy(
+                        showBiometricPrompt = true,
+                        cipher = cipher
+                    )
+                }
+            }
         }
     }
 
@@ -62,8 +88,28 @@ class AuthenticationViewModel @Inject constructor(
         }
     }
 
+    fun onBiometricAuthSuccessful(cipher: Cipher) {
+        retrieveSecretWithBiometricsUseCase.execute(
+            RetrieveSecretWithBiometricsUseCaseParams(
+                cipher = cipher
+            )
+        ).onValue {
+            navigateTo(NavDestination.DASHBOARD)
+        }
+    }
+
+    fun onBiometricPromptCancelled() {
+        viewState.update {
+            it.copy(
+                showBiometricPrompt = false
+            )
+        }
+    }
+
     data class ViewState(
-        val pin: String = ""
+        val pin: String = "",
+        val showBiometricPrompt: Boolean = false,
+        val cipher: Cipher? = null,
     ) : State
 
 }

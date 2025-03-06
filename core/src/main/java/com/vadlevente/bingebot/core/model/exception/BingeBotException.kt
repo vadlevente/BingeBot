@@ -23,6 +23,7 @@ enum class Reason(val reasonText: UIText? = null) {
     WRONG_PIN_CODE(stringOf(Res.string.exception_wrongPin)),
     WATCHLIST_ALREADY_EXISTS(stringOf(Res.string.exception_sessionExpired)),
     DATA_NOT_FOUND,
+    ENCRYPTION_ERROR,
 }
 
 fun Throwable.isBecauseOf(reason: Reason) =

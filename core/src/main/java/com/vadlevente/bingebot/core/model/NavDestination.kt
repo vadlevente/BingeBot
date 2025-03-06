@@ -7,6 +7,7 @@ enum class NavDestination(val route: String) {
     REGISTER_PIN("registerPin"),
     REGISTER_PIN_CONFIRM("registerPinConfirm"),
     AUTHENTICATE("authenticate"),
+    BIOMETRICS_REGISTRATION("biometricRegistration"),
     DASHBOARD("dashboard"),
     LIST_MOVIE("listMovie"),
     LIST_TV("listTv"),

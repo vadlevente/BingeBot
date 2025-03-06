@@ -21,7 +21,10 @@
     <string name="pin_register_title">Kérjük, adjon meg egy erős PIN kódot!</string>
     <string name="pin_confirm_title">Kérjük, ismételje meg a PIN kódot!</string>
     <string name="pin_authentication_title">Kérjük, adja meg a PIN kódját!</string>
+    <string name="pin_registration_successful">PIN kód elmentve!</string>
 
-    <string name="pin_register_exitDescription">Biztosan kilép </string>
+    <string name="biometrics_registration_description">Szeretné beállítani a biometrikus azonosítást az alkalmazásban?</string>
+    <string name="biometrics_registration_dialogTitle">Biometrikus azonosítás beállítása</string>
+    <string name="biometrics_registration_successful">Biometrikus azonosítás beállítva!</string>
 
 </resources>

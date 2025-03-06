@@ -2,6 +2,7 @@ package com.vadlevente.bingebot.authentication.ui.pin
 
 import androidx.lifecycle.viewModelScope
 import com.vadlevente.bingebot.authentication.R
+import com.vadlevente.bingebot.authentication.domain.usecase.IsBiometricsAvailableUseCase
 import com.vadlevente.bingebot.authentication.domain.usecase.SaveSecretWithPinUseCase
 import com.vadlevente.bingebot.authentication.domain.usecase.SaveSecretWithPinUseCaseParams
 import com.vadlevente.bingebot.authentication.ui.pin.RegisterPinViewModel.ViewState
@@ -27,6 +28,7 @@ class RegisterPinViewModel @Inject constructor(
     toastEventChannel: ToastEventChannel,
     private val appCloserDelegate: AppCloserDelegate,
     private val saveSecretWithPinUseCase: SaveSecretWithPinUseCase,
+    private val isBiometricsAvailableUseCase: IsBiometricsAvailableUseCase,
 ) : BaseViewModel<ViewState>(
     navigationEventChannel, toastEventChannel
 ), AppCloserDelegate by appCloserDelegate {
@@ -58,7 +60,14 @@ class RegisterPinViewModel @Inject constructor(
                         pin = value
                     )
                 ).onValue {
-                    navigateTo(NavDestination.DASHBOARD)
+                    isBiometricsAvailableUseCase.execute(Unit).onValue { isBiometricsAvailable ->
+                        if (isBiometricsAvailable) {
+                            navigateTo(NavDestination.BIOMETRICS_REGISTRATION)
+                        } else {
+                            showToast(stringOf(R.string.pin_registration_successful), ToastType.INFO)
+                            navigateTo(NavDestination.DASHBOARD)
+                        }
+                    }
                 }
             } else {
                 showToast(stringOf(R.string.pin_codesNotEqual), ToastType.ERROR)

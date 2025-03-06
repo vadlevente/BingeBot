@@ -15,6 +15,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.vadlevente.bingebot.authentication.ui.authentication.AuthenticationScreen
+import com.vadlevente.bingebot.authentication.ui.biometrics.RegisterBiometricsScreen
 import com.vadlevente.bingebot.authentication.ui.login.LoginScreen
 import com.vadlevente.bingebot.authentication.ui.pin.RegisterPinConfirmationScreen
 import com.vadlevente.bingebot.authentication.ui.pin.RegisterPinScreen
@@ -75,6 +76,9 @@ fun NavigationHost(
                 }
                 composable(NavDestination.AUTHENTICATE.route) {
                     AuthenticationScreen()
+                }
+                composable(NavDestination.BIOMETRICS_REGISTRATION.route) {
+                    RegisterBiometricsScreen()
                 }
                 composable(NavDestination.DASHBOARD.route) {
                     DashboardScreen()

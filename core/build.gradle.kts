@@ -27,6 +27,7 @@ dependencies {
     "implementation"(Data.cryptoDataStore)
     "implementation"(Utils.timber)
     "implementation"(Utils.gson)
+    "implementation"(Biometrics.biometrics)
     // Firebase
     "implementation"(platform(Firebase.firebaseBoM))
     "implementation"(Firebase.firebaseCrashlytics)
