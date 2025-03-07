@@ -26,6 +26,12 @@ val LightWarning = Color(0xFFFFA726) // Warm Orange
 val DarkWarning = Color(0xFFFFCC80) // Softer Orange
 val LightHighlight = Color(0xFFF28C28) // Bright Amber
 val DarkHighlight = Color(0xFFFFB74D) // Vivid Orange
+val ShimmerBaseLight = Color(0xFFFCF8F3)       // Soft off-white with warmth
+val ShimmerHighlightLight = Color(0xFFFCE1C5)  // Soft peachy beige
+val ShimmerOverlayLight = Color(0xFFF0C9A0)    // Muted golden hue
+val ShimmerBaseDark = Color(0xFF2E2E2E)       // Muted dark terracotta
+val ShimmerHighlightDark = DarkGray  // Muted golden-brown glow
+val ShimmerOverlayDark = Color(0xFF5A4035)    // Warm sandy beige
 
 // Light theme colors
 val LightColorScheme: ColorScheme = lightColorScheme(
@@ -60,18 +66,27 @@ data class CustomColorsPalette(
     val info: Color = Color.Unspecified,
     val warning: Color = Color.Unspecified,
     val highlight: Color = Color.Unspecified,
+    val shimmerBase: Color = Color.Unspecified,
+    val shimmerHighlight: Color = Color.Unspecified,
+    val shimmerOverlay: Color = Color.Unspecified,
 )
 
 val LightCustomColorsPalette = CustomColorsPalette(
     info = LightInfo,
     warning = LightWarning,
     highlight = LightHighlight,
+    shimmerBase = ShimmerBaseLight,
+    shimmerHighlight = ShimmerHighlightLight,
+    shimmerOverlay = ShimmerOverlayLight,
 )
 
 val DarkCustomColorsPalette = CustomColorsPalette(
     info = DarkInfo,
     warning = DarkWarning,
     highlight = DarkHighlight,
+    shimmerBase = ShimmerBaseDark,
+    shimmerHighlight = ShimmerHighlightDark,
+    shimmerOverlay = ShimmerOverlayDark,
 )
 
 val LocalCustomColorsPalette = staticCompositionLocalOf { CustomColorsPalette() }

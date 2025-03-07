@@ -9,7 +9,7 @@ object Modules {
     const val listAll = ":features:listall"
     const val search = ":features:search"
     const val watchlist = ":features:watchlist"
-    const val movieDetails = ":features:moviedetails"
+    const val details = ":features:details"
     const val dashboard = ":features:dashboard"
     const val settings = ":features:settings"
 }

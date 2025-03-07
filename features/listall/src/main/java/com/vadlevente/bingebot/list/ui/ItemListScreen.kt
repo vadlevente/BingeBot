@@ -3,6 +3,7 @@ package com.vadlevente.bingebot.list.ui
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -45,7 +46,6 @@ import com.vadlevente.bingebot.core.ui.composables.BBFilterChip
 import com.vadlevente.bingebot.core.ui.composables.BBOutlinedTextField
 import com.vadlevente.bingebot.core.ui.composables.LifecycleEvents
 import com.vadlevente.bingebot.core.ui.composables.ListItem
-import com.vadlevente.bingebot.core.ui.composables.ProgressScreen
 import com.vadlevente.bingebot.core.ui.composables.TopBar
 import com.vadlevente.bingebot.core.util.asOneDecimalString
 import com.vadlevente.bingebot.core.util.yearString
@@ -207,42 +207,40 @@ fun <T : Item> ItemListScreenComponent(
                     )
                 }
             }
-            ProgressScreen(
-                isProgressVisible = isInProgress,
-                modifier = Modifier.fillMaxSize()
-            ) {
+            Box(modifier = Modifier.fillMaxSize()) {
                 if (state.items.isEmpty()) {
                     val descriptionStringRes =
                         if (state.searchQuery == null) resources.emptyListDescription
                         else Res.string.emptyQueriedListDescription
                     Text(
+                        modifier = Modifier.align(Alignment.Center),
                         text = stringResource(descriptionStringRes),
                         style = MaterialTheme.typography.bodyLarge.copy(
                             textAlign = TextAlign.Center
                         ),
                         color = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.align(Alignment.Center),
                     )
                 } else {
                     LazyColumn {
-                        items(state.items) { displayedMovie ->
-                            val movie = displayedMovie.item
+                        items(state.items) { displayedItem ->
+                            val item = displayedItem.item
                             ListItem(
-                                title = movie.title,
-                                iconPath = displayedMovie.thumbnailUrl,
-                                watchedDate = movie.watchedDate,
-                                rating = movie.voteAverage.asOneDecimalString,
-                                releaseYear = movie.releaseDate?.yearString ?: "",
-                                onClick = { onNavigateToOptions(movie.id) },
+                                isLoading = isInProgress,
+                                modifier = Modifier,
+                                title = item.title,
+                                iconPath = displayedItem.thumbnailUrl,
+                                watchedDate = item.watchedDate,
+                                rating = item.voteAverage.asOneDecimalString,
+                                releaseYear = item.releaseDate?.yearString ?: "",
+                                onClick = { onNavigateToOptions(item.id) },
                             )
                         }
                     }
                 }
             }
-
         }
-    }
 
+    }
 }
 
 @Composable

@@ -57,7 +57,7 @@ dependencies {
     implementation(project(Modules.listAll))
     implementation(project(Modules.search))
     implementation(project(Modules.watchlist))
-    implementation(project(Modules.movieDetails))
+    implementation(project(Modules.details))
     implementation(project(Modules.resources))
     implementation(project(Modules.dashboard))
     implementation(project(Modules.bottomSheet))

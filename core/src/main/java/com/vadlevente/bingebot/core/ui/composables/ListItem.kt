@@ -5,8 +5,10 @@ import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -38,6 +40,8 @@ import com.vadlevente.bingebot.resources.R as Resources
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ListItem(
+    isLoading: Boolean,
+    modifier: Modifier = Modifier,
     title: String,
     iconPath: String?,
     watchedDate: Date? = null,
@@ -46,9 +50,48 @@ fun ListItem(
     onClick: () -> Unit = {},
     onLongClick: () -> Unit = {},
 ) {
+    if (isLoading) {
+        Row(
+            modifier = modifier
+                .padding(8.dp)
+                .height(150.dp)
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(
+                modifier = modifier
+                    .padding(8.dp)
+                    .fillMaxHeight()
+                    .width(100.dp)
+                    .clip(RoundedCornerShape(8.dp))
+                    .shimmerEffect(),
+            )
+            Column(
+                modifier = Modifier
+                    .padding(horizontal = 18.dp)
+                    .weight(1f)
+            ) {
+                Text(
+                    modifier = Modifier
+                        .width(300.dp)
+                        .clip(RoundedCornerShape(8.dp))
+                        .shimmerEffect(),
+                    text = "",
+                )
+                Text(
+                    modifier = Modifier
+                        .width(60.dp)
+                        .clip(RoundedCornerShape(8.dp))
+                        .shimmerEffect(),
+                    text = "",
+                )
+            }
+        }
+        return
+    }
     val isWatched = watchedDate != null
     Card(
-        modifier = Modifier
+        modifier = modifier
             .padding(8.dp)
             .combinedClickable(
                 onClick = onClick,
@@ -81,7 +124,6 @@ fun ListItem(
                         modifier = Modifier
                             .alpha(if (isWatched) .5f else 1f)
                             .fillMaxWidth(),
-                        placeholder = painterResource(id = Resources.drawable.ic_placeholder),
                         error = painterResource(id = Resources.drawable.ic_placeholder),
                         contentDescription = null,
                     )
@@ -147,6 +189,7 @@ fun ListItem(
 private fun ListItemPreview() {
     BingeBotTheme {
         ListItem(
+            isLoading = false,
             title = "Filmek",
             iconPath = "https://m.media-amazon.com/images/M/MV5BNGNhMDIzZTUtNTBlZi00MTRlLWFjM2ItYzViMjE3YzI5MjljXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_.jpg",
             watchedDate = Date(),

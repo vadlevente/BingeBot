@@ -149,6 +149,7 @@ fun <T : Item> ItemWatchListScreenComponent(
                         items(state.items) { displayedItem ->
                             val item = displayedItem.item
                             ListItem(
+                                isLoading = isInProgress,
                                 title = item.title,
                                 iconPath = displayedItem.thumbnailUrl,
                                 watchedDate = item.watchedDate,

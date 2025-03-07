@@ -89,6 +89,12 @@ class AuthenticationViewModel @Inject constructor(
     }
 
     fun onBiometricAuthSuccessful(cipher: Cipher) {
+        viewState.update {
+            it.copy(
+                showBiometricPrompt = false,
+                cipher = null,
+            )
+        }
         retrieveSecretWithBiometricsUseCase.execute(
             RetrieveSecretWithBiometricsUseCaseParams(
                 cipher = cipher

@@ -112,6 +112,7 @@ fun <T : Item> SearchItemScreenComponent(
                         ) { displayedItem ->
                             val item = displayedItem.item
                             ListItem(
+                                isLoading = false,
                                 title = item.title,
                                 iconPath = displayedItem.thumbnailUrl,
                                 watchedDate = item.watchedDate,

@@ -4,6 +4,8 @@ import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
+import com.vadlevente.bingebot.core.model.Item.Movie
+import com.vadlevente.bingebot.core.model.Item.Tv
 import java.util.Date
 
 data class DisplayedItem<T: Item>(
@@ -103,6 +105,32 @@ sealed interface Item {
         override val isWatched: Boolean
             get() = watchedDate != null
     }
+}
 
-
+sealed interface SkeletonFactory <T : Item> {
+    fun createSkeleton(): T
+    object MovieSkeletonFactory : SkeletonFactory<Movie> {
+        override fun createSkeleton() = Movie(
+            id = 1,
+            title = "",
+            originalTitle = "",
+            genreCodes = emptyList(),
+            overview = "",
+            backdropPath = null,
+            posterPath = null,
+            voteAverage = 1f,
+        )
+    }
+    object TvSkeletonFactory : SkeletonFactory<Tv> {
+        override fun createSkeleton() = Tv(
+            id = 1,
+            title = "",
+            originalTitle = "",
+            genreCodes = emptyList(),
+            overview = "",
+            backdropPath = null,
+            posterPath = null,
+            voteAverage = 1f,
+        )
+    }
 }

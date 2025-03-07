@@ -4,15 +4,19 @@ import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.vadlevente.bingebot.authentication.R
 import com.vadlevente.bingebot.authentication.ui.composables.PinScreen
@@ -44,15 +48,18 @@ fun RegisterPinConfirmationScreen() {
             )
         }
         if (isInProgress) {
-            Box(modifier = Modifier.fillMaxSize()) {
-                Box(modifier = Modifier.fillMaxSize().alpha(.5f)) {
-                    CircularProgressIndicator(
-                        modifier = Modifier
-                            .align(Alignment.Center),
-                        color = BingeBotTheme.colors.highlight,
-                    )
-                }
-
+            Surface(
+                modifier = Modifier.fillMaxSize(),
+                color = MaterialTheme.colorScheme.background.copy(alpha = .7f)
+            ) {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .wrapContentSize(Alignment.Center)
+                        .size(80.dp)
+                        .align(Alignment.Center),
+                    color = BingeBotTheme.colors.highlight,
+                )
             }
         }
     }

@@ -9,6 +9,7 @@ import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
 import com.vadlevente.bingebot.core.model.Item.Tv
 import com.vadlevente.bingebot.core.model.NavDestination.SEARCH_TV
+import com.vadlevente.bingebot.core.model.SkeletonFactory
 import com.vadlevente.bingebot.list.domain.usecase.ItemListUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -23,6 +24,9 @@ class TvListViewModel @Inject constructor(
 ) : ItemListViewModel<Tv>(
     navigationEventChannel, toastEventChannel, useCases
 ) {
+
+    override val skeletonFactory: SkeletonFactory<Tv>
+        get() = SkeletonFactory.TvSkeletonFactory
 
     override fun onNavigateToSearch() {
         navigateTo(SEARCH_TV)
