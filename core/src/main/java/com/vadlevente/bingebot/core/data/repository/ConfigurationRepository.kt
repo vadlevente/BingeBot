@@ -40,7 +40,7 @@ class ConfigurationRepositoryImpl @Inject constructor(
     override suspend fun logout() = withContext(Dispatchers.IO) {
         authenticationService.logout()
         db.clearAllTables()
-        preferencesDataSource.saveActiveProfileId(null)
+        preferencesDataSource.clearUserRelatedData()
     }
 
     override suspend fun setSelectedLanguage(language: SelectedLanguage) =

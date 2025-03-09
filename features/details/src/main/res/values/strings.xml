@@ -1,3 +1,10 @@
 <resources>
-    <string name="app_name">BingeBot</string>
+    <string name="itemDetails_title">Részletek</string>
+    <string name="itemDetails_director">Rendező</string>
+    <string name="itemDetails_writer">Író</string>
+    <string name="itemDetails_cast">Szereplők</string>
+    <string name="itemDetails_budget">Költségvetés</string>
+    <string name="itemDetails_revenue">Bevétel</string>
+    <string name="itemDetails_runtime">Hossz</string>
+
 </resources>

@@ -15,6 +15,8 @@ import com.vadlevente.bingebot.core.stringOf
 import com.vadlevente.bingebot.core.util.Constants.PIN_LENGTH
 import com.vadlevente.bingebot.core.viewModel.BaseViewModel
 import com.vadlevente.bingebot.core.viewModel.State
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -22,13 +24,15 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@HiltViewModel
+@HiltViewModel(assistedFactory = RegisterPinViewModel.RegisterPinViewModelFactory::class)
 class RegisterPinViewModel @Inject constructor(
     navigationEventChannel: NavigationEventChannel,
     toastEventChannel: ToastEventChannel,
     private val appCloserDelegate: AppCloserDelegate,
     private val saveSecretWithPinUseCase: SaveSecretWithPinUseCase,
     private val isBiometricsAvailableUseCase: IsBiometricsAvailableUseCase,
+    @Assisted val email: String,
+    @Assisted val password: String,
 ) : BaseViewModel<ViewState>(
     navigationEventChannel, toastEventChannel
 ), AppCloserDelegate by appCloserDelegate {
@@ -43,7 +47,7 @@ class RegisterPinViewModel @Inject constructor(
             )
         }
         if (value.length == PIN_LENGTH) {
-            navigateTo(NavDestination.REGISTER_PIN_CONFIRM)
+            navigateTo(NavDestination.RegisterPinConfirm)
         }
     }
 
@@ -57,15 +61,17 @@ class RegisterPinViewModel @Inject constructor(
             if (value == viewState.value.pin) {
                 saveSecretWithPinUseCase.execute(
                     SaveSecretWithPinUseCaseParams(
-                        pin = value
+                        pin = value,
+                        email = email,
+                        password = password
                     )
                 ).onValue {
                     isBiometricsAvailableUseCase.execute(Unit).onValue { isBiometricsAvailable ->
                         if (isBiometricsAvailable) {
-                            navigateTo(NavDestination.BIOMETRICS_REGISTRATION)
+                            navigateTo(NavDestination.BiometricsRegistration(email, password))
                         } else {
                             showToast(stringOf(R.string.pin_registration_successful), ToastType.INFO)
-                            navigateTo(NavDestination.DASHBOARD)
+                            navigateTo(NavDestination.Dashboard)
                         }
                     }
                 }
@@ -93,6 +99,14 @@ class RegisterPinViewModel @Inject constructor(
             )
         }
         navigateUp()
+    }
+
+    @AssistedFactory
+    interface RegisterPinViewModelFactory {
+        fun create(
+            email: String,
+            password: String,
+        ): RegisterPinViewModel
     }
 
     data class ViewState(

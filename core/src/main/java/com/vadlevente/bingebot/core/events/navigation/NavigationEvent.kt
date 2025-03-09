@@ -1,20 +1,12 @@
 package com.vadlevente.bingebot.core.events.navigation
 
+import com.vadlevente.bingebot.core.model.NavDestination
+
 sealed interface NavigationEvent {
 
     data class NavigateTo(
-        val routeBase: String,
-        val arguments: List<Any> = emptyList(),
-    ) : NavigationEvent {
-        val route: String
-            get() = buildString {
-                append(routeBase)
-                arguments.forEach {
-                    append("/$it")
-                }
-            }
-    }
-
+        val destination: NavDestination,
+    ) : NavigationEvent
     object NavigateUp : NavigationEvent
     object ExitApplication : NavigationEvent
 

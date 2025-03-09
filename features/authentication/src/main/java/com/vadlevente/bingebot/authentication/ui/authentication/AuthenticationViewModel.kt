@@ -77,7 +77,7 @@ class AuthenticationViewModel @Inject constructor(
                     pin = value
                 )
             ).onValue {
-                navigateTo(NavDestination.DASHBOARD)
+                navigateTo(NavDestination.Dashboard)
             }
         }
     }
@@ -100,7 +100,7 @@ class AuthenticationViewModel @Inject constructor(
                 cipher = cipher
             )
         ).onValue {
-            navigateTo(NavDestination.DASHBOARD)
+            navigateTo(NavDestination.Dashboard)
         }
     }
 

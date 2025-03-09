@@ -9,7 +9,6 @@ import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastType.INFO
 import com.vadlevente.bingebot.core.model.NavDestination
-import com.vadlevente.bingebot.core.model.NavDestination.LOGIN
 import com.vadlevente.bingebot.core.stringOf
 import com.vadlevente.bingebot.core.viewModel.BaseViewModel
 import com.vadlevente.bingebot.core.viewModel.State
@@ -58,12 +57,17 @@ class RegistrationViewModel @Inject constructor(
                 stringOf(R.string.registrationSuccessful),
                 INFO,
             )
-            navigateTo(NavDestination.REGISTER_PIN)
+            navigateTo(
+                NavDestination.RegisterPin(
+                    viewState.value.email,
+                    viewState.value.password,
+                )
+            )
         }
     }
 
     fun onNavigateToLogin() {
-        navigateTo(LOGIN)
+        navigateTo(NavDestination.Login)
     }
 
     private fun reevaluateSubmitEnabled() {

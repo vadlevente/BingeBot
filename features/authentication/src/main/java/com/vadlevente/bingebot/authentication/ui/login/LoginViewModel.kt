@@ -1,13 +1,15 @@
 package com.vadlevente.bingebot.authentication.ui.login
 
+import com.vadlevente.bingebot.authentication.R
 import com.vadlevente.bingebot.authentication.domain.usecase.LoginUseCase
 import com.vadlevente.bingebot.authentication.domain.usecase.LoginUseCaseParams
 import com.vadlevente.bingebot.authentication.ui.login.LoginViewModel.ViewState
 import com.vadlevente.bingebot.core.delegates.AppCloserDelegate
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
+import com.vadlevente.bingebot.core.events.toast.ToastType.INFO
 import com.vadlevente.bingebot.core.model.NavDestination
-import com.vadlevente.bingebot.core.model.NavDestination.REGISTRATION
+import com.vadlevente.bingebot.core.stringOf
 import com.vadlevente.bingebot.core.viewModel.BaseViewModel
 import com.vadlevente.bingebot.core.viewModel.State
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -42,16 +44,25 @@ class LoginViewModel @Inject constructor(
     fun onSubmit() {
         loginUseCase.execute(
             LoginUseCaseParams(
-            viewState.value.email,
-            viewState.value.password,
-        )
+                viewState.value.email,
+                viewState.value.password,
+            )
         ).onValue {
-            navigateTo(NavDestination.DASHBOARD)
+            showToast(
+                stringOf(R.string.loginSuccessful),
+                INFO,
+            )
+            navigateTo(
+                NavDestination.RegisterPin(
+                    viewState.value.email,
+                    viewState.value.password,
+                )
+            )
         }
     }
 
     fun onNavigateToRegistration() {
-        navigateTo(REGISTRATION)
+        navigateTo(NavDestination.Registration)
     }
 
     private fun reevaluateSubmitEnabled() {

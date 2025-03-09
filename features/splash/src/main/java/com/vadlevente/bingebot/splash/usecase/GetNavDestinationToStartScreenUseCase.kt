@@ -3,9 +3,6 @@ package com.vadlevente.bingebot.splash.usecase
 import com.vadlevente.bingebot.core.data.local.datastore.PreferencesDataSource
 import com.vadlevente.bingebot.core.data.service.AuthenticationService
 import com.vadlevente.bingebot.core.model.NavDestination
-import com.vadlevente.bingebot.core.model.NavDestination.AUTHENTICATE
-import com.vadlevente.bingebot.core.model.NavDestination.LOGIN
-import com.vadlevente.bingebot.core.model.NavDestination.REGISTRATION
 import com.vadlevente.bingebot.core.ui.BaseUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -28,9 +25,11 @@ class GetNavDestinationToStartScreenUseCase @Inject constructor(
         )
             .flatMapLatest { (profileId, pinSecret) ->
                 profileId?.let {
-                    if (authenticationService.isProfileSignedIn(it) && pinSecret != null) flowOf(AUTHENTICATE)
-                    else flowOf(LOGIN)
-                } ?: flowOf(REGISTRATION)
+                    if (authenticationService.isProfileSignedIn(it) && pinSecret != null) flowOf(
+                        NavDestination.Authenticate
+                    )
+                    else flowOf(NavDestination.Login)
+                } ?: flowOf(NavDestination.Registration)
             }
     }
 

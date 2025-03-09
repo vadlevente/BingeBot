@@ -15,7 +15,6 @@ import com.vadlevente.bingebot.core.model.exception.BingeBotException
 import com.vadlevente.bingebot.core.model.exception.Reason.SESSION_EXPIRED
 import com.vadlevente.bingebot.core.model.exception.isBecauseOf
 import com.vadlevente.bingebot.core.stringOf
-import com.vadlevente.bingebot.resources.R.string
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -60,7 +59,7 @@ abstract class BaseViewModel<S : State>(
             )
         }
         if (t.isBecauseOf(SESSION_EXPIRED)) {
-            navigateTo(NavDestination.SPLASH)
+            navigateTo(NavDestination.Splash)
         }
     }
 
@@ -117,9 +116,9 @@ abstract class BaseViewModel<S : State>(
         }
         .launchIn(viewModelScope)
 
-    protected fun navigateTo(navDestination: NavDestination, vararg arguments: Any) {
+    protected fun navigateTo(navDestination: NavDestination) {
         viewModelScope.launch {
-            navigationEventChannel.sendEvent(NavigateTo(navDestination.route, arguments.toList()))
+            navigationEventChannel.sendEvent(NavigateTo(navDestination))
         }
     }
 

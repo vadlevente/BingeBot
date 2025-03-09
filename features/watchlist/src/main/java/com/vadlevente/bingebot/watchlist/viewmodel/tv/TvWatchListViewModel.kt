@@ -7,7 +7,7 @@ import com.vadlevente.bingebot.core.events.dialog.DialogEventChannel
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
 import com.vadlevente.bingebot.core.model.Item.Tv
-import com.vadlevente.bingebot.core.model.NavDestination.SEARCH_TV
+import com.vadlevente.bingebot.core.model.NavDestination
 import com.vadlevente.bingebot.watchlist.domain.usecase.DeleteWatchListUseCase
 import com.vadlevente.bingebot.watchlist.domain.usecase.GetWatchListItemsUseCase
 import com.vadlevente.bingebot.watchlist.domain.usecase.GetWatchListUseCase
@@ -30,7 +30,7 @@ class TvWatchListViewModel @Inject constructor(
 ) {
 
     override fun onNavigateToSearch() {
-        navigateTo(SEARCH_TV)
+        navigateTo(NavDestination.SearchTv)
     }
 
     override fun onNavigateToOptions(itemId: Int) {

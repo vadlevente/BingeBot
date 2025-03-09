@@ -18,6 +18,8 @@ interface ItemDao<T : Item> {
 
     fun getItems(itemIds: List<Int>): Flow<List<T>>
 
+    fun getItem(itemId: Int): Flow<T>
+
     fun getAllIncorrectlyLocalizedItems(localeCode: String): Flow<List<T>>
 
     suspend fun setItemWatchedDate(itemId: Int, watchedDate: Date?)

@@ -15,6 +15,7 @@
     <string name="registrationNavigateToLoginTitle">Log in with existing user</string>
 
     <string name="registrationSuccessful">Registration successful</string>
+    <string name="loginSuccessful">Login successful</string>
 
     <string name="pin_codesNotEqual">The entered PIN codes are not the same!</string>
 

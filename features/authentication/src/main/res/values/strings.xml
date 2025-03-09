@@ -3,18 +3,19 @@
     <string name="loginEmailLabel">E-mail cím</string>
     <string name="loginPasswordLabel">Jelszó</string>
     <string name="loginSubmitButtonTitle">Bejelentkezés</string>
-    <string name="loginNavigateToRegistrationTitle">Még nincs felhasználód? Regisztrálj itt!</string>
+    <string name="loginNavigateToRegistrationTitle">Még nincs felhasználója? Regisztráljon itt!</string>
     <string name="loginTitle">Kérjük, adja meg a bejelentkezési adatokat!</string>
 
     <string name="registrationEmailLabel">E-mail cím</string>
     <string name="registrationPasswordLabel">Jelszó</string>
     <string name="registrationConfirmPasswordLabel">Jelszó újra</string>
     <string name="registrationSubmitButtonTitle">Regisztráció</string>
-    <string name="registrationPasswordsDoNotMatchLabel">A megadott jelszavak nem egyeznek meg</string>
+    <string name="registrationPasswordsDoNotMatchLabel">A megadott jelszavak nem egyeznek meg!</string>
     <string name="registrationTitle">Kérjük, adja meg a regisztrációhoz szükséges adatokat!</string>
     <string name="registrationNavigateToLoginTitle">Belépés meglévő felhasználóval</string>
 
     <string name="registrationSuccessful">Sikeres regisztráció</string>
+    <string name="loginSuccessful">Sikeres belépés</string>
 
     <string name="pin_codesNotEqual">A megadott kódok nem egyeznek meg!</string>
 

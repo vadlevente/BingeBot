@@ -12,7 +12,7 @@ object Compose {
     private const val materialVersion = "1.2.1"
     const val material = "androidx.compose.material3:material3:$materialVersion"
 
-    private const val navVersion = "2.5.3"
+    private const val navVersion = "2.8.0"
     const val navigation = "androidx.navigation:navigation-compose:$navVersion"
 
     private const val lifecycleVersion = "2.5.1"

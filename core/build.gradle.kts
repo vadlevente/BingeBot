@@ -22,6 +22,7 @@ dependencies {
     "implementation"(Networking.okHttp)
     "implementation"(Networking.okhttpLogger)
     "implementation"(Networking.retrofitGsonConverter)
+    "implementation"(Kotlin.kotlinSerialization)
     "kapt"(Data.roomCompiler)
     "implementation"(Data.dataStore)
     "implementation"(Data.cryptoDataStore)

@@ -9,11 +9,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
+import androidx.navigation.toRoute
 import com.vadlevente.bingebot.authentication.ui.authentication.AuthenticationScreen
 import com.vadlevente.bingebot.authentication.ui.biometrics.RegisterBiometricsScreen
 import com.vadlevente.bingebot.authentication.ui.login.LoginScreen
@@ -42,7 +41,8 @@ import com.vadlevente.bingebot.splash.ui.SplashScreen
 import com.vadlevente.bingebot.ui.BingeBotTheme
 import com.vadlevente.bingebot.watchlist.ui.movie.MovieWatchListScreen
 import com.vadlevente.bingebot.watchlist.ui.tv.TvWatchListScreen
-import com.vadlevente.moviedetails.MovieDetailsScreen
+import com.vadlevente.moviedetails.ui.MovieDetailsScreen
+import com.vadlevente.moviedetails.ui.TvDetailsScreen
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -58,72 +58,54 @@ fun NavigationHost(
 
     BingeBotTheme {
         Box(modifier = Modifier.fillMaxWidth()) {
-            NavHost(navController = navController, startDestination = NavDestination.SPLASH.route) {
-                composable(NavDestination.SPLASH.route) {
+            NavHost(navController = navController, startDestination = NavDestination.Splash) {
+                composable<NavDestination.Splash> {
                     SplashScreen()
                 }
-                composable(NavDestination.REGISTRATION.route) {
+                composable<NavDestination.Registration> {
                     RegistrationScreen()
                 }
-                composable(NavDestination.LOGIN.route) {
+                composable<NavDestination.Login> {
                     LoginScreen()
                 }
-                composable(NavDestination.REGISTER_PIN.route) {
-                    RegisterPinScreen()
+                composable<NavDestination.RegisterPin> {
+                    val args: NavDestination.RegisterPin = it.toRoute()
+                    RegisterPinScreen(args.email, args.password)
                 }
-                composable(NavDestination.REGISTER_PIN_CONFIRM.route) {
+                composable<NavDestination.RegisterPinConfirm> {
                     RegisterPinConfirmationScreen()
                 }
-                composable(NavDestination.AUTHENTICATE.route) {
+                composable<NavDestination.Authenticate> {
                     AuthenticationScreen()
                 }
-                composable(NavDestination.BIOMETRICS_REGISTRATION.route) {
-                    RegisterBiometricsScreen()
+                composable<NavDestination.BiometricsRegistration> {
+                    val args: NavDestination.BiometricsRegistration = it.toRoute()
+                    RegisterBiometricsScreen(args.email, args.password)
                 }
-                composable(NavDestination.DASHBOARD.route) {
+                composable<NavDestination.Dashboard> {
                     DashboardScreen()
                 }
-                composable(NavDestination.SEARCH_MOVIE.route) {
+                composable<NavDestination.SearchMovie> {
                     SearchMovieScreen()
                 }
-                composable(NavDestination.SEARCH_TV.route) {
+                composable<NavDestination.SearchTv> {
                     SearchTvScreen()
                 }
-                composable(
-                    "${NavDestination.MOVIE_DETAILS.route}/{movieId}",
-                    arguments = listOf(
-                        navArgument("movieId") {
-                            type = NavType.IntType
-                        }
-                    )
-                ) {
-                    it.arguments?.getInt("movieId")?.let { movieId ->
-                        MovieDetailsScreen(movieId)
-                    }
+                composable<NavDestination.MovieDetails> {
+                    val args: NavDestination.MovieDetails = it.toRoute()
+                    MovieDetailsScreen(args.movieId)
                 }
-                composable(
-                    "${NavDestination.MOVIE_WATCH_LIST.route}/{watchListId}",
-                    arguments = listOf(
-                        navArgument("watchListId") {
-                            type = NavType.StringType
-                        }
-                    )
-                ) {
-                    it.arguments?.getString("watchListId")?.let { watchListId ->
-                        MovieWatchListScreen(watchListId)
-                    }
+                composable<NavDestination.TvDetails> {
+                    val args: NavDestination.TvDetails = it.toRoute()
+                    TvDetailsScreen(args.tvId)
                 }
-                composable(
-                    "${NavDestination.TV_WATCH_LIST.route}/{watchListId}",
-                    arguments = listOf(
-                        navArgument("watchListId") {
-                            type = NavType.StringType
-                        }
-                    )
-                ) {
-                    it.arguments?.getString("watchListId")?.let { watchListId ->
-                        TvWatchListScreen(watchListId)
-                    }
+                composable<NavDestination.MovieWatchList> {
+                    val args: NavDestination.MovieWatchList = it.toRoute()
+                    MovieWatchListScreen(args.watchListId)
+                }
+                composable<NavDestination.TvWatchList> {
+                    val args: NavDestination.TvWatchList = it.toRoute()
+                    TvWatchListScreen(args.watchListId)
                 }
             }
             UIComponents(this)
@@ -141,7 +123,7 @@ private fun CollectEvents(
         coroutineScope.launch {
             navigationEventChannel.events.collectLatest { event ->
                 when (event) {
-                    is NavigateTo -> navigate(navController, event.route)
+                    is NavigateTo -> navigate(navController, event.destination)
                     NavigateUp -> navController.popBackStack()
                     else -> {}
                 }
@@ -152,18 +134,18 @@ private fun CollectEvents(
 
 private fun navigate(
     navController: NavHostController,
-    route: String,
+    destination: NavDestination,
 ) {
-    when (route) {
-        NavDestination.SPLASH.route,
-        NavDestination.REGISTRATION.route,
-        NavDestination.LOGIN.route,
-        NavDestination.DASHBOARD.route -> {
-            navController.navigate(route) {
+    when (destination) {
+        NavDestination.Splash,
+        NavDestination.Registration,
+        NavDestination.Login,
+        NavDestination.Dashboard -> {
+            navController.navigate(destination) {
                 popUpTo(0)
             }
         }
-        else -> navController.navigate(route)
+        else -> navController.navigate(destination)
     }
 }
 

@@ -13,14 +13,19 @@ import javax.crypto.Cipher
 import javax.inject.Inject
 
 interface SecretService {
-    fun setTempCredentials(
+    suspend fun saveCredentialsWithPin(
+        pin: String,
         email: String,
         password: String,
     )
 
-    suspend fun saveCredentialsWithPin(pin: String)
     fun retrieveCredentialsWithPin(pin: String): Flow<LoginCredentials?>
-    suspend fun saveCredentialsWithBiometrics(cipher: Cipher)
+    suspend fun saveCredentialsWithBiometrics(
+        cipher: Cipher,
+        email: String,
+        password: String,
+    )
+
     fun retrieveCredentialsWithBiometrics(cipher: Cipher): Flow<LoginCredentials?>
     fun getDecryptionCipher(): Flow<Cipher>
 }
@@ -32,15 +37,13 @@ class SecretServiceImpl @Inject constructor(
     private val gson: Gson,
 ) : SecretService {
 
-    private var tempCredentials: LoginCredentials? = null
-
-    override fun setTempCredentials(email: String, password: String) {
-        tempCredentials = LoginCredentials(email, password)
-    }
-
-    override suspend fun saveCredentialsWithPin(pin: String) {
-        if (tempCredentials == null) throw BingeBotException()
-        val plainText = gson.toJson(tempCredentials)
+    override suspend fun saveCredentialsWithPin(
+        pin: String,
+        email: String,
+        password: String,
+    ) {
+        val credentials = LoginCredentials(email, password)
+        val plainText = gson.toJson(credentials)
         val encrypted = aesService.encrypt(plainText, pin)
         preferencesDataSource.savePinEncryptedSecret(encrypted)
     }
@@ -52,9 +55,13 @@ class SecretServiceImpl @Inject constructor(
             } ?: throw BingeBotException(reason = Reason.WRONG_PIN_CODE)
         }
 
-    override suspend fun saveCredentialsWithBiometrics(cipher: Cipher) {
-        if (tempCredentials == null) throw BingeBotException()
-        val plainText = gson.toJson(tempCredentials)
+    override suspend fun saveCredentialsWithBiometrics(
+        cipher: Cipher,
+        email: String,
+        password: String,
+    ) {
+        val credentials = LoginCredentials(email, password)
+        val plainText = gson.toJson(credentials)
 
         val encrypted = cryptographyService.encryptData(plainText, cipher)
         preferencesDataSource.saveBiometricsEncryptedSecret(encrypted)

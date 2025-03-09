@@ -5,7 +5,7 @@ import com.vadlevente.bingebot.core.events.dialog.DialogEvent.ShowDialog
 import com.vadlevente.bingebot.core.events.dialog.DialogEventChannel
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
-import com.vadlevente.bingebot.core.model.NavDestination.LOGIN
+import com.vadlevente.bingebot.core.model.NavDestination
 import com.vadlevente.bingebot.core.model.SelectedLanguage
 import com.vadlevente.bingebot.core.stringOf
 import com.vadlevente.bingebot.core.viewModel.BaseViewModel
@@ -88,7 +88,7 @@ class SettingsViewModel @Inject constructor(
                     negativeButtonTitle = stringOf(string.common_No),
                     onPositiveButtonClicked = {
                         logoutUseCase.execute(Unit).onValue {
-                            navigateTo(LOGIN)
+                            navigateTo(NavDestination.Login)
                         }
                     },
                 )

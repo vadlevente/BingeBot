@@ -109,7 +109,7 @@ fun LoginScreenComponent(
                     imeAction = ImeAction.Next,
                 ),
             )
-            Spacer(modifier = Modifier.fillMaxHeight(.2f))
+            Spacer(modifier = Modifier.fillMaxHeight(.1f))
             BBOutlinedTextField(
                 modifier = Modifier
                     .fillMaxWidth(),

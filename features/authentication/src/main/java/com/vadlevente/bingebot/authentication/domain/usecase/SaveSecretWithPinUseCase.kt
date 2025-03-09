@@ -7,6 +7,8 @@ import javax.inject.Inject
 
 data class SaveSecretWithPinUseCaseParams(
     val pin: String,
+    val email: String,
+    val password: String,
 )
 
 class SaveSecretWithPinUseCase @Inject constructor(
@@ -15,7 +17,11 @@ class SaveSecretWithPinUseCase @Inject constructor(
 
     override fun execute(params: SaveSecretWithPinUseCaseParams): Flow<Unit> =
         emptyFlow {
-            secretService.saveCredentialsWithPin(params.pin)
+            secretService.saveCredentialsWithPin(
+                params.pin,
+                params.email,
+                params.password,
+            )
         }
 
 }

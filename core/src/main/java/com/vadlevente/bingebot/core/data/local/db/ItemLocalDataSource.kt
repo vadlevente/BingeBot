@@ -15,6 +15,7 @@ abstract class ItemLocalDataSource <T : Item> (
 
     fun getAllItems() = itemDao.getAllItems()
     fun getItems(itemIds: List<Int>) = itemDao.getItems(itemIds)
+    fun getItem(itemId: Int) = itemDao.getItem(itemId)
 
     fun getAllItemsWithIncorrectLocalization(locale: String) = itemDao.getAllIncorrectlyLocalizedItems(locale)
 

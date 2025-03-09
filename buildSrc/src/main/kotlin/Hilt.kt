@@ -2,7 +2,7 @@
 object Hilt {
     // DI
     private const val hiltVersion = "2.45"
-    private const val hiltNavigationVersion = "1.1.0-alpha01"
+    private const val hiltNavigationVersion = "1.2.0-alpha01"
     private const val hiltCompilerVersion = "2.44"
 
     const val hilt = "com.google.dagger:hilt-android:$hiltVersion"

@@ -65,6 +65,12 @@ sealed interface Item {
         override val posterPath: String?,
         @SerializedName("vote_average")
         override val voteAverage: Float,
+        @SerializedName("budget")
+        val budget: Long?,
+        @SerializedName("revenue")
+        val revenue: Long?,
+        @SerializedName("runtime")
+        val runtime: Long?,
         @SerializedName("release_date")
         override val releaseDate: Date? = null,
         override val localeCode: String = SelectedLanguage.default.code,
@@ -119,6 +125,9 @@ sealed interface SkeletonFactory <T : Item> {
             backdropPath = null,
             posterPath = null,
             voteAverage = 1f,
+            budget = null,
+            revenue = null,
+            runtime = null,
         )
     }
     object TvSkeletonFactory : SkeletonFactory<Tv> {

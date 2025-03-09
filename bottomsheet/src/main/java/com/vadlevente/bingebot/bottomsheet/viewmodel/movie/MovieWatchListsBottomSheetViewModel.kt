@@ -11,7 +11,6 @@ import com.vadlevente.bingebot.core.events.dialog.DialogEventChannel
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
 import com.vadlevente.bingebot.core.model.Item.Movie
-import com.vadlevente.bingebot.core.model.NavDestination.MOVIE_WATCH_LIST
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.launchIn

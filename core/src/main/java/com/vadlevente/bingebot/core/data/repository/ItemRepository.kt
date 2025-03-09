@@ -5,9 +5,12 @@ import com.vadlevente.bingebot.core.data.local.datastore.PreferencesDataSource
 import com.vadlevente.bingebot.core.data.local.db.ItemLocalDataSource
 import com.vadlevente.bingebot.core.data.remote.ItemRemoteDataSource
 import com.vadlevente.bingebot.core.data.remote.firestore.FirestoreItemDataSource
+import com.vadlevente.bingebot.core.model.Credits
+import com.vadlevente.bingebot.core.model.Department
 import com.vadlevente.bingebot.core.model.Genre
 import com.vadlevente.bingebot.core.model.GenreFactory
 import com.vadlevente.bingebot.core.model.Item
+import com.vadlevente.bingebot.core.model.ItemDetails
 import com.vadlevente.bingebot.core.model.WatchList
 import com.vadlevente.bingebot.core.model.WatchListFactory
 import com.vadlevente.bingebot.core.model.firestore.StoredItem
@@ -15,7 +18,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flatMapConcat
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import java.util.Date
@@ -23,6 +28,7 @@ import javax.inject.Inject
 
 interface ItemRepository<T : Item> {
     fun getItems(): Flow<List<T>>
+    fun getItemDetails(itemId: Int): Flow<ItemDetails<T>>
     fun getGenres(): Flow<List<Genre>>
     fun getSearchResult(): Flow<List<T>>
     fun getWatchLists(): Flow<List<WatchList>>
@@ -55,6 +61,28 @@ class ItemRepositoryImpl<T : Item> @Inject constructor(
     override fun getItems(): Flow<List<T>> =
         itemLocalDataSource.getAllItems().flowOn(Dispatchers.IO)
 
+    override fun getItemDetails(itemId: Int): Flow<ItemDetails<T>> =
+        preferencesDataSource.language.flatMapConcat { language ->
+            val remote = itemRemoteDataSource.getItemDetails(itemId, language).toItem()
+            val local = itemLocalDataSource.getItem(itemId).firstOrNull()
+            val updatedRemote = if (local != null) {
+                var tempRemote = remote
+                local.createdDate?.let { tempRemote = tempRemote.copyCreatedDate(it) }
+                local.watchedDate?.let { tempRemote = tempRemote.copyWatchedDate(it) }
+                tempRemote
+            } else {
+                remote
+            }
+            val remoteCredits = itemRemoteDataSource.getItemCredits(itemId, language)
+            val credits = Credits(
+                cast = remoteCredits.castMembers,
+                director = remoteCredits.crewMembers.filter { it.department == Department.Director },
+                writer = remoteCredits.crewMembers.filter { it.department == Department.Screenplay },
+            )
+            flowOf(
+                ItemDetails(updatedRemote, credits)
+            )
+        }
 
     override fun getGenres(): Flow<List<Genre>> =
         itemLocalDataSource.getAllGenres().flowOn(Dispatchers.IO)

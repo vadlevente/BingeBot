@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
+import com.vadlevente.bingebot.core.model.Department
 import com.vadlevente.bingebot.core.model.GenreFactory
 import com.vadlevente.bingebot.core.model.GenreFactory.MovieGenreFactory
 import com.vadlevente.bingebot.core.model.GenreFactory.TvGenreFactory
@@ -41,6 +42,16 @@ object CommonModule {
             ): Date? {
                 if (json?.asString.isNullOrEmpty()) return null
                 return json?.asString?.let { dateFormat.parse(it) }
+            }
+        })
+        .registerTypeAdapter(Department::class.java, object : JsonDeserializer<Department> {
+            override fun deserialize(
+                json: JsonElement?,
+                typeOfT: Type?,
+                context: JsonDeserializationContext?
+            ): Department? {
+                if (json?.asString.isNullOrEmpty()) return null
+                return json?.asString?.let { Department.ofValue(it) }
             }
         })
         .create()

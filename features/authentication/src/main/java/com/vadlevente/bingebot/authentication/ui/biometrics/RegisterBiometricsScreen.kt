@@ -34,8 +34,12 @@ import com.vadlevente.bingebot.resources.R as Res
 
 @Composable
 fun RegisterBiometricsScreen(
-    viewModel: RegisterBiometricsViewModel = hiltViewModel()
+    email: String,
+    password: String,
 ) {
+    val viewModel = hiltViewModel<RegisterBiometricsViewModel, RegisterBiometricsViewModel.RegisterBiometricsViewModelFactory> { factory ->
+        factory.create(email, password)
+    }
     val state by viewModel.state.collectAsState()
     val isInProgress by viewModel.isInProgress.collectAsState()
     RegisterBiometricsScreenComponent(

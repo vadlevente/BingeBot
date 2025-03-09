@@ -79,6 +79,12 @@ class PreferencesDataSource @Inject constructor(
         savePreference(stringPreferencesKey(BIOMETRICS_ENCRYPTED_SECRET), value)
     }
 
+    suspend fun clearUserRelatedData() {
+        removePreference(stringPreferencesKey(ACTIVE_PROFILE_ID))
+        removePreference(stringPreferencesKey(PIN_ENCRYPTED_SECRET))
+        removePreference(stringPreferencesKey(BIOMETRICS_ENCRYPTED_SECRET))
+    }
+
     private suspend fun <T> savePreference(
         preferencesKey: Preferences.Key<T>,
         value: T,

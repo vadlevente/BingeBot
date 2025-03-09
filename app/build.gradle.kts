@@ -65,6 +65,7 @@ dependencies {
 
 // Core
     implementation(Kotlin.kotlinStdLib)
+    implementation(Kotlin.kotlinSerialization)
 
 // UI
     implementation(Ui.androidxCore)

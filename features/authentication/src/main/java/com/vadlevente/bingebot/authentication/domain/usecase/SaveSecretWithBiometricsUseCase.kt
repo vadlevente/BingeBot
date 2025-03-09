@@ -8,6 +8,8 @@ import javax.inject.Inject
 
 data class SaveSecretWithBiometricsUseCaseParams(
     val cipher: Cipher,
+    val email: String,
+    val password: String,
 )
 
 class SaveSecretWithBiometricsUseCase @Inject constructor(
@@ -16,7 +18,11 @@ class SaveSecretWithBiometricsUseCase @Inject constructor(
 
     override fun execute(params: SaveSecretWithBiometricsUseCaseParams): Flow<Unit> =
         emptyFlow {
-            secretService.saveCredentialsWithBiometrics(params.cipher)
+            secretService.saveCredentialsWithBiometrics(
+                params.cipher,
+                params.email,
+                params.password,
+            )
         }
 
 }
