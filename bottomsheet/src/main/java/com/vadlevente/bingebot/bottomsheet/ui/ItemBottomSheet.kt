@@ -97,11 +97,13 @@ fun <T : Item> ItemBottomSheet(
                     .fillMaxWidth()
                     .padding(8.dp)
             ) {
-                BottomSheetAction(
-                    action = { viewModel.onShowDetails() },
-                    labelRes = R.string.itemBottomSheet_openDetails,
-                    imageVector = Filled.Info,
-                )
+                if (!event.openedFromDetail) {
+                    BottomSheetAction(
+                        action = { viewModel.onShowDetails() },
+                        labelRes = R.string.itemBottomSheet_openDetails,
+                        imageVector = Filled.Info,
+                    )
+                }
                 if (event.watchListId == null) {
                     BottomSheetAction(
                         action = { viewModel.onAddToWatchList() },
@@ -199,7 +201,7 @@ fun <T : Item> ItemBottomSheet(
                     todayDateBorderColor = BingeBotTheme.colors.highlight,
                     selectedDayContainerColor = BingeBotTheme.colors.highlight,
                     subheadContentColor = BingeBotTheme.colors.highlight,
-                    ),
+                ),
             )
         }
     }
@@ -215,7 +217,8 @@ private fun BottomSheetAction(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { action() }
-            .padding(8.dp),
+            .padding(horizontal = 8.dp)
+            .padding(vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(

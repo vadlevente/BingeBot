@@ -49,6 +49,7 @@ abstract class ItemListViewModel<T : Item>(
                     genres = filters.displayedGenres,
                     isAnyGenreSelected = filters.displayedGenres.any { it.isSelected },
                     isWatchedSelected = filters.isWatchedSelected,
+                    isSearchFieldVisible = filters.searchQuery != null,
                     searchQuery = filters.searchQuery,
                 )
             }
@@ -56,7 +57,6 @@ abstract class ItemListViewModel<T : Item>(
                 baseViewState.update {
                     it.copy(
                         isSearchFieldVisible = !filters.searchQuery.isNullOrEmpty(),
-                        areFiltersVisible = filters.displayedGenres.any { it.isSelected } || filters.isWatchedSelected != null
                     )
                 }
                 isInitialized = true
@@ -91,23 +91,6 @@ abstract class ItemListViewModel<T : Item>(
     abstract fun onOpenWatchLists()
     abstract fun onOpenOrderBy()
 
-    fun onToggleSearchField() {
-        onQueryChanged(if (baseViewState.value.isSearchFieldVisible) null else "")
-        baseViewState.update {
-            it.copy(
-                isSearchFieldVisible = !it.isSearchFieldVisible,
-            )
-        }
-    }
-
-    fun onToggleFilters() {
-        baseViewState.update {
-            it.copy(
-                areFiltersVisible = !it.areFiltersVisible
-            )
-        }
-    }
-
     fun onQueryChanged(value: String?) {
         useCases.setQueryFilterUseCase.execute(
             SetQueryFilterUseCaseParams(value)
@@ -136,22 +119,23 @@ abstract class ItemListViewModel<T : Item>(
         ).onStart()
     }
 
-    fun onToggleIsWatched(value: Boolean) {
+    fun onToggleIsWatched() {
+        val nextValue = when (baseViewState.value.isWatchedSelected) {
+            true -> false
+            false -> null
+            null -> true
+        }
         useCases.setIsWatchedFilterUseCase.execute(
-            SetIsWatchedFilterUseCaseParams(value)
+            SetIsWatchedFilterUseCaseParams(nextValue)
         ).onStart()
     }
 
-    fun onClearIsWatched() {
-        useCases.setIsWatchedFilterUseCase.execute(
-            SetIsWatchedFilterUseCaseParams(null)
-        ).onStart()
-    }
-
-    fun onDestroyScreen() {
-        onClearIsWatched()
-        onClearGenres()
-        onQueryChanged(null)
+    fun onToggleViewSelector() {
+        baseViewState.update {
+            it.copy(
+                isSmallView = !baseViewState.value.isSmallView
+            )
+        }
     }
 
     data class ViewState<T : Item>(
@@ -161,7 +145,7 @@ abstract class ItemListViewModel<T : Item>(
         val searchQuery: String? = null,
         val isAnyGenreSelected: Boolean = false,
         val isWatchedSelected: Boolean? = null,
-        val areFiltersVisible: Boolean = false,
+        val isSmallView: Boolean = false,
     ) : State
 
 }

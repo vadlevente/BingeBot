@@ -11,7 +11,7 @@ val Long.asDollarAmount: String
         val format = NumberFormat.getNumberInstance().apply {
             currency = Currency.getInstance("USD")
         }
-        return format.format(this)
+        return "$${format.format(this)}"
     }
 
 val Long.asRuntime: String

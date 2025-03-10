@@ -1,6 +1,11 @@
 package com.vadlevente.bingebot.list.ui
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -9,43 +14,54 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
-import androidx.compose.material.icons.automirrored.filled.Sort
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ChevronLeft
 import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.FilterAlt
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.Badge
-import androidx.compose.material3.BadgedBox
+import androidx.compose.material.icons.filled.SortByAlpha
+import androidx.compose.material.icons.filled.ViewCompact
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.vadlevente.bingebot.core.model.Genre
 import com.vadlevente.bingebot.core.model.Item
 import com.vadlevente.bingebot.core.stringOf
 import com.vadlevente.bingebot.core.ui.composables.BBFilterChip
-import com.vadlevente.bingebot.core.ui.composables.BBOutlinedTextField
-import com.vadlevente.bingebot.core.ui.composables.LifecycleEvents
+import com.vadlevente.bingebot.core.ui.composables.BBIcon
 import com.vadlevente.bingebot.core.ui.composables.ListItem
+import com.vadlevente.bingebot.core.ui.composables.ListItemSmall
 import com.vadlevente.bingebot.core.ui.composables.TopBar
 import com.vadlevente.bingebot.core.util.asOneDecimalString
 import com.vadlevente.bingebot.core.util.yearString
@@ -60,9 +76,6 @@ fun <T : Item> ItemListScreen(
     viewModel: ItemListViewModel<T>,
     resources: ItemListScreenResources,
 ) {
-    LifecycleEvents(
-        onDestroy = viewModel::onDestroyScreen
-    )
     val state by viewModel.state.collectAsState()
     val isInProgress by viewModel.isInProgress.collectAsState()
     ItemListScreenComponent(
@@ -70,16 +83,14 @@ fun <T : Item> ItemListScreen(
         resources = resources,
         isInProgress = isInProgress,
         onNavigateToSearch = viewModel::onNavigateToSearch,
-        onToggleSearchField = viewModel::onToggleSearchField,
-        onToggleFilters = viewModel::onToggleFilters,
         onQueryChanged = viewModel::onQueryChanged,
         onNavigateToOptions = viewModel::onNavigateToOptions,
         onClearGenres = viewModel::onClearGenres,
         onToggleGenre = viewModel::onToggleGenre,
         onOpenWatchLists = viewModel::onOpenWatchLists,
         onToggleIsWatched = viewModel::onToggleIsWatched,
-        onClearIsWatched = viewModel::onClearIsWatched,
-        onOpenOrderBy = viewModel::onOpenOrderBy
+        onOpenOrderBy = viewModel::onOpenOrderBy,
+        onToggleViewSelector = viewModel::onToggleViewSelector,
     )
 }
 
@@ -90,64 +101,91 @@ fun <T : Item> ItemListScreenComponent(
     resources: ItemListScreenResources,
     isInProgress: Boolean,
     onNavigateToSearch: () -> Unit,
-    onToggleSearchField: () -> Unit,
-    onToggleFilters: () -> Unit,
-    onQueryChanged: (String) -> Unit,
+    onQueryChanged: (String?) -> Unit,
     onNavigateToOptions: (Int) -> Unit,
     onClearGenres: () -> Unit,
     onToggleGenre: (Genre) -> Unit,
     onOpenWatchLists: () -> Unit,
-    onToggleIsWatched: (Boolean) -> Unit,
-    onClearIsWatched: () -> Unit,
+    onToggleIsWatched: () -> Unit,
+    onToggleViewSelector: () -> Unit,
     onOpenOrderBy: () -> Unit,
 ) {
+    val focusRequester = remember { FocusRequester() }
     Scaffold(
         topBar = {
-            TopBar(
-                title = stringOf(resources.title),
-                actions = {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.Sort,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary,
+            Crossfade(
+                targetState = state.isSearchFieldVisible,
+                label = "searchfield"
+            ) { isExpanded ->
+                if (isExpanded) {
+                    LaunchedEffect(true) {
+                        focusRequester.requestFocus()
+                    }
+                    Row(
                         modifier = Modifier
-                            .clickable { onOpenOrderBy() }
-                            .padding(end = 8.dp)
-                    )
-                    Icon(
-                        imageVector = Icons.Filled.Search,
-                        contentDescription = null,
-                        tint = if (state.isSearchFieldVisible) BingeBotTheme.colors.highlight else MaterialTheme.colorScheme.primary,
-                        modifier = Modifier
-                            .clickable { onToggleSearchField() }
-                            .padding(end = 8.dp)
-                    )
-                    BadgedBox(
-                        modifier = Modifier.padding(end = 8.dp),
-                        badge = {
-                            if (state.isWatchedSelected != null || state.isAnyGenreSelected) {
-                                Badge(containerColor = BingeBotTheme.colors.highlight)
-                            }
-                        }
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
                         Icon(
-                            imageVector = Icons.Filled.FilterAlt,
-                            contentDescription = null,
-                            tint = if (state.areFiltersVisible) BingeBotTheme.colors.highlight else MaterialTheme.colorScheme.primary,
                             modifier = Modifier
-                                .clickable { onToggleFilters() }
+                                .padding(8.dp)
+                                .clickable {
+                                    onQueryChanged(null)
+                                },
+                            imageVector = Icons.Filled.ChevronLeft,
+                            contentDescription = "",
+                            tint = MaterialTheme.colorScheme.primary,
+                        )
+                        val textFieldValue = TextFieldValue(state.searchQuery ?: "", TextRange(state.searchQuery?.length ?: 0))
+                        TextField(
+                            modifier = Modifier
+                                .padding(end = 8.dp)
+                                .fillMaxWidth()
+                                .focusRequester(focusRequester),
+                            value = textFieldValue,
+                            colors = TextFieldDefaults.colors(
+                                focusedContainerColor = Color.Transparent,
+                                unfocusedContainerColor = Color.Transparent,
+                                cursorColor = MaterialTheme.colorScheme.primary,
+                                focusedTextColor = MaterialTheme.colorScheme.primary,
+                                unfocusedTextColor = MaterialTheme.colorScheme.primary,
+                            ),
+                            onValueChange = {
+                                onQueryChanged(it.text)
+                            },
+                            trailingIcon = {
+                                Icon(
+                                    modifier = Modifier
+                                        .padding(8.dp),
+                                    imageVector = Icons.Filled.Search,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.primary,
+                                )
+                            },
                         )
                     }
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.List,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier
-                            .clickable { onOpenWatchLists() }
-                            .padding(end = 8.dp)
+                } else {
+                    TopBar(
+                        title = stringOf(resources.title),
+                        actions = {
+                            BBIcon(
+                                imageVector = Icons.Filled.Search,
+                                onClick = {
+                                    onQueryChanged("")
+                                },
+                                modifier = Modifier.padding(end = 8.dp)
+                            )
+                            BBIcon(
+                                imageVector = Icons.AutoMirrored.Filled.List,
+                                onClick = onOpenWatchLists,
+                                modifier = Modifier.padding(end = 8.dp)
+                            )
+                        }
                     )
                 }
-            )
+            }
+
         },
         bottomBar = {},
         floatingActionButton = {
@@ -160,52 +198,41 @@ fun <T : Item> ItemListScreenComponent(
             }
         }
     ) { paddingValues ->
+
+        val controlsVisible = remember { mutableStateOf(true) }
+        val scrollState = rememberLazyListState()
+        val nestedScrollConnection = remember {
+            object : NestedScrollConnection {
+                override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+                    if (available.y < 0) {
+                        controlsVisible.value = false
+                    } else if (available.y > 10) {
+                        controlsVisible.value = true
+                    }
+                    return Offset.Zero
+                }
+            }
+        }
+
         Column(
             modifier = Modifier
                 .padding(paddingValues)
                 .background(MaterialTheme.colorScheme.background)
+                .nestedScroll(nestedScrollConnection)
         ) {
-            AnimatedVisibility(visible = state.isSearchFieldVisible) {
-                BBOutlinedTextField(
-                    modifier = Modifier
-                        .padding(horizontal = 8.dp)
-                        .padding(top = 8.dp)
-                        .fillMaxWidth(),
-                    value = state.searchQuery ?: "",
-                    hint = stringOf(resources.searchFieldHint),
-                    onValueChange = onQueryChanged,
-                    keyboardOptions = KeyboardOptions(
-                        imeAction = ImeAction.Done,
-                    )
+            AnimatedVisibility(
+                visible = controlsVisible.value,
+                enter = fadeIn() + expandVertically(),
+                exit = fadeOut() + shrinkVertically()
+            ) {
+                ControlSection(
+                    state = state,
+                    onToggleGenre = onToggleGenre,
+                    onClearGenres = onClearGenres,
+                    onOpenOrderBy = onOpenOrderBy,
+                    onToggleIsWatched = onToggleIsWatched,
+                    onToggleViewSelector = onToggleViewSelector,
                 )
-            }
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(1.dp)
-                    .padding(top = 8.dp)
-                    .background(MaterialTheme.colorScheme.onBackground)
-            )
-            AnimatedVisibility(visible = state.areFiltersVisible) {
-                Column {
-                    GenreSelector(
-                        state = state,
-                        onToggleGenre = onToggleGenre,
-                        onClearGenres = onClearGenres,
-                    )
-                    IsWatchedSelector(
-                        state = state,
-                        onToggleIsWatched = onToggleIsWatched,
-                        onClearIsWatched = onClearIsWatched,
-                    )
-                    Spacer(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(1.dp)
-                            .background(MaterialTheme.colorScheme.onBackground)
-                            .padding(bottom = 4.dp)
-                    )
-                }
             }
             Box(modifier = Modifier.fillMaxSize()) {
                 if (state.items.isEmpty()) {
@@ -221,25 +248,101 @@ fun <T : Item> ItemListScreenComponent(
                         color = MaterialTheme.colorScheme.primary,
                     )
                 } else {
-                    LazyColumn {
+                    LazyColumn(state = scrollState) {
                         items(state.items) { displayedItem ->
                             val item = displayedItem.item
-                            ListItem(
-                                isLoading = isInProgress,
-                                modifier = Modifier,
-                                title = item.title,
-                                iconPath = displayedItem.thumbnailUrl,
-                                watchedDate = item.watchedDate,
-                                rating = item.voteAverage.asOneDecimalString,
-                                releaseYear = item.releaseDate?.yearString ?: "",
-                                onClick = { onNavigateToOptions(item.id) },
-                            )
+                            if (state.isSmallView) {
+                                ListItemSmall(
+                                    isLoading = isInProgress,
+                                    modifier = Modifier,
+                                    title = item.title,
+                                    watchedDate = item.watchedDate,
+                                    onClick = { onNavigateToOptions(item.id) },
+                                )
+                            } else {
+                                ListItem(
+                                    isLoading = isInProgress,
+                                    modifier = Modifier,
+                                    title = item.title,
+                                    iconPath = displayedItem.thumbnailUrl,
+                                    watchedDate = item.watchedDate,
+                                    rating = item.voteAverage.asOneDecimalString,
+                                    releaseYear = item.releaseDate?.yearString ?: "",
+                                    onClick = { onNavigateToOptions(item.id) },
+                                )
+                            }
                         }
                     }
                 }
             }
         }
 
+    }
+}
+
+@Composable
+private fun ControlSection(
+    state: ViewState<*>,
+    onToggleGenre: (Genre) -> Unit,
+    onClearGenres: () -> Unit,
+    onOpenOrderBy: () -> Unit,
+    onToggleIsWatched: () -> Unit,
+    onToggleViewSelector: () ->Unit,
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.background)
+    ) {
+        GenreSelector(
+            state = state,
+            onToggleGenre = onToggleGenre,
+            onClearGenres = onClearGenres,
+        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Row(
+                modifier = Modifier.clickable {
+                    onOpenOrderBy()
+                },
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Icon(
+                    modifier = Modifier
+                        .padding(8.dp),
+                    imageVector = Icons.Default.SortByAlpha,
+                    tint = MaterialTheme.colorScheme.primary,
+                    contentDescription = null
+                )
+                Text(
+                    text = stringResource(R.string.sorting_title),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.primary,
+                )
+            }
+            Spacer(modifier = Modifier.weight(1f))
+            BBFilterChip(
+                title = when (state.isWatchedSelected) {
+                    true -> R.string.isWatchedFilter_trueLabel
+                    false -> R.string.isWatchedFilter_falseLabel
+                    null -> R.string.isWatchedFilter_allLabel
+                }.let { stringResource(it) },
+                isSelected = state.isWatchedSelected != null,
+                onClicked = onToggleIsWatched,
+            )
+            Icon(
+                modifier = Modifier
+                    .padding(8.dp)
+                    .clickable {
+                        onToggleViewSelector()
+                    },
+                imageVector = Icons.Default.ViewCompact,
+                tint = MaterialTheme.colorScheme.primary,
+                contentDescription = null
+            )
+        }
     }
 }
 
@@ -270,40 +373,6 @@ private fun GenreSelector(
                 tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier
                     .clickable { onClearGenres() }
-                    .padding(horizontal = 8.dp)
-            )
-        }
-    }
-}
-
-@Composable
-private fun IsWatchedSelector(
-    state: ViewState<*>,
-    onToggleIsWatched: (Boolean) -> Unit,
-    onClearIsWatched: () -> Unit,
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        BBFilterChip(
-            title = stringResource(id = R.string.isWatchedFilter_trueLabel),
-            isSelected = state.isWatchedSelected == true,
-            onClicked = { onToggleIsWatched(true) },
-        )
-        BBFilterChip(
-            title = stringResource(id = R.string.isWatchedFilter_falseLabel),
-            isSelected = state.isWatchedSelected == false,
-            onClicked = { onToggleIsWatched(false) },
-        )
-        if (state.isWatchedSelected != null) {
-            Icon(
-                imageVector = Icons.Filled.Clear,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier
-                    .clickable { onClearIsWatched() }
                     .padding(horizontal = 8.dp)
             )
         }

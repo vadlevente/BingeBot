@@ -3,6 +3,8 @@ package com.vadlevente.bingebot.core.ui.composables
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
@@ -14,6 +16,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.vadlevente.bingebot.ui.BingeBotTheme
 
 @Composable
@@ -25,13 +28,16 @@ fun BBIcon(
 ) {
     Box(
         modifier = modifier
+            .size(40.dp)
             .clip(CircleShape)
-            .background(MaterialTheme.colorScheme.surface)
+            .background(MaterialTheme.colorScheme.primaryContainer)
             .clickable(enabled = onClick != null) {
                 onClick?.invoke()
             }
     ) {
         Icon(
+            modifier = Modifier
+                .padding(8.dp),
             imageVector = imageVector,
             contentDescription = null,
             tint = color,

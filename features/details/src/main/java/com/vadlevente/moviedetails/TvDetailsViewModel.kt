@@ -6,7 +6,6 @@ import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEventChannel
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
 import com.vadlevente.bingebot.core.model.Item.Tv
-import com.vadlevente.bingebot.core.model.SkeletonFactory
 import com.vadlevente.moviedetails.domain.usecases.GetItemDetailsUseCase
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -25,9 +24,6 @@ class TvDetailsViewModel  @AssistedInject constructor(
     navigationEventChannel, toastEventChannel, getItemDetailsUseCase, id
 ) {
 
-    override val skeletonFactory: SkeletonFactory<Tv>
-        get() = SkeletonFactory.TvSkeletonFactory
-
     override fun onNavigateToOptions() {
         baseViewState.value.details?.let {
                 viewModelScope.launch {
@@ -35,6 +31,7 @@ class TvDetailsViewModel  @AssistedInject constructor(
                         ShowTvBottomSheet(
                             item = it.displayedItem,
                             alreadySaved = it.displayedItem.item.createdDate != null,
+                            openedFromDetail = true,
                         )
                     )
                 }

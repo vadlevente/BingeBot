@@ -3,7 +3,6 @@ package com.vadlevente.moviedetails
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
 import com.vadlevente.bingebot.core.model.Item
-import com.vadlevente.bingebot.core.model.SkeletonFactory
 import com.vadlevente.bingebot.core.viewModel.BaseViewModel
 import com.vadlevente.bingebot.core.viewModel.State
 import com.vadlevente.moviedetails.ItemDetailsViewModel.ViewState
@@ -25,7 +24,6 @@ abstract class ItemDetailsViewModel<T : Item>(
 
     protected val baseViewState = MutableStateFlow(ViewState<T>())
     override val state: StateFlow<ViewState<T>> = baseViewState
-    abstract val skeletonFactory: SkeletonFactory<T>
 
     abstract fun onNavigateToOptions()
 

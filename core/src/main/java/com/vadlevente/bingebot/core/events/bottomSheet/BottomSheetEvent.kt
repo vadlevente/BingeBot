@@ -11,16 +11,19 @@ sealed interface BottomSheetEvent {
         val item: DisplayedItem<T>
         val alreadySaved: Boolean
         val watchListId: String?
+        val openedFromDetail: Boolean
         data class ShowMovieBottomSheet(
             override val item: DisplayedItem<Movie>,
             override val alreadySaved: Boolean,
             override val watchListId: String? = null,
+            override val openedFromDetail: Boolean = false,
         ) : ShowItemBottomSheet<Movie>
 
         data class ShowTvBottomSheet(
             override val item: DisplayedItem<Tv>,
             override val alreadySaved: Boolean,
             override val watchListId: String? = null,
+            override val openedFromDetail: Boolean = false,
         ) : ShowItemBottomSheet<Tv>
 
     }

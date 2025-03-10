@@ -77,7 +77,7 @@ fun SelectLanguageBottomSheet(
                         Text(
                             modifier = Modifier
                                 .weight(1f)
-                                .padding(bottom = 16.dp)
+                                .padding(bottom = 24.dp)
                                 .padding(horizontal = 16.dp),
                             text = language.displayName,
                             style = MaterialTheme.typography.bodyLarge,

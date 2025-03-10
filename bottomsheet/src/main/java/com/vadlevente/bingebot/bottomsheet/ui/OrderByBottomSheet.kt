@@ -76,7 +76,7 @@ fun <T : Item> OrderByBottomSheet(
                         Text(
                             modifier = Modifier
                                 .weight(1f)
-                                .padding(bottom = 16.dp)
+                                .padding(bottom = 24.dp)
                                 .padding(horizontal = 16.dp),
                             text = when (orderBy.orderBy) {
                                 OrderBy.DATE_ADDED_ASCENDING -> R.string.orderByBottomSheet_date_ascending

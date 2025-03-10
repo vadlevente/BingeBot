@@ -2,6 +2,8 @@
 <resources>
     <string name="isWatchedFilter_trueLabel">Seen</string>
     <string name="isWatchedFilter_falseLabel">Not seen</string>
+    <string name="isWatchedFilter_allLabel">All</string>
+    <string name="sorting_title">Sort</string>
 
     <string name="movieList_pageTitle">Movies</string>
     <string name="tvList_pageTitle">Series</string>
