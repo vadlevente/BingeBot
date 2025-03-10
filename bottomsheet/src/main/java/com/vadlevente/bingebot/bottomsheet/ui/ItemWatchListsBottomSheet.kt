@@ -95,6 +95,7 @@ fun <T : Item> ItemWatchListsBottomSheet(
                             modifier = Modifier
                                 .padding(bottom = 16.dp)
                                 .padding(horizontal = 16.dp)
+                                .fillMaxWidth()
                                 .clickable {
                                     viewModel.onWatchListSelected(watchList.watchListId)
                                 },
