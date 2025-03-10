@@ -4,7 +4,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:7.4.2")
+        classpath("com.android.tools.build:gradle:8.7.3")
         classpath(Kotlin.kotlinPlugin)
         classpath(Hilt.hiltGradle)
         classpath(Firebase.googleServices)
@@ -15,11 +15,12 @@ buildscript {
 }
 
 plugins {
-    id("com.android.application") version "7.4.2" apply false
-    id("com.android.library") version "7.4.2" apply false
-    kotlin("android") version "1.7.20" apply false
+    id("com.android.application") version "8.7.3" apply false
+    id("com.android.library") version "8.7.3" apply false
+    kotlin("android") version "1.9.10" apply false
     id("com.google.dagger.hilt.android") version "2.45" apply false
-    kotlin("jvm") version "1.7.21" apply false
+    kotlin("jvm") version "1.9.10" apply false
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.10" apply false
 }
 
 task("clean") {

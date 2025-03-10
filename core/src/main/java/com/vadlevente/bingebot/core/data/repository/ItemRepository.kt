@@ -76,8 +76,8 @@ class ItemRepositoryImpl<T : Item> @Inject constructor(
             val remoteCredits = itemRemoteDataSource.getItemCredits(itemId, language)
             val credits = Credits(
                 cast = remoteCredits.castMembers,
-                director = remoteCredits.crewMembers.filter { it.department == Department.Director },
-                writer = remoteCredits.crewMembers.filter { it.department == Department.Screenplay },
+                director = remoteCredits.crewMembers.filter { it.job == Department.Director },
+                writer = remoteCredits.crewMembers.filter { it.job in listOf(Department.Screenplay, Department.Writer) },
             )
             flowOf(
                 ItemDetails(updatedRemote, credits)

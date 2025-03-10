@@ -10,12 +10,12 @@ import com.vadlevente.bingebot.core.model.SkeletonFactory
 import com.vadlevente.moviedetails.domain.usecases.GetItemDetailsUseCase
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel(assistedFactory = MovieDetailsViewModel.MovieDetailsViewModelFactory::class)
-class MovieDetailsViewModel  @Inject constructor(
+class MovieDetailsViewModel  @AssistedInject constructor(
     navigationEventChannel: NavigationEventChannel,
     toastEventChannel: ToastEventChannel,
     getItemDetailsUseCase: GetItemDetailsUseCase<Movie>,

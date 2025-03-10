@@ -33,7 +33,7 @@ fun MovieDetailsScreen(
         val movie = state.details?.displayedItem?.item ?: return@ItemDetailsScreen
 
         movie.budget?.let { budget ->
-            Row(modifier = Modifier.padding(top = 16.dp)) {
+            Row {
                 Text(
                     text = stringResource(R.string.itemDetails_budget),
                     style = MaterialTheme.typography.bodyMedium.copy(
@@ -57,7 +57,7 @@ fun MovieDetailsScreen(
             )
         }
         movie.revenue?.let { revenue ->
-            Row(modifier = Modifier.padding(top = 16.dp)) {
+            Row {
                 Text(
                     text = stringResource(R.string.itemDetails_revenue),
                     style = MaterialTheme.typography.bodyMedium.copy(
@@ -81,9 +81,9 @@ fun MovieDetailsScreen(
             )
         }
         movie.runtime?.let { runtime ->
-            Row(modifier = Modifier.padding(top = 16.dp)) {
+            Row {
                 Text(
-                    text = stringResource(R.string.itemDetails_revenue),
+                    text = stringResource(R.string.itemDetails_runtime),
                     style = MaterialTheme.typography.bodyMedium.copy(
                         fontWeight = FontWeight.Bold,
                     ),
@@ -96,13 +96,6 @@ fun MovieDetailsScreen(
                     color = MaterialTheme.colorScheme.primary
                 )
             }
-            HorizontalDivider(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 16.dp),
-                thickness = 1.dp,
-                color = MaterialTheme.colorScheme.primary
-            )
         }
     }
 }

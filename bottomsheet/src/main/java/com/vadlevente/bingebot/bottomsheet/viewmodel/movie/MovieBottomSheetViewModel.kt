@@ -11,6 +11,7 @@ import com.vadlevente.bingebot.core.events.dialog.DialogEventChannel
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
 import com.vadlevente.bingebot.core.model.Item.Movie
+import com.vadlevente.bingebot.core.model.NavDestination
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.launchIn
@@ -66,7 +67,7 @@ class MovieBottomSheetViewModel @Inject constructor(
 
     override fun onShowDetails() {
         viewState.value.event?.let { event ->
-            navigateTo(MOVIE_DETAILS, event.item.item.id)
+            navigateTo(NavDestination.MovieDetails(event.item.item.id))
             onDismiss()
         }
     }

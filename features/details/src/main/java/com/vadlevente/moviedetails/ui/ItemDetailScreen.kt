@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -32,9 +33,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.vadlevente.bingebot.core.model.Item
@@ -62,7 +65,7 @@ fun <T : Item> ItemDetailsScreen(
         state = state,
         isInProgress = isInProgress,
         onNavigateToOptions = viewModel::onNavigateToOptions,
-        onBackPressed = viewModel::onNavigateToOptions,
+        onBackPressed = viewModel::onBackPressed,
         customContent = customContent,
     )
 }
@@ -106,6 +109,7 @@ fun <T : Item> ItemDetailScreenComponent(
                         modifier = Modifier
                             .clip(RoundedCornerShape(8.dp))
                             .fillMaxWidth(0.5f)
+                            .aspectRatio(0.667f)
                             .shimmerEffect()
                     )
                     Column(
@@ -115,24 +119,28 @@ fun <T : Item> ItemDetailScreenComponent(
                     ) {
                         Text(
                             modifier = Modifier
-                                .width(200.dp)
+                                .fillMaxWidth(1f)
+                                .clip(RoundedCornerShape(8.dp))
                                 .shimmerEffect(),
                             text = "",
                         )
                         Text(
                             modifier = Modifier
-                                .width(150.dp)
+                                .fillMaxWidth(0.7f)
+                                .clip(RoundedCornerShape(8.dp))
                                 .shimmerEffect(),
                             text = "",
                         )
                     }
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(250.dp)
-                            .shimmerEffect()
-                    )
                 }
+                Box(
+                    modifier = Modifier
+                        .padding(top = 16.dp)
+                        .clip(RoundedCornerShape(8.dp))
+                        .fillMaxWidth()
+                        .height(250.dp)
+                        .shimmerEffect()
+                )
             }
             return@Scaffold
         }
@@ -161,6 +169,7 @@ fun <T : Item> ItemDetailScreenComponent(
                                 .fillMaxWidth(),
                             error = painterResource(id = Res.drawable.ic_placeholder),
                             contentDescription = null,
+                            contentScale = ContentScale.FillWidth,
                         )
                         if (isWatched) {
                             Icon(
@@ -199,17 +208,13 @@ fun <T : Item> ItemDetailScreenComponent(
                                 color = MaterialTheme.colorScheme.primary
                             )
                         }
-                        Text(
-                            modifier = Modifier.padding(top = 16.dp),
-                            text = item.watchedDate?.dateString ?: "",
-                            style = MaterialTheme.typography.titleSmall,
-                            color = MaterialTheme.colorScheme.primary
-                        )
                     }
                 }
 
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 16.dp),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
@@ -258,7 +263,7 @@ fun <T : Item> ItemDetailScreenComponent(
                     )
                     Text(
                         modifier = Modifier.padding(start = 8.dp),
-                        text = state.details.credits.director.joinToString(""),
+                        text = state.details.credits.director.map { it.name }.joinToString(", "),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.primary
                     )
@@ -270,7 +275,7 @@ fun <T : Item> ItemDetailScreenComponent(
                     thickness = 1.dp,
                     color = MaterialTheme.colorScheme.primary
                 )
-                Row(modifier = Modifier.padding(top = 16.dp)) {
+                Row {
                     Text(
                         text = stringResource(R.string.itemDetails_writer),
                         style = MaterialTheme.typography.bodyMedium.copy(
@@ -280,7 +285,7 @@ fun <T : Item> ItemDetailScreenComponent(
                     )
                     Text(
                         modifier = Modifier.padding(start = 8.dp),
-                        text = state.details.credits.writer.joinToString(""),
+                        text = state.details.credits.writer.map { it.name }.joinToString(", "),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.primary
                     )
@@ -301,6 +306,7 @@ fun <T : Item> ItemDetailScreenComponent(
                     color = MaterialTheme.colorScheme.primary
                 )
                 Text(
+                    modifier = Modifier.padding(bottom = 16.dp),
                     text = stringResource(R.string.itemDetails_cast),
                     style = MaterialTheme.typography.bodyMedium.copy(
                         fontWeight = FontWeight.Bold,
@@ -311,29 +317,38 @@ fun <T : Item> ItemDetailScreenComponent(
                     items(state.details.credits.cast) { castMember ->
                         Column(
                             modifier = Modifier
-                                .width(100.dp)
+                                .width(200.dp)
                                 .padding(horizontal = 8.dp),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            AsyncImage(
-                                model = castMember.profileUrl,
-                                modifier = Modifier.fillMaxWidth(),
-                                error = painterResource(id = Res.drawable.ic_placeholder),
-                                contentDescription = null,
-                            )
+                            Box(
+                                modifier = Modifier
+                                    .clip(RoundedCornerShape(8.dp))
+                                    .fillMaxWidth()
+                            ) {
+                                AsyncImage(
+                                    model = castMember.profileUrl,
+                                    modifier = Modifier.fillMaxWidth(),
+                                    error = painterResource(id = Res.drawable.ic_placeholder),
+                                    contentDescription = null,
+                                    contentScale = ContentScale.FillWidth
+                                )
+                            }
                             Text(
                                 modifier = Modifier.padding(top = 8.dp),
                                 text = castMember.name,
                                 style = MaterialTheme.typography.bodyMedium.copy(
                                     fontWeight = FontWeight.Bold,
                                 ),
-                                color = MaterialTheme.colorScheme.primary
+                                color = MaterialTheme.colorScheme.primary,
+                                textAlign = TextAlign.Center,
                             )
                             Text(
                                 modifier = Modifier.padding(top = 8.dp),
                                 text = castMember.character,
                                 style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.primary
+                                color = MaterialTheme.colorScheme.primary,
+                                textAlign = TextAlign.Center,
                             )
                         }
                     }

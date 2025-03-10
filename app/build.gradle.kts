@@ -5,6 +5,7 @@ plugins {
     id("kotlin-android")
     id("kotlin-kapt")
     id("kotlin-parcelize")
+    id("kotlinx-serialization")
 }
 
 android {
@@ -100,7 +101,6 @@ dependencies {
     implementation(Data.cryptoDataStore)
     implementation(Data.room)
     implementation(Data.roomKtx)
-    implementation(Data.kotlinSerialization)
     implementation(Networking.okhttpLogger)
     implementation(Networking.retrofitGsonConverter)
 

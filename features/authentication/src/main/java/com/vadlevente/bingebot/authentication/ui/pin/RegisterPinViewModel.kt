@@ -17,22 +17,22 @@ import com.vadlevente.bingebot.core.viewModel.BaseViewModel
 import com.vadlevente.bingebot.core.viewModel.State
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel(assistedFactory = RegisterPinViewModel.RegisterPinViewModelFactory::class)
-class RegisterPinViewModel @Inject constructor(
+class RegisterPinViewModel @AssistedInject constructor(
     navigationEventChannel: NavigationEventChannel,
     toastEventChannel: ToastEventChannel,
     private val appCloserDelegate: AppCloserDelegate,
     private val saveSecretWithPinUseCase: SaveSecretWithPinUseCase,
     private val isBiometricsAvailableUseCase: IsBiometricsAvailableUseCase,
-    @Assisted val email: String,
-    @Assisted val password: String,
+    @Assisted("email") val email: String,
+    @Assisted("password") val password: String,
 ) : BaseViewModel<ViewState>(
     navigationEventChannel, toastEventChannel
 ), AppCloserDelegate by appCloserDelegate {
@@ -104,8 +104,8 @@ class RegisterPinViewModel @Inject constructor(
     @AssistedFactory
     interface RegisterPinViewModelFactory {
         fun create(
-            email: String,
-            password: String,
+            @Assisted("email") email: String,
+            @Assisted("password") password: String,
         ): RegisterPinViewModel
     }
 

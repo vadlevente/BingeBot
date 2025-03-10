@@ -19,15 +19,16 @@ data class CastMember(
 data class CrewMember(
     val id: Long,
     val name: String,
-    val department: Department
+    val job: Department
 )
 
 enum class Department(val code: String) {
     Director("Director"),
     Screenplay("Screenplay"),
+    Writer("Writer"),
     Other("Other");
 
     companion object {
-        fun ofValue(value: String) = values().firstOrNull { it.code == value } ?: Other
+        fun ofValue(value: String) = entries.firstOrNull { it.code == value } ?: Other
     }
 }

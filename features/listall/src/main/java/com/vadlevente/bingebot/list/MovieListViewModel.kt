@@ -9,6 +9,7 @@ import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEventChannel
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
 import com.vadlevente.bingebot.core.model.Item.Movie
+import com.vadlevente.bingebot.core.model.NavDestination
 import com.vadlevente.bingebot.core.model.SkeletonFactory
 import com.vadlevente.bingebot.list.domain.usecase.ItemListUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -30,7 +31,7 @@ class MovieListViewModel @Inject constructor(
         get() = SkeletonFactory.MovieSkeletonFactory
 
     override fun onNavigateToSearch() {
-        navigateTo(SEARCH_MOVIE)
+        navigateTo(NavDestination.SearchMovie)
     }
 
     override fun onNavigateToOptions(itemId: Int) {

@@ -69,16 +69,6 @@ fun DashboardScreen(
 @Composable
 fun BottomNavigationBar(navController: NavController) {
     var selectedTabIndex by rememberSaveable { mutableIntStateOf(0) }
-    navController.addOnDestinationChangedListener { _, destination, _ ->
-        when (destination) {
-            NavDestination.ListMovie -> 0
-            NavDestination.ListTv -> 1
-            NavDestination.Settings -> 2
-            else -> null
-        }?.let { newIndex ->
-            selectedTabIndex = newIndex
-        }
-    }
     NavigationBar(
         containerColor = MaterialTheme.colorScheme.surface,
         modifier = Modifier.graphicsLayer {
@@ -95,6 +85,7 @@ fun BottomNavigationBar(navController: NavController) {
             navController.navigate(NavDestination.ListMovie) {
                 launchSingleTop = true
             }
+            selectedTabIndex = 0
         }
         BottomNavigationItem(
             scope = this,
@@ -105,6 +96,7 @@ fun BottomNavigationBar(navController: NavController) {
             navController.navigate(NavDestination.ListTv) {
                 launchSingleTop = true
             }
+            selectedTabIndex = 1
         }
         BottomNavigationItem(
             scope = this,
@@ -115,6 +107,7 @@ fun BottomNavigationBar(navController: NavController) {
             navController.navigate(NavDestination.Settings) {
                 launchSingleTop = true
             }
+            selectedTabIndex = 2
         }
     }
     if (selectedTabIndex != 0) {
@@ -122,6 +115,7 @@ fun BottomNavigationBar(navController: NavController) {
             navController.navigate(NavDestination.ListMovie) {
                 popUpTo(0)
             }
+            selectedTabIndex = 0
         }
     }
 }

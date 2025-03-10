@@ -1,4 +1,15 @@
-apply {
+
+plugins {
+    id("com.android.library") 
+    id("kotlin-android")
+    id("kotlinx-serialization")
+}
+
+android {
+    namespace = "com.vadlevente.bingebot.core"
+}
+
+apply{
     from("$rootDir/compose-module.gradle")
 }
 

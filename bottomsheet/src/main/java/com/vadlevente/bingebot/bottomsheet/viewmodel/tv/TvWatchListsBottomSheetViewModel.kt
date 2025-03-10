@@ -11,6 +11,7 @@ import com.vadlevente.bingebot.core.events.dialog.DialogEventChannel
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
 import com.vadlevente.bingebot.core.model.Item.Tv
+import com.vadlevente.bingebot.core.model.NavDestination
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.launchIn
@@ -53,7 +54,7 @@ class TvWatchListsBottomSheetViewModel @Inject constructor(
     }
 
     override fun onWatchListSelected(watchListId: String) {
-        navigateTo(TV_WATCH_LIST, watchListId)
+        navigateTo(NavDestination.TvWatchList(watchListId))
         onDismiss()
     }
 

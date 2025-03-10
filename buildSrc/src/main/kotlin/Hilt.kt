@@ -1,9 +1,9 @@
 @Suppress("MemberNameEqualsClassName")
 object Hilt {
     // DI
-    private const val hiltVersion = "2.45"
+    private const val hiltVersion = "2.50"
     private const val hiltNavigationVersion = "1.2.0-alpha01"
-    private const val hiltCompilerVersion = "2.44"
+    private const val hiltCompilerVersion = "2.50"
 
     const val hilt = "com.google.dagger:hilt-android:$hiltVersion"
     const val hiltGradle = "com.google.dagger:hilt-android-gradle-plugin:$hiltVersion"

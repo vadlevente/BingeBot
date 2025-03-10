@@ -15,22 +15,22 @@ import com.vadlevente.bingebot.core.viewModel.BaseViewModel
 import com.vadlevente.bingebot.core.viewModel.State
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.crypto.Cipher
-import javax.inject.Inject
 
 @HiltViewModel(assistedFactory = RegisterBiometricsViewModel.RegisterBiometricsViewModelFactory::class)
-class RegisterBiometricsViewModel @Inject constructor(
+class RegisterBiometricsViewModel @AssistedInject constructor(
     navigationEventChannel: NavigationEventChannel,
     toastEventChannel: ToastEventChannel,
     getEncryptionCipherUseCase: GetEncryptionCipherUseCase,
     private val saveSecretWithBiometricsUseCase: SaveSecretWithBiometricsUseCase,
-    @Assisted val email: String,
-    @Assisted val password: String,
+    @Assisted("email") val email: String,
+    @Assisted("password") val password: String,
 ) : BaseViewModel<ViewState>(
     navigationEventChannel, toastEventChannel
 ) {
@@ -57,12 +57,22 @@ class RegisterBiometricsViewModel @Inject constructor(
     }
 
     fun onCancel() {
+        viewState.update {
+            it.copy(
+                showBiometricPrompt = false
+            )
+        }
         viewModelScope.launch {
             navigateTo(NavDestination.Dashboard)
         }
     }
 
     fun onAuthSuccessful(cipher: Cipher) {
+        viewState.update {
+            it.copy(
+                showBiometricPrompt = false
+            )
+        }
         saveSecretWithBiometricsUseCase.execute(
             SaveSecretWithBiometricsUseCaseParams(
                 cipher = cipher,
@@ -78,8 +88,8 @@ class RegisterBiometricsViewModel @Inject constructor(
     @AssistedFactory
     interface RegisterBiometricsViewModelFactory {
         fun create(
-            email: String,
-            password: String,
+            @Assisted("email") email: String,
+            @Assisted("password") password: String,
         ): RegisterBiometricsViewModel
     }
 
