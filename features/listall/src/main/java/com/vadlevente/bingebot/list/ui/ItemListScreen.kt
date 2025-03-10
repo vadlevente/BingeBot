@@ -14,7 +14,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -124,20 +126,28 @@ fun <T : Item> ItemListScreenComponent(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
+                            .height(70.dp)
                             .padding(vertical = 8.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Icon(
+                        Box(
                             modifier = Modifier
-                                .padding(8.dp)
+                                .size(32.dp)
                                 .clickable {
                                     onQueryChanged(null)
-                                },
-                            imageVector = Icons.Filled.ChevronLeft,
-                            contentDescription = "",
-                            tint = MaterialTheme.colorScheme.primary,
+                                }
+                        ) {
+                            Icon(
+                                modifier = Modifier.fillMaxSize(),
+                                imageVector = Icons.Filled.ChevronLeft,
+                                contentDescription = "",
+                                tint = MaterialTheme.colorScheme.primary,
+                            )
+                        }
+                        val textFieldValue = TextFieldValue(
+                            state.searchQuery ?: "",
+                            TextRange(state.searchQuery?.length ?: 0)
                         )
-                        val textFieldValue = TextFieldValue(state.searchQuery ?: "", TextRange(state.searchQuery?.length ?: 0))
                         TextField(
                             modifier = Modifier
                                 .padding(end = 8.dp)
@@ -287,7 +297,7 @@ private fun ControlSection(
     onClearGenres: () -> Unit,
     onOpenOrderBy: () -> Unit,
     onToggleIsWatched: () -> Unit,
-    onToggleViewSelector: () ->Unit,
+    onToggleViewSelector: () -> Unit,
 ) {
     Column(
         modifier = Modifier
