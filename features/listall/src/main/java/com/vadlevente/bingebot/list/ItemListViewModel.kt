@@ -1,6 +1,5 @@
 package com.vadlevente.bingebot.list
 
-import androidx.lifecycle.viewModelScope
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
 import com.vadlevente.bingebot.core.model.DisplayedItem
@@ -19,9 +18,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapMerge
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 
 abstract class ItemListViewModel<T : Item>(
     navigationEventChannel: NavigationEventChannel,
@@ -41,11 +38,19 @@ abstract class ItemListViewModel<T : Item>(
         combine(
             useCases.updateItemsUseCase.execute(Unit),
             useCases.updateWatchListsUseCase.execute(Unit),
-            useCases.getFiltersUseCase.execute(Unit),
-            ::Triple,
-        ).onEach { (_, _, filters) ->
+            ::Pair,
+        ).flatMapMerge { _ ->
+            combine(
+                useCases.getFiltersUseCase.execute(Unit),
+                useCases.getItemsUseCase.execute(Unit),
+                ::Pair,
+            )
+        }.onValue { (filters, items) ->
+            println("item genre error: filters genre count: ${filters.displayedGenres.size}")
+            println("item genre error: items count: ${items.size}")
             baseViewState.update {
                 it.copy(
+                    items = items,
                     genres = filters.displayedGenres,
                     isAnyGenreSelected = filters.displayedGenres.any { it.isSelected },
                     isWatchedSelected = filters.isWatchedSelected,
@@ -60,16 +65,6 @@ abstract class ItemListViewModel<T : Item>(
                     )
                 }
                 isInitialized = true
-            }
-        }.flatMapMerge {
-            useCases.getItemsUseCase.execute(Unit)
-        }.onValue { items ->
-            viewModelScope.launch {
-                baseViewState.update {
-                    it.copy(
-                        items = items
-                    )
-                }
             }
         }
 

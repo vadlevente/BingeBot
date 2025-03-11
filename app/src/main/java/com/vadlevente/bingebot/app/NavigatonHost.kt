@@ -140,7 +140,9 @@ private fun navigate(
         NavDestination.Splash,
         NavDestination.Registration,
         NavDestination.Login,
-        NavDestination.Dashboard -> {
+        NavDestination.Dashboard,
+        is NavDestination.RegisterPin,
+        is NavDestination.RegisterPinConfirm -> {
             navController.navigate(destination) {
                 popUpTo(0)
             }

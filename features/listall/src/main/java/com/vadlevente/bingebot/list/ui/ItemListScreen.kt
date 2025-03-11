@@ -231,7 +231,7 @@ fun <T : Item> ItemListScreenComponent(
                 .nestedScroll(nestedScrollConnection)
         ) {
             AnimatedVisibility(
-                visible = controlsVisible.value,
+                visible = controlsVisible.value && !isInProgress,
                 enter = fadeIn() + expandVertically(),
                 exit = fadeOut() + shrinkVertically()
             ) {

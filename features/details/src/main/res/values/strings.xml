@@ -6,5 +6,8 @@
     <string name="itemDetails_budget">Költségvetés</string>
     <string name="itemDetails_revenue">Bevétel</string>
     <string name="itemDetails_runtime">Hossz</string>
+    <string name="itemDetails_creator">Készítő</string>
+    <string name="itemDetails_numberOfSeasons">Évadok</string>
+    <string name="itemDetails_numberOfEpisodes">Epizódok</string>
 
 </resources>

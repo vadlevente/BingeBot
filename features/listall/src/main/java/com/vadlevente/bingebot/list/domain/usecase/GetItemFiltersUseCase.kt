@@ -23,6 +23,7 @@ class GetItemFiltersUseCase <T : Item> @Inject constructor(
             selectedFiltersCacheDataSource.filtersState,
             ::Triple,
         ).map { (items, genres, selectedFilters) ->
+            println("item genre error: item count: ${items.size}")
             genres.filter { genre ->
                 items.any { it.genreCodes.contains(genre.id) }
             }.map {
@@ -31,6 +32,7 @@ class GetItemFiltersUseCase <T : Item> @Inject constructor(
                     selectedFilters.genres.map { it.id }.contains(it.id),
                 )
             }.let {
+                println("item genre error: displayed genre count: ${it.size}")
                 DisplayedFilters(
                     it,
                     selectedFilters.isWatched,

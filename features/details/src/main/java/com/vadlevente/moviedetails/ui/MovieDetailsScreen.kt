@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.vadlevente.bingebot.core.util.asDollarAmount
 import com.vadlevente.bingebot.core.util.asRuntime
+import com.vadlevente.bingebot.core.util.yearString
 import com.vadlevente.bingebot.details.R
 import com.vadlevente.moviedetails.MovieDetailsViewModel
 
@@ -23,19 +24,19 @@ import com.vadlevente.moviedetails.MovieDetailsViewModel
 fun MovieDetailsScreen(
     movieId: Int,
 ) {
-    val viewModel = hiltViewModel<MovieDetailsViewModel, MovieDetailsViewModel.MovieDetailsViewModelFactory> { factory ->
-        factory.create(movieId)
-    }
+    val viewModel =
+        hiltViewModel<MovieDetailsViewModel, MovieDetailsViewModel.MovieDetailsViewModelFactory> { factory ->
+            factory.create(movieId)
+        }
+    val state by viewModel.state.collectAsState()
+    val movie = state.details?.displayedItem?.item ?: return
+    val credits = state.details?.credits ?: return
     ItemDetailsScreen(
-        viewModel = viewModel
-    ) {
-        val state by viewModel.state.collectAsState()
-        val movie = state.details?.displayedItem?.item ?: return@ItemDetailsScreen
-
-        movie.budget?.let { budget ->
+        viewModel = viewModel,
+        customContent = {
             Row {
                 Text(
-                    text = stringResource(R.string.itemDetails_budget),
+                    text = stringResource(R.string.itemDetails_director),
                     style = MaterialTheme.typography.bodyMedium.copy(
                         fontWeight = FontWeight.Bold,
                     ),
@@ -43,7 +44,7 @@ fun MovieDetailsScreen(
                 )
                 Text(
                     modifier = Modifier.padding(start = 8.dp),
-                    text = budget.asDollarAmount,
+                    text = credits.director.map { it.name }.joinToString(", "),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.primary
                 )
@@ -55,11 +56,9 @@ fun MovieDetailsScreen(
                 thickness = 1.dp,
                 color = MaterialTheme.colorScheme.primary
             )
-        }
-        movie.revenue?.let { revenue ->
             Row {
                 Text(
-                    text = stringResource(R.string.itemDetails_revenue),
+                    text = stringResource(R.string.itemDetails_writer),
                     style = MaterialTheme.typography.bodyMedium.copy(
                         fontWeight = FontWeight.Bold,
                     ),
@@ -67,7 +66,7 @@ fun MovieDetailsScreen(
                 )
                 Text(
                     modifier = Modifier.padding(start = 8.dp),
-                    text = revenue.asDollarAmount,
+                    text = credits.writer.map { it.name }.joinToString(", "),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.primary
                 )
@@ -79,23 +78,78 @@ fun MovieDetailsScreen(
                 thickness = 1.dp,
                 color = MaterialTheme.colorScheme.primary
             )
-        }
-        movie.runtime?.let { runtime ->
-            Row {
-                Text(
-                    text = stringResource(R.string.itemDetails_runtime),
-                    style = MaterialTheme.typography.bodyMedium.copy(
-                        fontWeight = FontWeight.Bold,
-                    ),
-                    color = MaterialTheme.colorScheme.primary
-                )
-                Text(
-                    modifier = Modifier.padding(start = 8.dp),
-                    text = runtime.asRuntime,
-                    style = MaterialTheme.typography.bodyMedium,
+            movie.budget?.let { budget ->
+                Row {
+                    Text(
+                        text = stringResource(R.string.itemDetails_budget),
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            fontWeight = FontWeight.Bold,
+                        ),
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                    Text(
+                        modifier = Modifier.padding(start = 8.dp),
+                        text = budget.asDollarAmount,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+                HorizontalDivider(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp),
+                    thickness = 1.dp,
                     color = MaterialTheme.colorScheme.primary
                 )
             }
+            movie.revenue?.let { revenue ->
+                Row {
+                    Text(
+                        text = stringResource(R.string.itemDetails_revenue),
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            fontWeight = FontWeight.Bold,
+                        ),
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                    Text(
+                        modifier = Modifier.padding(start = 8.dp),
+                        text = revenue.asDollarAmount,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+                HorizontalDivider(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp),
+                    thickness = 1.dp,
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
+            movie.runtime?.let { runtime ->
+                Row {
+                    Text(
+                        text = stringResource(R.string.itemDetails_runtime),
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            fontWeight = FontWeight.Bold,
+                        ),
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                    Text(
+                        modifier = Modifier.padding(start = 8.dp),
+                        text = runtime.asRuntime,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+            }
+        },
+        dateContent = {
+            Text(
+                text = movie.releaseDate?.yearString ?: "",
+                style = MaterialTheme.typography.titleSmall,
+                color = MaterialTheme.colorScheme.primary
+            )
         }
-    }
+    )
 }

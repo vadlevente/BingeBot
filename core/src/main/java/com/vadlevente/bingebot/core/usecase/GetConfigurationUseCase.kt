@@ -1,4 +1,4 @@
-package com.vadlevente.bingebot.splash.usecase
+package com.vadlevente.bingebot.core.usecase
 
 import com.vadlevente.bingebot.core.data.repository.ConfigurationRepository
 import com.vadlevente.bingebot.core.data.repository.ItemRepository

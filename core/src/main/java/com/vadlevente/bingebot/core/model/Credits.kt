@@ -22,6 +22,10 @@ data class CrewMember(
     val job: Department
 )
 
+data class Creator(
+    val name: String,
+)
+
 enum class Department(val code: String) {
     Director("Director"),
     Screenplay("Screenplay"),
@@ -29,6 +33,6 @@ enum class Department(val code: String) {
     Other("Other");
 
     companion object {
-        fun ofValue(value: String) = entries.firstOrNull { it.code == value } ?: Other
+        fun ofValue(value: String) = Department.entries.firstOrNull { it.code == value } ?: Other
     }
 }

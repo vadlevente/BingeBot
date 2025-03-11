@@ -102,6 +102,14 @@ sealed interface Item {
         override val voteAverage: Float,
         @SerializedName("first_air_date")
         override val releaseDate: Date? = null,
+        @SerializedName("created_by")
+        val creator: String? = null,
+        @SerializedName("number_of_episodes")
+        val numberOfEpisodes: Int = 0,
+        @SerializedName("number_of_seasons")
+        val numberOfSeasons: Int = 0,
+        @SerializedName("last_air_date")
+        val lastAirDate: Date? = null,
         override val localeCode: String = SelectedLanguage.default.code,
         override val watchedDate: Date? = null,
         override val createdDate: Date? = null,

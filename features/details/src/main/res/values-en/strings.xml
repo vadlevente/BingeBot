@@ -6,4 +6,7 @@
     <string name="itemDetails_budget">Budget</string>
     <string name="itemDetails_revenue">Revenue</string>
     <string name="itemDetails_runtime">Runtime</string>
+    <string name="itemDetails_creator">Creator</string>
+    <string name="itemDetails_numberOfSeasons">Seasons</string>
+    <string name="itemDetails_numberOfEpisodes">Episodes</string>
 </resources>

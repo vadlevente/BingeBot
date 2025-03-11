@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -47,7 +48,6 @@ import com.vadlevente.bingebot.core.ui.composables.TopBar
 import com.vadlevente.bingebot.core.ui.composables.shimmerEffect
 import com.vadlevente.bingebot.core.util.asOneDecimalString
 import com.vadlevente.bingebot.core.util.dateString
-import com.vadlevente.bingebot.core.util.yearString
 import com.vadlevente.bingebot.details.R
 import com.vadlevente.bingebot.ui.BingeBotTheme
 import com.vadlevente.moviedetails.ItemDetailsViewModel
@@ -57,6 +57,7 @@ import com.vadlevente.bingebot.resources.R as Res
 fun <T : Item> ItemDetailsScreen(
     viewModel: ItemDetailsViewModel<T>,
     customContent: @Composable LazyItemScope.() -> Unit,
+    dateContent: @Composable RowScope.() -> Unit,
 ) {
     val state by viewModel.state.collectAsState()
     val isInProgress by viewModel.isInProgress.collectAsState()
@@ -67,6 +68,7 @@ fun <T : Item> ItemDetailsScreen(
         onNavigateToOptions = viewModel::onNavigateToOptions,
         onBackPressed = viewModel::onBackPressed,
         customContent = customContent,
+        dateContent = dateContent,
     )
 }
 
@@ -77,6 +79,7 @@ fun <T : Item> ItemDetailScreenComponent(
     onNavigateToOptions: () -> Unit,
     onBackPressed: () -> Unit,
     customContent: @Composable LazyItemScope.() -> Unit,
+    dateContent: @Composable RowScope.() -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -100,6 +103,7 @@ fun <T : Item> ItemDetailScreenComponent(
                 modifier = Modifier
                 .padding(paddingValues)
                 .padding(horizontal = 16.dp)
+                .background(MaterialTheme.colorScheme.background)
             ) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -231,11 +235,7 @@ fun <T : Item> ItemDetailScreenComponent(
                             tint = Color.Yellow
                         )
                     }
-                    Text(
-                        text = item.releaseDate?.yearString ?: "",
-                        style = MaterialTheme.typography.titleSmall,
-                        color = MaterialTheme.colorScheme.primary
-                    )
+                    dateContent()
                 }
 
                 Text(
@@ -246,50 +246,6 @@ fun <T : Item> ItemDetailScreenComponent(
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.primary
                 )
-                HorizontalDivider(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 16.dp),
-                    thickness = 1.dp,
-                    color = MaterialTheme.colorScheme.primary
-                )
-                Row {
-                    Text(
-                        text = stringResource(R.string.itemDetails_director),
-                        style = MaterialTheme.typography.bodyMedium.copy(
-                            fontWeight = FontWeight.Bold,
-                        ),
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                    Text(
-                        modifier = Modifier.padding(start = 8.dp),
-                        text = state.details.credits.director.map { it.name }.joinToString(", "),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                }
-                HorizontalDivider(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 16.dp),
-                    thickness = 1.dp,
-                    color = MaterialTheme.colorScheme.primary
-                )
-                Row {
-                    Text(
-                        text = stringResource(R.string.itemDetails_writer),
-                        style = MaterialTheme.typography.bodyMedium.copy(
-                            fontWeight = FontWeight.Bold,
-                        ),
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                    Text(
-                        modifier = Modifier.padding(start = 8.dp),
-                        text = state.details.credits.writer.map { it.name }.joinToString(", "),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                }
                 HorizontalDivider(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -329,7 +285,8 @@ fun <T : Item> ItemDetailScreenComponent(
                                 AsyncImage(
                                     model = castMember.profileUrl,
                                     modifier = Modifier.fillMaxWidth(),
-                                    error = painterResource(id = Res.drawable.ic_placeholder),
+                                    error = painterResource(id = Res.drawable.movie_poster_placeholder),
+                                    placeholder = painterResource(id = Res.drawable.movie_poster_placeholder),
                                     contentDescription = null,
                                     contentScale = ContentScale.FillWidth
                                 )

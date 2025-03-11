@@ -60,7 +60,6 @@ fun ListItem(
         ) {
             Box(
                 modifier = modifier
-                    .padding(8.dp)
                     .fillMaxHeight()
                     .width(100.dp)
                     .clip(RoundedCornerShape(8.dp))
@@ -124,7 +123,8 @@ fun ListItem(
                         modifier = Modifier
                             .alpha(if (isWatched) .5f else 1f)
                             .fillMaxWidth(),
-                        error = painterResource(id = Resources.drawable.ic_placeholder),
+                        error = painterResource(id = Resources.drawable.movie_poster_placeholder),
+                        placeholder = painterResource(id = Resources.drawable.movie_poster_placeholder),
                         contentDescription = null,
                     )
                     if (isWatched) {

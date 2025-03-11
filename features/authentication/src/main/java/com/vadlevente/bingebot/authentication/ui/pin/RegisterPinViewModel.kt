@@ -12,6 +12,7 @@ import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastType
 import com.vadlevente.bingebot.core.model.NavDestination
 import com.vadlevente.bingebot.core.stringOf
+import com.vadlevente.bingebot.core.usecase.GetConfigurationUseCase
 import com.vadlevente.bingebot.core.util.Constants.PIN_LENGTH
 import com.vadlevente.bingebot.core.viewModel.BaseViewModel
 import com.vadlevente.bingebot.core.viewModel.State
@@ -21,6 +22,7 @@ import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -31,6 +33,7 @@ class RegisterPinViewModel @AssistedInject constructor(
     private val appCloserDelegate: AppCloserDelegate,
     private val saveSecretWithPinUseCase: SaveSecretWithPinUseCase,
     private val isBiometricsAvailableUseCase: IsBiometricsAvailableUseCase,
+    private val getConfigurationUseCase: GetConfigurationUseCase,
     @Assisted("email") val email: String,
     @Assisted("password") val password: String,
 ) : BaseViewModel<ViewState>(
@@ -66,11 +69,24 @@ class RegisterPinViewModel @AssistedInject constructor(
                         password = password
                     )
                 ).onValue {
-                    isBiometricsAvailableUseCase.execute(Unit).onValue { isBiometricsAvailable ->
+                    combine(
+                        getConfigurationUseCase.execute(Unit),
+                        isBiometricsAvailableUseCase.execute(Unit),
+                        ::Pair,
+                    ).onValue { (_, isBiometricsAvailable) ->
+                        viewState.update {
+                            it.copy(
+                                pin = "",
+                                pinConfirmed = "",
+                            )
+                        }
                         if (isBiometricsAvailable) {
                             navigateTo(NavDestination.BiometricsRegistration(email, password))
                         } else {
-                            showToast(stringOf(R.string.pin_registration_successful), ToastType.INFO)
+                            showToast(
+                                stringOf(R.string.pin_registration_successful),
+                                ToastType.INFO
+                            )
                             navigateTo(NavDestination.Dashboard)
                         }
                     }

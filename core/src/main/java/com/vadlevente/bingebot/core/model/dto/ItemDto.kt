@@ -1,6 +1,7 @@
 package com.vadlevente.bingebot.core.model.dto
 
 import com.google.gson.annotations.SerializedName
+import com.vadlevente.bingebot.core.model.Creator
 import com.vadlevente.bingebot.core.model.Genre
 import com.vadlevente.bingebot.core.model.Item
 import com.vadlevente.bingebot.core.model.Item.Movie
@@ -67,6 +68,14 @@ sealed interface ItemDto<T : Item> {
         val voteAverage: Float,
         @SerializedName("first_air_date")
         val releaseDate: Date,
+        @SerializedName("last_air_date")
+        val lastAirDate: Date,
+        @SerializedName("created_by")
+        val creator: List<Creator>? = null,
+        @SerializedName("number_of_episodes")
+        val numberOfEpisodes: Int,
+        @SerializedName("number_of_seasons")
+        val numberOfSeasons: Int,
     ) : ItemDto<Tv> {
         override fun toItem() = Tv(
             id = id,
@@ -78,6 +87,10 @@ sealed interface ItemDto<T : Item> {
             posterPath = posterPath,
             voteAverage = voteAverage,
             releaseDate = releaseDate,
+            lastAirDate = lastAirDate,
+            creator = creator?.firstOrNull()?.name,
+            numberOfSeasons = numberOfSeasons,
+            numberOfEpisodes = numberOfEpisodes,
         )
     }
 
