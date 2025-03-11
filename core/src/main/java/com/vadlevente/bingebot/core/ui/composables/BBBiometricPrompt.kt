@@ -15,7 +15,7 @@ fun BBBiometricPrompt(
     negativeButtonText: String,
     cipher: Cipher,
     onAuthSuccessful: (Cipher) -> Unit,
-    onAuthCancelled: () -> Unit,
+    onAuthDismissed: () -> Unit,
 ) {
     val activity = LocalContext.current as FragmentActivity
     val executor: Executor = Executors.newSingleThreadExecutor()
@@ -30,18 +30,12 @@ fun BBBiometricPrompt(
 
             override fun onAuthenticationFailed() {
                 super.onAuthenticationFailed()
+                onAuthDismissed()
             }
 
             override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
                 super.onAuthenticationError(errorCode, errString)
-                if (errorCode in listOf(
-                        BiometricPrompt.ERROR_CANCELED,
-                        BiometricPrompt.ERROR_NEGATIVE_BUTTON,
-                        BiometricPrompt.ERROR_USER_CANCELED,
-                    )
-                ) {
-                    onAuthCancelled()
-                }
+                onAuthDismissed()
             }
         })
 

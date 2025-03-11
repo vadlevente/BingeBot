@@ -95,7 +95,8 @@ class RegisterPinViewModel @AssistedInject constructor(
     fun onExitConfirmation() {
         viewState.update {
             it.copy(
-                pin = ""
+                pin = "",
+                pinConfirmed = "",
             )
         }
         navigateUp()

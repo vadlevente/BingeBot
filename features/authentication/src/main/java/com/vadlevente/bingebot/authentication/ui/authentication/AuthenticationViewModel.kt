@@ -1,6 +1,5 @@
 package com.vadlevente.bingebot.authentication.ui.authentication
 
-import androidx.lifecycle.viewModelScope
 import com.vadlevente.bingebot.authentication.domain.usecase.GetDecryptionCipherUseCase
 import com.vadlevente.bingebot.authentication.domain.usecase.IsBiometricsEnrolledUseCase
 import com.vadlevente.bingebot.authentication.domain.usecase.RetrieveSecretWithBiometricsUseCase
@@ -19,7 +18,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import javax.crypto.Cipher
 import javax.inject.Inject
 
@@ -82,9 +80,11 @@ class AuthenticationViewModel @Inject constructor(
         }
     }
 
-    fun onExitAuthentication() {
-        viewModelScope.launch {
-            showExitConfirmation()
+    fun onOpenBiometricAuthentication() {
+        viewState.update {
+            it.copy(
+                showBiometricPrompt = true,
+            )
         }
     }
 

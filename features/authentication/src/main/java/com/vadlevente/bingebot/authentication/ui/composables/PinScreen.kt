@@ -2,6 +2,7 @@ package com.vadlevente.bingebot.authentication.ui.composables
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,8 +13,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Backspace
+import androidx.compose.material.icons.filled.Fingerprint
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -37,6 +42,7 @@ fun PinScreen(
     title: UIText,
     pin: String,
     onPinChanged: (String) -> Unit,
+    onFingerprintClicked: (() -> Unit)? = null,
 ) {
     Column(
         modifier = modifier
@@ -54,7 +60,7 @@ fun PinScreen(
             ),
             color = MaterialTheme.colorScheme.primary
         )
-        // Pin Display
+
         Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
             repeat(PIN_LENGTH) { index ->
                 Box(
@@ -69,37 +75,87 @@ fun PinScreen(
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        // Number Pad
-        val digits = (1..9).toList() + listOf(null, 0, "⌫")
+        val buttons = listOf(
+            PinButton.Digit(1),
+            PinButton.Digit(2),
+            PinButton.Digit(3),
+            PinButton.Digit(4),
+            PinButton.Digit(5),
+            PinButton.Digit(6),
+            PinButton.Digit(7),
+            PinButton.Digit(8),
+            PinButton.Digit(9),
+            PinButton.Fingerprint,
+            PinButton.Digit(0),
+            PinButton.Backspace,
+        )
 
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            digits.chunked(3).forEach { row ->
+            buttons.chunked(3).forEach { row ->
                 Row(horizontalArrangement = Arrangement.spacedBy(24.dp)) {
-                    row.forEach { digit ->
-                        if (digit == null) {
-                            Spacer(modifier = Modifier.size(56.dp))
-                        } else {
-                            Button(
-                                onClick = {
-                                    val newValue = if (digit == "⌫" && pin.isNotEmpty()) {
-                                        pin.dropLast(1)
-                                    } else if (digit is Int && pin.length < PIN_LENGTH) {
-                                        pin + digit.toString()
-                                    } else null
-                                    newValue?.let {
-                                        onPinChanged(it)
+                    row.forEach { button ->
+                        when (button) {
+                            is PinButton.Digit -> {
+                                Button(
+                                    onClick = {
+                                        val newValue = if (pin.length < PIN_LENGTH) {
+                                            pin + button.value.toString()
+                                        } else null
+                                        newValue?.let {
+                                            onPinChanged(it)
+                                        }
+                                    },
+                                    modifier = Modifier.size(56.dp),
+                                    shape = CircleShape,
+                                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.surface)
+                                ) {
+                                    Text(
+                                        text = button.value.toString(),
+                                        fontSize = 24.sp,
+                                        color = MaterialTheme.colorScheme.primary,
+                                        fontWeight = FontWeight.Bold
+                                    )
+                                }
+                            }
+
+                            PinButton.Fingerprint -> {
+                                onFingerprintClicked?.let {
+                                    Box(
+                                        modifier = Modifier
+                                            .size(56.dp)
+                                            .clickable {
+                                                onFingerprintClicked()
+                                            }
+                                    ) {
+                                        Icon(
+                                            modifier = Modifier
+                                                .padding(12.dp)
+                                                .fillMaxSize(),
+                                            imageVector = Icons.Filled.Fingerprint,
+                                            contentDescription = null,
+                                            tint = MaterialTheme.colorScheme.primary,
+                                        )
                                     }
-                                },
-                                modifier = Modifier.size(56.dp),
-                                shape = CircleShape,
-                                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.surface)
-                            ) {
-                                Text(
-                                    text = digit.toString(),
-                                    fontSize = 24.sp,
-                                    color = MaterialTheme.colorScheme.primary,
-                                    fontWeight = FontWeight.Bold
-                                )
+                                } ?: Spacer(modifier = Modifier.size(56.dp))
+                            }
+
+                            PinButton.Backspace -> {
+                                Box(
+                                    modifier = Modifier
+                                        .size(56.dp)
+                                        .clickable {
+                                            onPinChanged(pin.dropLast(1))
+                                        }
+                                ) {
+                                    Icon(
+                                        modifier = Modifier
+                                            .padding(12.dp)
+                                            .fillMaxSize(),
+                                        imageVector = Icons.AutoMirrored.Filled.Backspace,
+                                        contentDescription = null,
+                                        tint = MaterialTheme.colorScheme.primary,
+                                    )
+                                }
                             }
                         }
                     }
@@ -108,6 +164,12 @@ fun PinScreen(
             }
         }
     }
+}
+
+sealed interface PinButton {
+    data class Digit(val value: Int) : PinButton
+    data object Fingerprint : PinButton
+    data object Backspace : PinButton
 }
 
 @Composable

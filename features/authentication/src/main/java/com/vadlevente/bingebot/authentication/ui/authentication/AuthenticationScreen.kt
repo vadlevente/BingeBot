@@ -1,5 +1,6 @@
 package com.vadlevente.bingebot.authentication.ui.authentication
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -12,6 +13,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -23,12 +25,14 @@ import com.vadlevente.bingebot.core.stringOf
 import com.vadlevente.bingebot.core.ui.composables.BBBiometricPrompt
 import com.vadlevente.bingebot.core.ui.composables.TopBar
 import com.vadlevente.bingebot.ui.BingeBotTheme
+import kotlinx.coroutines.launch
 import com.vadlevente.bingebot.resources.R as Res
 
 @Composable
 fun AuthenticationScreen(
     viewModel: AuthenticationViewModel = hiltViewModel()
 ) {
+    val coroutineScope = rememberCoroutineScope()
     val state by viewModel.state.collectAsState()
     val isInProgress by viewModel.isInProgress.collectAsState()
 
@@ -36,8 +40,7 @@ fun AuthenticationScreen(
         Scaffold(
             topBar = {
                 TopBar(
-                    canNavigateBack = true,
-                    onBackPressed = viewModel::onExitAuthentication
+                    canNavigateBack = false,
                 )
             }
         ) { paddingValues ->
@@ -47,7 +50,8 @@ fun AuthenticationScreen(
                     .padding(paddingValues),
                 title = stringOf(R.string.pin_authentication_title),
                 pin = state.pin,
-                onPinChanged = viewModel::onPinChanged
+                onPinChanged = viewModel::onPinChanged,
+                onFingerprintClicked = viewModel::onOpenBiometricAuthentication,
             )
         }
         if (isInProgress) {
@@ -73,7 +77,12 @@ fun AuthenticationScreen(
             negativeButtonText = stringResource(Res.string.common_Cancel),
             cipher = state.cipher!!,
             onAuthSuccessful = viewModel::onBiometricAuthSuccessful,
-            onAuthCancelled = viewModel::onBiometricPromptCancelled
+            onAuthDismissed = viewModel::onBiometricPromptCancelled,
         )
+    }
+    BackHandler {
+        coroutineScope.launch {
+            viewModel.showExitConfirmation()
+        }
     }
 }

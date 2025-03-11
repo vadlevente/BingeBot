@@ -6,6 +6,7 @@ import com.vadlevente.bingebot.authentication.domain.usecase.GetEncryptionCipher
 import com.vadlevente.bingebot.authentication.domain.usecase.SaveSecretWithBiometricsUseCase
 import com.vadlevente.bingebot.authentication.domain.usecase.SaveSecretWithBiometricsUseCaseParams
 import com.vadlevente.bingebot.authentication.ui.biometrics.RegisterBiometricsViewModel.ViewState
+import com.vadlevente.bingebot.core.delegates.AppCloserDelegate
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastType
@@ -28,12 +29,13 @@ class RegisterBiometricsViewModel @AssistedInject constructor(
     navigationEventChannel: NavigationEventChannel,
     toastEventChannel: ToastEventChannel,
     getEncryptionCipherUseCase: GetEncryptionCipherUseCase,
+    private val appCloserDelegate: AppCloserDelegate,
     private val saveSecretWithBiometricsUseCase: SaveSecretWithBiometricsUseCase,
     @Assisted("email") val email: String,
     @Assisted("password") val password: String,
 ) : BaseViewModel<ViewState>(
     navigationEventChannel, toastEventChannel
-) {
+), AppCloserDelegate by appCloserDelegate {
 
     private val viewState = MutableStateFlow(ViewState())
     override val state: StateFlow<ViewState> = viewState
@@ -64,6 +66,14 @@ class RegisterBiometricsViewModel @AssistedInject constructor(
         }
         viewModelScope.launch {
             navigateTo(NavDestination.Dashboard)
+        }
+    }
+
+    fun onAuthDismissed() {
+        viewState.update {
+            it.copy(
+                showBiometricPrompt = false
+            )
         }
     }
 

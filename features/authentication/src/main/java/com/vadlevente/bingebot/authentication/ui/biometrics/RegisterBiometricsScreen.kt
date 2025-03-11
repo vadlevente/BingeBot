@@ -1,5 +1,6 @@
 package com.vadlevente.bingebot.authentication.ui.biometrics
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -29,6 +31,7 @@ import com.vadlevente.bingebot.core.ui.composables.BBBiometricPrompt
 import com.vadlevente.bingebot.core.ui.composables.BBButton
 import com.vadlevente.bingebot.core.ui.composables.BBOutlinedButton
 import com.vadlevente.bingebot.ui.BingeBotTheme
+import kotlinx.coroutines.launch
 import javax.crypto.Cipher
 import com.vadlevente.bingebot.resources.R as Res
 
@@ -37,6 +40,7 @@ fun RegisterBiometricsScreen(
     email: String,
     password: String,
 ) {
+    val coroutineScope = rememberCoroutineScope()
     val viewModel = hiltViewModel<RegisterBiometricsViewModel, RegisterBiometricsViewModel.RegisterBiometricsViewModelFactory> { factory ->
         factory.create(email, password)
     }
@@ -48,8 +52,13 @@ fun RegisterBiometricsScreen(
         onCancel = viewModel::onCancel,
         onConfirm = viewModel::onConfirm,
         onAuthSuccessful = viewModel::onAuthSuccessful,
-        onAuthCancelled = viewModel::onCancel
+        onAuthDismissed = viewModel::onAuthDismissed,
     )
+    BackHandler {
+        coroutineScope.launch {
+            viewModel.showExitConfirmation()
+        }
+    }
 }
 
 @Composable
@@ -59,7 +68,7 @@ fun RegisterBiometricsScreenComponent(
     onCancel: () -> Unit,
     onConfirm: () -> Unit,
     onAuthSuccessful: (Cipher) -> Unit,
-    onAuthCancelled: () -> Unit
+    onAuthDismissed: () -> Unit
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -100,7 +109,7 @@ fun RegisterBiometricsScreenComponent(
                 negativeButtonText = stringResource(Res.string.common_Cancel),
                 cipher = viewState.cipher,
                 onAuthSuccessful = onAuthSuccessful,
-                onAuthCancelled = onAuthCancelled
+                onAuthDismissed = onAuthDismissed
             )
         }
         if (isInProgress) {
