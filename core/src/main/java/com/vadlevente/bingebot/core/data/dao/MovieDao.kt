@@ -30,7 +30,7 @@ interface MovieDao : ItemDao<Movie> {
     override fun getItems(itemIds: List<Int>): Flow<List<Movie>>
 
     @Query("SELECT * from movie WHERE id = :itemId ")
-    override fun getItem(itemId: Int): Flow<Movie>
+    override fun getItem(itemId: Int): Flow<Movie?>
 
     @Query("SELECT * from movie WHERE localeCode != :localeCode")
     override fun getAllIncorrectlyLocalizedItems(localeCode: String): Flow<List<Movie>>

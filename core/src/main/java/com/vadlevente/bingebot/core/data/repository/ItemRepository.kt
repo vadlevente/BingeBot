@@ -17,8 +17,8 @@ import com.vadlevente.bingebot.core.model.firestore.StoredItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
@@ -62,9 +62,12 @@ class ItemRepositoryImpl<T : Item> @Inject constructor(
         itemLocalDataSource.getAllItems().flowOn(Dispatchers.IO)
 
     override fun getItemDetails(itemId: Int): Flow<ItemDetails<T>> =
-        preferencesDataSource.language.flatMapConcat { language ->
+        combine(
+            preferencesDataSource.language,
+            itemLocalDataSource.getItem(itemId),
+            ::Pair,
+        ).flatMapConcat { (language, local) ->
             val remote = itemRemoteDataSource.getItemDetails(itemId, language).toItem()
-            val local = itemLocalDataSource.getItem(itemId).firstOrNull()
             val updatedRemote = if (local != null) {
                 var tempRemote = remote
                 local.createdDate?.let { tempRemote = tempRemote.copyCreatedDate(it) }
@@ -77,7 +80,12 @@ class ItemRepositoryImpl<T : Item> @Inject constructor(
             val credits = Credits(
                 cast = remoteCredits.castMembers,
                 director = remoteCredits.crewMembers.filter { it.job == Department.Director },
-                writer = remoteCredits.crewMembers.filter { it.job in listOf(Department.Screenplay, Department.Writer) },
+                writer = remoteCredits.crewMembers.filter {
+                    it.job in listOf(
+                        Department.Screenplay,
+                        Department.Writer
+                    )
+                },
             )
             flowOf(
                 ItemDetails(updatedRemote, credits)

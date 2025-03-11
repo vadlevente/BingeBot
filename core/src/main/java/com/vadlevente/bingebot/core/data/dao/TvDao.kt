@@ -30,7 +30,7 @@ interface TvDao : ItemDao<Tv> {
     override fun getItems(itemIds: List<Int>): Flow<List<Tv>>
 
     @Query("SELECT * from tv WHERE id = :itemId ")
-    override fun getItem(itemId: Int): Flow<Tv>
+    override fun getItem(itemId: Int): Flow<Tv?>
 
     @Query("SELECT * from tv WHERE localeCode != :localeCode")
     override fun getAllIncorrectlyLocalizedItems(localeCode: String): Flow<List<Tv>>
