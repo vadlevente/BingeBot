@@ -87,8 +87,8 @@ fun AuthenticatedScreens(
     LaunchedEffect(intent) {
         intent?.dataString?.let { data ->
             when (data) {
-                "searchMovie" -> AuthenticatedNavDestination.SearchMovie
-                "searchTv" -> AuthenticatedNavDestination.SearchTv
+                SHORTCUT_SEARCH_MOVIE -> AuthenticatedNavDestination.SearchMovie
+                SHORTCUT_SEARCH_TV -> AuthenticatedNavDestination.SearchTv
                 else -> null
             }?.let { navController.navigate(it) }
         }
@@ -113,3 +113,6 @@ private fun CollectEvents(
         }
     }
 }
+
+private const val SHORTCUT_SEARCH_MOVIE = "searchMovie"
+private const val SHORTCUT_SEARCH_TV = "searchTv"
