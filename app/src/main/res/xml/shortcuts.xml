@@ -1,0 +1,24 @@
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="searchMovie"
+        android:enabled="true"
+        android:icon="@drawable/ic_search"
+        android:shortcutShortLabel="@string/searchMovies_pageTitle">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.vadlevente.bingebot"
+            android:targetClass="com.vadlevente.bingebot.app.MainActivity"
+            android:data="searchMovie"/>
+    </shortcut>
+    <shortcut
+        android:shortcutId="searchTv"
+        android:enabled="true"
+        android:icon="@drawable/ic_search"
+        android:shortcutShortLabel="@string/searchTv_pageTitle">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.vadlevente.bingebot"
+            android:targetClass="com.vadlevente.bingebot.app.MainActivity"
+            android:data="searchTv"/>
+    </shortcut>
+</shortcuts>
