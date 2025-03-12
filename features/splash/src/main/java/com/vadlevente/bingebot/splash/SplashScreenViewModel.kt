@@ -1,5 +1,6 @@
 package com.vadlevente.bingebot.splash
 
+import com.vadlevente.bingebot.core.events.navigation.NavigationEvent
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
 import com.vadlevente.bingebot.core.usecase.GetConfigurationUseCase
@@ -30,7 +31,11 @@ class SplashScreenViewModel @Inject constructor(
             ::Pair
         )
             .onValue { (_, navDestination) ->
-                navigateTo(navDestination)
+                navigationEventChannel.sendEvent(
+                    NavigationEvent.TopNavigationEvent.NavigateTo(
+                        navDestination
+                    )
+                )
             }
     }
 

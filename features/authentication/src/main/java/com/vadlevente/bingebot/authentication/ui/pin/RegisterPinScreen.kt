@@ -8,7 +8,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -22,7 +21,6 @@ fun RegisterPinScreen(
     email: String,
     password: String,
 ) {
-    val coroutineScope = rememberCoroutineScope()
     val activity = LocalContext.current as ComponentActivity
     val viewModel = hiltViewModel<RegisterPinViewModel, RegisterPinViewModel.RegisterPinViewModelFactory>(viewModelStoreOwner = activity) { factory ->
         factory.create(email, password)

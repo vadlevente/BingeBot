@@ -1,5 +1,7 @@
 package com.vadlevente.moviedetails
 
+import androidx.lifecycle.viewModelScope
+import com.vadlevente.bingebot.core.events.navigation.NavigationEvent
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
 import com.vadlevente.bingebot.core.model.Item
@@ -12,6 +14,7 @@ import com.vadlevente.moviedetails.domain.usecases.GetItemDetailsUseCaseParams
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 abstract class ItemDetailsViewModel<T : Item>(
     navigationEventChannel: NavigationEventChannel,
@@ -42,7 +45,11 @@ abstract class ItemDetailsViewModel<T : Item>(
     }
 
     fun onBackPressed() {
-        navigateUp()
+        viewModelScope.launch {
+            navigationEventChannel.sendEvent(
+                NavigationEvent.AuthenticatedNavigationEvent.NavigateUp
+            )
+        }
     }
 
     data class ViewState<T : Item>(

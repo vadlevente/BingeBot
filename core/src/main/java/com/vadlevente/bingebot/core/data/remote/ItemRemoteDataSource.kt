@@ -19,7 +19,7 @@ abstract class ItemRemoteDataSource <T : Item>(
     ) = itemApi.searchItems(
         query = query,
         language = language.code,
-    ).results as List<T>
+    ).results as List<ItemDto<T>>
 
     suspend fun getItemDetails(
         itemId: Int,

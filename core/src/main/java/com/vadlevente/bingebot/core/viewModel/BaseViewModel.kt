@@ -3,8 +3,7 @@ package com.vadlevente.bingebot.core.viewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.vadlevente.bingebot.core.UIText
-import com.vadlevente.bingebot.core.events.navigation.NavigationEvent.NavigateTo
-import com.vadlevente.bingebot.core.events.navigation.NavigationEvent.NavigateUp
+import com.vadlevente.bingebot.core.events.navigation.NavigationEvent
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEvent.ShowToast
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
@@ -34,7 +33,7 @@ interface State
 object EmptyState : State
 
 abstract class BaseViewModel<S : State>(
-    private val navigationEventChannel: NavigationEventChannel,
+    protected val navigationEventChannel: NavigationEventChannel,
     protected val toastEventChannel: ToastEventChannel,
 ) : ViewModel() {
 
@@ -46,7 +45,9 @@ abstract class BaseViewModel<S : State>(
     open val basicErrorHandler: (Throwable) -> Unit = { t ->
         Timber.e(t)
         val errorMessage = when (t) {
-            is BingeBotException -> t.reason?.reasonText ?: t.errorMessage ?: stringOf(Res.string.errorMessage_unknown)
+            is BingeBotException -> t.reason?.reasonText ?: t.errorMessage
+            ?: stringOf(Res.string.errorMessage_unknown)
+
             else -> t.localizedMessage?.let { stringOf(it) }
                 ?: stringOf(Res.string.errorMessage_unknown)
         }
@@ -59,7 +60,11 @@ abstract class BaseViewModel<S : State>(
             )
         }
         if (t.isBecauseOf(SESSION_EXPIRED)) {
-            navigateTo(NavDestination.Splash)
+            viewModelScope.launch {
+                navigationEventChannel.sendEvent(
+                    NavigationEvent.TopNavigationEvent.NavigateTo((NavDestination.TopNavDestination.NonAuthenticatedScreens))
+                )
+            }
         }
     }
 
@@ -116,23 +121,10 @@ abstract class BaseViewModel<S : State>(
         }
         .launchIn(viewModelScope)
 
-    protected fun navigateTo(navDestination: NavDestination) {
-        viewModelScope.launch {
-            navigationEventChannel.sendEvent(NavigateTo(navDestination))
-        }
-    }
-
-    protected fun navigateUp() {
-        viewModelScope.launch {
-            navigationEventChannel.sendEvent(NavigateUp)
-        }
-    }
-
     protected fun showToast(message: UIText, type: ToastType) {
         viewModelScope.launch {
             toastEventChannel.sendEvent(ShowToast(message, type))
         }
     }
-
 
 }

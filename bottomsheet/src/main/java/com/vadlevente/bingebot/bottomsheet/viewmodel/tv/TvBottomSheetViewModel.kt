@@ -8,10 +8,11 @@ import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEvent.ShowAddI
 import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEvent.ShowItemBottomSheet.ShowTvBottomSheet
 import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEventChannel
 import com.vadlevente.bingebot.core.events.dialog.DialogEventChannel
+import com.vadlevente.bingebot.core.events.navigation.NavigationEvent
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
 import com.vadlevente.bingebot.core.model.Item.Tv
-import com.vadlevente.bingebot.core.model.NavDestination
+import com.vadlevente.bingebot.core.model.NavDestination.AuthenticatedNavDestination
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.launchIn
@@ -67,8 +68,14 @@ class TvBottomSheetViewModel @Inject constructor(
 
     override fun onShowDetails() {
         viewState.value.event?.let { event ->
-            navigateTo(NavDestination.TvDetails(event.item.item.id))
-            onDismiss()
+            viewModelScope.launch {
+                navigationEventChannel.sendEvent(
+                    NavigationEvent.AuthenticatedNavigationEvent.NavigateTo(
+                        AuthenticatedNavDestination.TvDetails(event.item.item.id)
+                    )
+                )
+                onDismiss()
+            }
         }
     }
 

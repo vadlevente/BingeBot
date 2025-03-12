@@ -2,7 +2,7 @@ package com.vadlevente.bingebot.authentication.domain.usecase
 
 import com.vadlevente.bingebot.core.data.remote.firestore.FirestoreConfigDataSource
 import com.vadlevente.bingebot.core.data.service.AuthenticationService
-import com.vadlevente.bingebot.core.ui.BaseUseCase
+import com.vadlevente.bingebot.core.usecase.BaseUseCase
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

@@ -1,5 +1,6 @@
 package com.vadlevente.bingebot.authentication.ui.authentication
 
+import androidx.lifecycle.viewModelScope
 import com.vadlevente.bingebot.authentication.domain.usecase.GetDecryptionCipherUseCase
 import com.vadlevente.bingebot.authentication.domain.usecase.IsBiometricsEnrolledUseCase
 import com.vadlevente.bingebot.authentication.domain.usecase.RetrieveSecretWithBiometricsUseCase
@@ -7,9 +8,9 @@ import com.vadlevente.bingebot.authentication.domain.usecase.RetrieveSecretWithB
 import com.vadlevente.bingebot.authentication.domain.usecase.RetrieveSecretWithPinUseCase
 import com.vadlevente.bingebot.authentication.domain.usecase.RetrieveSecretWithPinUseCaseParams
 import com.vadlevente.bingebot.core.delegates.AppCloserDelegate
+import com.vadlevente.bingebot.core.events.navigation.NavigationEvent
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
-import com.vadlevente.bingebot.core.model.NavDestination
 import com.vadlevente.bingebot.core.util.Constants.PIN_LENGTH
 import com.vadlevente.bingebot.core.viewModel.BaseViewModel
 import com.vadlevente.bingebot.core.viewModel.State
@@ -18,6 +19,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.crypto.Cipher
 import javax.inject.Inject
 
@@ -75,7 +77,9 @@ class AuthenticationViewModel @Inject constructor(
                     pin = value
                 )
             ).onValue {
-                navigateTo(NavDestination.Dashboard)
+                navigationEventChannel.sendEvent(
+                    NavigationEvent.TopNavigationEvent.NavigateUp
+                )
             }
         }
     }
@@ -100,7 +104,11 @@ class AuthenticationViewModel @Inject constructor(
                 cipher = cipher
             )
         ).onValue {
-            navigateTo(NavDestination.Dashboard)
+            viewModelScope.launch {
+                navigationEventChannel.sendEvent(
+                    NavigationEvent.TopNavigationEvent.NavigateUp
+                )
+            }
         }
     }
 

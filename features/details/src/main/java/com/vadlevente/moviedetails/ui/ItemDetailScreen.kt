@@ -171,7 +171,8 @@ fun <T : Item> ItemDetailScreenComponent(
                             modifier = Modifier
                                 .alpha(if (isWatched) .5f else 1f)
                                 .fillMaxWidth(),
-                            error = painterResource(id = Res.drawable.ic_placeholder),
+                            error = painterResource(id = Res.drawable.movie_poster_placeholder),
+                            placeholder = painterResource(id = Res.drawable.movie_poster_placeholder),
                             contentDescription = null,
                             contentScale = ContentScale.FillWidth,
                         )

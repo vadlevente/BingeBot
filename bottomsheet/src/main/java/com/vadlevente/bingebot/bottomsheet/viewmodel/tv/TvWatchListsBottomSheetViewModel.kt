@@ -8,15 +8,17 @@ import com.vadlevente.bingebot.bottomsheet.viewmodel.ItemWatchListsBottomSheetVi
 import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEvent.ShowWatchListsBottomSheet.ShowTvWatchListsBottomSheet
 import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEventChannel
 import com.vadlevente.bingebot.core.events.dialog.DialogEventChannel
+import com.vadlevente.bingebot.core.events.navigation.NavigationEvent
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
 import com.vadlevente.bingebot.core.model.Item.Tv
-import com.vadlevente.bingebot.core.model.NavDestination
+import com.vadlevente.bingebot.core.model.NavDestination.AuthenticatedNavDestination
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -54,8 +56,16 @@ class TvWatchListsBottomSheetViewModel @Inject constructor(
     }
 
     override fun onWatchListSelected(watchListId: String) {
-        navigateTo(NavDestination.TvWatchList(watchListId))
-        onDismiss()
+        viewModelScope.launch {
+            navigationEventChannel.sendEvent(
+                NavigationEvent.AuthenticatedNavigationEvent.NavigateTo(
+                    (AuthenticatedNavDestination.TvWatchList(
+                        watchListId
+                    ))
+                )
+            )
+            onDismiss()
+        }
     }
 
 }

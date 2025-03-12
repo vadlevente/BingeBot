@@ -4,10 +4,11 @@ import androidx.lifecycle.viewModelScope
 import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEvent.ShowItemBottomSheet.ShowMovieBottomSheet
 import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEventChannel
 import com.vadlevente.bingebot.core.events.dialog.DialogEventChannel
+import com.vadlevente.bingebot.core.events.navigation.NavigationEvent
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
 import com.vadlevente.bingebot.core.model.Item.Movie
-import com.vadlevente.bingebot.core.model.NavDestination
+import com.vadlevente.bingebot.core.model.NavDestination.AuthenticatedNavDestination
 import com.vadlevente.bingebot.watchlist.domain.usecase.DeleteWatchListUseCase
 import com.vadlevente.bingebot.watchlist.domain.usecase.GetWatchListItemsUseCase
 import com.vadlevente.bingebot.watchlist.domain.usecase.GetWatchListUseCase
@@ -30,7 +31,11 @@ class MovieWatchListViewModel @Inject constructor(
 ) {
 
     override fun onNavigateToSearch() {
-        navigateTo(NavDestination.SearchMovie)
+        viewModelScope.launch {
+            navigationEventChannel.sendEvent(
+                NavigationEvent.AuthenticatedNavigationEvent.NavigateTo(AuthenticatedNavDestination.SearchMovie)
+            )
+        }
     }
 
     override fun onNavigateToOptions(itemId: Int) {

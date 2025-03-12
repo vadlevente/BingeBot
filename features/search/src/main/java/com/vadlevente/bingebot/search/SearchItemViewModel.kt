@@ -1,6 +1,8 @@
 package com.vadlevente.bingebot.search
 
+import androidx.lifecycle.viewModelScope
 import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEventChannel
+import com.vadlevente.bingebot.core.events.navigation.NavigationEvent
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
 import com.vadlevente.bingebot.core.model.DisplayedItem
@@ -15,8 +17,9 @@ import com.vadlevente.bingebot.search.usecase.SearchItemUseCaseParams
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
-abstract class SearchItemViewModel <T : Item> (
+abstract class SearchItemViewModel<T : Item>(
     navigationEventChannel: NavigationEventChannel,
     toastEventChannel: ToastEventChannel,
     private val getSearchResultUseCase: GetSearchResultUseCase<T>,
@@ -55,10 +58,14 @@ abstract class SearchItemViewModel <T : Item> (
     }
 
     fun onBackPressed() {
-        navigateUp()
+        viewModelScope.launch {
+            navigationEventChannel.sendEvent(
+                NavigationEvent.AuthenticatedNavigationEvent.NavigateUp
+            )
+        }
     }
 
-    data class ViewState <T : Item> (
+    data class ViewState<T : Item>(
         val query: String = "",
         val items: List<DisplayedItem<T>> = emptyList(),
     ) : State

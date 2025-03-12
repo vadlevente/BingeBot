@@ -2,7 +2,7 @@ package com.vadlevente.bingebot.settings.domain.usecases
 
 import com.vadlevente.bingebot.core.data.repository.ConfigurationRepository
 import com.vadlevente.bingebot.core.model.SelectedLanguage
-import com.vadlevente.bingebot.core.ui.BaseUseCase
+import com.vadlevente.bingebot.core.usecase.BaseUseCase
 import javax.inject.Inject
 
 data class SetLanguageUseCaseParams(

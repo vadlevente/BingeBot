@@ -1,5 +1,7 @@
 package com.vadlevente.bingebot.app
 
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,13 +14,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.toRoute
+import com.vadlevente.bingebot.app.ui.authenticated.AuthenticatedScreens
+import com.vadlevente.bingebot.app.ui.nonauthenticated.NonAuthenticatedScreens
 import com.vadlevente.bingebot.authentication.ui.authentication.AuthenticationScreen
-import com.vadlevente.bingebot.authentication.ui.biometrics.RegisterBiometricsScreen
-import com.vadlevente.bingebot.authentication.ui.login.LoginScreen
-import com.vadlevente.bingebot.authentication.ui.pin.RegisterPinConfirmationScreen
-import com.vadlevente.bingebot.authentication.ui.pin.RegisterPinScreen
-import com.vadlevente.bingebot.authentication.ui.registration.RegistrationScreen
 import com.vadlevente.bingebot.bottomsheet.ui.movie.AddMovieToWatchListBottomSheet
 import com.vadlevente.bingebot.bottomsheet.ui.movie.MovieBottomSheet
 import com.vadlevente.bingebot.bottomsheet.ui.movie.MovieOrderByBottomSheet
@@ -27,23 +25,16 @@ import com.vadlevente.bingebot.bottomsheet.ui.tv.AddTvToWatchListBottomSheet
 import com.vadlevente.bingebot.bottomsheet.ui.tv.TvBottomSheet
 import com.vadlevente.bingebot.bottomsheet.ui.tv.TvOrderByBottomSheet
 import com.vadlevente.bingebot.bottomsheet.ui.tv.TvWatchListsBottomSheet
-import com.vadlevente.bingebot.core.events.navigation.NavigationEvent.NavigateTo
-import com.vadlevente.bingebot.core.events.navigation.NavigationEvent.NavigateUp
+import com.vadlevente.bingebot.core.events.navigation.NavigationEvent.TopNavigationEvent
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
-import com.vadlevente.bingebot.core.model.NavDestination
+import com.vadlevente.bingebot.core.model.NavDestination.TopNavDestination
 import com.vadlevente.bingebot.core.ui.composables.Toast
 import com.vadlevente.bingebot.core.ui.composables.dialog.BBDialog
 import com.vadlevente.bingebot.core.ui.composables.dialog.BBTextFieldDialog
-import com.vadlevente.bingebot.dashboard.ui.DashboardScreen
-import com.vadlevente.bingebot.search.ui.SearchMovieScreen
-import com.vadlevente.bingebot.search.ui.SearchTvScreen
 import com.vadlevente.bingebot.splash.ui.SplashScreen
 import com.vadlevente.bingebot.ui.BingeBotTheme
-import com.vadlevente.bingebot.watchlist.ui.movie.MovieWatchListScreen
-import com.vadlevente.bingebot.watchlist.ui.tv.TvWatchListScreen
-import com.vadlevente.moviedetails.ui.MovieDetailsScreen
-import com.vadlevente.moviedetails.ui.TvDetailsScreen
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.launch
 
 @Composable
@@ -58,54 +49,34 @@ fun NavigationHost(
 
     BingeBotTheme {
         Box(modifier = Modifier.fillMaxWidth()) {
-            NavHost(navController = navController, startDestination = NavDestination.Splash) {
-                composable<NavDestination.Splash> {
+            NavHost(
+                navController = navController,
+                startDestination = TopNavDestination.Splash
+            ) {
+                composable<TopNavDestination.Splash> {
                     SplashScreen()
                 }
-                composable<NavDestination.Registration> {
-                    RegistrationScreen()
+                composable<TopNavDestination.NonAuthenticatedScreens> {
+                    NonAuthenticatedScreens(navigationEventChannel)
                 }
-                composable<NavDestination.Login> {
-                    LoginScreen()
+                composable<TopNavDestination.AuthenticatedScreens> {
+                    AuthenticatedScreens(navigationEventChannel)
                 }
-                composable<NavDestination.RegisterPin> {
-                    val args: NavDestination.RegisterPin = it.toRoute()
-                    RegisterPinScreen(args.email, args.password)
-                }
-                composable<NavDestination.RegisterPinConfirm> {
-                    RegisterPinConfirmationScreen()
-                }
-                composable<NavDestination.Authenticate> {
+                composable<TopNavDestination.Authenticate>(
+                    enterTransition = {
+                        slideIntoContainer(
+                            AnimatedContentTransitionScope.SlideDirection.Up,
+                            tween(700),
+                        )
+                    },
+                    exitTransition = {
+                        slideOutOfContainer(
+                            AnimatedContentTransitionScope.SlideDirection.Down,
+                            tween(700),
+                        )
+                    }
+                ) {
                     AuthenticationScreen()
-                }
-                composable<NavDestination.BiometricsRegistration> {
-                    val args: NavDestination.BiometricsRegistration = it.toRoute()
-                    RegisterBiometricsScreen(args.email, args.password)
-                }
-                composable<NavDestination.Dashboard> {
-                    DashboardScreen()
-                }
-                composable<NavDestination.SearchMovie> {
-                    SearchMovieScreen()
-                }
-                composable<NavDestination.SearchTv> {
-                    SearchTvScreen()
-                }
-                composable<NavDestination.MovieDetails> {
-                    val args: NavDestination.MovieDetails = it.toRoute()
-                    MovieDetailsScreen(args.movieId)
-                }
-                composable<NavDestination.TvDetails> {
-                    val args: NavDestination.TvDetails = it.toRoute()
-                    TvDetailsScreen(args.tvId)
-                }
-                composable<NavDestination.MovieWatchList> {
-                    val args: NavDestination.MovieWatchList = it.toRoute()
-                    MovieWatchListScreen(args.watchListId)
-                }
-                composable<NavDestination.TvWatchList> {
-                    val args: NavDestination.TvWatchList = it.toRoute()
-                    TvWatchListScreen(args.watchListId)
                 }
             }
             UIComponents(this)
@@ -121,33 +92,22 @@ private fun CollectEvents(
     val coroutineScope = rememberCoroutineScope()
     LaunchedEffect(true) {
         coroutineScope.launch {
-            navigationEventChannel.events.collectLatest { event ->
-                when (event) {
-                    is NavigateTo -> navigate(navController, event.destination)
-                    NavigateUp -> navController.popBackStack()
-                    else -> {}
-                }
-            }
-        }
-    }
-}
+            navigationEventChannel.events.filterIsInstance<TopNavigationEvent>()
+                .collectLatest { event ->
+                    when (event) {
+                        is TopNavigationEvent.NavigateTo -> {
+                            navController.navigate(event.destination) {
+                                if (event.destination != TopNavDestination.Authenticate) {
+                                    popUpTo(0)
+                                }
+                            }
+                        }
+                        TopNavigationEvent.NavigateUp -> navController.popBackStack()
 
-private fun navigate(
-    navController: NavHostController,
-    destination: NavDestination,
-) {
-    when (destination) {
-        NavDestination.Splash,
-        NavDestination.Registration,
-        NavDestination.Login,
-        NavDestination.Dashboard,
-        is NavDestination.RegisterPin,
-        is NavDestination.RegisterPinConfirm -> {
-            navController.navigate(destination) {
-                popUpTo(0)
-            }
+                        else -> {}
+                    }
+                }
         }
-        else -> navController.navigate(destination)
     }
 }
 

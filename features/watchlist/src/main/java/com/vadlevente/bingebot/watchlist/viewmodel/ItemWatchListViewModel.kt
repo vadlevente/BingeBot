@@ -3,6 +3,7 @@ package com.vadlevente.bingebot.watchlist.viewmodel
 import androidx.lifecycle.viewModelScope
 import com.vadlevente.bingebot.core.events.dialog.DialogEvent.ShowDialog
 import com.vadlevente.bingebot.core.events.dialog.DialogEventChannel
+import com.vadlevente.bingebot.core.events.navigation.NavigationEvent
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastType.INFO
@@ -27,7 +28,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import com.vadlevente.bingebot.resources.R as Res
 
-abstract class ItemWatchListViewModel <T : Item>(
+abstract class ItemWatchListViewModel<T : Item>(
     navigationEventChannel: NavigationEventChannel,
     toastEventChannel: ToastEventChannel,
     private val getWatchListItemsUseCase: GetWatchListItemsUseCase<T>,
@@ -42,7 +43,11 @@ abstract class ItemWatchListViewModel <T : Item>(
     override val state: StateFlow<ViewState<T>> = viewState
     override val basicErrorHandler: (Throwable) -> Unit = {
         if (it.isBecauseOf(DATA_NOT_FOUND)) {
-            navigateUp()
+            viewModelScope.launch {
+                navigationEventChannel.sendEvent(
+                    NavigationEvent.AuthenticatedNavigationEvent.NavigateUp
+                )
+            }
         } else {
             super.basicErrorHandler(it)
         }
@@ -115,7 +120,11 @@ abstract class ItemWatchListViewModel <T : Item>(
     }
 
     fun onBackPressed() {
-        navigateUp()
+        viewModelScope.launch {
+            navigationEventChannel.sendEvent(
+                NavigationEvent.AuthenticatedNavigationEvent.NavigateUp
+            )
+        }
     }
 
     private fun getItems() {

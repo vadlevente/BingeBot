@@ -1,4 +1,4 @@
-package com.vadlevente.bingebot.core.ui
+package com.vadlevente.bingebot.core.usecase
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

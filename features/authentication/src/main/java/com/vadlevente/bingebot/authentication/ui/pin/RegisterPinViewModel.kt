@@ -7,10 +7,12 @@ import com.vadlevente.bingebot.authentication.domain.usecase.SaveSecretWithPinUs
 import com.vadlevente.bingebot.authentication.domain.usecase.SaveSecretWithPinUseCaseParams
 import com.vadlevente.bingebot.authentication.ui.pin.RegisterPinViewModel.ViewState
 import com.vadlevente.bingebot.core.delegates.AppCloserDelegate
+import com.vadlevente.bingebot.core.events.navigation.NavigationEvent
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastType
 import com.vadlevente.bingebot.core.model.NavDestination
+import com.vadlevente.bingebot.core.model.NavDestination.NonAuthenticatedNavDestination
 import com.vadlevente.bingebot.core.stringOf
 import com.vadlevente.bingebot.core.usecase.GetConfigurationUseCase
 import com.vadlevente.bingebot.core.util.Constants.PIN_LENGTH
@@ -50,7 +52,13 @@ class RegisterPinViewModel @AssistedInject constructor(
             )
         }
         if (value.length == PIN_LENGTH) {
-            navigateTo(NavDestination.RegisterPinConfirm)
+            viewModelScope.launch {
+                navigationEventChannel.sendEvent(
+                    NavigationEvent.NonAuthenticatedNavigationEvent.NavigateTo(
+                        NonAuthenticatedNavDestination.RegisterPinConfirm
+                    )
+                )
+            }
         }
     }
 
@@ -81,13 +89,26 @@ class RegisterPinViewModel @AssistedInject constructor(
                             )
                         }
                         if (isBiometricsAvailable) {
-                            navigateTo(NavDestination.BiometricsRegistration(email, password))
+                            viewModelScope.launch {
+                                navigationEventChannel.sendEvent(
+                                    NavigationEvent.NonAuthenticatedNavigationEvent.NavigateTo(
+                                        NonAuthenticatedNavDestination.BiometricsRegistration(
+                                            email,
+                                            password
+                                        )
+                                    )
+                                )
+                            }
                         } else {
                             showToast(
                                 stringOf(R.string.pin_registration_successful),
                                 ToastType.INFO
                             )
-                            navigateTo(NavDestination.Dashboard)
+                            viewModelScope.launch {
+                                navigationEventChannel.sendEvent(
+                                    NavigationEvent.TopNavigationEvent.NavigateTo(NavDestination.TopNavDestination.AuthenticatedScreens)
+                                )
+                            }
                         }
                     }
                 }
@@ -115,7 +136,11 @@ class RegisterPinViewModel @AssistedInject constructor(
                 pinConfirmed = "",
             )
         }
-        navigateUp()
+        viewModelScope.launch {
+            navigationEventChannel.sendEvent(
+                NavigationEvent.NonAuthenticatedNavigationEvent.NavigateUp
+            )
+        }
     }
 
     @AssistedFactory

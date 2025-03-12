@@ -7,6 +7,7 @@ import com.vadlevente.bingebot.authentication.domain.usecase.SaveSecretWithBiome
 import com.vadlevente.bingebot.authentication.domain.usecase.SaveSecretWithBiometricsUseCaseParams
 import com.vadlevente.bingebot.authentication.ui.biometrics.RegisterBiometricsViewModel.ViewState
 import com.vadlevente.bingebot.core.delegates.AppCloserDelegate
+import com.vadlevente.bingebot.core.events.navigation.NavigationEvent
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastType
@@ -65,7 +66,9 @@ class RegisterBiometricsViewModel @AssistedInject constructor(
             )
         }
         viewModelScope.launch {
-            navigateTo(NavDestination.Dashboard)
+            navigationEventChannel.sendEvent(
+                NavigationEvent.TopNavigationEvent.NavigateTo(NavDestination.TopNavDestination.AuthenticatedScreens)
+            )
         }
     }
 
@@ -91,7 +94,11 @@ class RegisterBiometricsViewModel @AssistedInject constructor(
             )
         ).onValue {
             showToast(stringOf(R.string.biometrics_registration_successful), ToastType.INFO)
-            navigateTo(NavDestination.Dashboard)
+            viewModelScope.launch {
+                navigationEventChannel.sendEvent(
+                    NavigationEvent.TopNavigationEvent.NavigateTo(NavDestination.TopNavDestination.AuthenticatedScreens)
+                )
+            }
         }
     }
 

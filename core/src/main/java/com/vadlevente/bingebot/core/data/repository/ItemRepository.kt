@@ -147,7 +147,7 @@ class ItemRepositoryImpl<T : Item> @Inject constructor(
     override suspend fun searchItems(query: String) = withContext(Dispatchers.IO) {
         val language = preferencesDataSource.language.first()
         val items = itemRemoteDataSource.searchItem(query, language)
-        itemCacheDataSource.updateItems(items, language)
+        itemCacheDataSource.updateItems(items.map { it.toItem() }, language)
     }
 
     override suspend fun updateItemLocalizations() = withContext(Dispatchers.IO) {

@@ -2,7 +2,7 @@ package com.vadlevente.bingebot.core.delegates
 
 import com.vadlevente.bingebot.core.events.dialog.DialogEvent.ShowDialog
 import com.vadlevente.bingebot.core.events.dialog.DialogEventChannel
-import com.vadlevente.bingebot.core.events.navigation.NavigationEvent.ExitApplication
+import com.vadlevente.bingebot.core.events.navigation.NavigationEvent.TopNavigationEvent.ExitApplication
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.stringOf
 import javax.inject.Inject

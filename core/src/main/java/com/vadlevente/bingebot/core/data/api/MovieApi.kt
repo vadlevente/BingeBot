@@ -12,7 +12,7 @@ import retrofit2.http.Query
 interface MovieApi : ItemApi {
 
     @GET("search/movie")
-    override suspend fun searchItems(@Query("query") query: String, @Query("language") language: String): ItemsResponseDto<Movie>
+    override suspend fun searchItems(@Query("query") query: String, @Query("language") language: String): ItemsResponseDto<Movie, MovieDto>
 
     @GET("genre/movie/list")
     override suspend fun fetchGenres(@Query("language") language: String): GenresResponseDto

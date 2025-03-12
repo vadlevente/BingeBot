@@ -2,7 +2,7 @@ package com.vadlevente.bingebot.authentication.domain.usecase
 
 import com.vadlevente.bingebot.core.data.service.AuthenticationService
 import com.vadlevente.bingebot.core.data.service.SecretService
-import com.vadlevente.bingebot.core.ui.BaseUseCase
+import com.vadlevente.bingebot.core.usecase.BaseUseCase
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -19,6 +19,7 @@ class RetrieveSecretWithPinUseCase @Inject constructor(
         secretService.retrieveCredentialsWithPin(params.pin).map {
             it?.let {
                 authenticationService.login(it.email, it.password)
+                secretService.setAuthenticated(true)
             }
             Unit
         }

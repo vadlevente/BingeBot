@@ -6,10 +6,11 @@ import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEvent.ShowItem
 import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEvent.ShowOrderByBottomSheet.ShowMovieOrderByBottomSheet
 import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEvent.ShowWatchListsBottomSheet.ShowMovieWatchListsBottomSheet
 import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEventChannel
+import com.vadlevente.bingebot.core.events.navigation.NavigationEvent
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
 import com.vadlevente.bingebot.core.model.Item.Movie
-import com.vadlevente.bingebot.core.model.NavDestination
+import com.vadlevente.bingebot.core.model.NavDestination.AuthenticatedNavDestination
 import com.vadlevente.bingebot.core.model.SkeletonFactory
 import com.vadlevente.bingebot.list.domain.usecase.ItemListUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -31,7 +32,11 @@ class MovieListViewModel @Inject constructor(
         get() = SkeletonFactory.MovieSkeletonFactory
 
     override fun onNavigateToSearch() {
-        navigateTo(NavDestination.SearchMovie)
+        viewModelScope.launch {
+            navigationEventChannel.sendEvent(
+                NavigationEvent.AuthenticatedNavigationEvent.NavigateTo(AuthenticatedNavDestination.SearchMovie)
+            )
+        }
     }
 
     override fun onNavigateToOptions(itemId: Int) {

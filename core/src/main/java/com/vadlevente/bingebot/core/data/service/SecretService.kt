@@ -8,11 +8,17 @@ import com.vadlevente.bingebot.core.model.LoginCredentials
 import com.vadlevente.bingebot.core.model.exception.BingeBotException
 import com.vadlevente.bingebot.core.model.exception.Reason
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import javax.crypto.Cipher
 import javax.inject.Inject
 
 interface SecretService {
+    val isAuthenticated: StateFlow<Boolean>
+    fun setAuthenticated(isAuthenticated: Boolean)
+
     suspend fun saveCredentialsWithPin(
         pin: String,
         email: String,
@@ -36,6 +42,13 @@ class SecretServiceImpl @Inject constructor(
     private val cryptographyService: CryptographyService,
     private val gson: Gson,
 ) : SecretService {
+
+    private val _isAuthenticated = MutableStateFlow(false)
+    override val isAuthenticated = _isAuthenticated.asStateFlow()
+
+    override fun setAuthenticated(isAuthenticated: Boolean) {
+        _isAuthenticated.value = true
+    }
 
     override suspend fun saveCredentialsWithPin(
         pin: String,

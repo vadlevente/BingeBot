@@ -12,7 +12,7 @@ import retrofit2.http.Query
 interface TvApi : ItemApi {
 
     @GET("search/tv")
-    override suspend fun searchItems(@Query("query") query: String, @Query("language") language: String): ItemsResponseDto<Tv>
+    override suspend fun searchItems(@Query("query") query: String, @Query("language") language: String): ItemsResponseDto<Tv, TvDto>
 
     @GET("genre/tv/list")
     override suspend fun fetchGenres(@Query("language") language: String): GenresResponseDto

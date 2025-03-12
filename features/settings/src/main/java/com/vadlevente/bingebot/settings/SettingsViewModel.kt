@@ -3,6 +3,7 @@ package com.vadlevente.bingebot.settings
 import androidx.lifecycle.viewModelScope
 import com.vadlevente.bingebot.core.events.dialog.DialogEvent.ShowDialog
 import com.vadlevente.bingebot.core.events.dialog.DialogEventChannel
+import com.vadlevente.bingebot.core.events.navigation.NavigationEvent
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
 import com.vadlevente.bingebot.core.model.NavDestination
@@ -88,7 +89,9 @@ class SettingsViewModel @Inject constructor(
                     negativeButtonTitle = stringOf(string.common_No),
                     onPositiveButtonClicked = {
                         logoutUseCase.execute(Unit).onValue {
-                            navigateTo(NavDestination.Login)
+                            navigationEventChannel.sendEvent(
+                                NavigationEvent.TopNavigationEvent.NavigateTo(NavDestination.TopNavDestination.NonAuthenticatedScreens)
+                            )
                         }
                     },
                 )

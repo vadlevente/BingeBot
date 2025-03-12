@@ -10,7 +10,7 @@ interface ItemApi {
     suspend fun searchItems(
         query: String,
         language: String,
-    ): ItemsResponseDto<*>
+    ): ItemsResponseDto<*,*>
 
     suspend fun fetchGenres(
         language: String,

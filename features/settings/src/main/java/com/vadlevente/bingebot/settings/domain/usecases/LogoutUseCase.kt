@@ -4,7 +4,7 @@ import com.vadlevente.bingebot.core.data.cache.SelectedFiltersCacheDataSource
 import com.vadlevente.bingebot.core.data.repository.ConfigurationRepository
 import com.vadlevente.bingebot.core.model.Item.Movie
 import com.vadlevente.bingebot.core.model.Item.Tv
-import com.vadlevente.bingebot.core.ui.BaseUseCase
+import com.vadlevente.bingebot.core.usecase.BaseUseCase
 import javax.inject.Inject
 
 class LogoutUseCase @Inject constructor(

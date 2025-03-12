@@ -5,10 +5,11 @@ import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEvent.ShowItem
 import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEvent.ShowOrderByBottomSheet.ShowTvOrderByBottomSheet
 import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEvent.ShowWatchListsBottomSheet.ShowTvWatchListsBottomSheet
 import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEventChannel
+import com.vadlevente.bingebot.core.events.navigation.NavigationEvent
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
 import com.vadlevente.bingebot.core.model.Item.Tv
-import com.vadlevente.bingebot.core.model.NavDestination
+import com.vadlevente.bingebot.core.model.NavDestination.AuthenticatedNavDestination
 import com.vadlevente.bingebot.core.model.SkeletonFactory
 import com.vadlevente.bingebot.list.domain.usecase.ItemListUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -29,7 +30,11 @@ class TvListViewModel @Inject constructor(
         get() = SkeletonFactory.TvSkeletonFactory
 
     override fun onNavigateToSearch() {
-        navigateTo(NavDestination.SearchTv)
+        viewModelScope.launch {
+            navigationEventChannel.sendEvent(
+                NavigationEvent.AuthenticatedNavigationEvent.NavigateTo(AuthenticatedNavDestination.SearchTv)
+            )
+        }
     }
 
     override fun onNavigateToOptions(itemId: Int) {

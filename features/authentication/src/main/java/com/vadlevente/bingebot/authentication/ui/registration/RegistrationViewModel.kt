@@ -1,10 +1,12 @@
 package com.vadlevente.bingebot.authentication.ui.registration
 
+import androidx.lifecycle.viewModelScope
 import com.vadlevente.bingebot.authentication.R
 import com.vadlevente.bingebot.authentication.domain.usecase.RegistrationUseCase
 import com.vadlevente.bingebot.authentication.domain.usecase.RegistrationUseCaseParams
 import com.vadlevente.bingebot.authentication.ui.registration.RegistrationViewModel.ViewState
 import com.vadlevente.bingebot.core.delegates.AppCloserDelegate
+import com.vadlevente.bingebot.core.events.navigation.NavigationEvent
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastType.INFO
@@ -16,6 +18,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -57,17 +60,27 @@ class RegistrationViewModel @Inject constructor(
                 stringOf(R.string.registrationSuccessful),
                 INFO,
             )
-            navigateTo(
-                NavDestination.RegisterPin(
-                    viewState.value.email,
-                    viewState.value.password,
+            viewModelScope.launch {
+                navigationEventChannel.sendEvent(
+                    NavigationEvent.NonAuthenticatedNavigationEvent.NavigateTo(
+                        NavDestination.NonAuthenticatedNavDestination.RegisterPin(
+                            viewState.value.email,
+                            viewState.value.password,
+                        )
+                    )
                 )
-            )
+            }
         }
     }
 
     fun onNavigateToLogin() {
-        navigateTo(NavDestination.Login)
+        viewModelScope.launch {
+            navigationEventChannel.sendEvent(
+                NavigationEvent.NonAuthenticatedNavigationEvent.NavigateTo(
+                    NavDestination.NonAuthenticatedNavDestination.Login
+                )
+            )
+        }
     }
 
     private fun reevaluateSubmitEnabled() {

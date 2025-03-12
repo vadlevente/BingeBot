@@ -4,7 +4,6 @@ import com.vadlevente.bingebot.core.data.repository.ConfigurationRepository
 import com.vadlevente.bingebot.core.data.repository.ItemRepository
 import com.vadlevente.bingebot.core.model.Item.Movie
 import com.vadlevente.bingebot.core.model.Item.Tv
-import com.vadlevente.bingebot.core.ui.BaseUseCase
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

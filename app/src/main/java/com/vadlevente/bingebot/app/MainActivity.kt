@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.vadlevente.bingebot.core.events.navigation.NavigationEvent.ExitApplication
+import com.vadlevente.bingebot.core.events.navigation.NavigationEvent.TopNavigationEvent.ExitApplication
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.ui.BingeBotTheme
 import dagger.hilt.android.AndroidEntryPoint

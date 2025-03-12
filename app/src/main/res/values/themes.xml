@@ -2,5 +2,6 @@
 <resources>
 
     <style name="Theme.BingeBot" parent="Theme.AppCompat.Light.NoActionBar" >
+        <item name="android:windowBackground">@color/background</item>
     </style>
 </resources>

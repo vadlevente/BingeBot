@@ -6,7 +6,7 @@ import com.vadlevente.bingebot.core.data.repository.ItemRepository
 import com.vadlevente.bingebot.core.model.DisplayedItem
 import com.vadlevente.bingebot.core.model.Item
 import com.vadlevente.bingebot.core.model.OrderBy
-import com.vadlevente.bingebot.core.ui.BaseUseCase
+import com.vadlevente.bingebot.core.usecase.BaseUseCase
 import com.vadlevente.bingebot.core.util.getThumbnailUrl
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine

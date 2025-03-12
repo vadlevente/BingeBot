@@ -2,7 +2,7 @@ package com.vadlevente.bingebot.search.usecase
 
 import com.vadlevente.bingebot.core.data.repository.ItemRepository
 import com.vadlevente.bingebot.core.model.Item
-import com.vadlevente.bingebot.core.ui.BaseUseCase
+import com.vadlevente.bingebot.core.usecase.BaseUseCase
 import javax.inject.Inject
 
 data class SearchItemUseCaseParams(
