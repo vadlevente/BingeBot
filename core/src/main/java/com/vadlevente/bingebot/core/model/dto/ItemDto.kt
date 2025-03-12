@@ -21,8 +21,6 @@ sealed interface ItemDto<T : Item> {
         val genres: List<Genre>,
         @SerializedName("overview")
         val overview: String,
-        @SerializedName("backdrop_path")
-        val backdropPath: String,
         @SerializedName("poster_path")
         val posterPath: String,
         @SerializedName("vote_average")
@@ -42,7 +40,6 @@ sealed interface ItemDto<T : Item> {
             originalTitle = originalTitle,
             genreCodes = genres.map { it.id },
             overview = overview,
-            backdropPath = backdropPath,
             posterPath = posterPath,
             voteAverage = voteAverage,
             releaseDate = releaseDate,
@@ -60,8 +57,6 @@ sealed interface ItemDto<T : Item> {
         val originalTitle: String,
         val genres: List<Genre>,
         val overview: String,
-        @SerializedName("backdrop_path")
-        val backdropPath: String,
         @SerializedName("poster_path")
         val posterPath: String,
         @SerializedName("vote_average")
@@ -83,7 +78,6 @@ sealed interface ItemDto<T : Item> {
             originalTitle = originalTitle,
             genreCodes = genres.map { it.id },
             overview = overview,
-            backdropPath = backdropPath,
             posterPath = posterPath,
             voteAverage = voteAverage,
             releaseDate = releaseDate,

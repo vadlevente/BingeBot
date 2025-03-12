@@ -237,22 +237,23 @@ fun <T : Item> ItemDetailScreenComponent(
                     }
                     dateContent()
                 }
-
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 16.dp),
-                    text = item.overview,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.primary
-                )
-                HorizontalDivider(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 16.dp),
-                    thickness = 1.dp,
-                    color = MaterialTheme.colorScheme.primary
-                )
+                item.overview?.let { overview ->
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 16.dp),
+                        text = overview,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                    HorizontalDivider(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 16.dp),
+                        thickness = 1.dp,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
                 customContent()
                 HorizontalDivider(
                     modifier = Modifier

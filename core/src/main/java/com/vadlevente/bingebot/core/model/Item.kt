@@ -3,7 +3,6 @@ package com.vadlevente.bingebot.core.model
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
-import com.google.gson.annotations.SerializedName
 import com.vadlevente.bingebot.core.model.Item.Movie
 import com.vadlevente.bingebot.core.model.Item.Tv
 import java.util.Date
@@ -18,8 +17,7 @@ sealed interface Item {
     val title: String
     val originalTitle: String
     val genreCodes: List<Int>
-    val overview: String
-    val backdropPath: String?
+    val overview: String?
     val posterPath: String?
     val voteAverage: Float
     val releaseDate: Date?
@@ -54,29 +52,49 @@ sealed interface Item {
         @PrimaryKey
         override val id: Int,
         override val title: String,
-        @SerializedName("original_title")
         override val originalTitle: String,
-        @SerializedName("genre_ids")
         override val genreCodes: List<Int>,
-        override val overview: String,
-        @SerializedName("backdrop_path")
-        override val backdropPath: String?,
-        @SerializedName("poster_path")
+        @Ignore
+        override val overview: String? = null,
         override val posterPath: String?,
-        @SerializedName("vote_average")
         override val voteAverage: Float,
-        @SerializedName("budget")
-        val budget: Long?,
-        @SerializedName("revenue")
-        val revenue: Long?,
-        @SerializedName("runtime")
-        val runtime: Long?,
-        @SerializedName("release_date")
+        @Ignore
+        val budget: Long? = null,
+        @Ignore
+        val revenue: Long? = null,
+        @Ignore
+        val runtime: Long? = null,
         override val releaseDate: Date? = null,
         override val localeCode: String = SelectedLanguage.default.code,
         override val watchedDate: Date? = null,
         override val createdDate: Date? = null,
     ) : Item {
+
+        constructor(
+            id: Int,
+            title: String,
+            originalTitle: String,
+            genreCodes: List<Int>,
+            posterPath: String?,
+            voteAverage: Float,
+            releaseDate: Date?,
+            localeCode: String,
+            watchedDate: Date?,
+            createdDate: Date?
+        ) : this(
+            id = id,
+            title = title,
+            originalTitle = originalTitle,
+            genreCodes = genreCodes,
+            posterPath = posterPath,
+            voteAverage = voteAverage,
+            releaseDate = releaseDate,
+            localeCode = localeCode,
+            watchedDate = watchedDate,
+            createdDate = createdDate,
+            overview = null
+        )
+
         @Ignore
         val localization: SelectedLanguage = SelectedLanguage.from(localeCode)
         override val isWatched: Boolean
@@ -87,33 +105,52 @@ sealed interface Item {
     data class Tv(
         @PrimaryKey
         override val id: Int,
-        @SerializedName("name")
         override val title: String,
-        @SerializedName("original_name")
         override val originalTitle: String,
-        @SerializedName("genre_ids")
         override val genreCodes: List<Int>,
-        override val overview: String,
-        @SerializedName("backdrop_path")
-        override val backdropPath: String?,
-        @SerializedName("poster_path")
+        @Ignore
+        override val overview: String? = null,
         override val posterPath: String?,
-        @SerializedName("vote_average")
         override val voteAverage: Float,
-        @SerializedName("first_air_date")
         override val releaseDate: Date? = null,
-        @SerializedName("created_by")
+        @Ignore
         val creator: String? = null,
-        @SerializedName("number_of_episodes")
+        @Ignore
         val numberOfEpisodes: Int = 0,
-        @SerializedName("number_of_seasons")
+        @Ignore
         val numberOfSeasons: Int = 0,
-        @SerializedName("last_air_date")
+        @Ignore
         val lastAirDate: Date? = null,
         override val localeCode: String = SelectedLanguage.default.code,
         override val watchedDate: Date? = null,
         override val createdDate: Date? = null,
     ) : Item {
+
+        constructor(
+            id: Int,
+            title: String,
+            originalTitle: String,
+            genreCodes: List<Int>,
+            posterPath: String?,
+            voteAverage: Float,
+            releaseDate: Date?,
+            localeCode: String,
+            watchedDate: Date?,
+            createdDate: Date?
+        ) : this(
+            id = id,
+            title = title,
+            originalTitle = originalTitle,
+            genreCodes = genreCodes,
+            posterPath = posterPath,
+            voteAverage = voteAverage,
+            releaseDate = releaseDate,
+            localeCode = localeCode,
+            watchedDate = watchedDate,
+            createdDate = createdDate,
+            overview = null
+        )
+
         @Ignore
         val localization: SelectedLanguage = SelectedLanguage.from(localeCode)
         override val isWatched: Boolean
@@ -130,7 +167,6 @@ sealed interface SkeletonFactory <T : Item> {
             originalTitle = "",
             genreCodes = emptyList(),
             overview = "",
-            backdropPath = null,
             posterPath = null,
             voteAverage = 1f,
             budget = null,
@@ -145,7 +181,6 @@ sealed interface SkeletonFactory <T : Item> {
             originalTitle = "",
             genreCodes = emptyList(),
             overview = "",
-            backdropPath = null,
             posterPath = null,
             voteAverage = 1f,
         )
