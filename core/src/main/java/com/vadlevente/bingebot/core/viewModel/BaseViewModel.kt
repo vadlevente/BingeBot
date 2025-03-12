@@ -97,7 +97,7 @@ abstract class BaseViewModel<S : State>(
             .launchIn(viewModelScope)
 
     protected fun <T : Any> Flow<T>.onValueSilent(
-        action: (T) -> Unit,
+        action: suspend (T) -> Unit,
     ) = this
         .catch {
             basicErrorHandler(it)

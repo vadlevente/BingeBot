@@ -60,7 +60,7 @@ class SettingsViewModel @Inject constructor(
     fun onLanguageChanged(language: SelectedLanguage) {
         setLanguageUseCase.execute(
             SetLanguageUseCaseParams(language)
-        ).onStart()
+        ).onStartSilent()
     }
 
     fun onShowLanguageBottomSheet() {
@@ -88,7 +88,7 @@ class SettingsViewModel @Inject constructor(
                     positiveButtonTitle = stringOf(string.common_Yes),
                     negativeButtonTitle = stringOf(string.common_No),
                     onPositiveButtonClicked = {
-                        logoutUseCase.execute(Unit).onValue {
+                        logoutUseCase.execute(Unit).onValueSilent {
                             navigationEventChannel.sendEvent(
                                 NavigationEvent.TopNavigationEvent.NavigateTo(NavDestination.TopNavDestination.NonAuthenticatedScreens)
                             )

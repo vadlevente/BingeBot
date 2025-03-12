@@ -1,6 +1,5 @@
 package com.vadlevente.bingebot.app
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
@@ -17,10 +16,6 @@ class MainActivity : AppCompatActivity() {
 
     @Inject
     lateinit var navigationEventChannel: NavigationEventChannel
-
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

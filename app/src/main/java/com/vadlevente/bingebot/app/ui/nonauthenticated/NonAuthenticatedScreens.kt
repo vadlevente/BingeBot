@@ -80,8 +80,7 @@ private fun navigate(
     when (destination) {
         NonAuthenticatedNavDestination.Registration,
         NonAuthenticatedNavDestination.Login,
-        is NonAuthenticatedNavDestination.RegisterPin,
-        is NonAuthenticatedNavDestination.RegisterPinConfirm -> {
+        is NonAuthenticatedNavDestination.RegisterPin -> {
             navController.navigate(destination) {
                 popUpTo(0)
             }
