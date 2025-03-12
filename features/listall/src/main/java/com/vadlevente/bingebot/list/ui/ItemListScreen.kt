@@ -120,61 +120,7 @@ fun <T : Item> ItemListScreenComponent(
                 label = "searchfield"
             ) { isExpanded ->
                 if (isExpanded) {
-                    LaunchedEffect(true) {
-                        focusRequester.requestFocus()
-                    }
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(70.dp)
-                            .padding(vertical = 8.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .size(32.dp)
-                                .clickable {
-                                    onQueryChanged(null)
-                                }
-                        ) {
-                            Icon(
-                                modifier = Modifier.fillMaxSize(),
-                                imageVector = Icons.Filled.ChevronLeft,
-                                contentDescription = "",
-                                tint = MaterialTheme.colorScheme.primary,
-                            )
-                        }
-                        val textFieldValue = TextFieldValue(
-                            state.searchQuery ?: "",
-                            TextRange(state.searchQuery?.length ?: 0)
-                        )
-                        TextField(
-                            modifier = Modifier
-                                .padding(end = 8.dp)
-                                .fillMaxWidth()
-                                .focusRequester(focusRequester),
-                            value = textFieldValue,
-                            colors = TextFieldDefaults.colors(
-                                focusedContainerColor = Color.Transparent,
-                                unfocusedContainerColor = Color.Transparent,
-                                cursorColor = MaterialTheme.colorScheme.primary,
-                                focusedTextColor = MaterialTheme.colorScheme.primary,
-                                unfocusedTextColor = MaterialTheme.colorScheme.primary,
-                            ),
-                            onValueChange = {
-                                onQueryChanged(it.text)
-                            },
-                            trailingIcon = {
-                                Icon(
-                                    modifier = Modifier
-                                        .padding(8.dp),
-                                    imageVector = Icons.Filled.Search,
-                                    contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.primary,
-                                )
-                            },
-                        )
-                    }
+                    SearchBar(focusRequester, onQueryChanged, state)
                 } else {
                     TopBar(
                         title = stringOf(resources.title),
@@ -287,6 +233,69 @@ fun <T : Item> ItemListScreenComponent(
             }
         }
 
+    }
+}
+
+@Composable
+private fun <T : Item> SearchBar(
+    focusRequester: FocusRequester,
+    onQueryChanged: (String?) -> Unit,
+    state: ViewState<T>,
+) {
+    LaunchedEffect(true) {
+        focusRequester.requestFocus()
+    }
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(70.dp)
+            .padding(vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Box(
+            modifier = Modifier
+                .size(32.dp)
+                .clickable {
+                    onQueryChanged(null)
+                }
+        ) {
+            Icon(
+                modifier = Modifier.fillMaxSize(),
+                imageVector = Icons.Filled.ChevronLeft,
+                contentDescription = "",
+                tint = MaterialTheme.colorScheme.primary,
+            )
+        }
+        val textFieldValue = TextFieldValue(
+            state.searchQuery ?: "",
+            TextRange(state.searchQuery?.length ?: 0)
+        )
+        TextField(
+            modifier = Modifier
+                .padding(end = 8.dp)
+                .fillMaxWidth()
+                .focusRequester(focusRequester),
+            value = textFieldValue,
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = Color.Transparent,
+                unfocusedContainerColor = Color.Transparent,
+                cursorColor = MaterialTheme.colorScheme.primary,
+                focusedTextColor = MaterialTheme.colorScheme.primary,
+                unfocusedTextColor = MaterialTheme.colorScheme.primary,
+            ),
+            onValueChange = {
+                onQueryChanged(it.text)
+            },
+            trailingIcon = {
+                Icon(
+                    modifier = Modifier
+                        .padding(8.dp),
+                    imageVector = Icons.Filled.Search,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                )
+            },
+        )
     }
 }
 

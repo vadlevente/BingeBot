@@ -22,6 +22,7 @@ class SaveSecretWithPinUseCase @Inject constructor(
                 params.email,
                 params.password,
             )
+            secretService.setAuthenticated(true)
         }
 
 }

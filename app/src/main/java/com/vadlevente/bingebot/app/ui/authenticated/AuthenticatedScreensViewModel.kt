@@ -25,9 +25,11 @@ navigationEventChannel, toastEventChannel, shouldAuthenticateUseCase
     private val viewState = MutableStateFlow(ViewState())
     override val state = viewState.asStateFlow()
 
-    override fun onAuthenticationOpened() {
+    override fun onAuthenticationHandled(authOpened: Boolean) {
         viewModelScope.launch {
-            delay(1500)
+            if (authOpened) {
+                delay(1500)
+            }
             viewState.update {
                 it.copy(
                     shouldShowScreens = true,

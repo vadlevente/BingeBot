@@ -11,6 +11,7 @@ import com.vadlevente.moviedetails.ItemDetailsViewModel.ViewState
 import com.vadlevente.moviedetails.domain.model.DisplayedItemDetails
 import com.vadlevente.moviedetails.domain.usecases.GetItemDetailsUseCase
 import com.vadlevente.moviedetails.domain.usecases.GetItemDetailsUseCaseParams
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -36,11 +37,14 @@ abstract class ItemDetailsViewModel<T : Item>(
                 itemId = itemId
             )
         ).onValue { details ->
+            isInProgress.value = true
             baseViewState.update {
                 it.copy(
                     details = details
                 )
             }
+            delay(1000)
+            isInProgress.value = false
         }
     }
 

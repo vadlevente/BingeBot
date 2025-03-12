@@ -1,5 +1,6 @@
 package com.vadlevente.bingebot.core.ui.composables
 
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
@@ -50,44 +51,39 @@ fun ListItem(
     onClick: () -> Unit = {},
     onLongClick: () -> Unit = {},
 ) {
-    if (isLoading) {
-        Row(
-            modifier = modifier
-                .padding(8.dp)
-                .height(150.dp)
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Box(
-                modifier = modifier
-                    .fillMaxHeight()
-                    .width(100.dp)
-                    .clip(RoundedCornerShape(8.dp))
-                    .shimmerEffect(),
+    Crossfade(
+        targetState = isLoading,
+        label = "listitem"
+    ) { isLoading ->
+        if (isLoading) {
+            LoadingShimmer(modifier)
+        } else {
+            ItemContent(
+                watchedDate = watchedDate,
+                modifier = modifier,
+                onClick = onClick,
+                onLongClick = onClick,
+                iconPath = iconPath,
+                title = title,
+                releaseYear = releaseYear,
+                rating = rating,
             )
-            Column(
-                modifier = Modifier
-                    .padding(horizontal = 18.dp)
-                    .weight(1f)
-            ) {
-                Text(
-                    modifier = Modifier
-                        .width(300.dp)
-                        .clip(RoundedCornerShape(8.dp))
-                        .shimmerEffect(),
-                    text = "",
-                )
-                Text(
-                    modifier = Modifier
-                        .width(60.dp)
-                        .clip(RoundedCornerShape(8.dp))
-                        .shimmerEffect(),
-                    text = "",
-                )
-            }
         }
-        return
     }
+}
+
+@Composable
+@OptIn(ExperimentalFoundationApi::class)
+private fun ItemContent(
+    watchedDate: Date?,
+    modifier: Modifier,
+    onClick: () -> Unit,
+    onLongClick: () -> Unit,
+    iconPath: String?,
+    title: String,
+    releaseYear: String,
+    rating: String,
+) {
     val isWatched = watchedDate != null
     Card(
         modifier = modifier
@@ -184,6 +180,45 @@ fun ListItem(
     }
 }
 
+@Composable
+private fun LoadingShimmer(modifier: Modifier) {
+    Row(
+        modifier = modifier
+            .padding(8.dp)
+            .height(150.dp)
+            .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Box(
+            modifier = modifier
+                .fillMaxHeight()
+                .width(100.dp)
+                .clip(RoundedCornerShape(8.dp))
+                .shimmerEffect(),
+        )
+        Column(
+            modifier = Modifier
+                .padding(horizontal = 18.dp)
+                .weight(1f)
+        ) {
+            Text(
+                modifier = Modifier
+                    .width(300.dp)
+                    .clip(RoundedCornerShape(8.dp))
+                    .shimmerEffect(),
+                text = "",
+            )
+            Text(
+                modifier = Modifier
+                    .width(60.dp)
+                    .clip(RoundedCornerShape(8.dp))
+                    .shimmerEffect(),
+                text = "",
+            )
+        }
+    }
+}
+
 @Preview
 @Composable
 private fun ListItemPreview() {
@@ -195,7 +230,7 @@ private fun ListItemPreview() {
             watchedDate = Date(),
             rating = "8.9",
             releaseYear = "1994",
-            onClick = {  },
+            onClick = { },
         )
     }
 }

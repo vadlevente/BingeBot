@@ -16,7 +16,7 @@ abstract class LifecycleAwareViewModel <S : State> (
     private val shouldAuthenticateUseCase: ShouldAuthenticateUseCase,
 ) : BaseViewModel<S>(navigationEventChannel, toastEventChannel), DefaultLifecycleObserver {
 
-    open fun onAuthenticationOpened() {}
+    open fun onAuthenticationHandled(authOpened: Boolean) {}
 
     override fun onResume(owner: LifecycleOwner) {
         super.onResume(owner)
@@ -26,9 +26,9 @@ abstract class LifecycleAwareViewModel <S : State> (
                     navigationEventChannel.sendEvent(
                         NavigationEvent.TopNavigationEvent.NavigateTo(NavDestination.TopNavDestination.Authenticate)
                     )
-                    onAuthenticationOpened()
                 }
             }
+            onAuthenticationHandled(shouldAuthenticate)
         }
     }
 

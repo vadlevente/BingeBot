@@ -1,9 +1,10 @@
 package com.vadlevente.moviedetails.ui
 
-import androidx.compose.foundation.background
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.aspectRatio
@@ -98,164 +99,125 @@ fun <T : Item> ItemDetailScreenComponent(
         },
 
     ) { paddingValues ->
-        if (isInProgress || state.details == null) {
-            Column(
-                modifier = Modifier
-                .padding(paddingValues)
-                .padding(horizontal = 16.dp)
-                .background(MaterialTheme.colorScheme.background)
+        Crossfade(
+            targetState = isInProgress || state.details == null,
+            label = "detailscreen"
+        ) { isLoading ->
+            if (isLoading) {
+                LoadingShimmer(paddingValues)
+            } else {
+                DetailContent(paddingValues, state, dateContent, customContent)
+            }
+        }
+    }
+}
+
+@Composable
+private fun <T : Item> DetailContent(
+    paddingValues: PaddingValues,
+    state: ItemDetailsViewModel.ViewState<T>,
+    dateContent: @Composable (RowScope.() -> Unit),
+    customContent: @Composable (LazyItemScope.() -> Unit),
+) {
+    if (state.details == null) return
+    LazyColumn(
+        modifier = Modifier
+            .padding(paddingValues)
+            .padding(horizontal = 16.dp)
+    ) {
+        item {
+            val item = state.details.displayedItem.item
+            val isWatched = state.details.displayedItem.item.watchedDate != null
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
             ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(8.dp))
-                            .fillMaxWidth(0.5f)
-                            .aspectRatio(0.667f)
-                            .shimmerEffect()
-                    )
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 16.dp),
-                    ) {
-                        Text(
-                            modifier = Modifier
-                                .fillMaxWidth(1f)
-                                .clip(RoundedCornerShape(8.dp))
-                                .shimmerEffect(),
-                            text = "",
-                        )
-                        Text(
-                            modifier = Modifier
-                                .fillMaxWidth(0.7f)
-                                .clip(RoundedCornerShape(8.dp))
-                                .shimmerEffect(),
-                            text = "",
-                        )
-                    }
-                }
                 Box(
                     modifier = Modifier
-                        .padding(top = 16.dp)
                         .clip(RoundedCornerShape(8.dp))
-                        .fillMaxWidth()
-                        .height(250.dp)
-                        .shimmerEffect()
-                )
-            }
-            return@Scaffold
-        }
-        LazyColumn(
-            modifier = Modifier
-                .padding(paddingValues)
-                .padding(horizontal = 16.dp)
-                .background(MaterialTheme.colorScheme.background)
-        ) {
-            item {
-                val item = state.details.displayedItem.item
-                val isWatched = state.details.displayedItem.item.watchedDate != null
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
+                        .fillMaxWidth(0.5f)
                 ) {
-                    Box(
+                    AsyncImage(
+                        model = state.details.displayedItem.thumbnailUrl,
                         modifier = Modifier
-                            .clip(RoundedCornerShape(8.dp))
-                            .fillMaxWidth(0.5f)
-                    ) {
-                        AsyncImage(
-                            model = state.details.displayedItem.thumbnailUrl,
+                            .alpha(if (isWatched) .5f else 1f)
+                            .fillMaxWidth(),
+                        error = painterResource(id = Res.drawable.movie_poster_placeholder),
+                        placeholder = painterResource(id = Res.drawable.movie_poster_placeholder),
+                        contentDescription = null,
+                        contentScale = ContentScale.FillWidth,
+                    )
+                    if (isWatched) {
+                        Icon(
                             modifier = Modifier
-                                .alpha(if (isWatched) .5f else 1f)
-                                .fillMaxWidth(),
-                            error = painterResource(id = Res.drawable.movie_poster_placeholder),
-                            placeholder = painterResource(id = Res.drawable.movie_poster_placeholder),
+                                .align(Alignment.Center)
+                                .size(80.dp),
+                            imageVector = Icons.Filled.Done,
                             contentDescription = null,
-                            contentScale = ContentScale.FillWidth,
+                            tint = BingeBotTheme.colors.highlight,
                         )
-                        if (isWatched) {
-                            Icon(
-                                modifier = Modifier
-                                    .align(Alignment.Center)
-                                    .size(80.dp),
-                                imageVector = Icons.Filled.Done,
-                                contentDescription = null,
-                                tint = BingeBotTheme.colors.highlight,
-                            )
-                            Text(
-                                modifier = Modifier
-                                    .align(Alignment.BottomCenter)
-                                    .padding(bottom = 8.dp),
-                                text = item.watchedDate?.dateString ?: "",
-                                style = MaterialTheme.typography.titleSmall,
-                                color = BingeBotTheme.colors.highlight,
-                            )
-                        }
-                    }
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 16.dp,)
-                    ) {
                         Text(
-                            text = item.title,
-                            style = MaterialTheme.typography.titleMedium,
-                            color = MaterialTheme.colorScheme.primary
+                            modifier = Modifier
+                                .align(Alignment.BottomCenter)
+                                .padding(bottom = 8.dp),
+                            text = item.watchedDate?.dateString ?: "",
+                            style = MaterialTheme.typography.titleSmall,
+                            color = BingeBotTheme.colors.highlight,
                         )
-                        if (item.title != item.originalTitle) {
-                            Text(
-                                modifier = Modifier.padding(top = 16.dp),
-                                text = "(${item.originalTitle})",
-                                style = MaterialTheme.typography.titleSmall,
-                                color = MaterialTheme.colorScheme.primary
-                            )
-                        }
                     }
                 }
-
-                Row(
+                Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 16.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
+                        .padding(start = 16.dp)
                 ) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        text = item.title,
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                    if (item.title != item.originalTitle) {
                         Text(
-                            text = item.voteAverage.asOneDecimalString,
+                            modifier = Modifier.padding(top = 16.dp),
+                            text = "(${item.originalTitle})",
                             style = MaterialTheme.typography.titleSmall,
                             color = MaterialTheme.colorScheme.primary
                         )
-                        Icon(
-                            modifier = Modifier.padding(end = 8.dp),
-                            imageVector = Icons.Filled.Star,
-                            contentDescription = null,
-                            tint = Color.Yellow
-                        )
                     }
-                    dateContent()
                 }
-                item.overview?.let { overview ->
+            }
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 16.dp),
-                        text = overview,
-                        style = MaterialTheme.typography.bodyMedium,
+                        text = item.voteAverage.asOneDecimalString,
+                        style = MaterialTheme.typography.titleSmall,
                         color = MaterialTheme.colorScheme.primary
                     )
-                    HorizontalDivider(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 16.dp),
-                        thickness = 1.dp,
-                        color = MaterialTheme.colorScheme.primary
+                    Icon(
+                        modifier = Modifier.padding(end = 8.dp),
+                        imageVector = Icons.Filled.Star,
+                        contentDescription = null,
+                        tint = Color.Yellow
                     )
                 }
-                customContent()
+                dateContent()
+            }
+            item.overview?.let { overview ->
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 16.dp),
+                    text = overview,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.primary
+                )
                 HorizontalDivider(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -263,56 +225,114 @@ fun <T : Item> ItemDetailScreenComponent(
                     thickness = 1.dp,
                     color = MaterialTheme.colorScheme.primary
                 )
-                Text(
-                    modifier = Modifier.padding(bottom = 16.dp),
-                    text = stringResource(R.string.itemDetails_cast),
-                    style = MaterialTheme.typography.bodyMedium.copy(
-                        fontWeight = FontWeight.Bold,
-                    ),
-                    color = MaterialTheme.colorScheme.primary
-                )
-                LazyRow(modifier = Modifier.padding(bottom = 16.dp)) {
-                    items(state.details.credits.cast) { castMember ->
-                        Column(
+            }
+            customContent()
+            HorizontalDivider(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 16.dp),
+                thickness = 1.dp,
+                color = MaterialTheme.colorScheme.primary
+            )
+            Text(
+                modifier = Modifier.padding(bottom = 16.dp),
+                text = stringResource(R.string.itemDetails_cast),
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    fontWeight = FontWeight.Bold,
+                ),
+                color = MaterialTheme.colorScheme.primary
+            )
+            LazyRow(modifier = Modifier.padding(bottom = 16.dp)) {
+                items(state.details.credits.cast) { castMember ->
+                    Column(
+                        modifier = Modifier
+                            .width(200.dp)
+                            .padding(horizontal = 8.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Box(
                             modifier = Modifier
-                                .width(200.dp)
-                                .padding(horizontal = 8.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally
+                                .clip(RoundedCornerShape(8.dp))
+                                .fillMaxWidth()
                         ) {
-                            Box(
-                                modifier = Modifier
-                                    .clip(RoundedCornerShape(8.dp))
-                                    .fillMaxWidth()
-                            ) {
-                                AsyncImage(
-                                    model = castMember.profileUrl,
-                                    modifier = Modifier.fillMaxWidth(),
-                                    error = painterResource(id = Res.drawable.movie_poster_placeholder),
-                                    placeholder = painterResource(id = Res.drawable.movie_poster_placeholder),
-                                    contentDescription = null,
-                                    contentScale = ContentScale.FillWidth
-                                )
-                            }
-                            Text(
-                                modifier = Modifier.padding(top = 8.dp),
-                                text = castMember.name,
-                                style = MaterialTheme.typography.bodyMedium.copy(
-                                    fontWeight = FontWeight.Bold,
-                                ),
-                                color = MaterialTheme.colorScheme.primary,
-                                textAlign = TextAlign.Center,
-                            )
-                            Text(
-                                modifier = Modifier.padding(top = 8.dp),
-                                text = castMember.character,
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.primary,
-                                textAlign = TextAlign.Center,
+                            AsyncImage(
+                                model = castMember.profileUrl,
+                                modifier = Modifier.fillMaxWidth(),
+                                error = painterResource(id = Res.drawable.movie_poster_placeholder),
+                                placeholder = painterResource(id = Res.drawable.movie_poster_placeholder),
+                                contentDescription = null,
+                                contentScale = ContentScale.FillWidth
                             )
                         }
+                        Text(
+                            modifier = Modifier.padding(top = 8.dp),
+                            text = castMember.name,
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                fontWeight = FontWeight.Bold,
+                            ),
+                            color = MaterialTheme.colorScheme.primary,
+                            textAlign = TextAlign.Center,
+                        )
+                        Text(
+                            modifier = Modifier.padding(top = 8.dp),
+                            text = castMember.character,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.primary,
+                            textAlign = TextAlign.Center,
+                        )
                     }
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun LoadingShimmer(paddingValues: PaddingValues) {
+    Column(
+        modifier = Modifier
+            .padding(paddingValues)
+            .padding(horizontal = 16.dp)
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Box(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(8.dp))
+                    .fillMaxWidth(0.5f)
+                    .aspectRatio(0.667f)
+                    .shimmerEffect()
+            )
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp),
+            ) {
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth(1f)
+                        .clip(RoundedCornerShape(8.dp))
+                        .shimmerEffect(),
+                    text = "",
+                )
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth(0.7f)
+                        .clip(RoundedCornerShape(8.dp))
+                        .shimmerEffect(),
+                    text = "",
+                )
+            }
+        }
+        Box(
+            modifier = Modifier
+                .padding(top = 16.dp)
+                .clip(RoundedCornerShape(8.dp))
+                .fillMaxWidth()
+                .height(250.dp)
+                .shimmerEffect()
+        )
     }
 }
