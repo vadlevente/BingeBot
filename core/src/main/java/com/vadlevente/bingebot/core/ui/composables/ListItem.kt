@@ -49,7 +49,8 @@ fun ListItem(
     iconPath: String?,
     watchedDate: Date? = null,
     rating: String,
-    releaseYear: String,
+    releaseYear: String?,
+    info: String? = null,
     onClick: () -> Unit = {},
     onLongClick: () -> Unit = {},
 ) {
@@ -69,6 +70,7 @@ fun ListItem(
                 title = title,
                 releaseYear = releaseYear,
                 rating = rating,
+                info = info,
             )
         }
     }
@@ -83,8 +85,9 @@ private fun ItemContent(
     onLongClick: () -> Unit,
     iconPath: String?,
     title: String,
-    releaseYear: String,
+    releaseYear: String?,
     rating: String,
+    info: String?,
 ) {
     val isWatched = watchedDate != null
     Card(
@@ -150,11 +153,20 @@ private fun ItemContent(
                         style = MaterialTheme.typography.titleMedium,
                         color = if (isWatched) BingeBotTheme.colors.highlight else MaterialTheme.colorScheme.primary,
                     )
-                    Text(
-                        text = releaseYear,
-                        style = MaterialTheme.typography.titleSmall,
-                        color = MaterialTheme.colorScheme.primary
-                    )
+                    releaseYear?.let {
+                        Text(
+                            text = releaseYear,
+                            style = MaterialTheme.typography.titleSmall,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                    info?.let {
+                        Text(
+                            text = info,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.secondary
+                        )
+                    }
                 }
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
@@ -234,6 +246,7 @@ private fun ListItemPreview() {
             watchedDate = Date(),
             rating = "8.9",
             releaseYear = "1994",
+            info = "Író",
             onClick = { },
         )
     }

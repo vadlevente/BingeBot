@@ -9,15 +9,15 @@ data class Credits(
 )
 
 data class CastMember(
-    val id: Long,
+    val id: Int,
     val name: String,
     @SerializedName("profile_path")
-    val profileUrl: String,
+    val profileUrl: String?,
     val character: String,
 )
 
 data class CrewMember(
-    val id: Long,
+    val id: Int,
     val name: String,
     val job: Department
 )

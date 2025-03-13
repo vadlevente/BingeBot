@@ -28,6 +28,7 @@ import com.vadlevente.bingebot.search.ui.SearchTvScreen
 import com.vadlevente.bingebot.watchlist.ui.movie.MovieWatchListScreen
 import com.vadlevente.bingebot.watchlist.ui.tv.TvWatchListScreen
 import com.vadlevente.moviedetails.ui.MovieDetailsScreen
+import com.vadlevente.moviedetails.ui.PersonDetailsScreen
 import com.vadlevente.moviedetails.ui.TvDetailsScreen
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filterIsInstance
@@ -81,6 +82,10 @@ fun AuthenticatedScreens(
         composable<AuthenticatedNavDestination.TvWatchList> {
             val args: AuthenticatedNavDestination.TvWatchList = it.toRoute()
             TvWatchListScreen(args.watchListId)
+        }
+        composable<AuthenticatedNavDestination.PersonDetails> {
+            val args: AuthenticatedNavDestination.PersonDetails = it.toRoute()
+            PersonDetailsScreen(args.personId)
         }
     }
     val intent = (LocalContext.current as? AppCompatActivity)?.intent

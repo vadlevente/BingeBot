@@ -9,6 +9,7 @@ import com.google.gson.Gson
 import com.vadlevente.bingebot.core.BuildConfig
 import com.vadlevente.bingebot.core.data.api.ConfigurationApi
 import com.vadlevente.bingebot.core.data.api.MovieApi
+import com.vadlevente.bingebot.core.data.api.PersonApi
 import com.vadlevente.bingebot.core.data.api.TvApi
 import com.vadlevente.bingebot.core.data.remote.interceptor.ApiKeyInterceptor
 import dagger.Module
@@ -75,5 +76,11 @@ class RemoteModule {
     fun provideConfigurationApi(
         retrofit: Retrofit
     ): ConfigurationApi = retrofit.create(ConfigurationApi::class.java)
+
+    @Provides
+    @Singleton
+    fun providePersonApi(
+        retrofit: Retrofit
+    ): PersonApi = retrofit.create(PersonApi::class.java)
 
 }

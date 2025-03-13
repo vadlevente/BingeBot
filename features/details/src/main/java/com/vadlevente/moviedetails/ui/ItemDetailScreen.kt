@@ -1,6 +1,7 @@
 package com.vadlevente.moviedetails.ui
 
 import androidx.compose.animation.Crossfade
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -68,6 +69,7 @@ fun <T : Item> ItemDetailsScreen(
         isInProgress = isInProgress,
         onNavigateToOptions = viewModel::onNavigateToOptions,
         onBackPressed = viewModel::onBackPressed,
+        onCastMemberClicked = viewModel::onCastMemberClicked,
         customContent = customContent,
         dateContent = dateContent,
     )
@@ -79,6 +81,7 @@ fun <T : Item> ItemDetailScreenComponent(
     isInProgress: Boolean,
     onNavigateToOptions: () -> Unit,
     onBackPressed: () -> Unit,
+    onCastMemberClicked: (Int) -> Unit,
     customContent: @Composable LazyItemScope.() -> Unit,
     dateContent: @Composable RowScope.() -> Unit,
 ) {
@@ -106,7 +109,7 @@ fun <T : Item> ItemDetailScreenComponent(
             if (isLoading) {
                 LoadingShimmer(paddingValues)
             } else {
-                DetailContent(paddingValues, state, dateContent, customContent)
+                DetailContent(paddingValues, state, onCastMemberClicked, dateContent, customContent)
             }
         }
     }
@@ -116,6 +119,7 @@ fun <T : Item> ItemDetailScreenComponent(
 private fun <T : Item> DetailContent(
     paddingValues: PaddingValues,
     state: ItemDetailsViewModel.ViewState<T>,
+    onCastMemberClicked: (Int) -> Unit,
     dateContent: @Composable (RowScope.() -> Unit),
     customContent: @Composable (LazyItemScope.() -> Unit),
 ) {
@@ -247,7 +251,10 @@ private fun <T : Item> DetailContent(
                     Column(
                         modifier = Modifier
                             .width(200.dp)
-                            .padding(horizontal = 8.dp),
+                            .padding(horizontal = 8.dp)
+                            .clickable {
+                                onCastMemberClicked(castMember.id)
+                            },
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Box(

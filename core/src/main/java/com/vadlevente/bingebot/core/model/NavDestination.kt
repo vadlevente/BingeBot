@@ -72,6 +72,11 @@ sealed interface NavDestination {
 
         @Serializable
         data object Settings : AuthenticatedNavDestination
+
+        @Serializable
+        data class PersonDetails(
+            val personId: Int,
+        ) : AuthenticatedNavDestination
     }
 
 }

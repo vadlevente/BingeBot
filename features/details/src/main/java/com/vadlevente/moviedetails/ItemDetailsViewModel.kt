@@ -5,6 +5,7 @@ import com.vadlevente.bingebot.core.events.navigation.NavigationEvent
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
 import com.vadlevente.bingebot.core.model.Item
+import com.vadlevente.bingebot.core.model.NavDestination
 import com.vadlevente.bingebot.core.viewModel.BaseViewModel
 import com.vadlevente.bingebot.core.viewModel.State
 import com.vadlevente.moviedetails.ItemDetailsViewModel.ViewState
@@ -52,6 +53,16 @@ abstract class ItemDetailsViewModel<T : Item>(
         viewModelScope.launch {
             navigationEventChannel.sendEvent(
                 NavigationEvent.AuthenticatedNavigationEvent.NavigateUp
+            )
+        }
+    }
+
+    fun onCastMemberClicked(personId: Int) {
+        viewModelScope.launch {
+            navigationEventChannel.sendEvent(
+                NavigationEvent.AuthenticatedNavigationEvent.NavigateTo(
+                    NavDestination.AuthenticatedNavDestination.PersonDetails(personId)
+                )
             )
         }
     }

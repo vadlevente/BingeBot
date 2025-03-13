@@ -4,6 +4,8 @@ import com.vadlevente.bingebot.core.data.repository.ConfigurationRepository
 import com.vadlevente.bingebot.core.data.repository.ConfigurationRepositoryImpl
 import com.vadlevente.bingebot.core.data.repository.ItemRepository
 import com.vadlevente.bingebot.core.data.repository.ItemRepositoryImpl
+import com.vadlevente.bingebot.core.data.repository.PersonRepository
+import com.vadlevente.bingebot.core.data.repository.PersonRepositoryImpl
 import com.vadlevente.bingebot.core.model.Item.Movie
 import com.vadlevente.bingebot.core.model.Item.Tv
 import dagger.Binds
@@ -33,5 +35,11 @@ abstract class RepositoryModule {
     abstract fun bindConfigurationRepository(
         impl: ConfigurationRepositoryImpl
     ): ConfigurationRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindPersonRepository(
+        impl: PersonRepositoryImpl
+    ): PersonRepository
 
 }
