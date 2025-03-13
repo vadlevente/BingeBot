@@ -6,6 +6,7 @@ import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -28,15 +29,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.vadlevente.bingebot.core.util.dateString
+import com.vadlevente.bingebot.resources.R
 import com.vadlevente.bingebot.ui.BingeBotTheme
 import java.util.Date
-import com.vadlevente.bingebot.resources.R as Resources
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -113,15 +115,17 @@ private fun ItemContent(
                     modifier = Modifier
                         .clip(RoundedCornerShape(8.dp))
                         .width(100.dp)
+                        .aspectRatio(1/1.5f)
                 ) {
                     AsyncImage(
                         model = iconPath,
                         modifier = Modifier
                             .alpha(if (isWatched) .5f else 1f)
                             .fillMaxWidth(),
-                        error = painterResource(id = Resources.drawable.movie_poster_placeholder),
-                        placeholder = painterResource(id = Resources.drawable.movie_poster_placeholder),
+                        error = painterResource(id = R.drawable.movie_placeholder),
+                        placeholder = painterResource(id = R.drawable.movie_placeholder),
                         contentDescription = null,
+                        contentScale = ContentScale.FillBounds
                     )
                     if (isWatched) {
                         Icon(

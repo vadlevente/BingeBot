@@ -30,7 +30,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,6 +39,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.vadlevente.bingebot.bottomsheet.R
 import com.vadlevente.bingebot.bottomsheet.ui.composables.ItemBottomSheetHeader
 import com.vadlevente.bingebot.bottomsheet.viewmodel.ItemBottomSheetViewModel
@@ -61,7 +61,7 @@ fun <T : Item> ItemBottomSheet(
     resources: ItemBottomSheetResources,
 ) {
     val modalBottomSheetState = rememberModalBottomSheetState()
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.state.collectAsStateWithLifecycle()
     val event = state.event ?: return
     val displayedItem = event.item
     val item = displayedItem.item

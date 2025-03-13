@@ -28,7 +28,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,6 +40,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.vadlevente.bingebot.core.model.Item
 import com.vadlevente.bingebot.core.stringOf
@@ -60,8 +60,8 @@ fun <T : Item> ItemDetailsScreen(
     customContent: @Composable LazyItemScope.() -> Unit,
     dateContent: @Composable RowScope.() -> Unit,
 ) {
-    val state by viewModel.state.collectAsState()
-    val isInProgress by viewModel.isInProgress.collectAsState()
+    val state by viewModel.state.collectAsStateWithLifecycle()
+    val isInProgress by viewModel.isInProgress.collectAsStateWithLifecycle()
 
     ItemDetailScreenComponent(
         state = state,
@@ -142,8 +142,8 @@ private fun <T : Item> DetailContent(
                         modifier = Modifier
                             .alpha(if (isWatched) .5f else 1f)
                             .fillMaxWidth(),
-                        error = painterResource(id = Res.drawable.movie_poster_placeholder),
-                        placeholder = painterResource(id = Res.drawable.movie_poster_placeholder),
+                        error = painterResource(id = Res.drawable.movie_placeholder),
+                        placeholder = painterResource(id = Res.drawable.movie_placeholder),
                         contentDescription = null,
                         contentScale = ContentScale.FillWidth,
                     )
@@ -258,8 +258,8 @@ private fun <T : Item> DetailContent(
                             AsyncImage(
                                 model = castMember.profileUrl,
                                 modifier = Modifier.fillMaxWidth(),
-                                error = painterResource(id = Res.drawable.movie_poster_placeholder),
-                                placeholder = painterResource(id = Res.drawable.movie_poster_placeholder),
+                                error = painterResource(id = Res.drawable.movie_placeholder),
+                                placeholder = painterResource(id = Res.drawable.movie_placeholder),
                                 contentDescription = null,
                                 contentScale = ContentScale.FillWidth
                             )

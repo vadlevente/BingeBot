@@ -7,13 +7,13 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.vadlevente.bingebot.core.util.yearString
 import com.vadlevente.bingebot.details.R
 import com.vadlevente.moviedetails.TvDetailsViewModel
@@ -26,7 +26,7 @@ fun TvDetailsScreen(
         hiltViewModel<TvDetailsViewModel, TvDetailsViewModel.TvDetailsViewModelFactory> { factory ->
             factory.create(tvId)
         }
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.state.collectAsStateWithLifecycle()
     val tv = state.details?.displayedItem?.item ?: return
     ItemDetailsScreen(
         viewModel = viewModel,

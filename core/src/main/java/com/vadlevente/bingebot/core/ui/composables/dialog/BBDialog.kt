@@ -10,7 +10,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -18,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.vadlevente.bingebot.core.asString
 import com.vadlevente.bingebot.core.ui.composables.BBButton
 import com.vadlevente.bingebot.core.ui.composables.BBOutlinedButton
@@ -27,7 +27,7 @@ import com.vadlevente.bingebot.core.viewModel.dialog.DialogViewModel
 fun BBDialog(
     viewModel: DialogViewModel = hiltViewModel(),
 ) {
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.state.collectAsStateWithLifecycle()
     val event = state.event ?: return
     if (!state.isVisible) return
     Dialog(

@@ -19,12 +19,12 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.vadlevente.bingebot.bottomsheet.R
 import com.vadlevente.bingebot.bottomsheet.viewmodel.OrderByBottomSheetViewModel
 import com.vadlevente.bingebot.core.model.Item
@@ -38,7 +38,7 @@ fun <T : Item> OrderByBottomSheet(
     viewModel: OrderByBottomSheetViewModel<T>
 ) {
     val modalBottomSheetState = rememberModalBottomSheetState()
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.state.collectAsStateWithLifecycle()
     if (!state.isVisible) return
 
     ModalBottomSheet(

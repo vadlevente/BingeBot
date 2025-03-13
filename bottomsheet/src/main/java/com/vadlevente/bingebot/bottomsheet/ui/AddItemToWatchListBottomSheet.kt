@@ -20,12 +20,12 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.vadlevente.bingebot.bottomsheet.R
 import com.vadlevente.bingebot.bottomsheet.ui.composables.ItemBottomSheetHeader
 import com.vadlevente.bingebot.bottomsheet.viewmodel.AddItemToWatchListBottomSheetViewModel
@@ -40,8 +40,8 @@ fun <T : Item> AddItemToWatchListBottomSheet(
     viewModel: AddItemToWatchListBottomSheetViewModel<T>,
 ) {
     val modalBottomSheetState = rememberModalBottomSheetState()
-    val state by viewModel.state.collectAsState()
-    val isInProgress by viewModel.isInProgress.collectAsState()
+    val state by viewModel.state.collectAsStateWithLifecycle()
+    val isInProgress by viewModel.isInProgress.collectAsStateWithLifecycle()
     val displayedItem = state.event?.item ?: return
     val movie = displayedItem.item
     if (!state.isVisible) return

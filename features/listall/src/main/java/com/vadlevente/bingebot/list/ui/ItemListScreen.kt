@@ -39,7 +39,6 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -57,6 +56,7 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.vadlevente.bingebot.core.model.Genre
 import com.vadlevente.bingebot.core.model.Item
 import com.vadlevente.bingebot.core.stringOf
@@ -78,8 +78,8 @@ fun <T : Item> ItemListScreen(
     viewModel: ItemListViewModel<T>,
     resources: ItemListScreenResources,
 ) {
-    val state by viewModel.state.collectAsState()
-    val isInProgress by viewModel.isInProgress.collectAsState()
+    val state by viewModel.state.collectAsStateWithLifecycle()
+    val isInProgress by viewModel.isInProgress.collectAsStateWithLifecycle()
     ItemListScreenComponent(
         state = state,
         resources = resources,
