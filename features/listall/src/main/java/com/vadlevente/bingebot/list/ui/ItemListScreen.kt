@@ -358,6 +358,12 @@ private fun ControlSection(
                 )
             }
             Spacer(modifier = Modifier.weight(1f))
+            Text(
+                modifier = Modifier.padding(end = 8.dp),
+                text = state.items.size.toString(),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.primary,
+            )
             BBFilterChip(
                 title = when (state.isWatchedSelected) {
                     true -> R.string.isWatchedFilter_trueLabel
