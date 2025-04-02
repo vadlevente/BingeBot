@@ -15,7 +15,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.vadlevente.bingebot.core.util.asDollarAmount
-import com.vadlevente.bingebot.core.util.asRuntime
 import com.vadlevente.bingebot.core.util.yearString
 import com.vadlevente.bingebot.details.R
 import com.vadlevente.moviedetails.MovieDetailsViewModel
@@ -137,7 +136,7 @@ fun MovieDetailsScreen(
                     )
                     Text(
                         modifier = Modifier.padding(start = 8.dp),
-                        text = runtime.asRuntime,
+                        text = stringResource(R.string.itemDetails_runtimeFormatted, runtime/60, runtime%60),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.primary
                     )

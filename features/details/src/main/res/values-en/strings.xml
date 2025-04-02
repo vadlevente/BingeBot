@@ -10,6 +10,7 @@
     <string name="itemDetails_numberOfSeasons">Seasons</string>
     <string name="itemDetails_numberOfEpisodes">Episodes</string>
     <string name="itemDetails_genre">Genre</string>
+    <string name="itemDetails_runtimeFormatted">%1$dh %2$dm</string>
 
     <string name="personDetails_castCredits">Cast</string>
     <string name="personDetails_crewCredits">Crew</string>

@@ -13,6 +13,3 @@ val Long.asDollarAmount: String
         }
         return "$${format.format(this)}"
     }
-
-val Long.asRuntime: String
-    get() = "$this min"

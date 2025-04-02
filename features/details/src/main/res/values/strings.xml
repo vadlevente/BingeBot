@@ -10,6 +10,7 @@
     <string name="itemDetails_numberOfSeasons">Évadok</string>
     <string name="itemDetails_numberOfEpisodes">Epizódok</string>
     <string name="itemDetails_genre">Műfaj</string>
+    <string name="itemDetails_runtimeFormatted">%1$dó %2$dp</string>
 
     <string name="personDetails_castCredits">Szerepek</string>
     <string name="personDetails_crewCredits">Stáb</string>
