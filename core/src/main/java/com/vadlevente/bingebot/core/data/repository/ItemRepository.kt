@@ -157,6 +157,8 @@ class ItemRepositoryImpl<T : Item> @Inject constructor(
         storedItemsWithIncorrectLocalization.map {
             itemRemoteDataSource.getItemDetails(it.id, language).toItem()
                 .copyLocale<T>(language.code)
+                .copyCreatedDate<T>(it.createdDate!!)
+                .copyWatchedDate<T>(it.watchedDate)
         }.let {
             itemLocalDataSource.updateItems(it)
         }
