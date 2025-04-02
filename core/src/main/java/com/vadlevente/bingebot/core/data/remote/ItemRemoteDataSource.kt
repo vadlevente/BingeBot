@@ -37,4 +37,10 @@ abstract class ItemRemoteDataSource <T : Item>(
         language = language.code,
     )
 
+    suspend fun getItemProviders(
+        itemId: Int,
+    ) = itemApi.fetchItemProviders(
+        itemId = itemId,
+    )
+
 }

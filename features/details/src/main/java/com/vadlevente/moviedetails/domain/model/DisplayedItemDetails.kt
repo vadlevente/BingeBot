@@ -9,4 +9,5 @@ data class DisplayedItemDetails<T : Item>(
     val displayedItem: DisplayedItem<T>,
     val credits: Credits,
     val genres: List<Genre>,
+    val providers: DisplayedWatchProviders,
 )

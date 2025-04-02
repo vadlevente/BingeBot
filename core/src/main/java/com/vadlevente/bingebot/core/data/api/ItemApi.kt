@@ -4,6 +4,7 @@ import GenresResponseDto
 import com.vadlevente.bingebot.core.model.dto.CreditsDto
 import com.vadlevente.bingebot.core.model.dto.ItemDto
 import com.vadlevente.bingebot.core.model.dto.ItemsResponseDto
+import com.vadlevente.bingebot.core.model.dto.ProvidersDto
 
 interface ItemApi {
 
@@ -25,4 +26,8 @@ interface ItemApi {
         itemId: Int,
         language: String,
     ): CreditsDto
+
+    suspend fun fetchItemProviders(
+        itemId: Int
+    ): ProvidersDto
 }

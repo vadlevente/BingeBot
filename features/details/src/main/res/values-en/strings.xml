@@ -11,6 +11,9 @@
     <string name="itemDetails_numberOfEpisodes">Episodes</string>
     <string name="itemDetails_genre">Genre</string>
     <string name="itemDetails_runtimeFormatted">%1$dh %2$dm</string>
+    <string name="itemDetails_flatrate">Flatrate</string>
+    <string name="itemDetails_buy">Buy</string>
+    <string name="itemDetails_rent">Rent</string>
 
     <string name="personDetails_castCredits">Cast</string>
     <string name="personDetails_crewCredits">Crew</string>

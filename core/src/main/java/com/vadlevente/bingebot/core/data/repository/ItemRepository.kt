@@ -13,6 +13,7 @@ import com.vadlevente.bingebot.core.model.Item
 import com.vadlevente.bingebot.core.model.ItemDetails
 import com.vadlevente.bingebot.core.model.WatchList
 import com.vadlevente.bingebot.core.model.WatchListFactory
+import com.vadlevente.bingebot.core.model.WatchProviders
 import com.vadlevente.bingebot.core.model.firestore.StoredItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
@@ -20,6 +21,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapConcat
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
@@ -33,6 +35,7 @@ interface ItemRepository<T : Item> {
     fun getSearchResult(): Flow<List<T>>
     fun getWatchLists(): Flow<List<WatchList>>
     fun getWatchListItems(watchListId: String): Flow<List<T>>
+    fun getWatchProviders(itemId: Int): Flow<WatchProviders?>
     suspend fun updateGenres()
     suspend fun updateItems()
     suspend fun updateWatchLists()
@@ -105,6 +108,10 @@ class ItemRepositoryImpl<T : Item> @Inject constructor(
             .flatMapConcat { watchList ->
                 itemLocalDataSource.getItems(watchList.itemIds)
             }.flowOn(Dispatchers.IO)
+
+    override fun getWatchProviders(itemId: Int): Flow<WatchProviders?> = flow {
+        emit(itemRemoteDataSource.getItemProviders(itemId).results.hu)
+    }.flowOn(Dispatchers.IO)
 
     override suspend fun updateGenres() = withContext(Dispatchers.IO) {
         val language = preferencesDataSource.language.first()

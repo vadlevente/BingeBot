@@ -5,6 +5,7 @@ import com.vadlevente.bingebot.core.model.CastMember
 import com.vadlevente.bingebot.core.model.Item
 import com.vadlevente.bingebot.core.model.PersonCredit
 import com.vadlevente.bingebot.core.model.PersonDetails
+import com.vadlevente.bingebot.core.model.ProviderInfo
 
 fun Item.getThumbnailUrl(configuration: ApiConfiguration) =
     posterPath?.let {
@@ -25,3 +26,6 @@ fun PersonDetails.getProfileUrl(configuration: ApiConfiguration) =
     profileUrl?.let {
         "${configuration.imageConfiguration.thumbnailBaseUrl}${profileUrl}"
     }
+
+fun ProviderInfo.getLogoUrl(configuration: ApiConfiguration) =
+        "${configuration.imageConfiguration.thumbnailBaseUrl}${path}"

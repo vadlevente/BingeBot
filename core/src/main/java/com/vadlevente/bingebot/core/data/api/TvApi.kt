@@ -5,6 +5,7 @@ import com.vadlevente.bingebot.core.model.Item.Tv
 import com.vadlevente.bingebot.core.model.dto.CreditsDto
 import com.vadlevente.bingebot.core.model.dto.ItemDto.TvDto
 import com.vadlevente.bingebot.core.model.dto.ItemsResponseDto
+import com.vadlevente.bingebot.core.model.dto.ProvidersDto
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -22,4 +23,7 @@ interface TvApi : ItemApi {
 
     @GET("tv/{itemId}/credits")
     override suspend fun fetchItemCredits(@Path("itemId") itemId: Int, @Query("language") language: String): CreditsDto
+
+    @GET("tv/{itemId}/watch/providers")
+    override suspend fun fetchItemProviders(@Path("itemId") itemId: Int): ProvidersDto
 }

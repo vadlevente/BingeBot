@@ -5,10 +5,13 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -53,6 +56,7 @@ import com.vadlevente.bingebot.core.util.dateString
 import com.vadlevente.bingebot.details.R
 import com.vadlevente.bingebot.ui.BingeBotTheme
 import com.vadlevente.moviedetails.ItemDetailsViewModel
+import com.vadlevente.moviedetails.domain.model.DisplayedProviderInfo
 import com.vadlevente.bingebot.resources.R as Res
 
 @Composable
@@ -115,6 +119,7 @@ fun <T : Item> ItemDetailScreenComponent(
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun <T : Item> DetailContent(
     paddingValues: PaddingValues,
@@ -319,7 +324,79 @@ private fun <T : Item> DetailContent(
                     }
                 }
             }
+            if (state.details.providers.hasData) {
+                HorizontalDivider(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp),
+                    thickness = 1.dp,
+                    color = MaterialTheme.colorScheme.primary
+                )
+                if (!state.details.providers.flatrate.isNullOrEmpty()) {
+                    WatchProviderSection(
+                        title = stringResource(R.string.itemDetails_flatrate),
+                        providers = state.details.providers.flatrate,
+                    )
+                }
+                if (!state.details.providers.buy.isNullOrEmpty()) {
+                    WatchProviderSection(
+                        title = stringResource(R.string.itemDetails_buy),
+                        providers = state.details.providers.buy,
+                    )
+                }
+                if (!state.details.providers.rent.isNullOrEmpty()) {
+                    WatchProviderSection(
+                        title = stringResource(R.string.itemDetails_rent),
+                        providers = state.details.providers.rent,
+                    )
+                }
+            }
         }
+    }
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+fun WatchProviderSection(
+    title: String,
+    providers: List<DisplayedProviderInfo>,
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 16.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(
+            modifier = Modifier.padding(end = 16.dp),
+            text = title,
+            style = MaterialTheme.typography.bodyMedium.copy(
+                fontWeight = FontWeight.Bold,
+            ),
+            color = MaterialTheme.colorScheme.primary
+        )
+        FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            providers.forEach { provider ->
+                WatchProvider(provider.fullPath)
+            }
+        }
+    }
+}
+
+@Composable
+fun WatchProvider(
+    logoUrl: String
+) {
+    Box(
+        modifier = Modifier
+            .size(60.dp)
+            .clip(RoundedCornerShape(20.dp))
+    ) {
+        AsyncImage(
+            modifier = Modifier.fillMaxSize(),
+            model = logoUrl,
+            contentDescription = null,
+        )
     }
 }
 

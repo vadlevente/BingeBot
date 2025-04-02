@@ -5,12 +5,14 @@ import com.vadlevente.bingebot.core.data.repository.ItemRepository
 import com.vadlevente.bingebot.core.model.DisplayedItem
 import com.vadlevente.bingebot.core.model.Item
 import com.vadlevente.bingebot.core.usecase.BaseUseCase
+import com.vadlevente.bingebot.core.util.getLogoUrl
 import com.vadlevente.bingebot.core.util.getProfileUrl
 import com.vadlevente.bingebot.core.util.getThumbnailUrl
 import com.vadlevente.moviedetails.domain.model.DisplayedItemDetails
+import com.vadlevente.moviedetails.domain.model.DisplayedProviderInfo
+import com.vadlevente.moviedetails.domain.model.DisplayedWatchProviders
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 data class GetItemDetailsUseCaseParams(
@@ -27,8 +29,8 @@ class GetItemDetailsUseCase<T : Item> @Inject constructor(
             preferencesDataSource.apiConfiguration,
             itemRepository.getItemDetails(params.itemId),
             itemRepository.getGenres(),
-            ::Triple
-        ).map { (configuration, details, genres) ->
+            itemRepository.getWatchProviders(params.itemId)
+        ) { configuration, details, genres, providers ->
             DisplayedItemDetails(
                 displayedItem = DisplayedItem(
                     item = details.item,
@@ -44,6 +46,26 @@ class GetItemDetailsUseCase<T : Item> @Inject constructor(
                 genres = genres.filter {
                     details.item.genreCodes.contains(it.id)
                 },
+                providers = DisplayedWatchProviders(
+                    flatrate = providers?.flatrate?.map {
+                        DisplayedProviderInfo(
+                            name = it.name,
+                            fullPath = it.getLogoUrl(configuration)
+                        )
+                    },
+                    buy = providers?.buy?.map {
+                        DisplayedProviderInfo(
+                            name = it.name,
+                            fullPath = it.getLogoUrl(configuration)
+                        )
+                    },
+                    rent = providers?.rent?.map {
+                        DisplayedProviderInfo(
+                            name = it.name,
+                            fullPath = it.getLogoUrl(configuration)
+                        )
+                    },
+                ),
             )
         }
 }

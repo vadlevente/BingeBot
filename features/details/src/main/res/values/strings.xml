@@ -11,6 +11,9 @@
     <string name="itemDetails_numberOfEpisodes">Epizódok</string>
     <string name="itemDetails_genre">Műfaj</string>
     <string name="itemDetails_runtimeFormatted">%1$dó %2$dp</string>
+    <string name="itemDetails_flatrate">Előfizetés</string>
+    <string name="itemDetails_buy">Vásárlás</string>
+    <string name="itemDetails_rent">Kölcsönzés</string>
 
     <string name="personDetails_castCredits">Szerepek</string>
     <string name="personDetails_crewCredits">Stáb</string>
