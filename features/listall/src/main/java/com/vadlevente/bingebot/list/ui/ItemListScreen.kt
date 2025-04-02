@@ -1,5 +1,6 @@
 package com.vadlevente.bingebot.list.ui
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.expandVertically
@@ -119,8 +120,16 @@ fun <T : Item> ItemListScreenComponent(
                 targetState = state.isSearchFieldVisible,
                 label = "searchfield"
             ) { isExpanded ->
+                BackHandler(enabled = isExpanded) {
+                    onQueryChanged(null)
+                }
                 if (isExpanded) {
-                    SearchBar(focusRequester, onQueryChanged, state)
+                    SearchBar(
+                        hint = stringResource(resources.searchFieldHint),
+                        focusRequester = focusRequester,
+                        onQueryChanged = onQueryChanged,
+                        state = state,
+                    )
                 } else {
                     TopBar(
                         title = stringOf(resources.title),
@@ -238,6 +247,7 @@ fun <T : Item> ItemListScreenComponent(
 
 @Composable
 private fun <T : Item> SearchBar(
+    hint: String,
     focusRequester: FocusRequester,
     onQueryChanged: (String?) -> Unit,
     state: ViewState<T>,
@@ -293,6 +303,12 @@ private fun <T : Item> SearchBar(
                     imageVector = Icons.Filled.Search,
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.primary,
+                )
+            },
+            placeholder = {
+                Text(
+                    text = hint,
+                    color = MaterialTheme.colorScheme.primary,
                 )
             },
         )

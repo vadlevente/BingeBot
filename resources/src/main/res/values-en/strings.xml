@@ -27,4 +27,7 @@
 
     <string name="exit_dialogTitle">Exit</string>
     <string name="exit_dialogDesciption">Are you sure to exit the application?</string>
+
+    <string name="syncContent">Synchronizing content…</string>
+
 </resources>

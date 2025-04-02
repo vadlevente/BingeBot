@@ -213,6 +213,35 @@ private fun <T : Item> DetailContent(
                 }
                 dateContent()
             }
+            HorizontalDivider(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 16.dp),
+                thickness = 1.dp,
+                color = MaterialTheme.colorScheme.primary
+            )
+            Row {
+                Text(
+                    text = stringResource(R.string.itemDetails_genre),
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        fontWeight = FontWeight.Bold,
+                    ),
+                    color = MaterialTheme.colorScheme.primary
+                )
+                Text(
+                    modifier = Modifier.padding(start = 8.dp),
+                    text = state.details.genres.map { it.name }.joinToString(", "),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
+            HorizontalDivider(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp),
+                thickness = 1.dp,
+                color = MaterialTheme.colorScheme.primary
+            )
             item.overview?.let { overview ->
                 Text(
                     modifier = Modifier

@@ -26,8 +26,9 @@ class GetItemDetailsUseCase<T : Item> @Inject constructor(
         combine(
             preferencesDataSource.apiConfiguration,
             itemRepository.getItemDetails(params.itemId),
-            ::Pair
-        ).map { (configuration, details) ->
+            itemRepository.getGenres(),
+            ::Triple
+        ).map { (configuration, details, genres) ->
             DisplayedItemDetails(
                 displayedItem = DisplayedItem(
                     item = details.item,
@@ -40,6 +41,9 @@ class GetItemDetailsUseCase<T : Item> @Inject constructor(
                         )
                     }
                 ),
+                genres = genres.filter {
+                    details.item.genreCodes.contains(it.id)
+                },
             )
         }
 }

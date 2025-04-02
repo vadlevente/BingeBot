@@ -22,6 +22,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -58,9 +60,28 @@ class SettingsViewModel @Inject constructor(
     }
 
     fun onLanguageChanged(language: SelectedLanguage) {
-        setLanguageUseCase.execute(
-            SetLanguageUseCaseParams(language)
-        ).onStartSilent()
+        viewModelScope.launch {
+            dialogEventChannel.sendEvent(
+                ShowDialog(
+                    title = stringOf(R.string.changLanguage_syncDialog_title),
+                    content = stringOf(R.string.changLanguage_syncDialog_description),
+                    positiveButtonTitle = stringOf(string.common_Yes),
+                    negativeButtonTitle = stringOf(string.common_No),
+                    onPositiveButtonClicked = {
+                        setLanguageUseCase.execute(
+                            SetLanguageUseCaseParams(language)
+                        )
+                            .onStart {
+                                viewState.update { it.copy(isSyncInProgress = true) }
+                            }
+                            .onCompletion {
+                                viewState.update { it.copy(isSyncInProgress = false) }
+                            }
+                            .onStartSilent()
+                    },
+                )
+            )
+        }
     }
 
     fun onShowLanguageBottomSheet() {
@@ -103,6 +124,7 @@ class SettingsViewModel @Inject constructor(
         val languages: Map<SelectedLanguage, Boolean> = emptyMap(),
         val showSelectLanguageBottomSheet: Boolean = false,
         val email: String? = null,
+        val isSyncInProgress: Boolean = false,
     ) : State
 
 }

@@ -11,7 +11,6 @@ import com.vadlevente.bingebot.bottomsheet.viewmodel.ItemBottomSheetViewModel.Vi
 import com.vadlevente.bingebot.core.events.bottomSheet.BottomSheetEvent.ShowItemBottomSheet
 import com.vadlevente.bingebot.core.events.dialog.DialogEvent.ShowDialog
 import com.vadlevente.bingebot.core.events.dialog.DialogEventChannel
-import com.vadlevente.bingebot.core.events.navigation.NavigationEvent
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastType.INFO
@@ -58,9 +57,6 @@ abstract class ItemBottomSheetViewModel <T: Item> (
                 showToast(
                     stringOf(stringResources.saveSuccessfulToast),
                     INFO,
-                )
-                navigationEventChannel.sendEvent(
-                    NavigationEvent.AuthenticatedNavigationEvent.NavigateUp
                 )
                 onDismiss()
             }

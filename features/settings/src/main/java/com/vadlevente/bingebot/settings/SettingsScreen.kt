@@ -1,17 +1,22 @@
 package com.vadlevente.bingebot.settings
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons.AutoMirrored
 import androidx.compose.material.icons.Icons.Filled
 import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -30,7 +35,9 @@ import com.vadlevente.bingebot.core.ui.composables.ProgressScreen
 import com.vadlevente.bingebot.core.ui.composables.TopBar
 import com.vadlevente.bingebot.settings.SettingsViewModel.ViewState
 import com.vadlevente.bingebot.settings.ui.composables.SelectLanguageBottomSheet
+import com.vadlevente.bingebot.ui.BingeBotTheme
 import com.vadlevente.bingebot.ui.margin16
+import com.vadlevente.bingebot.resources.R as Res
 
 @Composable
 fun SettingsScreen(
@@ -57,6 +64,7 @@ fun SettingsScreenComponent(
     onSelectLanguage: (SelectedLanguage) -> Unit,
     onLogout: () -> Unit,
 ) {
+    BackHandler(enabled = state.isSyncInProgress) {  }
     Scaffold(
         topBar = {
             TopBar(
@@ -155,6 +163,30 @@ fun SettingsScreenComponent(
                         color = MaterialTheme.colorScheme.primary,
                     )
                 }
+            }
+        }
+    }
+    if (state.isSyncInProgress) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize().background(MaterialTheme.colorScheme.background.copy(alpha = .7f))
+        ) {
+            Column(
+                modifier = Modifier.align(Alignment.Center),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .wrapContentSize(Alignment.Center)
+                        .size(80.dp),
+                    color = BingeBotTheme.colors.highlight,
+                )
+                Text(
+                    modifier = Modifier.padding(top = 16.dp),
+                    text = stringResource(Res.string.syncContent),
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.primary,
+                )
             }
         }
     }

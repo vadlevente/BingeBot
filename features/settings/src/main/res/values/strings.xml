@@ -7,4 +7,6 @@
     <string name="settings_user">Felhasználó</string>
     <string name="logoutDialog_title">Kijelentkezés</string>
     <string name="logoutDialog_description">Biztosan szeretne kijelentkezni az alkalmazásból?</string>
+    <string name="changLanguage_syncDialog_title">Szinkronizálás</string>
+    <string name="changLanguage_syncDialog_description">A nyelvváltás során az összes eltárolt tartalom szinkronizálása is megtörténik, amely időigényes lehet.\nBiztosan szeretné folytatni?</string>
 </resources>

@@ -14,9 +14,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -65,6 +69,10 @@ fun <T : Item> SearchItemScreenComponent(
             )
         },
     ) { paddingValues ->
+        val focusRequester = remember { FocusRequester() }
+        LaunchedEffect(true) {
+            focusRequester.requestFocus()
+        }
         Column(modifier = Modifier
             .fillMaxSize()
             .padding(paddingValues)
@@ -74,7 +82,8 @@ fun <T : Item> SearchItemScreenComponent(
                 modifier = Modifier
                     .padding(horizontal = 8.dp)
                     .padding(top = 8.dp)
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .focusRequester(focusRequester),
                 value = state.query,
                 hint = stringOf(resources.searchFieldHint),
                 onValueChange = onQueryChanged,
