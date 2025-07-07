@@ -53,6 +53,7 @@ fun LoginScreen(
         onPasswordChanged = viewModel::onPasswordChanged,
         onSubmit = viewModel::onSubmit,
         onNavigateToRegistration = viewModel::onNavigateToRegistration,
+        onForgottenPassword = viewModel::onResendPassword,
         onBackPressed = {
             coroutineScope.launch {
                 viewModel.showExitConfirmation()
@@ -68,6 +69,7 @@ fun LoginScreenComponent(
     onPasswordChanged: (String) -> Unit,
     onSubmit: () -> Unit,
     onNavigateToRegistration: () -> Unit,
+    onForgottenPassword: () -> Unit,
     onBackPressed: () -> Unit = {},
 ) {
     var passwordVisible by remember { mutableStateOf(false) }
@@ -146,6 +148,17 @@ fun LoginScreenComponent(
                 style = MaterialTheme.typography.bodySmall,
                 color = BingeBotTheme.colors.highlight,
             )
+            Text(
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(vertical = margin8)
+                    .clickable(enabled = state.isResendPasswordEnabled) {
+                        onForgottenPassword()
+                    },
+                text = stringResource(id = R.string.loginForgottenPassword),
+                style = MaterialTheme.typography.bodySmall,
+                color = if (state.isResendPasswordEnabled) BingeBotTheme.colors.highlight else MaterialTheme.colorScheme.onBackground,
+            )
         }
     }
 
@@ -160,7 +173,7 @@ fun LoginScreenComponent(
 fun LoginScreenPreview() {
     BingeBotTheme {
         LoginScreenComponent(
-            ViewState("email", "password", true), {}, {}, {}, {}
+            ViewState("email", "password", true), {}, {}, {}, {}, {}
         )
     }
 }

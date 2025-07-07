@@ -13,6 +13,7 @@ import com.vadlevente.bingebot.core.model.exception.Reason.AUTHENTICATION_FAILED
 import com.vadlevente.bingebot.core.model.exception.Reason.EMAIL_ALREADY_IN_USE
 import com.vadlevente.bingebot.core.model.exception.Reason.INVALID_CREDENTIALS
 import com.vadlevente.bingebot.core.model.exception.Reason.NON_EXISTENT_USER
+import com.vadlevente.bingebot.core.model.exception.Reason.RESEND_UNSUCCESSFUL
 import com.vadlevente.bingebot.core.model.exception.Reason.SESSION_EXPIRED
 import com.vadlevente.bingebot.core.model.exception.Reason.WEAK_PASSWORD
 import dagger.Lazy
@@ -29,6 +30,7 @@ interface AuthenticationService {
     suspend fun register(email: String, password: String): String
     suspend fun isProfileSignedIn(profileId: String): Boolean
     suspend fun logout()
+    suspend fun resendPassword(email: String)
 }
 
 class AuthenticationServiceImpl @Inject constructor(
@@ -79,6 +81,20 @@ class AuthenticationServiceImpl @Inject constructor(
 
     override suspend fun logout() {
         firebaseAuth.get().signOut()
+    }
+
+    override suspend fun resendPassword(email: String) {
+        return suspendCoroutine { continuation ->
+            firebaseAuth.get().sendPasswordResetEmail(email).addOnCompleteListener {
+                if (it.isSuccessful) {
+                    continuation.resume(Unit)
+                } else {
+                    it.exception?.let {
+                        continuation.resumeWithException(BingeBotException(it, RESEND_UNSUCCESSFUL))
+                    } ?: continuation.resume(Unit)
+                }
+            }
+        }
     }
 
     private suspend fun saveCurrentUserId() {

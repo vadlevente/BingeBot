@@ -22,6 +22,7 @@
     <string name="exception_emailAlreadyInUse">A megadott e-mail címmel már létezik regisztrált felhasználó!</string>
     <string name="exception_nonExistentUser">A megadott adatokkal nem található felhasználó!</string>
     <string name="exception_wrongPin">Hibás PIN kód!</string>
+    <string name="exception_resendPasswordUnsuccessful">Nem sikerült kiküldeni az új jelszót!</string>
 
     <string name="successfulDeleteToast">Sikeresen törölve</string>
 

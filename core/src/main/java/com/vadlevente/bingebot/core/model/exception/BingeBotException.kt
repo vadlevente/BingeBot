@@ -22,6 +22,7 @@ enum class Reason(val reasonText: UIText? = null) {
     SESSION_EXPIRED(stringOf(Res.string.exception_sessionExpired)),
     WRONG_PIN_CODE(stringOf(Res.string.exception_wrongPin)),
     WATCHLIST_ALREADY_EXISTS(stringOf(Res.string.exception_sessionExpired)),
+    RESEND_UNSUCCESSFUL(stringOf(Res.string.exception_resendPasswordUnsuccessful)),
     DATA_NOT_FOUND,
     ENCRYPTION_ERROR,
 }

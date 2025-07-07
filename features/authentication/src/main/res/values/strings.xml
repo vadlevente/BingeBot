@@ -4,6 +4,7 @@
     <string name="loginPasswordLabel">Jelszó</string>
     <string name="loginSubmitButtonTitle">Bejelentkezés</string>
     <string name="loginNavigateToRegistrationTitle">Még nincs felhasználója? Regisztráljon itt!</string>
+    <string name="loginForgottenPassword">Elfelejtett jelszó</string>
     <string name="loginTitle">Kérjük, adja meg a bejelentkezési adatokat!</string>
 
     <string name="registrationEmailLabel">E-mail cím</string>
@@ -16,6 +17,7 @@
 
     <string name="registrationSuccessful">Sikeres regisztráció</string>
     <string name="loginSuccessful">Sikeres belépés</string>
+    <string name="passwordResendSuccessful">Az új jelszó beállításához szükséges teendőket elküldtük a megadott e-mail címre!</string>
 
     <string name="pin_codesNotEqual">A megadott kódok nem egyeznek meg!</string>
 

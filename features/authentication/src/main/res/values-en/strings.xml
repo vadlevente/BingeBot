@@ -4,6 +4,7 @@
     <string name="loginPasswordLabel">Password</string>
     <string name="loginSubmitButtonTitle">Login</string>
     <string name="loginNavigateToRegistrationTitle">Not registered? Try it here!</string>
+    <string name="loginForgottenPassword">Forgotten password</string>
     <string name="loginTitle">Please provide the login data!</string>
 
     <string name="registrationEmailLabel">E-mail address</string>
@@ -16,6 +17,7 @@
 
     <string name="registrationSuccessful">Registration successful</string>
     <string name="loginSuccessful">Login successful</string>
+    <string name="passwordResendSuccessful">We have sent the instructions required to set a new password to the provided email address!</string>
 
     <string name="pin_codesNotEqual">The entered PIN codes are not the same!</string>
 

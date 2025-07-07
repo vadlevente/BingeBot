@@ -22,6 +22,7 @@
     <string name="exception_emailAlreadyInUse">The e-mail address is already in use!</string>
     <string name="exception_nonExistentUser">No user was found with given credentials!</string>
     <string name="exception_wrongPin">Incorrect PIN code!</string>
+    <string name="exception_resendPasswordUnsuccessful">Resending the password was unsuccessful!</string>
 
     <string name="successfulDeleteToast">Deletion successful</string>
 

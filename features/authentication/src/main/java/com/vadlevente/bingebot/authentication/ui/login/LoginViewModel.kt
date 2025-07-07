@@ -1,9 +1,12 @@
 package com.vadlevente.bingebot.authentication.ui.login
 
+import android.util.Patterns
 import androidx.lifecycle.viewModelScope
 import com.vadlevente.bingebot.authentication.R
 import com.vadlevente.bingebot.authentication.domain.usecase.LoginUseCase
 import com.vadlevente.bingebot.authentication.domain.usecase.LoginUseCaseParams
+import com.vadlevente.bingebot.authentication.domain.usecase.ResendPasswordUseCase
+import com.vadlevente.bingebot.authentication.domain.usecase.ResendPasswordUseCaseParams
 import com.vadlevente.bingebot.authentication.ui.login.LoginViewModel.ViewState
 import com.vadlevente.bingebot.core.delegates.AppCloserDelegate
 import com.vadlevente.bingebot.core.events.navigation.NavigationEvent
@@ -26,6 +29,7 @@ class LoginViewModel @Inject constructor(
     navigationEventChannel: NavigationEventChannel,
     toastEventChannel: ToastEventChannel,
     private val loginUseCase: LoginUseCase,
+    private val resendPasswordUseCase: ResendPasswordUseCase,
     private val appCloserDelegate: AppCloserDelegate,
 ) : BaseViewModel<ViewState>(
     navigationEventChannel, toastEventChannel
@@ -37,6 +41,7 @@ class LoginViewModel @Inject constructor(
     fun onEmailChanged(newValue: String) {
         viewState.update { it.copy(email = newValue) }
         reevaluateSubmitEnabled()
+        viewState.update { it.copy(isResendPasswordEnabled = Patterns.EMAIL_ADDRESS.matcher(newValue).matches()) }
     }
 
     fun onPasswordChanged(newValue: String) {
@@ -76,6 +81,17 @@ class LoginViewModel @Inject constructor(
         }
     }
 
+    fun onResendPassword() {
+        resendPasswordUseCase.execute(
+            ResendPasswordUseCaseParams(viewState.value.email)
+        ).onValue {
+            showToast(
+                stringOf(R.string.passwordResendSuccessful),
+                INFO,
+            )
+        }
+    }
+
     private fun reevaluateSubmitEnabled() {
         viewState.update {
             it.copy(
@@ -88,6 +104,7 @@ class LoginViewModel @Inject constructor(
         val email: String = "",
         val password: String = "",
         val isSubmitEnabled: Boolean = false,
+        val isResendPasswordEnabled: Boolean = false,
     ) : State
 
 }
