@@ -10,6 +10,7 @@ import com.vadlevente.bingebot.core.model.Item.Movie
 import com.vadlevente.bingebot.core.model.Item.Tv
 import com.vadlevente.bingebot.core.model.SelectedLanguage
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -46,10 +47,14 @@ class ConfigurationRepositoryImpl @Inject constructor(
     override suspend fun setSelectedLanguage(language: SelectedLanguage) =
         withContext(Dispatchers.IO) {
             preferencesDataSource.saveSelectedLanguage(language)
-            movieRepository.updateItemLocalizations()
-            movieRepository.updateGenres()
-            tvRepository.updateItemLocalizations()
-            tvRepository.updateGenres()
+            async {
+                movieRepository.updateItemLocalizations()
+                tvRepository.updateItemLocalizations()
+            }.await()
+            async {
+                movieRepository.updateGenres()
+                tvRepository.updateGenres()
+            }.await()
             setLocale(language.code)
         }
 

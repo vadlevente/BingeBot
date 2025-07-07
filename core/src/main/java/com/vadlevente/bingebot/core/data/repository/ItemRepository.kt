@@ -17,6 +17,9 @@ import com.vadlevente.bingebot.core.model.WatchProviders
 import com.vadlevente.bingebot.core.model.firestore.StoredItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
@@ -161,14 +164,17 @@ class ItemRepositoryImpl<T : Item> @Inject constructor(
         val language = preferencesDataSource.language.first()
         val storedItemsWithIncorrectLocalization =
             itemLocalDataSource.getAllItemsWithIncorrectLocalization(language.code).first()
-        storedItemsWithIncorrectLocalization.map {
-            itemRemoteDataSource.getItemDetails(it.id, language).toItem()
-                .copyLocale<T>(language.code)
-                .copyCreatedDate<T>(it.createdDate!!)
-                .copyWatchedDate<T>(it.watchedDate)
-        }.let {
-            itemLocalDataSource.updateItems(it)
+        val updatedItems = coroutineScope {
+            storedItemsWithIncorrectLocalization.map { item ->
+                async {
+                    itemRemoteDataSource.getItemDetails(item.id, language).toItem()
+                        .copyLocale<T>(language.code)
+                        .copyCreatedDate<T>(item.createdDate!!)
+                        .copyWatchedDate<T>(item.watchedDate)
+                }
+            }.awaitAll()
         }
+        itemLocalDataSource.updateItems(updatedItems)
     }
 
     override suspend fun saveItem(item: T) = withContext(Dispatchers.IO) {
