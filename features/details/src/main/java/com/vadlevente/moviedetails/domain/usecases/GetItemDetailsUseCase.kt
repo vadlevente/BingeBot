@@ -52,19 +52,19 @@ class GetItemDetailsUseCase<T : Item> @Inject constructor(
                             name = it.name,
                             fullPath = it.getLogoUrl(configuration)
                         )
-                    },
+                    } ?: emptyList(),
                     buy = providers?.buy?.map {
                         DisplayedProviderInfo(
                             name = it.name,
                             fullPath = it.getLogoUrl(configuration)
                         )
-                    },
+                    } ?: emptyList(),
                     rent = providers?.rent?.map {
                         DisplayedProviderInfo(
                             name = it.name,
                             fullPath = it.getLogoUrl(configuration)
                         )
-                    },
+                    } ?: emptyList(),
                 ),
             )
         }

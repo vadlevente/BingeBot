@@ -332,19 +332,19 @@ private fun <T : Item> DetailContent(
                     thickness = 1.dp,
                     color = MaterialTheme.colorScheme.primary
                 )
-                if (!state.details.providers.flatrate.isNullOrEmpty()) {
+                if (!state.details.providers.flatrate.isEmpty()) {
                     WatchProviderSection(
                         title = stringResource(R.string.itemDetails_flatrate),
                         providers = state.details.providers.flatrate,
                     )
                 }
-                if (!state.details.providers.buy.isNullOrEmpty()) {
+                if (!state.details.providers.buy.isEmpty()) {
                     WatchProviderSection(
                         title = stringResource(R.string.itemDetails_buy),
                         providers = state.details.providers.buy,
                     )
                 }
-                if (!state.details.providers.rent.isNullOrEmpty()) {
+                if (!state.details.providers.rent.isEmpty()) {
                     WatchProviderSection(
                         title = stringResource(R.string.itemDetails_rent),
                         providers = state.details.providers.rent,
