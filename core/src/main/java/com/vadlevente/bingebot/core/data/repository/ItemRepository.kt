@@ -157,7 +157,10 @@ class ItemRepositoryImpl<T : Item> @Inject constructor(
     override suspend fun searchItems(query: String) = withContext(Dispatchers.IO) {
         val language = preferencesDataSource.language.first()
         val items = itemRemoteDataSource.searchItem(query, language)
-        itemCacheDataSource.updateItems(items.map { it.toItem() }, language)
+        itemCacheDataSource.updateItems(
+            items.map { it.toItem() }.filterUnwantedItems(),
+            language
+        )
     }
 
     override suspend fun updateItemLocalizations() = withContext(Dispatchers.IO) {
@@ -250,5 +253,9 @@ class ItemRepositoryImpl<T : Item> @Inject constructor(
         firestoreItemDataSource.deleteWatchList(watchListId)
         itemLocalDataSource.deleteWatchList(watchListId)
     }
+
+    private fun List<T>.filterUnwantedItems() = this
+        .filter { it.genreCodes.isNotEmpty() }
+        .filter { it.voteAverage != 0f }
 
 }
