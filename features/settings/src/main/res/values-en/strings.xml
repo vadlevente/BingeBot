@@ -7,4 +7,6 @@
     <string name="settings_user">User</string>
     <string name="logoutDialog_title">Sign out</string>
     <string name="logoutDialog_description">Are you sure to sign out of the application?</string>
+    <string name="changLanguage_syncDialog_title">Synchronizing</string>
+    <string name="changLanguage_syncDialog_description">During the language change, all stored content will also be synchronized, which may take some time.\nAre you sure you want to continue?</string>
 </resources>
