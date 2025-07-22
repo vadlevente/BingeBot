@@ -237,6 +237,9 @@ fun <T : Item> ItemListScreenComponent(
                                 )
                             }
                         }
+                        item {
+                            Spacer(modifier = Modifier.height(72.dp))
+                        }
                     }
                 }
             }
