@@ -58,7 +58,8 @@ class AuthenticationViewModel @Inject constructor(
                 viewState.update {
                     it.copy(
                         showBiometricPrompt = true,
-                        cipher = cipher
+                        cipher = cipher,
+                        isBiometricsEnrolled = true,
                     )
                 }
             }
@@ -124,6 +125,7 @@ class AuthenticationViewModel @Inject constructor(
         val pin: String = "",
         val showBiometricPrompt: Boolean = false,
         val cipher: Cipher? = null,
+        val isBiometricsEnrolled: Boolean = false,
     ) : State
 
 }

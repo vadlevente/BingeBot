@@ -33,7 +33,7 @@ interface SecretService {
     )
 
     fun retrieveCredentialsWithBiometrics(cipher: Cipher): Flow<LoginCredentials?>
-    fun getDecryptionCipher(): Flow<Cipher>
+    fun getDecryptionCipher(): Flow<Cipher?>
 }
 
 class SecretServiceImpl @Inject constructor(
@@ -91,8 +91,12 @@ class SecretServiceImpl @Inject constructor(
 
     override fun getDecryptionCipher() =
         preferencesDataSource.biometricsEncryptedSecret.map {
+            if (it == null) return@map null
             val encrypted =
-                gson.fromJson(String(Base64.decode(it, Base64.DEFAULT)), EncryptedData::class.java)
+                gson.fromJson(
+                    String(Base64.decode(it, Base64.DEFAULT)),
+                    EncryptedData::class.java
+                )
             cryptographyService.getInitializedCipherForDecryption(encrypted.initializationVector)
         }
 }

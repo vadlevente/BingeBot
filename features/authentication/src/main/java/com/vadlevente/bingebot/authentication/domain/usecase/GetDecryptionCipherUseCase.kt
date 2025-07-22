@@ -8,8 +8,8 @@ import javax.inject.Inject
 
 class GetDecryptionCipherUseCase @Inject constructor(
     private val secretService: SecretService,
-) : BaseUseCase<Unit, Cipher> {
+) : BaseUseCase<Unit, Cipher?> {
 
-    override fun execute(params: Unit): Flow<Cipher> = secretService.getDecryptionCipher()
+    override fun execute(params: Unit): Flow<Cipher?> = secretService.getDecryptionCipher()
 
 }

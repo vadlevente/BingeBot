@@ -41,6 +41,7 @@ fun PinScreen(
     modifier: Modifier = Modifier,
     title: UIText,
     pin: String,
+    showBiometrics: Boolean,
     onPinChanged: (String) -> Unit,
     onFingerprintClicked: (() -> Unit)? = null,
 ) {
@@ -119,7 +120,7 @@ fun PinScreen(
                             }
 
                             PinButton.Fingerprint -> {
-                                onFingerprintClicked?.let {
+                                if (showBiometrics && onFingerprintClicked != null) {
                                     Box(
                                         modifier = Modifier
                                             .size(56.dp)
@@ -136,7 +137,7 @@ fun PinScreen(
                                             tint = MaterialTheme.colorScheme.primary,
                                         )
                                     }
-                                } ?: Spacer(modifier = Modifier.size(56.dp))
+                                } else Spacer(modifier = Modifier.size(56.dp))
                             }
 
                             PinButton.Backspace -> {
@@ -179,6 +180,7 @@ private fun PinScreenPreview() {
         PinScreen(
             title = stringOf("Adja meg a PIN kódját"),
             pin = "5674",
+            showBiometrics = true,
             onPinChanged = {},
         )
     }

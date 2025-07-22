@@ -50,6 +50,7 @@ fun AuthenticationScreen(
                     .padding(paddingValues),
                 title = stringOf(R.string.pin_authentication_title),
                 pin = state.pin,
+                showBiometrics = state.isBiometricsEnrolled,
                 onPinChanged = viewModel::onPinChanged,
                 onFingerprintClicked = viewModel::onOpenBiometricAuthentication,
             )

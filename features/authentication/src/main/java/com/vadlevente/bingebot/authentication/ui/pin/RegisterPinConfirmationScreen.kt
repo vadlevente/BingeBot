@@ -48,6 +48,7 @@ fun RegisterPinConfirmationScreen() {
                     .padding(paddingValues),
                 title = stringOf(R.string.pin_confirm_title),
                 pin = state.pinConfirmed,
+                showBiometrics = false,
                 onPinChanged = viewModel::onPinConfirmChanged
             )
         }

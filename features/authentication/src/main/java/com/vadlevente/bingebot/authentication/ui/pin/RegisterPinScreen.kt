@@ -41,6 +41,7 @@ fun RegisterPinScreen(
                 .padding(paddingValues),
             title = stringOf(R.string.pin_register_title),
             pin = state.pin,
+            showBiometrics = false,
             onPinChanged = viewModel::onPinChanged
         )
     }
