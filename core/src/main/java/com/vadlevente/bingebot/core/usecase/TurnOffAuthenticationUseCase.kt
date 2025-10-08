@@ -4,10 +4,12 @@ import com.vadlevente.bingebot.core.data.service.SecretService
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class ShouldAuthenticateUseCase @Inject constructor(
+class TurnOffAuthenticationUseCase @Inject constructor(
     private val secretService: SecretService,
-) : BaseUseCase<Unit, Boolean> {
+) : BaseUseCase<Unit, Unit> {
 
-    override fun execute(params: Unit): Flow<Boolean> = secretService.shouldAuthenticate
+    override fun execute(params: Unit): Flow<Unit> = emptyFlow {
+        secretService.deleteSecretData()
+    }
 
 }

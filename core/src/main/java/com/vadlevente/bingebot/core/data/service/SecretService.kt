@@ -9,14 +9,16 @@ import com.vadlevente.bingebot.core.model.exception.BingeBotException
 import com.vadlevente.bingebot.core.model.exception.Reason
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import javax.crypto.Cipher
 import javax.inject.Inject
 
 interface SecretService {
-    val isAuthenticated: StateFlow<Boolean>
+    val shouldAuthenticate: Flow<Boolean>
+    val hasStoredSecret: Flow<Boolean>
+
     fun setAuthenticated(isAuthenticated: Boolean)
 
     suspend fun saveCredentialsWithPin(
@@ -34,6 +36,8 @@ interface SecretService {
 
     fun retrieveCredentialsWithBiometrics(cipher: Cipher): Flow<LoginCredentials?>
     fun getDecryptionCipher(): Flow<Cipher?>
+
+    suspend fun deleteSecretData()
 }
 
 class SecretServiceImpl @Inject constructor(
@@ -44,7 +48,14 @@ class SecretServiceImpl @Inject constructor(
 ) : SecretService {
 
     private val _isAuthenticated = MutableStateFlow(false)
-    override val isAuthenticated = _isAuthenticated.asStateFlow()
+    override val shouldAuthenticate = combine(
+        _isAuthenticated.asStateFlow(),
+        preferencesDataSource.pinEncryptedSecret
+    ) { isAuthenticated, pinSecret ->
+        !isAuthenticated && pinSecret != null
+    }
+
+    override val hasStoredSecret = preferencesDataSource.pinEncryptedSecret.map { it != null }
 
     override fun setAuthenticated(isAuthenticated: Boolean) {
         _isAuthenticated.value = true
@@ -99,4 +110,8 @@ class SecretServiceImpl @Inject constructor(
                 )
             cryptographyService.getInitializedCipherForDecryption(encrypted.initializationVector)
         }
+
+    override suspend fun deleteSecretData() {
+        preferencesDataSource.clearSecret()
+    }
 }

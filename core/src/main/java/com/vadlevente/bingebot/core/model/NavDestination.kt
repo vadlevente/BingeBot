@@ -8,7 +8,9 @@ sealed interface NavDestination {
         @Serializable
         data object Splash : TopNavDestination
         @Serializable
-        data object NonAuthenticatedScreens : TopNavDestination
+        data class NonAuthenticatedScreens(
+            val registerPin: Boolean = false,
+        ) : TopNavDestination
         @Serializable
         data object AuthenticatedScreens : TopNavDestination
         @Serializable

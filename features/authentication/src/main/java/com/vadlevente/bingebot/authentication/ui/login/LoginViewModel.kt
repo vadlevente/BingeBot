@@ -9,10 +9,13 @@ import com.vadlevente.bingebot.authentication.domain.usecase.ResendPasswordUseCa
 import com.vadlevente.bingebot.authentication.domain.usecase.ResendPasswordUseCaseParams
 import com.vadlevente.bingebot.authentication.ui.login.LoginViewModel.ViewState
 import com.vadlevente.bingebot.core.delegates.AppCloserDelegate
+import com.vadlevente.bingebot.core.events.dialog.DialogEvent.ShowDialog
+import com.vadlevente.bingebot.core.events.dialog.DialogEventChannel
 import com.vadlevente.bingebot.core.events.navigation.NavigationEvent
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastType.INFO
+import com.vadlevente.bingebot.core.model.NavDestination
 import com.vadlevente.bingebot.core.model.NavDestination.NonAuthenticatedNavDestination
 import com.vadlevente.bingebot.core.stringOf
 import com.vadlevente.bingebot.core.viewModel.BaseViewModel
@@ -23,6 +26,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import com.vadlevente.bingebot.resources.R as Res
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
@@ -31,6 +35,7 @@ class LoginViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase,
     private val resendPasswordUseCase: ResendPasswordUseCase,
     private val appCloserDelegate: AppCloserDelegate,
+    private val dialogEventChannel: DialogEventChannel,
 ) : BaseViewModel<ViewState>(
     navigationEventChannel, toastEventChannel
 ), AppCloserDelegate by appCloserDelegate {
@@ -60,12 +65,30 @@ class LoginViewModel @Inject constructor(
                 stringOf(R.string.loginSuccessful),
                 INFO,
             )
-            navigationEventChannel.sendEvent(
-                NavigationEvent.NonAuthenticatedNavigationEvent.NavigateTo(
-                    NonAuthenticatedNavDestination.RegisterPin(
-                        viewState.value.email,
-                        viewState.value.password,
-                    )
+            dialogEventChannel.sendEvent(
+                ShowDialog(
+                    title = stringOf(R.string.pin_register_confirmation_title),
+                    content = stringOf(R.string.pin_register_confirmation_description),
+                    isCancelable = false,
+                    positiveButtonTitle = stringOf(Res.string.common_Yes),
+                    negativeButtonTitle = stringOf(Res.string.common_No),
+                    onPositiveButtonClicked = {
+                        navigationEventChannel.sendEvent(
+                            NavigationEvent.NonAuthenticatedNavigationEvent.NavigateTo(
+                                NavDestination.NonAuthenticatedNavDestination.RegisterPin(
+                                    viewState.value.email,
+                                    viewState.value.password,
+                                )
+                            )
+                        )
+                    },
+                    onNegativeButtonClicked = {
+                        viewModelScope.launch {
+                            navigationEventChannel.sendEvent(
+                                NavigationEvent.TopNavigationEvent.NavigateTo(NavDestination.TopNavDestination.AuthenticatedScreens)
+                            )
+                        }
+                    }
                 )
             )
         }

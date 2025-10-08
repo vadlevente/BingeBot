@@ -6,6 +6,8 @@ import com.vadlevente.bingebot.authentication.domain.usecase.RegistrationUseCase
 import com.vadlevente.bingebot.authentication.domain.usecase.RegistrationUseCaseParams
 import com.vadlevente.bingebot.authentication.ui.registration.RegistrationViewModel.ViewState
 import com.vadlevente.bingebot.core.delegates.AppCloserDelegate
+import com.vadlevente.bingebot.core.events.dialog.DialogEvent.ShowDialog
+import com.vadlevente.bingebot.core.events.dialog.DialogEventChannel
 import com.vadlevente.bingebot.core.events.navigation.NavigationEvent
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
@@ -20,6 +22,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import com.vadlevente.bingebot.resources.R as Res
 
 @HiltViewModel
 class RegistrationViewModel @Inject constructor(
@@ -27,6 +30,7 @@ class RegistrationViewModel @Inject constructor(
     toastEventChannel: ToastEventChannel,
     private val registrationUseCase: RegistrationUseCase,
     private val appCloserDelegate: AppCloserDelegate,
+    private val dialogEventChannel: DialogEventChannel,
 ) : BaseViewModel<ViewState>(
     navigationEventChannel, toastEventChannel
 ), AppCloserDelegate by appCloserDelegate {
@@ -60,16 +64,32 @@ class RegistrationViewModel @Inject constructor(
                 stringOf(R.string.registrationSuccessful),
                 INFO,
             )
-            viewModelScope.launch {
-                navigationEventChannel.sendEvent(
-                    NavigationEvent.NonAuthenticatedNavigationEvent.NavigateTo(
-                        NavDestination.NonAuthenticatedNavDestination.RegisterPin(
-                            viewState.value.email,
-                            viewState.value.password,
+            dialogEventChannel.sendEvent(
+                ShowDialog(
+                    title = stringOf(R.string.pin_register_confirmation_title),
+                    content = stringOf(R.string.pin_register_confirmation_description),
+                    isCancelable = false,
+                    positiveButtonTitle = stringOf(Res.string.common_Yes),
+                    negativeButtonTitle = stringOf(Res.string.common_No),
+                    onPositiveButtonClicked = {
+                        navigationEventChannel.sendEvent(
+                            NavigationEvent.NonAuthenticatedNavigationEvent.NavigateTo(
+                                NavDestination.NonAuthenticatedNavDestination.RegisterPin(
+                                    viewState.value.email,
+                                    viewState.value.password,
+                                )
+                            )
                         )
-                    )
+                    },
+                    onNegativeButtonClicked = {
+                        viewModelScope.launch {
+                            navigationEventChannel.sendEvent(
+                                NavigationEvent.TopNavigationEvent.NavigateTo(NavDestination.TopNavDestination.AuthenticatedScreens)
+                            )
+                        }
+                    }
                 )
-            }
+            )
         }
     }
 

@@ -62,7 +62,7 @@ abstract class BaseViewModel<S : State>(
         if (t.isBecauseOf(SESSION_EXPIRED)) {
             viewModelScope.launch {
                 navigationEventChannel.sendEvent(
-                    NavigationEvent.TopNavigationEvent.NavigateTo((NavDestination.TopNavDestination.NonAuthenticatedScreens))
+                    NavigationEvent.TopNavigationEvent.NavigateTo((NavDestination.TopNavDestination.NonAuthenticatedScreens()))
                 )
             }
         }

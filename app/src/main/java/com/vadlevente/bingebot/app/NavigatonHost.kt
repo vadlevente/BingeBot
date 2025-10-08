@@ -14,6 +14,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.vadlevente.bingebot.app.ui.authenticated.AuthenticatedScreens
 import com.vadlevente.bingebot.app.ui.nonauthenticated.NonAuthenticatedScreens
 import com.vadlevente.bingebot.authentication.ui.authentication.AuthenticationScreen
@@ -57,7 +58,8 @@ fun NavigationHost(
                     SplashScreen()
                 }
                 composable<TopNavDestination.NonAuthenticatedScreens> {
-                    NonAuthenticatedScreens(navigationEventChannel)
+                    val args: TopNavDestination.NonAuthenticatedScreens = it.toRoute()
+                    NonAuthenticatedScreens(navigationEventChannel, args.registerPin)
                 }
                 composable<TopNavDestination.AuthenticatedScreens> {
                     AuthenticatedScreens(navigationEventChannel)

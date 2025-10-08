@@ -16,9 +16,12 @@ import androidx.compose.material.icons.Icons.Filled
 import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Security
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -52,6 +55,7 @@ fun SettingsScreen(
         onDismissLanguageBottomSheet = viewModel::onDismissLanguageBottomSheet,
         onSelectLanguage = viewModel::onLanguageChanged,
         onLogout = viewModel::onLogout,
+        onSecurityChanged = viewModel::onSecurityChanged,
     )
 }
 
@@ -63,6 +67,7 @@ fun SettingsScreenComponent(
     onDismissLanguageBottomSheet: () -> Unit,
     onSelectLanguage: (SelectedLanguage) -> Unit,
     onLogout: () -> Unit,
+    onSecurityChanged: (Boolean) -> Unit,
 ) {
     BackHandler(enabled = state.isSyncInProgress) {  }
     Scaffold(
@@ -161,6 +166,45 @@ fun SettingsScreenComponent(
                         text = stringResource(id = R.string.settings_logout),
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.primary,
+                    )
+                }
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 16.dp)
+                        .clickable {
+                            onSecurityChanged(!state.isSecurityOn)
+                        },
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    BBIcon(
+                        imageVector = Filled.Security,
+                    )
+                    Text(
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(horizontal = 16.dp),
+                        text = stringResource(id = R.string.settings_security),
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.primary,
+                    )
+                    Switch(
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp)
+                            .clickable(enabled = false) {},
+                        checked = state.isSecurityOn,
+                        colors = SwitchDefaults.colors(
+                            checkedThumbColor = MaterialTheme.colorScheme.primary,
+                            checkedTrackColor = MaterialTheme.colorScheme.primaryContainer,
+                            uncheckedThumbColor = MaterialTheme.colorScheme.onSurface,
+                            uncheckedTrackColor = MaterialTheme.colorScheme.surface,
+                            checkedBorderColor = MaterialTheme.colorScheme.primary,
+                            uncheckedBorderColor = MaterialTheme.colorScheme.primary,
+                            disabledCheckedThumbColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.4f),
+                            disabledUncheckedThumbColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.4f)
+                        ),
+                        onCheckedChange = {},
                     )
                 }
             }

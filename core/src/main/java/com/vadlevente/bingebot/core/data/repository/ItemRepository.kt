@@ -134,17 +134,21 @@ class ItemRepositoryImpl<T : Item> @Inject constructor(
         }.map { storedItem ->
             storedItem.copyWatchedDate<T>(watchedDate = remoteItems.first { it.id.toInt() == storedItem.id }.watchDate)
         }
-        val itemsToInsert = remoteItems
-            .map { it.id.toInt() }
-            .minus(storedItems.map { it.id }
-                .toSet())
-            .map { id ->
-                val remoteItem = remoteItems.first { it.id.toInt() == id }
-                itemRemoteDataSource.getItemDetails(id, language).toItem()
-                    .copyLocale<T>(language.code)
-                    .copyCreatedDate<T>(remoteItem.createdDate)
-                    .copyWatchedDate<T>(remoteItem.watchDate)
-            }
+        val itemsToInsert = coroutineScope {
+            remoteItems
+                .map { it.id.toInt() }
+                .minus(storedItems.map { it.id }
+                    .toSet())
+                .map { id ->
+                    val remoteItem = remoteItems.first { it.id.toInt() == id }
+                    async {
+                        itemRemoteDataSource.getItemDetails(id, language).toItem()
+                            .copyLocale<T>(language.code)
+                            .copyCreatedDate<T>(remoteItem.createdDate)
+                            .copyWatchedDate<T>(remoteItem.watchDate)
+                    }
+                }
+        }.awaitAll()
         itemLocalDataSource.updateItems(itemsToUpdate.plus(itemsToInsert))
     }
 

@@ -6,7 +6,6 @@ import com.vadlevente.bingebot.core.model.NavDestination.TopNavDestination
 import com.vadlevente.bingebot.core.usecase.BaseUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import javax.inject.Inject
@@ -18,18 +17,12 @@ class GetNavDestinationToStartScreenUseCase @Inject constructor(
 
     @OptIn(ExperimentalCoroutinesApi::class)
     override fun execute(params: Unit): Flow<TopNavDestination> {
-        return combine(
-            preferencesDataSource.activeProfileId,
-            preferencesDataSource.pinEncryptedSecret,
-            ::Pair
-        )
-            .flatMapLatest { (profileId, pinSecret) ->
+        return preferencesDataSource.activeProfileId
+            .flatMapLatest { profileId ->
                 profileId?.let {
-                    if (authenticationService.isProfileSignedIn(it) && pinSecret != null) flowOf(
-                        TopNavDestination.AuthenticatedScreens
-                    )
-                    else flowOf(TopNavDestination.NonAuthenticatedScreens)
-                } ?: flowOf(TopNavDestination.NonAuthenticatedScreens)
+                    if (authenticationService.isProfileSignedIn(it)) flowOf(TopNavDestination.AuthenticatedScreens)
+                    else flowOf(TopNavDestination.NonAuthenticatedScreens())
+                } ?: flowOf(TopNavDestination.NonAuthenticatedScreens())
             }
     }
 

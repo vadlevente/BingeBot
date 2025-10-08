@@ -17,8 +17,10 @@ class RetrieveSecretWithPinUseCase @Inject constructor(
 
     override fun execute(params: RetrieveSecretWithPinUseCaseParams) =
         secretService.retrieveCredentialsWithPin(params.pin).map {
-            it?.let {
-                authenticationService.login(it.email, it.password)
+            it?.let { credentials ->
+                if (!authenticationService.isProfileSignedIn(authenticationService.currentUserId!!)) {
+                    authenticationService.login(it.email, it.password)
+                }
                 secretService.setAuthenticated(true)
             }
             Unit

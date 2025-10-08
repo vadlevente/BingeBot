@@ -24,7 +24,12 @@
     <string name="pin_register_title">Please enter a strong PIN code!</string>
     <string name="pin_confirm_title">Please confirm the PIN code!</string>
     <string name="pin_authentication_title">Please enter your PIN code!</string>
+    <string name="pin_registration_successful">PIN saved successfully!</string>
 
     <string name="biometrics_registration_description">Would you like to setup biometric authentication?</string>
+    <string name="biometrics_registration_dialogTitle">Biometric authentication setup</string>
+    <string name="biometrics_registration_successful">Biometric setup finished!</string>
 
+    <string name="pin_register_confirmation_title">Set up PIN code</string>
+    <string name="pin_register_confirmation_description">Would you like to protect your data with a PIN code?\nIf you skip this step now, you can set it up later in the \'Settings\' menu.</string>
 </resources>

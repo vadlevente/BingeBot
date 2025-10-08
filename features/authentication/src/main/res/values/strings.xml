@@ -30,4 +30,8 @@
     <string name="biometrics_registration_dialogTitle">Biometrikus azonosítás beállítása</string>
     <string name="biometrics_registration_successful">Biometrikus azonosítás beállítva!</string>
 
+    <string name="pin_register_confirmation_title">PIN kód beállítása</string>
+    <string name="pin_register_confirmation_description">Szeretné PIN kóddal védeni adatait?\nAmennyiben most kihagyja ezt a lépést, később is lesz rá lehetősége a \'Beállítások\' menüpontban.</string>
+
+
 </resources>

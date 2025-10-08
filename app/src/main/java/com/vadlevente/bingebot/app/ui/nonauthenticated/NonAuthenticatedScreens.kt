@@ -23,6 +23,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun NonAuthenticatedScreens(
     navigationEventChannel: NavigationEventChannel,
+    registerPin: Boolean,
     navController: NavHostController = rememberNavController(),
 ) {
     CollectEvents(
@@ -31,7 +32,7 @@ fun NonAuthenticatedScreens(
     )
     NavHost(
         navController = navController,
-        startDestination = NonAuthenticatedNavDestination.Login
+        startDestination = if (registerPin) NonAuthenticatedNavDestination.RegisterPin("", "") else NonAuthenticatedNavDestination.Login
     ) {
 
         composable<NonAuthenticatedNavDestination.Registration> {

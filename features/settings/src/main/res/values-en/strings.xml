@@ -9,4 +9,7 @@
     <string name="logoutDialog_description">Are you sure to sign out of the application?</string>
     <string name="changLanguage_syncDialog_title">Synchronizing</string>
     <string name="changLanguage_syncDialog_description">During the language change, all stored content will also be synchronized, which may take some time.\nAre you sure you want to continue?</string>
+    <string name="settings_security">App security</string>
+    <string name="settings_turnSecurityOffTitle">Turn off app security</string>
+    <string name="settings_turnSecurityOffDescription">Are you sure you want to turn off app security?</string>
 </resources>

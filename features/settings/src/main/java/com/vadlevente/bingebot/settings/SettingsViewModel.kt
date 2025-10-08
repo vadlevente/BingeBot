@@ -9,6 +9,8 @@ import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
 import com.vadlevente.bingebot.core.model.NavDestination
 import com.vadlevente.bingebot.core.model.SelectedLanguage
 import com.vadlevente.bingebot.core.stringOf
+import com.vadlevente.bingebot.core.usecase.HasStoredSecretUseCase
+import com.vadlevente.bingebot.core.usecase.TurnOffAuthenticationUseCase
 import com.vadlevente.bingebot.core.viewModel.BaseViewModel
 import com.vadlevente.bingebot.core.viewModel.State
 import com.vadlevente.bingebot.resources.R.string
@@ -34,9 +36,11 @@ class SettingsViewModel @Inject constructor(
     toastEventChannel: ToastEventChannel,
     getLanguagesUseCase: GetLanguagesUseCase,
     getUserEmailUseCase: GetUserEmailUseCase,
+    hasStoredSecretUseCase: HasStoredSecretUseCase,
     private val setLanguageUseCase: SetLanguageUseCase,
     private val logoutUseCase: LogoutUseCase,
     private val dialogEventChannel: DialogEventChannel,
+    private val turnOffAuthenticationUseCase: TurnOffAuthenticationUseCase,
 ) : BaseViewModel<ViewState>(
     navigationEventChannel, toastEventChannel
 ) {
@@ -48,12 +52,14 @@ class SettingsViewModel @Inject constructor(
         combine(
             getLanguagesUseCase.execute(Unit),
             getUserEmailUseCase.execute(Unit),
-            ::Pair
-        ).onValue { (languages, email) ->
+            hasStoredSecretUseCase.execute(Unit),
+            ::Triple
+        ).onValue { (languages, email, hasStoredSecret) ->
             viewState.update {
                 it.copy(
                     languages = languages,
                     email = email?.substringBefore("@"),
+                    isSecurityOn = hasStoredSecret,
                 )
             }
         }
@@ -111,7 +117,7 @@ class SettingsViewModel @Inject constructor(
                     onPositiveButtonClicked = {
                         logoutUseCase.execute(Unit).onValueSilent {
                             navigationEventChannel.sendEvent(
-                                NavigationEvent.TopNavigationEvent.NavigateTo(NavDestination.TopNavDestination.NonAuthenticatedScreens)
+                                NavigationEvent.TopNavigationEvent.NavigateTo(NavDestination.TopNavDestination.NonAuthenticatedScreens())
                             )
                         }
                     },
@@ -120,11 +126,36 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
+    fun onSecurityChanged(nextValue: Boolean) {
+        viewModelScope.launch {
+            if (nextValue) {
+                navigationEventChannel.sendEvent(
+                    NavigationEvent.TopNavigationEvent.NavigateTo(
+                        NavDestination.TopNavDestination.NonAuthenticatedScreens(registerPin = true)
+                    )
+                )
+            } else {
+                dialogEventChannel.sendEvent(
+                    ShowDialog(
+                        title = stringOf(R.string.settings_turnSecurityOffTitle),
+                        content = stringOf(R.string.settings_turnSecurityOffDescription),
+                        positiveButtonTitle = stringOf(string.common_Yes),
+                        negativeButtonTitle = stringOf(string.common_Cancel),
+                        onPositiveButtonClicked = {
+                            turnOffAuthenticationUseCase.execute(Unit).onStart()
+                        },
+                    )
+                )
+            }
+        }
+    }
+
     data class ViewState(
         val languages: Map<SelectedLanguage, Boolean> = emptyMap(),
         val showSelectLanguageBottomSheet: Boolean = false,
         val email: String? = null,
         val isSyncInProgress: Boolean = false,
+        val isSecurityOn: Boolean = false,
     ) : State
 
 }
