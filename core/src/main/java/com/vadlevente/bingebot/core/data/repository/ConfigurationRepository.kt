@@ -1,5 +1,6 @@
 package com.vadlevente.bingebot.core.data.repository
 
+import android.content.res.Resources
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 import com.vadlevente.bingebot.core.data.local.datastore.PreferencesDataSource
@@ -11,7 +12,7 @@ import com.vadlevente.bingebot.core.model.Item.Tv
 import com.vadlevente.bingebot.core.model.SelectedLanguage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -19,8 +20,8 @@ interface ConfigurationRepository {
     suspend fun updateConfiguration()
     suspend fun logout()
     suspend fun setSelectedLanguage(language: SelectedLanguage)
+    suspend fun setDefaultLanguage()
     fun getUserEmail(): String?
-
 }
 
 class ConfigurationRepositoryImpl @Inject constructor(
@@ -32,10 +33,14 @@ class ConfigurationRepositoryImpl @Inject constructor(
     private val db: MovieDatabase,
 ) : ConfigurationRepository {
 
-    override suspend fun updateConfiguration() = withContext(Dispatchers.IO) {
-        val config = configurationRemoteDataSource.getConfiguration()
-        preferencesDataSource.saveApiConfiguration(config)
-        setLocale(preferencesDataSource.language.first().code)
+    override suspend fun updateConfiguration() {
+        withContext(Dispatchers.IO) {
+            val config = configurationRemoteDataSource.getConfiguration()
+            preferencesDataSource.saveApiConfiguration(config)
+            preferencesDataSource.language.firstOrNull()?.code?.let {
+                setLocale(it)
+            }
+        }
     }
 
     override suspend fun logout() = withContext(Dispatchers.IO) {
@@ -57,6 +62,17 @@ class ConfigurationRepositoryImpl @Inject constructor(
             }.await()
             setLocale(language.code)
         }
+
+    override suspend fun setDefaultLanguage() {
+        val deviceLanguage = Resources.getSystem().configuration.locales[0]
+        val storedLanguage = preferencesDataSource.language.firstOrNull()
+        if (storedLanguage != null) return
+        val languageToStore =
+            if (deviceLanguage?.language?.contains(SelectedLanguage.HUNGARIAN.code) == true) SelectedLanguage.HUNGARIAN
+            else SelectedLanguage.ENGLISH
+        preferencesDataSource.saveSelectedLanguage(languageToStore)
+        setLocale(languageToStore.code)
+    }
 
     override fun getUserEmail() = authenticationService.currentUserEmail
 

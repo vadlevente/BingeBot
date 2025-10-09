@@ -6,6 +6,7 @@ import com.vadlevente.bingebot.core.model.MediaType
 import com.vadlevente.bingebot.core.model.PersonCredit
 import com.vadlevente.bingebot.core.model.PersonDetails
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flowOf
 import javax.inject.Inject
@@ -19,7 +20,7 @@ class PersonRepositoryImpl @Inject constructor(
     private val preferencesDataSource: PreferencesDataSource,
 ) : PersonRepository {
     override fun getPersonDetails(personId: Int) =
-        preferencesDataSource.language.flatMapConcat { language ->
+        preferencesDataSource.language.filterNotNull().flatMapConcat { language ->
             val details = personRemoteDataSource.getDetails(personId, language)
             val credits = personRemoteDataSource.getCombinedCredits(personId, language)
             PersonDetails(

@@ -43,10 +43,10 @@ class PreferencesDataSource @Inject constructor(
         gson.fromJson(it[stringPreferencesKey(API_CONFIGURATION)], ApiConfiguration::class.java)
     }
 
-    val language: Flow<SelectedLanguage> = data.map {
+    val language: Flow<SelectedLanguage?> = data.map {
         it[stringPreferencesKey(LANGUAGE)]?.let { code ->
             SelectedLanguage.from(code)
-        } ?: SelectedLanguage.default
+        }
     }
 
     val pinEncryptedSecret: Flow<String?> = data.map {

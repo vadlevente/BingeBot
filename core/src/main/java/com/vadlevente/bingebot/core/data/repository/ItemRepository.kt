@@ -22,6 +22,7 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flow
@@ -69,7 +70,7 @@ class ItemRepositoryImpl<T : Item> @Inject constructor(
 
     override fun getItemDetails(itemId: Int): Flow<ItemDetails<T>> =
         combine(
-            preferencesDataSource.language,
+            preferencesDataSource.language.filterNotNull(),
             itemLocalDataSource.getItem(itemId),
             ::Pair,
         ).flatMapConcat { (language, local) ->
@@ -117,7 +118,7 @@ class ItemRepositoryImpl<T : Item> @Inject constructor(
     }.flowOn(Dispatchers.IO)
 
     override suspend fun updateGenres() = withContext(Dispatchers.IO) {
-        val language = preferencesDataSource.language.first()
+        val language = preferencesDataSource.language.filterNotNull().first()
         val genres = itemRemoteDataSource.getGenres(language).genres.map {
             genreFactory.setType(it)
         }
@@ -126,7 +127,7 @@ class ItemRepositoryImpl<T : Item> @Inject constructor(
     }
 
     override suspend fun updateItems() = withContext(Dispatchers.IO) {
-        val language = preferencesDataSource.language.first()
+        val language = preferencesDataSource.language.filterNotNull().first()
         val storedItems = itemLocalDataSource.getAllItems().first()
         val remoteItems = firestoreItemDataSource.getItems().first()
         val itemsToUpdate = storedItems.filter { storedItem ->
@@ -159,7 +160,7 @@ class ItemRepositoryImpl<T : Item> @Inject constructor(
     }
 
     override suspend fun searchItems(query: String) = withContext(Dispatchers.IO) {
-        val language = preferencesDataSource.language.first()
+        val language = preferencesDataSource.language.filterNotNull().first()
         val items = itemRemoteDataSource.searchItem(query, language)
         itemCacheDataSource.updateItems(
             items.map { it.toItem() }.filterUnwantedItems(),
@@ -168,7 +169,7 @@ class ItemRepositoryImpl<T : Item> @Inject constructor(
     }
 
     override suspend fun updateItemLocalizations() = withContext(Dispatchers.IO) {
-        val language = preferencesDataSource.language.first()
+        val language = preferencesDataSource.language.filterNotNull().first()
         val storedItemsWithIncorrectLocalization =
             itemLocalDataSource.getAllItemsWithIncorrectLocalization(language.code).first()
         val updatedItems = coroutineScope {

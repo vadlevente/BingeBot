@@ -13,8 +13,8 @@ class GetLanguagesUseCase @Inject constructor(
 
     override fun execute(params: Unit): Flow<Map<SelectedLanguage, Boolean>> =
         preferencesDataSource.language.map { selectedLanguage ->
-            SelectedLanguage.values().associateWith {
-                it.code == selectedLanguage.code
+            SelectedLanguage.entries.associateWith {
+                it.code == selectedLanguage?.code
             }
         }
 

@@ -41,15 +41,6 @@ fun com.android.build.gradle.BaseExtension.baseConfig() {
         proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
     }
 
-    buildTypes {
-        getByName("debug") {
-            isMinifyEnabled = false
-        }
-        getByName("release") {
-            isMinifyEnabled = true
-        }
-    }
-
     testOptions.unitTests.isIncludeAndroidResources = true
 
     compileOptions.apply {

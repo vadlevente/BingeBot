@@ -14,6 +14,14 @@ android {
         buildConfigField("String", "ACCESS_TOKEN", "\"eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzZGQ2YWQzNjcxOTkzZTYwZWQ1MWMzMTI2NmIxZWMzNiIsIm5iZiI6MTcyMDE2MDQ2Ny4yNTQ4MTMsInN1YiI6IjVhZWRiMTc5YzNhMzY4MzQ3MDAwYTk1MSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.h9nnbkDhH_wvGjQzek7qtWzHMZ4lmmypkxyeV5kfEyU\"")
         buildConfigField("String", "BASE_URL", "\"https://api.themoviedb.org/3/\"")
     }
+    signingConfigs {
+        create("release") {
+            storeFile = rootProject.file("keystore.jks")
+            storePassword = "password"
+            keyAlias = "key0"
+            keyPassword = "password"
+        }
+    }
     buildTypes {
         getByName("debug") {
             isMinifyEnabled = false
@@ -22,7 +30,7 @@ android {
         getByName("release") {
             isMinifyEnabled = true
             isShrinkResources = true
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.getByName("release")
         }
     }
     buildFeatures {

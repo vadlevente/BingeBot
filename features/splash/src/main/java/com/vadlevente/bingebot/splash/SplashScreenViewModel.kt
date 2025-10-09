@@ -7,6 +7,7 @@ import com.vadlevente.bingebot.core.usecase.GetConfigurationUseCase
 import com.vadlevente.bingebot.core.viewModel.BaseViewModel
 import com.vadlevente.bingebot.core.viewModel.EmptyState
 import com.vadlevente.bingebot.splash.usecase.GetNavDestinationToStartScreenUseCase
+import com.vadlevente.bingebot.splash.usecase.SetDefaultLanguageUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
@@ -18,6 +19,7 @@ class SplashScreenViewModel @Inject constructor(
     toastEventChannel: ToastEventChannel,
     getNavDestinationToStartScreen: GetNavDestinationToStartScreenUseCase,
     getConfigurationUseCase: GetConfigurationUseCase,
+    setDefaultLanguageUseCase: SetDefaultLanguageUseCase,
 ) : BaseViewModel<EmptyState>(
     navigationEventChannel, toastEventChannel
 ) {
@@ -25,18 +27,20 @@ class SplashScreenViewModel @Inject constructor(
     override val state = MutableStateFlow(EmptyState)
 
     init {
-        combine(
-            getConfigurationUseCase.execute(Unit),
-            getNavDestinationToStartScreen.execute(Unit),
-            ::Pair
-        )
-            .onValue { (_, navDestination) ->
-                navigationEventChannel.sendEvent(
-                    NavigationEvent.TopNavigationEvent.NavigateTo(
-                        navDestination
+        setDefaultLanguageUseCase.execute(Unit).onValue {
+            combine(
+                getConfigurationUseCase.execute(Unit),
+                getNavDestinationToStartScreen.execute(Unit),
+                ::Pair
+            )
+                .onValue { (_, navDestination) ->
+                    navigationEventChannel.sendEvent(
+                        NavigationEvent.TopNavigationEvent.NavigateTo(
+                            navDestination
+                        )
                     )
-                )
-            }
+                }
+        }
     }
 
 }
