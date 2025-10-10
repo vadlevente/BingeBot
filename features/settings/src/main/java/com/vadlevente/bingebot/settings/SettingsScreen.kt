@@ -1,11 +1,13 @@
 package com.vadlevente.bingebot.settings
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -27,7 +29,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -152,28 +156,6 @@ fun SettingsScreenComponent(
                         .fillMaxWidth()
                         .padding(bottom = 16.dp)
                         .clickable {
-                            onLogout()
-                        },
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    BBIcon(
-                        imageVector = AutoMirrored.Filled.Logout,
-                    )
-                    Text(
-                        modifier = Modifier
-                            .weight(1f)
-                            .padding(horizontal = 16.dp),
-                        text = stringResource(id = R.string.settings_logout),
-                        style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.primary,
-                    )
-                }
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 16.dp)
-                        .clickable {
                             onSecurityChanged(!state.isSecurityOn)
                         },
                     verticalAlignment = Alignment.CenterVertically,
@@ -207,6 +189,42 @@ fun SettingsScreenComponent(
                         onCheckedChange = {},
                     )
                 }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 16.dp)
+                        .clickable {
+                            onLogout()
+                        },
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    BBIcon(
+                        imageVector = AutoMirrored.Filled.Logout,
+                    )
+                    Text(
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(horizontal = 16.dp),
+                        text = stringResource(id = R.string.settings_logout),
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.primary,
+                    )
+                }
+                Spacer(modifier = Modifier.weight(1f))
+                Image(
+                    painter = painterResource(com.vadlevente.bingebot.resources.R.drawable.logo_tmdb),
+                    contentDescription = null,
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                )
+                Text(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(16.dp),
+                    text = stringResource(R.string.settings_tmdb_attribution),
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.primary,
+                )
             }
         }
     }
