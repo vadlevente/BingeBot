@@ -7,6 +7,9 @@ plugins {
 
 android {
     namespace = "com.vadlevente.bingebot.core"
+    defaultConfig {
+        consumerProguardFiles("consumer-proguard-rules.pro")
+    }
 }
 
 apply{

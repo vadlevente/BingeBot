@@ -82,3 +82,13 @@ dependencies {
     testImplementation Concurrency.coroutinestest
     testImplementation Testing.turbine
 }
+
+configurations {
+    testImplementation {
+        // Prevent test dependencies from leaking into release classpath
+        attributes.attribute(Attribute.of("release", java.lang.String), "false")
+    }
+    kaptTest {
+        attributes.attribute(Attribute.of("release", java.lang.String), "false")
+    }
+}

@@ -1,21 +1,39 @@
-# Add project specific ProGuard rules here.
-# You can control the set of applied configuration files using the
-# proguardFiles setting in build.gradle.
-#
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+# =====================
+# Keep everything needed for Retrofit + Kotlin + DataStore + Room
+# =====================
+-dontwarn com.google.auto.service.AutoService
+-dontwarn org.junit.jupiter.api.extension.AfterAllCallback
+-dontwarn org.junit.jupiter.api.extension.ParameterResolver
+-dontwarn org.junit.jupiter.api.extension.TestInstancePostProcessor
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+-keepattributes Signature, Exceptions, InnerClasses, EnclosingMethod, RuntimeVisibleAnnotations, RuntimeVisibleParameterAnnotations, KotlinMetadata
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+# =====================
+# Core models & DTOs
+# =====================
+-keep class com.vadlevente.bingebot.core.model.** { *; }
+-keepclassmembers class com.vadlevente.bingebot.core.model.** {
+    @com.google.gson.annotations.SerializedName <fields>;
+}
 
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
+# =====================
+# Retrofit API interfaces & proxies
+# =====================
+-keep interface com.vadlevente.bingebot.core.data.api.** { *; }
+-keepclassmembers class * {
+    @retrofit2.http.* <methods>;
+}
+-keep class retrofit2.$Proxy* { *; }
+
+# =====================
+# Room & DataStore
+# =====================
+-keep class com.vadlevente.bingebot.core.data.local.datastore.** { *; }
+-keep class androidx.room.** { *; }
+-keepclassmembers class * { @androidx.room.* <methods>; }
+
+# =====================
+# Kotlin coroutines
+# =====================
+-keep class kotlin.coroutines.** { *; }
+-keep class kotlinx.coroutines.** { *; }
