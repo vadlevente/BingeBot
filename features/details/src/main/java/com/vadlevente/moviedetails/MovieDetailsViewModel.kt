@@ -26,16 +26,16 @@ class MovieDetailsViewModel  @AssistedInject constructor(
 
     override fun onNavigateToOptions() {
         baseViewState.value.details?.let {
-                viewModelScope.launch {
-                    bottomSheetEventChannel.sendEvent(
-                        ShowMovieBottomSheet(
-                            item = it.displayedItem,
-                            alreadySaved = it.displayedItem.item.createdDate != null,
-                            openedFromDetail = true,
-                        )
+            viewModelScope.launch {
+                bottomSheetEventChannel.sendEvent(
+                    ShowMovieBottomSheet(
+                        item = it.displayedItem,
+                        alreadySaved = it.displayedItem.item.createdDate != null,
+                        openedFromDetail = true,
                     )
-                }
+                )
             }
+        }
     }
 
     @AssistedFactory

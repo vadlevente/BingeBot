@@ -33,20 +33,22 @@ fun MovieDetailsScreen(
     ItemDetailsScreen(
         viewModel = viewModel,
         customContent = {
-            Row {
-                Text(
-                    text = stringResource(R.string.itemDetails_director),
-                    style = MaterialTheme.typography.bodyMedium.copy(
-                        fontWeight = FontWeight.Bold,
-                    ),
-                    color = MaterialTheme.colorScheme.primary
-                )
-                Text(
-                    modifier = Modifier.padding(start = 8.dp),
-                    text = credits.director.map { it.name }.joinToString(", "),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.primary
-                )
+            if (credits.director.isNotEmpty()) {
+                Row {
+                    Text(
+                        text = stringResource(R.string.itemDetails_director),
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            fontWeight = FontWeight.Bold,
+                        ),
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                    Text(
+                        modifier = Modifier.padding(start = 8.dp),
+                        text = credits.director.map { it.name }.joinToString(", "),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
             }
             HorizontalDivider(
                 modifier = Modifier
@@ -55,20 +57,22 @@ fun MovieDetailsScreen(
                 thickness = 1.dp,
                 color = MaterialTheme.colorScheme.primary
             )
-            Row {
-                Text(
-                    text = stringResource(R.string.itemDetails_writer),
-                    style = MaterialTheme.typography.bodyMedium.copy(
-                        fontWeight = FontWeight.Bold,
-                    ),
-                    color = MaterialTheme.colorScheme.primary
-                )
-                Text(
-                    modifier = Modifier.padding(start = 8.dp),
-                    text = credits.writer.map { it.name }.joinToString(", "),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.primary
-                )
+            if (credits.writer.isNotEmpty()) {
+                Row {
+                    Text(
+                        text = stringResource(R.string.itemDetails_writer),
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            fontWeight = FontWeight.Bold,
+                        ),
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                    Text(
+                        modifier = Modifier.padding(start = 8.dp),
+                        text = credits.writer.map { it.name }.joinToString(", "),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
             }
             HorizontalDivider(
                 modifier = Modifier

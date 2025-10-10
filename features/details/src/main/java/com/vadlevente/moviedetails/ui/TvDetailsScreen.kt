@@ -31,20 +31,22 @@ fun TvDetailsScreen(
     ItemDetailsScreen(
         viewModel = viewModel,
         customContent = {
-            Row {
-                Text(
-                    text = stringResource(R.string.itemDetails_creator),
-                    style = MaterialTheme.typography.bodyMedium.copy(
-                        fontWeight = FontWeight.Bold,
-                    ),
-                    color = MaterialTheme.colorScheme.primary
-                )
-                Text(
-                    modifier = Modifier.padding(start = 8.dp),
-                    text = tv.creator ?: "",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.primary
-                )
+            tv.creator?.let { creator ->
+                Row {
+                    Text(
+                        text = stringResource(R.string.itemDetails_creator),
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            fontWeight = FontWeight.Bold,
+                        ),
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                    Text(
+                        modifier = Modifier.padding(start = 8.dp),
+                        text = creator,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
             }
             HorizontalDivider(
                 modifier = Modifier

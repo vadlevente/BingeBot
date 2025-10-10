@@ -2,6 +2,7 @@ package com.vadlevente.bingebot.core.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.vadlevente.bingebot.core.UIText
 import com.vadlevente.bingebot.core.events.navigation.NavigationEvent
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
@@ -44,6 +45,7 @@ abstract class BaseViewModel<S : State>(
 
     open val basicErrorHandler: (Throwable) -> Unit = { t ->
         Timber.e(t)
+        FirebaseCrashlytics.getInstance().recordException(t)
         val errorMessage = when (t) {
             is BingeBotException -> t.reason?.reasonText ?: t.errorMessage
             ?: stringOf(Res.string.errorMessage_unknown)
