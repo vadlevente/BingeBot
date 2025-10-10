@@ -1,3 +1,4 @@
+import org.gradle.kotlin.dsl.android
 
 plugins {
     id("com.android.library") 
@@ -12,5 +13,5 @@ apply{
     from("$rootDir/compose-module.gradle")
 }
 dependencies{
-
+    "implementation"(project(Modules.resources))
 }

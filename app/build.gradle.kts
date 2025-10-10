@@ -61,6 +61,15 @@ android {
             enableSplit = false
         }
     }
+    packaging {
+        resources {
+            excludes += listOf(
+                "fonts/*.ttf",
+                "fonts/*.otf",
+                "fonts/*.ttc",
+            )
+        }
+    }
 }
 
 dependencies {
