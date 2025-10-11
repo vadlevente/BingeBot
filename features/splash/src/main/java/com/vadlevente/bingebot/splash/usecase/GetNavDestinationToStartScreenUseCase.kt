@@ -21,8 +21,8 @@ class GetNavDestinationToStartScreenUseCase @Inject constructor(
             .flatMapLatest { profileId ->
                 profileId?.let {
                     if (authenticationService.isProfileSignedIn(it)) flowOf(TopNavDestination.AuthenticatedScreens)
-                    else flowOf(TopNavDestination.NonAuthenticatedScreens())
-                } ?: flowOf(TopNavDestination.NonAuthenticatedScreens())
+                    else flowOf(TopNavDestination.Onboarding)
+                } ?: flowOf(TopNavDestination.Onboarding)
             }
     }
 

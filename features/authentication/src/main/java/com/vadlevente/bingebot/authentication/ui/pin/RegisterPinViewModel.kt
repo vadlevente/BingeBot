@@ -11,10 +11,12 @@ import com.vadlevente.bingebot.core.events.navigation.NavigationEvent
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastType
+import com.vadlevente.bingebot.core.model.Extras
 import com.vadlevente.bingebot.core.model.NavDestination
-import com.vadlevente.bingebot.core.model.NavDestination.NonAuthenticatedNavDestination
 import com.vadlevente.bingebot.core.stringOf
 import com.vadlevente.bingebot.core.usecase.GetConfigurationUseCase
+import com.vadlevente.bingebot.core.usecase.SetScreenResultUseCase
+import com.vadlevente.bingebot.core.usecase.SetScreenResultUseCaseArgs
 import com.vadlevente.bingebot.core.util.Constants.PIN_LENGTH
 import com.vadlevente.bingebot.core.viewModel.BaseViewModel
 import com.vadlevente.bingebot.core.viewModel.State
@@ -36,6 +38,7 @@ class RegisterPinViewModel @AssistedInject constructor(
     private val saveSecretWithPinUseCase: SaveSecretWithPinUseCase,
     private val isBiometricsAvailableUseCase: IsBiometricsAvailableUseCase,
     private val getConfigurationUseCase: GetConfigurationUseCase,
+    private val setScreenResultUseCase: SetScreenResultUseCase,
     @Assisted("email") val email: String,
     @Assisted("password") val password: String,
 ) : BaseViewModel<ViewState>(
@@ -54,8 +57,8 @@ class RegisterPinViewModel @AssistedInject constructor(
         if (value.length == PIN_LENGTH) {
             viewModelScope.launch {
                 navigationEventChannel.sendEvent(
-                    NavigationEvent.NonAuthenticatedNavigationEvent.NavigateTo(
-                        NonAuthenticatedNavDestination.RegisterPinConfirm
+                    NavigationEvent.EnrollSecurityNavigationEvent.NavigateTo(
+                        NavDestination.EnrollSecurityNavDestination.RegisterPinConfirm
                     )
                 )
             }
@@ -91,8 +94,8 @@ class RegisterPinViewModel @AssistedInject constructor(
                         if (isBiometricsAvailable) {
                             viewModelScope.launch {
                                 navigationEventChannel.sendEvent(
-                                    NavigationEvent.NonAuthenticatedNavigationEvent.NavigateTo(
-                                        NonAuthenticatedNavDestination.BiometricsRegistration(
+                                    NavigationEvent.EnrollSecurityNavigationEvent.NavigateTo(
+                                        NavDestination.EnrollSecurityNavDestination.BiometricsRegistration(
                                             email,
                                             password
                                         )
@@ -104,9 +107,12 @@ class RegisterPinViewModel @AssistedInject constructor(
                                 stringOf(R.string.pin_registration_successful),
                                 ToastType.INFO
                             )
+                            setScreenResultUseCase.execute(
+                                SetScreenResultUseCaseArgs(Extras.SECURITY_ENROLLMENT_FINISHED)
+                            ).onStartSilent()
                             viewModelScope.launch {
                                 navigationEventChannel.sendEvent(
-                                    NavigationEvent.TopNavigationEvent.NavigateTo(NavDestination.TopNavDestination.AuthenticatedScreens)
+                                    NavigationEvent.TopNavigationEvent.NavigateUp
                                 )
                             }
                         }
@@ -129,7 +135,15 @@ class RegisterPinViewModel @AssistedInject constructor(
         }
     }
 
-    fun onExitConfirmation() {
+    fun onCloseFlow() {
+        viewModelScope.launch {
+            navigationEventChannel.sendEvent(
+                NavigationEvent.TopNavigationEvent.NavigateUp
+            )
+        }
+    }
+
+    fun onBackPressed() {
         viewState.update {
             it.copy(
                 pin = "",
@@ -138,7 +152,7 @@ class RegisterPinViewModel @AssistedInject constructor(
         }
         viewModelScope.launch {
             navigationEventChannel.sendEvent(
-                NavigationEvent.NonAuthenticatedNavigationEvent.NavigateUp
+                NavigationEvent.EnrollSecurityNavigationEvent.NavigateUp
             )
         }
     }

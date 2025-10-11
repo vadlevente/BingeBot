@@ -16,7 +16,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.vadlevente.bingebot.app.ui.authenticated.AuthenticatedScreens
-import com.vadlevente.bingebot.app.ui.nonauthenticated.NonAuthenticatedScreens
+import com.vadlevente.bingebot.app.ui.nonauthenticated.EnrollSecurityScreens
+import com.vadlevente.bingebot.app.ui.nonauthenticated.OnboardingScreens
 import com.vadlevente.bingebot.authentication.ui.authentication.AuthenticationScreen
 import com.vadlevente.bingebot.bottomsheet.ui.movie.AddMovieToWatchListBottomSheet
 import com.vadlevente.bingebot.bottomsheet.ui.movie.MovieBottomSheet
@@ -57,9 +58,17 @@ fun NavigationHost(
                 composable<TopNavDestination.Splash> {
                     SplashScreen()
                 }
-                composable<TopNavDestination.NonAuthenticatedScreens> {
-                    val args: TopNavDestination.NonAuthenticatedScreens = it.toRoute()
-                    NonAuthenticatedScreens(navigationEventChannel, args.registerPin)
+                composable<TopNavDestination.Onboarding> {
+                    OnboardingScreens(navigationEventChannel)
+                }
+                composable<TopNavDestination.EnrollSecurity> {
+                    val args: TopNavDestination.EnrollSecurity = it.toRoute()
+                    EnrollSecurityScreens(
+                        navigationEventChannel = navigationEventChannel,
+                        email = args.email,
+                        password = args.password,
+                        canStepBack = args.canStepBack,
+                    )
                 }
                 composable<TopNavDestination.AuthenticatedScreens> {
                     AuthenticatedScreens(navigationEventChannel)
@@ -99,7 +108,10 @@ private fun CollectEvents(
                     when (event) {
                         is TopNavigationEvent.NavigateTo -> {
                             navController.navigate(event.destination) {
-                                if (event.destination != TopNavDestination.Authenticate) {
+                                if (
+                                    event.destination != TopNavDestination.Authenticate &&
+                                    event.destination !is TopNavDestination.EnrollSecurity
+                                ) {
                                     popUpTo(0)
                                 }
                             }

@@ -117,7 +117,7 @@ class SettingsViewModel @Inject constructor(
                     onPositiveButtonClicked = {
                         logoutUseCase.execute(Unit).onValueSilent {
                             navigationEventChannel.sendEvent(
-                                NavigationEvent.TopNavigationEvent.NavigateTo(NavDestination.TopNavDestination.NonAuthenticatedScreens())
+                                NavigationEvent.TopNavigationEvent.NavigateTo(NavDestination.TopNavDestination.Onboarding)
                             )
                         }
                     },
@@ -131,7 +131,7 @@ class SettingsViewModel @Inject constructor(
             if (nextValue) {
                 navigationEventChannel.sendEvent(
                     NavigationEvent.TopNavigationEvent.NavigateTo(
-                        NavDestination.TopNavDestination.NonAuthenticatedScreens(registerPin = true)
+                        NavDestination.TopNavDestination.EnrollSecurity(canStepBack = true)
                     )
                 )
             } else {

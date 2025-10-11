@@ -8,37 +8,41 @@ sealed interface NavDestination {
         @Serializable
         data object Splash : TopNavDestination
         @Serializable
-        data class NonAuthenticatedScreens(
-            val registerPin: Boolean = false,
-        ) : TopNavDestination
+        data object Onboarding : TopNavDestination
         @Serializable
         data object AuthenticatedScreens : TopNavDestination
         @Serializable
         data object Authenticate : TopNavDestination
+        @Serializable
+        data class EnrollSecurity(
+            val email: String? = null,
+            val password: String? = null,
+            val canStepBack: Boolean,
+        ) : TopNavDestination
     }
 
-    sealed interface NonAuthenticatedNavDestination : NavDestination {
+    sealed interface OnboardingNavDestination : NavDestination {
 
         @Serializable
-        data object Registration : NonAuthenticatedNavDestination
+        data object Registration : OnboardingNavDestination
 
         @Serializable
-        data object Login : NonAuthenticatedNavDestination
+        data object Login : OnboardingNavDestination
+    }
+
+    sealed interface EnrollSecurityNavDestination : NavDestination {
 
         @Serializable
-        data class RegisterPin(
-            val email: String,
-            val password: String,
-        ) : NonAuthenticatedNavDestination
+        data object RegisterPin : EnrollSecurityNavDestination
 
         @Serializable
-        data object RegisterPinConfirm : NonAuthenticatedNavDestination
+        data object RegisterPinConfirm : EnrollSecurityNavDestination
 
         @Serializable
         data class BiometricsRegistration(
             val email: String,
             val password: String,
-        ) : NonAuthenticatedNavDestination
+        ) : EnrollSecurityNavDestination
     }
 
     sealed interface AuthenticatedNavDestination : NavDestination {

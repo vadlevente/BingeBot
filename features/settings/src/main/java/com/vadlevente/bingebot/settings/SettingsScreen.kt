@@ -173,8 +173,7 @@ fun SettingsScreenComponent(
                     )
                     Switch(
                         modifier = Modifier
-                            .padding(horizontal = 16.dp)
-                            .clickable(enabled = false) {},
+                            .padding(horizontal = 16.dp),
                         checked = state.isSecurityOn,
                         colors = SwitchDefaults.colors(
                             checkedThumbColor = MaterialTheme.colorScheme.primary,
@@ -186,7 +185,7 @@ fun SettingsScreenComponent(
                             disabledCheckedThumbColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.4f),
                             disabledUncheckedThumbColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.4f)
                         ),
-                        onCheckedChange = {},
+                        onCheckedChange = { onSecurityChanged(!state.isSecurityOn) },
                     )
                 }
                 Row(

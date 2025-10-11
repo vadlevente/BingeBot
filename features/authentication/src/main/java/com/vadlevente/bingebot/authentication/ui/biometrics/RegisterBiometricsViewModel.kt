@@ -11,8 +11,10 @@ import com.vadlevente.bingebot.core.events.navigation.NavigationEvent
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastType
-import com.vadlevente.bingebot.core.model.NavDestination
+import com.vadlevente.bingebot.core.model.Extras
 import com.vadlevente.bingebot.core.stringOf
+import com.vadlevente.bingebot.core.usecase.SetScreenResultUseCase
+import com.vadlevente.bingebot.core.usecase.SetScreenResultUseCaseArgs
 import com.vadlevente.bingebot.core.viewModel.BaseViewModel
 import com.vadlevente.bingebot.core.viewModel.State
 import dagger.assisted.Assisted
@@ -32,6 +34,7 @@ class RegisterBiometricsViewModel @AssistedInject constructor(
     getEncryptionCipherUseCase: GetEncryptionCipherUseCase,
     private val appCloserDelegate: AppCloserDelegate,
     private val saveSecretWithBiometricsUseCase: SaveSecretWithBiometricsUseCase,
+    private val setScreenResultUseCase: SetScreenResultUseCase,
     @Assisted("email") val email: String,
     @Assisted("password") val password: String,
 ) : BaseViewModel<ViewState>(
@@ -65,11 +68,7 @@ class RegisterBiometricsViewModel @AssistedInject constructor(
                 showBiometricPrompt = false
             )
         }
-        viewModelScope.launch {
-            navigationEventChannel.sendEvent(
-                NavigationEvent.TopNavigationEvent.NavigateTo(NavDestination.TopNavDestination.AuthenticatedScreens)
-            )
-        }
+        closeFlow()
     }
 
     fun onAuthDismissed() {
@@ -94,11 +93,18 @@ class RegisterBiometricsViewModel @AssistedInject constructor(
             )
         ).onValue {
             showToast(stringOf(R.string.biometrics_registration_successful), ToastType.INFO)
-            viewModelScope.launch {
-                navigationEventChannel.sendEvent(
-                    NavigationEvent.TopNavigationEvent.NavigateTo(NavDestination.TopNavDestination.AuthenticatedScreens)
-                )
-            }
+            closeFlow()
+        }
+    }
+
+    private fun closeFlow() {
+        setScreenResultUseCase.execute(
+            SetScreenResultUseCaseArgs(Extras.SECURITY_ENROLLMENT_FINISHED)
+        ).onStartSilent()
+        viewModelScope.launch {
+            navigationEventChannel.sendEvent(
+                NavigationEvent.TopNavigationEvent.NavigateUp
+            )
         }
     }
 

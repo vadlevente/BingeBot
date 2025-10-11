@@ -38,7 +38,7 @@ fun RegisterPinConfirmationScreen() {
             topBar = {
                 TopBar(
                     canNavigateBack = true,
-                    onBackPressed = viewModel::onExitConfirmation,
+                    onBackPressed = viewModel::onBackPressed,
                 )
             }
         ) { paddingValues ->
@@ -69,7 +69,7 @@ fun RegisterPinConfirmationScreen() {
         }
         BackHandler {
             coroutineScope.launch {
-                viewModel.onExitConfirmation()
+                viewModel.onBackPressed()
             }
         }
     }

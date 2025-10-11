@@ -1,7 +1,8 @@
 package com.vadlevente.bingebot.core.events.navigation
 
+import com.vadlevente.bingebot.core.model.NavDestination
 import com.vadlevente.bingebot.core.model.NavDestination.AuthenticatedNavDestination
-import com.vadlevente.bingebot.core.model.NavDestination.NonAuthenticatedNavDestination
+import com.vadlevente.bingebot.core.model.NavDestination.OnboardingNavDestination
 import com.vadlevente.bingebot.core.model.NavDestination.TopNavDestination
 
 sealed interface NavigationEvent {
@@ -22,12 +23,20 @@ sealed interface NavigationEvent {
         object NavigateUp : AuthenticatedNavigationEvent
     }
 
-    sealed interface NonAuthenticatedNavigationEvent : NavigationEvent {
+    sealed interface OnboardingNavigationEvent : NavigationEvent {
         data class NavigateTo(
-            val destination: NonAuthenticatedNavDestination,
-        ) : NonAuthenticatedNavigationEvent
+            val destination: OnboardingNavDestination,
+        ) : OnboardingNavigationEvent
 
-        object NavigateUp : NonAuthenticatedNavigationEvent
+        object NavigateUp : OnboardingNavigationEvent
+    }
+
+    sealed interface EnrollSecurityNavigationEvent : NavigationEvent {
+        data class NavigateTo(
+            val destination: NavDestination.EnrollSecurityNavDestination,
+        ) : EnrollSecurityNavigationEvent
+
+        object NavigateUp : EnrollSecurityNavigationEvent
     }
 
 }

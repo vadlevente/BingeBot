@@ -12,13 +12,17 @@ import com.vadlevente.bingebot.core.events.navigation.NavigationEvent
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastType.INFO
+import com.vadlevente.bingebot.core.model.Extras
 import com.vadlevente.bingebot.core.model.NavDestination
 import com.vadlevente.bingebot.core.stringOf
+import com.vadlevente.bingebot.core.usecase.GetScreenResultUseCase
+import com.vadlevente.bingebot.core.usecase.GetScreenResultUseCaseArgs
 import com.vadlevente.bingebot.core.viewModel.BaseViewModel
 import com.vadlevente.bingebot.core.viewModel.State
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -28,6 +32,7 @@ import com.vadlevente.bingebot.resources.R as Res
 class RegistrationViewModel @Inject constructor(
     navigationEventChannel: NavigationEventChannel,
     toastEventChannel: ToastEventChannel,
+    getScreenResultUseCase: GetScreenResultUseCase,
     private val registrationUseCase: RegistrationUseCase,
     private val appCloserDelegate: AppCloserDelegate,
     private val dialogEventChannel: DialogEventChannel,
@@ -37,6 +42,14 @@ class RegistrationViewModel @Inject constructor(
 
     private val viewState = MutableStateFlow(ViewState())
     override val state: StateFlow<ViewState> = viewState
+
+    init {
+        getScreenResultUseCase.execute(
+            GetScreenResultUseCaseArgs(Extras.SECURITY_ENROLLMENT_FINISHED)
+        ).filter { it }.onValue {
+            onNavigateToAuthenticatedScreens()
+        }
+    }
 
     fun onEmailChanged(newValue: String) {
         viewState.update { it.copy(email = newValue) }
@@ -73,20 +86,17 @@ class RegistrationViewModel @Inject constructor(
                     negativeButtonTitle = stringOf(Res.string.common_No),
                     onPositiveButtonClicked = {
                         navigationEventChannel.sendEvent(
-                            NavigationEvent.NonAuthenticatedNavigationEvent.NavigateTo(
-                                NavDestination.NonAuthenticatedNavDestination.RegisterPin(
-                                    viewState.value.email,
-                                    viewState.value.password,
+                            NavigationEvent.TopNavigationEvent.NavigateTo(
+                                NavDestination.TopNavDestination.EnrollSecurity(
+                                    email = viewState.value.email,
+                                    password = viewState.value.password,
+                                    canStepBack = false,
                                 )
                             )
                         )
                     },
                     onNegativeButtonClicked = {
-                        viewModelScope.launch {
-                            navigationEventChannel.sendEvent(
-                                NavigationEvent.TopNavigationEvent.NavigateTo(NavDestination.TopNavDestination.AuthenticatedScreens)
-                            )
-                        }
+                        onNavigateToAuthenticatedScreens()
                     }
                 )
             )
@@ -96,9 +106,17 @@ class RegistrationViewModel @Inject constructor(
     fun onNavigateToLogin() {
         viewModelScope.launch {
             navigationEventChannel.sendEvent(
-                NavigationEvent.NonAuthenticatedNavigationEvent.NavigateTo(
-                    NavDestination.NonAuthenticatedNavDestination.Login
+                NavigationEvent.OnboardingNavigationEvent.NavigateTo(
+                    NavDestination.OnboardingNavDestination.Login
                 )
+            )
+        }
+    }
+
+    fun onNavigateToAuthenticatedScreens() {
+        viewModelScope.launch {
+            navigationEventChannel.sendEvent(
+                NavigationEvent.TopNavigationEvent.NavigateTo(NavDestination.TopNavDestination.AuthenticatedScreens)
             )
         }
     }

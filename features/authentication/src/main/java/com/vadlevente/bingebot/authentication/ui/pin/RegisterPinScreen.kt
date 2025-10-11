@@ -20,6 +20,7 @@ import com.vadlevente.bingebot.core.ui.composables.TopBar
 fun RegisterPinScreen(
     email: String,
     password: String,
+    canStepBack: Boolean,
 ) {
     val activity = LocalContext.current as ComponentActivity
     val viewModel = hiltViewModel<RegisterPinViewModel, RegisterPinViewModel.RegisterPinViewModelFactory>(viewModelStoreOwner = activity) { factory ->
@@ -30,8 +31,8 @@ fun RegisterPinScreen(
     Scaffold(
         topBar = {
             TopBar(
-                canNavigateBack = false,
-                onBackPressed = viewModel::onExitRegistration
+                canNavigateBack = canStepBack,
+                onBackPressed = if (canStepBack) viewModel::onCloseFlow else viewModel::onExitRegistration,
             )
         }
     ) { paddingValues ->
@@ -46,6 +47,10 @@ fun RegisterPinScreen(
         )
     }
     BackHandler{
-        viewModel.onExitRegistration()
+        if (!canStepBack) {
+            viewModel.onExitRegistration()
+        } else {
+            viewModel.onCloseFlow()
+        }
     }
 }

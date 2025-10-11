@@ -64,7 +64,7 @@ abstract class BaseViewModel<S : State>(
         if (t.isBecauseOf(SESSION_EXPIRED)) {
             viewModelScope.launch {
                 navigationEventChannel.sendEvent(
-                    NavigationEvent.TopNavigationEvent.NavigateTo((NavDestination.TopNavDestination.NonAuthenticatedScreens()))
+                    NavigationEvent.TopNavigationEvent.NavigateTo((NavDestination.TopNavDestination.Onboarding))
                 )
             }
         }
@@ -76,7 +76,6 @@ abstract class BaseViewModel<S : State>(
         this
             .onStart { isInProgressMutable.update { true } }
             .onCompletion { isInProgressMutable.update { false } }
-            .onEmpty { isInProgressMutable.update { false } }
             .catch {
                 basicErrorHandler(it)
             }
@@ -110,7 +109,6 @@ abstract class BaseViewModel<S : State>(
     protected fun <T : Any> Flow<T>.onStart() = this
         .onStart { isInProgressMutable.update { true } }
         .onCompletion { isInProgressMutable.update { false } }
-        .onEmpty { isInProgressMutable.update { false } }
         .onEach { isInProgressMutable.update { false } }
         .catch {
             basicErrorHandler(it)
