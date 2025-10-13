@@ -74,7 +74,33 @@ android {
                 "**/sqlite4java/**",
                 "**/icu/**",
                 "**/icudt*.dat",
-                "**/icudtl.dat"
+                "**/icudtl.dat",
+                "META-INF/LICENSE*",
+                "META-INF/NOTICE*",
+                "META-INF/*.kotlin_module",
+                "META-INF/*.version",
+                "META-INF/**/INDEX.LIST",
+                "META-INF/native/**",
+                "native/**",
+                "**/mac/**",
+                "**/osx/**",
+                "**/*.dylib",   // Mac binaries
+                "**/*.dll",     // Windows binaries, just in case
+                "**/linux/**",
+                "**/*.so",      // If any desktop .so is sneaking in
+                "**/*.jnilib",
+            )
+        }
+        jniLibs {
+            // Remove desktop native libs (not used on Android)
+            excludes += setOf(
+                "**/linux/**",
+                "**/unix/**",
+                "**/mac/**",
+                "**/darwin/**",
+                "**/osx/**",
+                "**/win32/**",
+                "**/win64/**"
             )
         }
     }
