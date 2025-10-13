@@ -21,6 +21,7 @@ import androidx.navigation.toRoute
 import com.vadlevente.bingebot.core.events.navigation.NavigationEvent.AuthenticatedNavigationEvent
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.model.NavDestination.AuthenticatedNavDestination
+import com.vadlevente.bingebot.core.ui.composables.horizontalSlideComposable
 import com.vadlevente.bingebot.core.util.SetupLifecycle
 import com.vadlevente.bingebot.dashboard.ui.DashboardScreen
 import com.vadlevente.bingebot.search.ui.SearchMovieScreen
@@ -67,23 +68,23 @@ fun AuthenticatedScreens(
         composable<AuthenticatedNavDestination.SearchTv> {
             SearchTvScreen()
         }
-        composable<AuthenticatedNavDestination.MovieDetails> {
+        horizontalSlideComposable<AuthenticatedNavDestination.MovieDetails> {
             val args: AuthenticatedNavDestination.MovieDetails = it.toRoute()
             MovieDetailsScreen(args.movieId)
         }
-        composable<AuthenticatedNavDestination.TvDetails> {
+        horizontalSlideComposable<AuthenticatedNavDestination.TvDetails> {
             val args: AuthenticatedNavDestination.TvDetails = it.toRoute()
             TvDetailsScreen(args.tvId)
         }
-        composable<AuthenticatedNavDestination.MovieWatchList> {
+        horizontalSlideComposable<AuthenticatedNavDestination.MovieWatchList> {
             val args: AuthenticatedNavDestination.MovieWatchList = it.toRoute()
             MovieWatchListScreen(args.watchListId)
         }
-        composable<AuthenticatedNavDestination.TvWatchList> {
+        horizontalSlideComposable<AuthenticatedNavDestination.TvWatchList> {
             val args: AuthenticatedNavDestination.TvWatchList = it.toRoute()
             TvWatchListScreen(args.watchListId)
         }
-        composable<AuthenticatedNavDestination.PersonDetails> {
+        horizontalSlideComposable<AuthenticatedNavDestination.PersonDetails> {
             val args: AuthenticatedNavDestination.PersonDetails = it.toRoute()
             PersonDetailsScreen(args.personId)
         }

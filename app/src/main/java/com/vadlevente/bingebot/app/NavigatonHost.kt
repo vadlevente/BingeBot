@@ -33,6 +33,7 @@ import com.vadlevente.bingebot.core.model.NavDestination.TopNavDestination
 import com.vadlevente.bingebot.core.ui.composables.Toast
 import com.vadlevente.bingebot.core.ui.composables.dialog.BBDialog
 import com.vadlevente.bingebot.core.ui.composables.dialog.BBTextFieldDialog
+import com.vadlevente.bingebot.core.ui.composables.horizontalSlideComposable
 import com.vadlevente.bingebot.splash.ui.SplashScreen
 import com.vadlevente.bingebot.ui.BingeBotTheme
 import kotlinx.coroutines.flow.collectLatest
@@ -58,10 +59,10 @@ fun NavigationHost(
                 composable<TopNavDestination.Splash> {
                     SplashScreen()
                 }
-                composable<TopNavDestination.Onboarding> {
+                horizontalSlideComposable<TopNavDestination.Onboarding> {
                     OnboardingScreens(navigationEventChannel)
                 }
-                composable<TopNavDestination.EnrollSecurity> {
+                horizontalSlideComposable<TopNavDestination.EnrollSecurity> {
                     val args: TopNavDestination.EnrollSecurity = it.toRoute()
                     EnrollSecurityScreens(
                         navigationEventChannel = navigationEventChannel,
@@ -70,7 +71,7 @@ fun NavigationHost(
                         canStepBack = args.canStepBack,
                     )
                 }
-                composable<TopNavDestination.AuthenticatedScreens> {
+                horizontalSlideComposable<TopNavDestination.AuthenticatedScreens> {
                     AuthenticatedScreens(navigationEventChannel)
                 }
                 composable<TopNavDestination.Authenticate>(

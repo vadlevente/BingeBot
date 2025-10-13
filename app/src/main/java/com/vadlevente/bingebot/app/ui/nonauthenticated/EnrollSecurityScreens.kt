@@ -5,7 +5,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.vadlevente.bingebot.authentication.ui.biometrics.RegisterBiometricsScreen
@@ -14,6 +13,7 @@ import com.vadlevente.bingebot.authentication.ui.pin.RegisterPinScreen
 import com.vadlevente.bingebot.core.events.navigation.NavigationEvent.EnrollSecurityNavigationEvent
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.model.NavDestination.EnrollSecurityNavDestination
+import com.vadlevente.bingebot.core.ui.composables.horizontalSlideComposable
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.launch
@@ -34,17 +34,17 @@ fun EnrollSecurityScreens(
         navController = navController,
         startDestination = EnrollSecurityNavDestination.RegisterPin
     ) {
-        composable<EnrollSecurityNavDestination.RegisterPin> {
+        horizontalSlideComposable<EnrollSecurityNavDestination.RegisterPin> {
             RegisterPinScreen(
                 email = email ?: "",
                 password = password ?: "",
                 canStepBack = canStepBack,
             )
         }
-        composable<EnrollSecurityNavDestination.RegisterPinConfirm> {
+        horizontalSlideComposable<EnrollSecurityNavDestination.RegisterPinConfirm> {
             RegisterPinConfirmationScreen()
         }
-        composable<EnrollSecurityNavDestination.BiometricsRegistration> {
+        horizontalSlideComposable<EnrollSecurityNavDestination.BiometricsRegistration> {
             val args: EnrollSecurityNavDestination.BiometricsRegistration = it.toRoute()
             RegisterBiometricsScreen(args.email, args.password)
         }

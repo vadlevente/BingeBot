@@ -19,7 +19,6 @@ import com.vadlevente.bingebot.core.model.Extras
 import com.vadlevente.bingebot.core.model.NavDestination
 import com.vadlevente.bingebot.core.model.NavDestination.OnboardingNavDestination
 import com.vadlevente.bingebot.core.stringOf
-import com.vadlevente.bingebot.core.usecase.ClearScreenResultUseCase
 import com.vadlevente.bingebot.core.usecase.GetScreenResultUseCase
 import com.vadlevente.bingebot.core.usecase.GetScreenResultUseCaseArgs
 import com.vadlevente.bingebot.core.viewModel.BaseViewModel
@@ -38,7 +37,6 @@ class LoginViewModel @Inject constructor(
     navigationEventChannel: NavigationEventChannel,
     toastEventChannel: ToastEventChannel,
     getScreenResultUseCase: GetScreenResultUseCase,
-    clearScreenResultUseCase: ClearScreenResultUseCase,
     private val loginUseCase: LoginUseCase,
     private val resendPasswordUseCase: ResendPasswordUseCase,
     private val appCloserDelegate: AppCloserDelegate,
@@ -54,7 +52,6 @@ class LoginViewModel @Inject constructor(
         getScreenResultUseCase.execute(
             GetScreenResultUseCaseArgs(Extras.SECURITY_ENROLLMENT_FINISHED)
         ).filter { it }.onValue {
-            clearScreenResultUseCase.execute(Unit).onStartSilent()
             onNavigateToAuthenticatedScreens()
         }
     }
