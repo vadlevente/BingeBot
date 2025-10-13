@@ -8,27 +8,28 @@ import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
 import com.vadlevente.bingebot.core.model.NavDestination
 import com.vadlevente.bingebot.core.usecase.ShouldAuthenticateUseCase
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 
-abstract class LifecycleAwareViewModel <S : State> (
+abstract class LifecycleAwareViewModel<S : State>(
     navigationEventChannel: NavigationEventChannel,
     toastEventChannel: ToastEventChannel,
     private val shouldAuthenticateUseCase: ShouldAuthenticateUseCase,
 ) : BaseViewModel<S>(navigationEventChannel, toastEventChannel), DefaultLifecycleObserver {
 
-    open fun onAuthenticationHandled(authOpened: Boolean) {}
+    abstract fun onAuthenticationHandled()
 
     override fun onResume(owner: LifecycleOwner) {
         super.onResume(owner)
-        shouldAuthenticateUseCase.execute(Unit).onValue { shouldAuthenticate ->
-            if (shouldAuthenticate) {
-                viewModelScope.launch {
-                    navigationEventChannel.sendEvent(
-                        NavigationEvent.TopNavigationEvent.NavigateTo(NavDestination.TopNavDestination.Authenticate)
-                    )
-                }
+        viewModelScope.launch {
+            val shouldAuthenticate = shouldAuthenticateUseCase.execute(Unit).firstOrNull()
+            if (shouldAuthenticate == true) {
+                navigationEventChannel.sendEvent(
+                    NavigationEvent.TopNavigationEvent.NavigateTo(NavDestination.TopNavDestination.Authenticate)
+                )
+            } else {
+                onAuthenticationHandled()
             }
-            onAuthenticationHandled(shouldAuthenticate)
         }
     }
 
