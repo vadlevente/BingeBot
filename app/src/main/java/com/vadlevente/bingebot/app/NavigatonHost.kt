@@ -1,7 +1,5 @@
 package com.vadlevente.bingebot.app
 
-import androidx.compose.animation.AnimatedContentTransitionScope
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -34,6 +32,7 @@ import com.vadlevente.bingebot.core.ui.composables.Toast
 import com.vadlevente.bingebot.core.ui.composables.dialog.BBDialog
 import com.vadlevente.bingebot.core.ui.composables.dialog.BBTextFieldDialog
 import com.vadlevente.bingebot.core.ui.composables.horizontalSlideComposable
+import com.vadlevente.bingebot.core.ui.composables.verticalSlideComposable
 import com.vadlevente.bingebot.splash.ui.SplashScreen
 import com.vadlevente.bingebot.ui.BingeBotTheme
 import kotlinx.coroutines.flow.collectLatest
@@ -74,20 +73,7 @@ fun NavigationHost(
                 horizontalSlideComposable<TopNavDestination.AuthenticatedScreens> {
                     AuthenticatedScreens(navigationEventChannel)
                 }
-                composable<TopNavDestination.Authenticate>(
-                    enterTransition = {
-                        slideIntoContainer(
-                            AnimatedContentTransitionScope.SlideDirection.Up,
-                            tween(700),
-                        )
-                    },
-                    exitTransition = {
-                        slideOutOfContainer(
-                            AnimatedContentTransitionScope.SlideDirection.Down,
-                            tween(700),
-                        )
-                    }
-                ) {
+                verticalSlideComposable<TopNavDestination.Authenticate> {
                     AuthenticationScreen()
                 }
             }

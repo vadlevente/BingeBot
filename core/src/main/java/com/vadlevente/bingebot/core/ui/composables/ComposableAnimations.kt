@@ -40,3 +40,23 @@ inline fun <reified T : NavDestination> NavGraphBuilder.horizontalSlideComposabl
         content = content
     )
 }
+
+inline fun <reified T : NavDestination> NavGraphBuilder.verticalSlideComposable(
+    noinline content: @Composable (AnimatedContentScope.(NavBackStackEntry) -> Unit)
+) {
+    composable<T>(
+        enterTransition = {
+            slideIntoContainer(
+                AnimatedContentTransitionScope.SlideDirection.Up,
+                tween(700),
+            )
+        },
+        exitTransition = {
+            slideOutOfContainer(
+                AnimatedContentTransitionScope.SlideDirection.Down,
+                tween(700),
+            )
+        },
+        content = content
+    )
+}

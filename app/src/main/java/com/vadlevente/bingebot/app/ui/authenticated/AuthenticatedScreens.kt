@@ -62,10 +62,10 @@ fun AuthenticatedScreens(
         composable<AuthenticatedNavDestination.Dashboard> {
             DashboardScreen()
         }
-        composable<AuthenticatedNavDestination.SearchMovie> {
+        horizontalSlideComposable<AuthenticatedNavDestination.SearchMovie> {
             SearchMovieScreen()
         }
-        composable<AuthenticatedNavDestination.SearchTv> {
+        horizontalSlideComposable<AuthenticatedNavDestination.SearchTv> {
             SearchTvScreen()
         }
         horizontalSlideComposable<AuthenticatedNavDestination.MovieDetails> {
