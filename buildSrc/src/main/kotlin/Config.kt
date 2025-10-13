@@ -3,6 +3,6 @@ object Config {
     const val minSdkVersion = 24
     const val targetSdkVersion = 35
     const val composeCompilerExtensionVersion = "1.5.3"
-    const val versionCode = 4
-    const val versionName = "1.4"
+    const val versionCode = 5
+    const val versionName = "1.5"
 }

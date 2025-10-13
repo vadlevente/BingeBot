@@ -67,6 +67,14 @@ android {
                 "fonts/*.ttf",
                 "fonts/*.otf",
                 "fonts/*.ttc",
+                "**/win32/**",
+                "**/win64/**",
+                "**/win32-x86/**",
+                "**/win32-x86-64/**",
+                "**/sqlite4java/**",
+                "**/icu/**",
+                "**/icudt*.dat",
+                "**/icudtl.dat"
             )
         }
     }
