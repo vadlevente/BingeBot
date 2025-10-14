@@ -13,4 +13,5 @@
     <string name="settings_turnSecurityOffTitle">Turn off app security</string>
     <string name="settings_turnSecurityOffDescription">Are you sure you want to turn off app security?</string>
     <string name="settings_tmdb_attribution">This product uses the TMDB API but is not endorsed or certified by TMDB.</string>
+    <string name="settings_nextToWatch">Display recommended items</string>
 </resources>

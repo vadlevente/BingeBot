@@ -18,6 +18,7 @@ import androidx.compose.material.icons.Icons.Filled
 import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Recommend
 import androidx.compose.material.icons.filled.Security
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -60,6 +61,7 @@ fun SettingsScreen(
         onSelectLanguage = viewModel::onLanguageChanged,
         onLogout = viewModel::onLogout,
         onSecurityChanged = viewModel::onSecurityChanged,
+        onDisplayNextToWatchChanged = viewModel::onDisplayNextToWatchChanged,
     )
 }
 
@@ -72,6 +74,7 @@ fun SettingsScreenComponent(
     onSelectLanguage: (SelectedLanguage) -> Unit,
     onLogout: () -> Unit,
     onSecurityChanged: (Boolean) -> Unit,
+    onDisplayNextToWatchChanged: (Boolean) -> Unit,
 ) {
     BackHandler(enabled = state.isSyncInProgress) {  }
     Scaffold(
@@ -148,6 +151,44 @@ fun SettingsScreenComponent(
                         text = state.languages.entries.first { it.value }.key.displayName,
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.primary,
+                    )
+                }
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 16.dp)
+                        .clickable {
+                            onDisplayNextToWatchChanged(!state.displayNextToWatch)
+                        },
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    BBIcon(
+                        imageVector = Filled.Recommend,
+                    )
+                    Text(
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(horizontal = 16.dp),
+                        text = stringResource(id = R.string.settings_nextToWatch),
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.primary,
+                    )
+                    Switch(
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp),
+                        checked = state.displayNextToWatch,
+                        colors = SwitchDefaults.colors(
+                            checkedThumbColor = MaterialTheme.colorScheme.primary,
+                            checkedTrackColor = MaterialTheme.colorScheme.primaryContainer,
+                            uncheckedThumbColor = MaterialTheme.colorScheme.onSurface,
+                            uncheckedTrackColor = MaterialTheme.colorScheme.surface,
+                            checkedBorderColor = MaterialTheme.colorScheme.primary,
+                            uncheckedBorderColor = MaterialTheme.colorScheme.primary,
+                            disabledCheckedThumbColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.4f),
+                            disabledUncheckedThumbColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.4f)
+                        ),
+                        onCheckedChange = { onDisplayNextToWatchChanged(!state.displayNextToWatch) },
                     )
                 }
 

@@ -70,4 +70,14 @@ class MovieListViewModel @Inject constructor(
         }
     }
 
+    override fun onNextToWatchSelected(id: Int) {
+        viewModelScope.launch {
+            navigationEventChannel.sendEvent(
+                NavigationEvent.AuthenticatedNavigationEvent.NavigateTo(
+                    AuthenticatedNavDestination.MovieDetails(id)
+                )
+            )
+        }
+    }
+
 }

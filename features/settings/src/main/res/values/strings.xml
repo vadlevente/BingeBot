@@ -13,4 +13,5 @@
     <string name="settings_turnSecurityOffTitle">Adatvédelem kikapcsolása</string>
     <string name="settings_turnSecurityOffDescription">Biztosan szeretné kikapcsolni az adatok védelmét?</string>
     <string name="settings_tmdb_attribution">Ez a termék a TMDB API-ját használja, de nem támogatott vagy hitelesített a TMDB által.</string>
+    <string name="settings_nextToWatch">Ajánlott elemek megjelenítése</string>
 </resources>

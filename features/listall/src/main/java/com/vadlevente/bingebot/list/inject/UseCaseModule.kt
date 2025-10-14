@@ -2,8 +2,10 @@ package com.vadlevente.bingebot.list.inject
 
 import com.vadlevente.bingebot.core.model.Item.Movie
 import com.vadlevente.bingebot.core.model.Item.Tv
+import com.vadlevente.bingebot.core.usecase.SetDisplayNextToWatchUseCase
 import com.vadlevente.bingebot.list.domain.usecase.GetItemFiltersUseCase
 import com.vadlevente.bingebot.list.domain.usecase.GetItemsUseCase
+import com.vadlevente.bingebot.list.domain.usecase.GetNextItemsToWatchUseCase
 import com.vadlevente.bingebot.list.domain.usecase.ItemListUseCases
 import com.vadlevente.bingebot.list.domain.usecase.SetIsWatchedFilterUseCase
 import com.vadlevente.bingebot.list.domain.usecase.SetQueryFilterUseCase
@@ -31,6 +33,8 @@ object UseCaseModule {
         setQueryFilterUseCase: SetQueryFilterUseCase<Movie>,
         updateItemsUseCase: UpdateItemsUseCase<Movie>,
         updateWatchListsUseCase: UpdateWatchListsUseCase<Movie>,
+        setDisplayNextToWatchUseCase: SetDisplayNextToWatchUseCase,
+        getNextItemsToWatchUseCase: GetNextItemsToWatchUseCase<Movie>,
     ): ItemListUseCases<Movie> = ItemListUseCases(
         getItemsUseCase,
         getFiltersUseCase,
@@ -39,6 +43,8 @@ object UseCaseModule {
         setQueryFilterUseCase,
         updateItemsUseCase,
         updateWatchListsUseCase,
+        setDisplayNextToWatchUseCase,
+        getNextItemsToWatchUseCase,
     )
 
     @Singleton
@@ -51,6 +57,8 @@ object UseCaseModule {
         setQueryFilterUseCase: SetQueryFilterUseCase<Tv>,
         updateItemsUseCase: UpdateItemsUseCase<Tv>,
         updateWatchListsUseCase: UpdateWatchListsUseCase<Tv>,
+        setDisplayNextToWatchUseCase: SetDisplayNextToWatchUseCase,
+        getNextItemsToWatchUseCase: GetNextItemsToWatchUseCase<Tv>,
     ): ItemListUseCases<Tv> = ItemListUseCases(
         getItemsUseCase,
         getFiltersUseCase,
@@ -59,6 +67,8 @@ object UseCaseModule {
         setQueryFilterUseCase,
         updateItemsUseCase,
         updateWatchListsUseCase,
+        setDisplayNextToWatchUseCase,
+        getNextItemsToWatchUseCase,
     )
 
 }

@@ -9,12 +9,16 @@ import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
 import com.vadlevente.bingebot.core.model.NavDestination
 import com.vadlevente.bingebot.core.model.SelectedLanguage
 import com.vadlevente.bingebot.core.stringOf
+import com.vadlevente.bingebot.core.usecase.GetDisplayNextToWatchUseCase
 import com.vadlevente.bingebot.core.usecase.HasStoredSecretUseCase
+import com.vadlevente.bingebot.core.usecase.SetDisplayNextToWatchUseCase
+import com.vadlevente.bingebot.core.usecase.SetDisplayNextToWatchUseCaseArgs
 import com.vadlevente.bingebot.core.usecase.TurnOffAuthenticationUseCase
 import com.vadlevente.bingebot.core.viewModel.BaseViewModel
 import com.vadlevente.bingebot.core.viewModel.State
 import com.vadlevente.bingebot.resources.R.string
 import com.vadlevente.bingebot.settings.SettingsViewModel.ViewState
+import com.vadlevente.bingebot.settings.domain.model.SettingsData
 import com.vadlevente.bingebot.settings.domain.usecases.GetLanguagesUseCase
 import com.vadlevente.bingebot.settings.domain.usecases.GetUserEmailUseCase
 import com.vadlevente.bingebot.settings.domain.usecases.LogoutUseCase
@@ -37,10 +41,12 @@ class SettingsViewModel @Inject constructor(
     getLanguagesUseCase: GetLanguagesUseCase,
     getUserEmailUseCase: GetUserEmailUseCase,
     hasStoredSecretUseCase: HasStoredSecretUseCase,
+    getDisplayNextToWatchUseCase: GetDisplayNextToWatchUseCase,
     private val setLanguageUseCase: SetLanguageUseCase,
     private val logoutUseCase: LogoutUseCase,
     private val dialogEventChannel: DialogEventChannel,
     private val turnOffAuthenticationUseCase: TurnOffAuthenticationUseCase,
+    private val setDisplayNextToWatchUseCase: SetDisplayNextToWatchUseCase,
 ) : BaseViewModel<ViewState>(
     navigationEventChannel, toastEventChannel
 ) {
@@ -53,16 +59,20 @@ class SettingsViewModel @Inject constructor(
             getLanguagesUseCase.execute(Unit),
             getUserEmailUseCase.execute(Unit),
             hasStoredSecretUseCase.execute(Unit),
-            ::Triple
-        ).onValue { (languages, email, hasStoredSecret) ->
-            viewState.update {
-                it.copy(
-                    languages = languages,
-                    email = email?.substringBefore("@"),
-                    isSecurityOn = hasStoredSecret,
-                )
-            }
+            getDisplayNextToWatchUseCase.execute(Unit),
+        ) { languages, email, hasStoredSecret, displayNextToWatch ->
+            SettingsData(languages, email, hasStoredSecret, displayNextToWatch)
         }
+            .onValue { (languages, email, hasStoredSecret, displayNextToWatch) ->
+                viewState.update {
+                    it.copy(
+                        languages = languages,
+                        email = email?.substringBefore("@"),
+                        isSecurityOn = hasStoredSecret,
+                        displayNextToWatch = displayNextToWatch,
+                    )
+                }
+            }
     }
 
     fun onLanguageChanged(language: SelectedLanguage) {
@@ -150,12 +160,19 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
+    fun onDisplayNextToWatchChanged(nextValue: Boolean) {
+        setDisplayNextToWatchUseCase.execute(
+            SetDisplayNextToWatchUseCaseArgs(nextValue)
+        ).onStartSilent()
+    }
+
     data class ViewState(
         val languages: Map<SelectedLanguage, Boolean> = emptyMap(),
         val showSelectLanguageBottomSheet: Boolean = false,
         val email: String? = null,
         val isSyncInProgress: Boolean = false,
         val isSecurityOn: Boolean = false,
+        val displayNextToWatch: Boolean = false,
     ) : State
 
 }

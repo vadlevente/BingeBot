@@ -3,6 +3,7 @@ package com.vadlevente.bingebot.core.data.local.datastore
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.MutablePreferences
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.google.gson.Gson
@@ -28,7 +29,7 @@ class PreferencesDataSource @Inject constructor(
         private const val LANGUAGE = "language"
         private const val PIN_ENCRYPTED_SECRET = "pinEncryptedSecret"
         private const val BIOMETRICS_ENCRYPTED_SECRET = "biometricsEncryptedSecret"
-
+        private const val DISPLAY_NEXT_TO_WATCH = "displayNextToWatch"
     }
 
     private val data = dataStore.data.catch {
@@ -57,6 +58,10 @@ class PreferencesDataSource @Inject constructor(
         it[stringPreferencesKey(BIOMETRICS_ENCRYPTED_SECRET)]
     }
 
+    val displayNextToWatch: Flow<Boolean> = data.map {
+        it[booleanPreferencesKey(DISPLAY_NEXT_TO_WATCH)] != false
+    }
+
     suspend fun saveActiveProfileId(value: String?) {
         value?.let {
             savePreference(stringPreferencesKey(ACTIVE_PROFILE_ID), value)
@@ -77,6 +82,10 @@ class PreferencesDataSource @Inject constructor(
 
     suspend fun saveBiometricsEncryptedSecret(value: String) {
         savePreference(stringPreferencesKey(BIOMETRICS_ENCRYPTED_SECRET), value)
+    }
+
+    suspend fun saveDisplayNextToWatch(value: Boolean) {
+        savePreference(booleanPreferencesKey(DISPLAY_NEXT_TO_WATCH), value)
     }
 
     suspend fun clearUserRelatedData() {

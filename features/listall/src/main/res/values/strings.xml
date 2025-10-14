@@ -4,6 +4,8 @@
     <string name="isWatchedFilter_falseLabel">Megnézésre vár</string>
     <string name="isWatchedFilter_allLabel">Összes</string>
     <string name="sorting_title">Rendezés</string>
+    <string name="nextToWatch">Ajánlott</string>
+    <string name="disable_nextToWatch">Elrejtés</string>
 
     <string name="movieList_pageTitle">Filmek</string>
     <string name="tvList_pageTitle">Sorozatok</string>

@@ -20,6 +20,12 @@ val MutedRed = Color(0xFFD32F2F)
 val DesaturatedRed = Color(0xFFCF6679)
 val PureWhite = Color(0xFFFFFFFF)
 
+val Background = Color(0xFF151219)
+val Surface = Color(0xFF28222e)
+val Primary = Color(0xFFd1bcfd)
+val PrimaryContainer = Color(0xFF503d75)
+
+
 val LightInfo = Color(0xFF42A5F5) // Soft Blue
 val DarkInfo = Color(0xFF90CAF9) // Lighter Blue
 val LightWarning = Color(0xFFFFA726) // Warm Orange
@@ -49,16 +55,15 @@ val LightColorScheme: ColorScheme = lightColorScheme(
 
 // Dark theme colors
 val DarkColorScheme: ColorScheme = darkColorScheme(
-    primary = GoldenSand,
-    primaryContainer = SoftTerracotta,
-    secondary = DeepRust,
-    background = CharcoalGray,
-    surface = DarkGray,
+    primary = Primary,
+    primaryContainer = PrimaryContainer,
+    background = Background,
+    surface = Surface,
     error = DesaturatedRed,
-    onPrimary = CharcoalGray,
+    onPrimary = Background,
     onSecondary = WarmBeige,
-    onBackground = WarmBeige,
-    onSurface = WarmBeige
+    onBackground = Primary,
+    onSurface = Primary
 )
 
 @Immutable

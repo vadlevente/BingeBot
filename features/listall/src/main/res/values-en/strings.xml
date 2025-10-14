@@ -4,6 +4,8 @@
     <string name="isWatchedFilter_falseLabel">Not seen</string>
     <string name="isWatchedFilter_allLabel">All</string>
     <string name="sorting_title">Sort</string>
+    <string name="nextToWatch">Recommended</string>
+    <string name="disable_nextToWatch">Hide</string>
 
     <string name="movieList_pageTitle">Movies</string>
     <string name="tvList_pageTitle">Series</string>

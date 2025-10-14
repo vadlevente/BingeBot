@@ -196,7 +196,7 @@ fun <T : Item> ItemBottomSheet(
                     currentYearContentColor = MaterialTheme.colorScheme.primary,
                     selectedYearContentColor = MaterialTheme.colorScheme.primary,
                     dayContentColor = MaterialTheme.colorScheme.primary,
-                    selectedDayContentColor = MaterialTheme.colorScheme.onSurface,
+                    selectedDayContentColor = MaterialTheme.colorScheme.surface,
                     todayContentColor = MaterialTheme.colorScheme.primary,
                     todayDateBorderColor = BingeBotTheme.colors.highlight,
                     selectedDayContainerColor = BingeBotTheme.colors.highlight,

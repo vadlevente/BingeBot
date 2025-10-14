@@ -1,6 +1,7 @@
 package com.vadlevente.bingebot.list.domain.usecase
 
 import com.vadlevente.bingebot.core.model.Item
+import com.vadlevente.bingebot.core.usecase.SetDisplayNextToWatchUseCase
 
 data class ItemListUseCases <T: Item> (
     val getItemsUseCase: GetItemsUseCase<T>,
@@ -10,4 +11,6 @@ data class ItemListUseCases <T: Item> (
     val setQueryFilterUseCase: SetQueryFilterUseCase<T>,
     val updateItemsUseCase: UpdateItemsUseCase<T>,
     val updateWatchListsUseCase: UpdateWatchListsUseCase<T>,
+    val setDisplayNextToWatchUseCase: SetDisplayNextToWatchUseCase,
+    val getNextItemsToWatchUseCase: GetNextItemsToWatchUseCase<T>,
 )

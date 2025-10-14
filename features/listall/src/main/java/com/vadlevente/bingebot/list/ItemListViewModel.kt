@@ -6,6 +6,7 @@ import com.vadlevente.bingebot.core.model.DisplayedItem
 import com.vadlevente.bingebot.core.model.Genre
 import com.vadlevente.bingebot.core.model.Item
 import com.vadlevente.bingebot.core.model.SkeletonFactory
+import com.vadlevente.bingebot.core.usecase.SetDisplayNextToWatchUseCaseArgs
 import com.vadlevente.bingebot.core.viewModel.BaseViewModel
 import com.vadlevente.bingebot.core.viewModel.State
 import com.vadlevente.bingebot.list.ItemListViewModel.ViewState
@@ -43,15 +44,15 @@ abstract class ItemListViewModel<T : Item>(
             combine(
                 useCases.getFiltersUseCase.execute(Unit),
                 useCases.getItemsUseCase.execute(Unit),
-                ::Pair,
+                useCases.getNextItemsToWatchUseCase.execute(Unit),
+                ::Triple,
             )
-        }.onValue { (filters, items) ->
-            println("item genre error: filters genre count: ${filters.displayedGenres.size}")
-            println("item genre error: items count: ${items.size}")
+        }.onValue { (filters, items, nextItemsToWatch) ->
             baseViewState.update {
                 it.copy(
                     items = items,
                     genres = filters.displayedGenres,
+                    nextToWatch = nextItemsToWatch,
                     isAnyGenreSelected = filters.displayedGenres.any { it.isSelected },
                     isWatchedSelected = filters.isWatchedSelected,
                     isSearchFieldVisible = filters.searchQuery != null,
@@ -85,6 +86,7 @@ abstract class ItemListViewModel<T : Item>(
     abstract fun onNavigateToOptions(itemId: Int)
     abstract fun onOpenWatchLists()
     abstract fun onOpenOrderBy()
+    abstract fun onNextToWatchSelected(id: Int)
 
     fun onQueryChanged(value: String?) {
         useCases.setQueryFilterUseCase.execute(
@@ -133,9 +135,16 @@ abstract class ItemListViewModel<T : Item>(
         }
     }
 
+    fun onHideNextToWatch() {
+        useCases.setDisplayNextToWatchUseCase.execute(
+            SetDisplayNextToWatchUseCaseArgs(false)
+        ).onStartSilent()
+    }
+
     data class ViewState<T : Item>(
         val items: List<DisplayedItem<T>> = emptyList(),
         val genres: List<DisplayedGenre> = emptyList(),
+        val nextToWatch: List<DisplayedItem<T>> = emptyList(),
         val isSearchFieldVisible: Boolean = false,
         val searchQuery: String? = null,
         val isAnyGenreSelected: Boolean = false,

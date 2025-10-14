@@ -68,4 +68,14 @@ class TvListViewModel @Inject constructor(
         }
     }
 
+    override fun onNextToWatchSelected(id: Int) {
+        viewModelScope.launch {
+            navigationEventChannel.sendEvent(
+                NavigationEvent.AuthenticatedNavigationEvent.NavigateTo(
+                    AuthenticatedNavDestination.TvDetails(id)
+                )
+            )
+        }
+    }
+
 }

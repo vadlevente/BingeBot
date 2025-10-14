@@ -71,6 +71,7 @@ import com.vadlevente.bingebot.core.util.yearString
 import com.vadlevente.bingebot.list.ItemListViewModel
 import com.vadlevente.bingebot.list.ItemListViewModel.ViewState
 import com.vadlevente.bingebot.list.R
+import com.vadlevente.bingebot.list.ui.composables.NextToWatchSection
 import com.vadlevente.bingebot.ui.BingeBotTheme
 import com.vadlevente.bingebot.resources.R as Res
 
@@ -94,6 +95,8 @@ fun <T : Item> ItemListScreen(
         onToggleIsWatched = viewModel::onToggleIsWatched,
         onOpenOrderBy = viewModel::onOpenOrderBy,
         onToggleViewSelector = viewModel::onToggleViewSelector,
+        onHideNextToWatch = viewModel::onHideNextToWatch,
+        onNextToWatchSelected = viewModel::onNextToWatchSelected,
     )
 }
 
@@ -112,6 +115,8 @@ fun <T : Item> ItemListScreenComponent(
     onToggleIsWatched: () -> Unit,
     onToggleViewSelector: () -> Unit,
     onOpenOrderBy: () -> Unit,
+    onHideNextToWatch: () -> Unit,
+    onNextToWatchSelected: (Int) -> Unit,
 ) {
     val focusRequester = remember { FocusRequester() }
     Scaffold(
@@ -214,6 +219,19 @@ fun <T : Item> ItemListScreenComponent(
                     )
                 } else {
                     LazyColumn(state = scrollState) {
+                        item {
+                            Column {
+                                AnimatedVisibility(
+                                    visible = state.nextToWatch.isNotEmpty(),
+                                ) {
+                                    NextToWatchSection(
+                                        items = state.nextToWatch,
+                                        onClickItem = onNextToWatchSelected,
+                                        onHideNextToWatch = onHideNextToWatch,
+                                    )
+                                }
+                            }
+                        }
                         items(state.items) { displayedItem ->
                             val item = displayedItem.item
                             if (state.isSmallView) {
