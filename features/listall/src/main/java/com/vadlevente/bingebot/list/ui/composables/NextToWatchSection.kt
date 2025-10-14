@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -106,13 +107,20 @@ fun <T : Item> NextToWatchSection(
                             },
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        AsyncImage(
-                            model = currentItem.thumbnailUrl,
-                            error = painterResource(id = com.vadlevente.bingebot.resources.R.drawable.movie_placeholder),
-                            placeholder = painterResource(id = com.vadlevente.bingebot.resources.R.drawable.movie_placeholder),
-                            contentDescription = null,
-                            contentScale = ContentScale.FillBounds
-                        )
+                        Box(
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(8.dp))
+                                .width(120.dp)
+                                .aspectRatio(1/1.5f)
+                        ) {
+                            AsyncImage(
+                                model = currentItem.thumbnailUrl,
+                                error = painterResource(id = com.vadlevente.bingebot.resources.R.drawable.movie_placeholder),
+                                placeholder = painterResource(id = com.vadlevente.bingebot.resources.R.drawable.movie_placeholder),
+                                contentDescription = null,
+                                contentScale = ContentScale.FillBounds
+                            )
+                        }
                         Column(
                             modifier = Modifier
                                 .padding(horizontal = 18.dp)

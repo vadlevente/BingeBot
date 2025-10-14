@@ -108,7 +108,7 @@ fun PinScreen(
                                     },
                                     modifier = Modifier.size(56.dp),
                                     shape = CircleShape,
-                                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.surface)
+                                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.background)
                                 ) {
                                     Text(
                                         text = button.value.toString(),

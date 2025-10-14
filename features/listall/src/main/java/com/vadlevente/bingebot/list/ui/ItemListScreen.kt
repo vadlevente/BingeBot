@@ -183,7 +183,9 @@ fun <T : Item> ItemListScreenComponent(
                 }
             }
         }
-
+        LaunchedEffect(Unit) {
+            scrollState.scrollToItem(0)
+        }
         Column(
             modifier = Modifier
                 .padding(paddingValues)
@@ -202,6 +204,8 @@ fun <T : Item> ItemListScreenComponent(
                     onOpenOrderBy = onOpenOrderBy,
                     onToggleIsWatched = onToggleIsWatched,
                     onToggleViewSelector = onToggleViewSelector,
+                    onNextToWatchSelected = onNextToWatchSelected,
+                    onHideNextToWatch = onHideNextToWatch,
                 )
             }
             Box(modifier = Modifier.fillMaxSize()) {
@@ -219,19 +223,6 @@ fun <T : Item> ItemListScreenComponent(
                     )
                 } else {
                     LazyColumn(state = scrollState) {
-                        item {
-                            Column {
-                                AnimatedVisibility(
-                                    visible = state.nextToWatch.isNotEmpty(),
-                                ) {
-                                    NextToWatchSection(
-                                        items = state.nextToWatch,
-                                        onClickItem = onNextToWatchSelected,
-                                        onHideNextToWatch = onHideNextToWatch,
-                                    )
-                                }
-                            }
-                        }
                         items(state.items) { displayedItem ->
                             val item = displayedItem.item
                             if (state.isSmallView) {
@@ -337,13 +328,15 @@ private fun <T : Item> SearchBar(
 }
 
 @Composable
-private fun ControlSection(
-    state: ViewState<*>,
+private fun <T : Item> ControlSection(
+    state: ViewState<T>,
     onToggleGenre: (Genre) -> Unit,
     onClearGenres: () -> Unit,
     onOpenOrderBy: () -> Unit,
     onToggleIsWatched: () -> Unit,
     onToggleViewSelector: () -> Unit,
+    onHideNextToWatch: () -> Unit,
+    onNextToWatchSelected: (Int) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -403,6 +396,13 @@ private fun ControlSection(
                 imageVector = Icons.Default.ViewCompact,
                 tint = MaterialTheme.colorScheme.primary,
                 contentDescription = null
+            )
+        }
+        AnimatedVisibility(visible = state.nextToWatch.isNotEmpty()) {
+            NextToWatchSection(
+                items = state.nextToWatch,
+                onClickItem = onNextToWatchSelected,
+                onHideNextToWatch = onHideNextToWatch,
             )
         }
     }
