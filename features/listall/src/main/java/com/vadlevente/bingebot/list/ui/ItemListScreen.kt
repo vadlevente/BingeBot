@@ -40,6 +40,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -171,10 +172,16 @@ fun <T : Item> ItemListScreenComponent(
 
         val controlsVisible = remember { mutableStateOf(true) }
         val scrollState = rememberLazyListState()
+        val shouldHideControls by remember {
+            derivedStateOf {
+                val layoutInfo = scrollState.layoutInfo
+                layoutInfo.visibleItemsInfo.size < layoutInfo.totalItemsCount
+            }
+        }
         val nestedScrollConnection = remember {
             object : NestedScrollConnection {
                 override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-                    if (available.y < 0) {
+                    if (available.y < 0 && shouldHideControls) {
                         controlsVisible.value = false
                     } else if (available.y > 10) {
                         controlsVisible.value = true

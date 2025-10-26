@@ -6,6 +6,7 @@ import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
 import com.vadlevente.bingebot.core.model.Item
 import com.vadlevente.bingebot.core.model.NavDestination
+import com.vadlevente.bingebot.core.util.Constants.LOADING_DELAY_MS
 import com.vadlevente.bingebot.core.viewModel.BaseViewModel
 import com.vadlevente.bingebot.core.viewModel.State
 import com.vadlevente.moviedetails.ItemDetailsViewModel.ViewState
@@ -32,20 +33,31 @@ abstract class ItemDetailsViewModel<T : Item>(
 
     abstract fun onNavigateToOptions()
 
+    private var isInitialized = false
+
     init {
         getItemDetailsUseCase.execute(
             GetItemDetailsUseCaseParams(
                 itemId = itemId
             )
         ).onValue { details ->
-            isInProgress.value = true
-            baseViewState.update {
-                it.copy(
-                    details = details
-                )
+            if (!isInitialized) {
+                isInProgress.value = true
+                baseViewState.update {
+                    it.copy(
+                        details = details
+                    )
+                }
+                delay(LOADING_DELAY_MS)
+                isInProgress.value = false
+                isInitialized = true
+            } else {
+                baseViewState.update {
+                    it.copy(
+                        details = details
+                    )
+                }
             }
-            delay(1000)
-            isInProgress.value = false
         }
     }
 

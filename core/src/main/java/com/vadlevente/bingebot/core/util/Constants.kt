@@ -6,4 +6,5 @@ object Constants {
     const val FIREBASE_COLLECTION_ROOT = "movies"
     const val DATABASE_NAME = "movieDatabase.db"
     const val PIN_LENGTH = 6
+    const val LOADING_DELAY_MS = 600L
 }

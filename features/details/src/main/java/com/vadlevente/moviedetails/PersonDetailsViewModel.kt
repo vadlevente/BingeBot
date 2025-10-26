@@ -7,6 +7,7 @@ import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
 import com.vadlevente.bingebot.core.model.MediaType
 import com.vadlevente.bingebot.core.model.NavDestination
 import com.vadlevente.bingebot.core.model.PersonDetails
+import com.vadlevente.bingebot.core.util.Constants.LOADING_DELAY_MS
 import com.vadlevente.bingebot.core.viewModel.BaseViewModel
 import com.vadlevente.bingebot.core.viewModel.State
 import com.vadlevente.moviedetails.PersonDetailsViewModel.ViewState
@@ -47,7 +48,7 @@ class PersonDetailsViewModel @AssistedInject constructor(
                     details = details
                 )
             }
-            delay(1000)
+            delay(LOADING_DELAY_MS)
             isInProgress.value = false
         }
     }
