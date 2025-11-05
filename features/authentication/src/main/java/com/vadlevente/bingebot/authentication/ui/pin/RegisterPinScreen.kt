@@ -46,7 +46,7 @@ fun RegisterPinScreen(
             onPinChanged = viewModel::onPinChanged
         )
     }
-    BackHandler{
+    BackHandler {
         if (!canStepBack) {
             viewModel.onExitRegistration()
         } else {

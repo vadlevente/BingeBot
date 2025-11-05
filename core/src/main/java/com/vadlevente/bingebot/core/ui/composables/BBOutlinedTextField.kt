@@ -6,7 +6,13 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import com.vadlevente.bingebot.core.UIText
 import com.vadlevente.bingebot.core.asString
@@ -24,9 +30,12 @@ fun BBOutlinedTextField(
     trailingIcon: @Composable () -> Unit = {},
     maxLines: Int = Int.MAX_VALUE,
 ) {
+    var state by remember {
+        mutableStateOf(TextFieldValue(value, TextRange(value.length)))
+    }
     BBOutlinedTextField(
         modifier = modifier,
-        value = value,
+        value = state,
         label = label?.let {
             {
                 Text(
@@ -40,7 +49,10 @@ fun BBOutlinedTextField(
             { Text(text = it.asString()) }
         },
         visualTransformation = visualTransformation,
-        onValueChange = onValueChange,
+        onValueChange = {
+            state = it
+            onValueChange(it.text)
+        },
         isError = isError,
         keyboardOptions = keyboardOptions,
         trailingIcon = trailingIcon,
@@ -49,13 +61,13 @@ fun BBOutlinedTextField(
 }
 
 @Composable
-private fun BBOutlinedTextField(
+fun BBOutlinedTextField(
     modifier: Modifier = Modifier,
-    value: String,
+    value: TextFieldValue,
     label: @Composable (() -> Unit)? = null,
     placeholder: @Composable (() -> Unit)? = null,
     visualTransformation: VisualTransformation = VisualTransformation.None,
-    onValueChange: (String) -> Unit = {},
+    onValueChange: (TextFieldValue) -> Unit = {},
     isError: Boolean = false,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     trailingIcon: @Composable () -> Unit = {},

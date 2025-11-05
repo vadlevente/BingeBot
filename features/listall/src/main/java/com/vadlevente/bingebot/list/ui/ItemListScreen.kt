@@ -44,6 +44,8 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -170,7 +172,7 @@ fun <T : Item> ItemListScreenComponent(
         }
     ) { paddingValues ->
 
-        val controlsVisible = remember { mutableStateOf(true) }
+        val controlsVisible = rememberSaveable { mutableStateOf(true) }
         val scrollState = rememberLazyListState()
         val shouldHideControls by remember {
             derivedStateOf {
@@ -178,12 +180,13 @@ fun <T : Item> ItemListScreenComponent(
                 layoutInfo.visibleItemsInfo.size < layoutInfo.totalItemsCount
             }
         }
+        var isInitialized by rememberSaveable { mutableStateOf(false) }
         val nestedScrollConnection = remember {
             object : NestedScrollConnection {
                 override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-                    if (available.y < 0 && shouldHideControls) {
+                    if (available.y < HIDE_CONTROLS_THRESHOLD && shouldHideControls) {
                         controlsVisible.value = false
-                    } else if (available.y > 10) {
+                    } else if (available.y > SHOW_CONTROLS_THRESHOLD) {
                         controlsVisible.value = true
                     }
                     return Offset.Zero
@@ -191,7 +194,10 @@ fun <T : Item> ItemListScreenComponent(
             }
         }
         LaunchedEffect(Unit) {
-            scrollState.scrollToItem(0)
+            if (!isInitialized) {
+                scrollState.scrollToItem(0)
+                isInitialized = true
+            }
         }
         Column(
             modifier = Modifier
@@ -199,6 +205,7 @@ fun <T : Item> ItemListScreenComponent(
                 .background(MaterialTheme.colorScheme.background)
                 .nestedScroll(nestedScrollConnection)
         ) {
+            println("scrolling debug: controlsVisible: $controlsVisible")
             AnimatedVisibility(
                 visible = controlsVisible.value && !isInProgress,
                 enter = fadeIn() + expandVertically(),
@@ -295,10 +302,12 @@ private fun <T : Item> SearchBar(
                 tint = MaterialTheme.colorScheme.primary,
             )
         }
-        val textFieldValue = TextFieldValue(
-            state.searchQuery ?: "",
-            TextRange(state.searchQuery?.length ?: 0)
-        )
+        var textFieldValue by remember {
+            mutableStateOf(TextFieldValue(
+                state.searchQuery ?: "",
+                TextRange(state.searchQuery?.length ?: 0)
+            ))
+        }
         TextField(
             modifier = Modifier
                 .padding(end = 8.dp)
@@ -313,6 +322,7 @@ private fun <T : Item> SearchBar(
                 unfocusedTextColor = MaterialTheme.colorScheme.primary,
             ),
             onValueChange = {
+                textFieldValue = it
                 onQueryChanged(it.text)
             },
             trailingIcon = {
@@ -453,3 +463,6 @@ data class ItemListScreenResources(
     val searchFieldHint: Int,
     val emptyListDescription: Int,
 )
+
+const val HIDE_CONTROLS_THRESHOLD = -40L
+const val SHOW_CONTROLS_THRESHOLD = 40L

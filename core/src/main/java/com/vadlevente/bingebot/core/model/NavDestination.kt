@@ -49,10 +49,6 @@ sealed interface NavDestination {
         @Serializable
         data object Dashboard : AuthenticatedNavDestination
         @Serializable
-        data object ListMovie : AuthenticatedNavDestination
-        @Serializable
-        data object ListTv : AuthenticatedNavDestination
-        @Serializable
         data object SearchMovie : AuthenticatedNavDestination
         @Serializable
         data object SearchTv : AuthenticatedNavDestination
@@ -77,12 +73,18 @@ sealed interface NavDestination {
         ) : AuthenticatedNavDestination
 
         @Serializable
-        data object Settings : AuthenticatedNavDestination
-
-        @Serializable
         data class PersonDetails(
             val personId: Int,
         ) : AuthenticatedNavDestination
+    }
+
+    sealed interface DashboardNavDestination : NavDestination {
+        @Serializable
+        data object ListMovie : DashboardNavDestination
+        @Serializable
+        data object ListTv : DashboardNavDestination
+        @Serializable
+        data object Settings : DashboardNavDestination
     }
 
 }

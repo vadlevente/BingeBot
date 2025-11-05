@@ -31,7 +31,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.vadlevente.bingebot.core.model.NavDestination.AuthenticatedNavDestination
+import com.vadlevente.bingebot.core.model.NavDestination.DashboardNavDestination
 import com.vadlevente.bingebot.dashboard.R
 import com.vadlevente.bingebot.list.ui.MovieListScreen
 import com.vadlevente.bingebot.list.ui.TvListScreen
@@ -42,34 +42,50 @@ import com.vadlevente.bingebot.ui.BingeBotTheme
 fun DashboardScreen(
     navController: NavHostController = rememberNavController(),
 ) {
+    var selectedTabIndex by rememberSaveable { mutableIntStateOf(0) }
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         bottomBar = {
-            BottomNavigationBar(navController = navController)
+            BottomNavigationBar(
+                navController = navController,
+                selectedTabIndex = selectedTabIndex,
+                onTabSelected = {
+                    selectedTabIndex = it
+                }
+            )
         }
     ) {
         NavHost(
             modifier = Modifier.padding(it),
             navController = navController,
-            startDestination = AuthenticatedNavDestination.ListMovie
+            startDestination = DashboardNavDestination.ListMovie
         ) {
-            composable<AuthenticatedNavDestination.ListMovie> {
+            composable<DashboardNavDestination.ListMovie> {
                 MovieListScreen()
             }
-            composable<AuthenticatedNavDestination.ListTv> {
+            composable<DashboardNavDestination.ListTv> {
                 TvListScreen()
             }
-            composable<AuthenticatedNavDestination.Settings> {
+            composable<DashboardNavDestination.Settings> {
                 SettingsScreen()
             }
+        }
+        BackHandler(enabled = selectedTabIndex != 0) {
+            navController.navigate(DashboardNavDestination.ListMovie) {
+                launchSingleTop = true
+            }
+            selectedTabIndex = 0
         }
     }
 
 }
 
 @Composable
-fun BottomNavigationBar(navController: NavController) {
-    var selectedTabIndex by rememberSaveable { mutableIntStateOf(0) }
+fun BottomNavigationBar(
+    navController: NavController,
+    selectedTabIndex: Int,
+    onTabSelected: (Int) -> Unit,
+) {
     NavigationBar(
         containerColor = MaterialTheme.colorScheme.surface,
         modifier = Modifier.graphicsLayer {
@@ -83,10 +99,10 @@ fun BottomNavigationBar(navController: NavController) {
             title = stringResource(id = R.string.tab_title_movieList),
             icon = Icons.Filled.Movie
         ) {
-            navController.navigate(AuthenticatedNavDestination.ListMovie) {
+            navController.navigate(DashboardNavDestination.ListMovie) {
                 launchSingleTop = true
             }
-            selectedTabIndex = 0
+            onTabSelected(0)
         }
         BottomNavigationItem(
             scope = this,
@@ -94,10 +110,10 @@ fun BottomNavigationBar(navController: NavController) {
             title = stringResource(id = R.string.tab_title_tvList),
             icon = Icons.Filled.Tv
         ) {
-            navController.navigate(AuthenticatedNavDestination.ListTv) {
+            navController.navigate(DashboardNavDestination.ListTv) {
                 launchSingleTop = true
             }
-            selectedTabIndex = 1
+            onTabSelected(1)
         }
         BottomNavigationItem(
             scope = this,
@@ -105,18 +121,10 @@ fun BottomNavigationBar(navController: NavController) {
             title = stringResource(id = R.string.tab_title_settings),
             icon = Icons.Filled.Settings
         ) {
-            navController.navigate(AuthenticatedNavDestination.Settings) {
+            navController.navigate(DashboardNavDestination.Settings) {
                 launchSingleTop = true
             }
-            selectedTabIndex = 2
-        }
-    }
-    if (selectedTabIndex != 0) {
-        BackHandler {
-            navController.navigate(AuthenticatedNavDestination.ListMovie) {
-                popUpTo(0)
-            }
-            selectedTabIndex = 0
+            onTabSelected(2)
         }
     }
 }
@@ -132,7 +140,11 @@ fun BottomNavigationItem(
     with(scope) {
         NavigationBarItem(
             selected = isSelected,
-            onClick = onSelected,
+            onClick = {
+                if (!isSelected) {
+                    onSelected()
+                }
+            },
             icon = {
                 Icon(
                     imageVector = icon,
