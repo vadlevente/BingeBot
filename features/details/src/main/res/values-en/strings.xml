@@ -17,4 +17,6 @@
 
     <string name="personDetails_castCredits">Cast</string>
     <string name="personDetails_crewCredits">Crew</string>
+    <string name="personDetails_upcoming">Upcoming</string>
+    <string name="personDetails_previous">Previous</string>
 </resources>

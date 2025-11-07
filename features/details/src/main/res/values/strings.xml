@@ -17,5 +17,7 @@
 
     <string name="personDetails_castCredits">Szerepek</string>
     <string name="personDetails_crewCredits">Stáb</string>
+    <string name="personDetails_upcoming">Közelgő</string>
+    <string name="personDetails_previous">Korábbi</string>
 
 </resources>

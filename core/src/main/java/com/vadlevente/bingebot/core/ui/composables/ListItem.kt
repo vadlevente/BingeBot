@@ -54,6 +54,7 @@ fun ListItem(
     onLongClick: () -> Unit = {},
 ) {
     Crossfade(
+        modifier = modifier,
         targetState = isLoading,
         label = "listitem"
     ) { isLoading ->

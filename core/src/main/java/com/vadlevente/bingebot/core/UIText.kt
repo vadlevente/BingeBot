@@ -15,6 +15,8 @@ sealed interface UIText {
         val args: List<Any>,
     ) : UIText
 
+    data class CombinedText(val parts: List<UIText>) : UIText
+
     companion object {
         fun empty() = DynamicText("")
     }
@@ -28,6 +30,8 @@ fun UIText.asString(context: Context): String =
     when (this) {
         is DynamicText -> text
         is StringResource -> context.getString(resId, *(args.formatText(context)))
+        is UIText.CombinedText -> parts.joinToString(separator = "") { it.asString(context) }
+
     }
 
 @Composable
@@ -48,3 +52,5 @@ fun stringOf(text: String) = DynamicText(text)
 
 @JvmName("nullableStringOf")
 fun stringOf(text: String?) = text?.let { DynamicText(text) }
+
+fun stringOf(vararg text: UIText) = UIText.CombinedText(text.toList())

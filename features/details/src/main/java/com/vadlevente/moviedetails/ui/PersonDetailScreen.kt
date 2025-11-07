@@ -1,18 +1,28 @@
 package com.vadlevente.moviedetails.ui
 
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -21,13 +31,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
+import com.vadlevente.bingebot.core.asString
 import com.vadlevente.bingebot.core.model.MediaType
 import com.vadlevente.bingebot.core.stringOf
 import com.vadlevente.bingebot.core.ui.composables.ListItem
@@ -38,15 +49,17 @@ import com.vadlevente.bingebot.core.util.dateString
 import com.vadlevente.bingebot.core.util.yearString
 import com.vadlevente.bingebot.details.R
 import com.vadlevente.moviedetails.PersonDetailsViewModel
+import com.vadlevente.moviedetails.domain.model.DisplayedCreditRow
 import com.vadlevente.bingebot.resources.R as Res
 
 @Composable
 fun PersonDetailsScreen(
     personId: Int,
 ) {
-    val viewModel = hiltViewModel<PersonDetailsViewModel, PersonDetailsViewModel.PersonDetailsViewModelFactory> { factory ->
-        factory.create(personId)
-    }
+    val viewModel =
+        hiltViewModel<PersonDetailsViewModel, PersonDetailsViewModel.PersonDetailsViewModelFactory> { factory ->
+            factory.create(personId)
+        }
     val state by viewModel.state.collectAsStateWithLifecycle()
     val isInProgress by viewModel.isInProgress.collectAsStateWithLifecycle()
 
@@ -55,6 +68,10 @@ fun PersonDetailsScreen(
         isInProgress = isInProgress,
         onBackPressed = viewModel::onBackPressed,
         onMediaClicked = viewModel::onMediaClicked,
+        toggleCastUpcomingHidden = viewModel::toggleCastUpcomingHidden,
+        toggleCastPreviousHidden = viewModel::toggleCastPreviousHidden,
+        toggleCrewUpcomingHidden = viewModel::toggleCrewUpcomingHidden,
+        toggleCrewPreviousHidden = viewModel::toggleCrewPreviousHidden,
     )
 }
 
@@ -64,6 +81,10 @@ fun PersonDetailScreenComponent(
     isInProgress: Boolean,
     onBackPressed: () -> Unit,
     onMediaClicked: (Int, MediaType) -> Unit,
+    toggleCastUpcomingHidden: () -> Unit,
+    toggleCastPreviousHidden: () -> Unit,
+    toggleCrewUpcomingHidden: () -> Unit,
+    toggleCrewPreviousHidden: () -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -82,7 +103,15 @@ fun PersonDetailScreenComponent(
             if (isLoading) {
                 LoadingShimmer(paddingValues)
             } else {
-                DetailContent(paddingValues, state, onMediaClicked)
+                DetailContent(
+                    paddingValues = paddingValues,
+                    state = state,
+                    onMediaClicked = onMediaClicked,
+                    toggleCastUpcomingHidden = toggleCastUpcomingHidden,
+                    toggleCastPreviousHidden = toggleCastPreviousHidden,
+                    toggleCrewUpcomingHidden = toggleCrewUpcomingHidden,
+                    toggleCrewPreviousHidden = toggleCrewPreviousHidden,
+                )
             }
         }
     }
@@ -93,6 +122,10 @@ private fun DetailContent(
     paddingValues: PaddingValues,
     state: PersonDetailsViewModel.ViewState,
     onMediaClicked: (Int, MediaType) -> Unit,
+    toggleCastUpcomingHidden: () -> Unit,
+    toggleCastPreviousHidden: () -> Unit,
+    toggleCrewUpcomingHidden: () -> Unit,
+    toggleCrewPreviousHidden: () -> Unit,
 ) {
     if (state.details == null) return
     LazyColumn(
@@ -139,70 +172,107 @@ private fun DetailContent(
                 }
             }
         }
-        if (state.details.castCredits.isNotEmpty()) {
-            item {
-                HorizontalDivider(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 16.dp),
-                    thickness = 1.dp,
-                    color = MaterialTheme.colorScheme.primary
-                )
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 16.dp),
-                    text = stringResource(R.string.personDetails_castCredits),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.primary
-                )
+        items(
+            items = state.details.rows,
+            key = { it.id }
+        ) { row ->
+            when (row) {
+                is DisplayedCreditRow.DisplayedCreditHeader -> {
+                    HorizontalDivider(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 16.dp),
+                        thickness = 1.dp,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 16.dp),
+                        text = row.title.asString(),
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.primary,
+                    )
+                }
+
+                is DisplayedCreditRow.DisplayedCreditSectionHeader -> {
+                    ListHeader(
+                        isHidden = when {
+                            row.isCast && row.isUpcoming -> state.castUpcomingHidden
+                            row.isCast && !row.isUpcoming -> state.castPreviousHidden
+                            !row.isCast && row.isUpcoming -> state.crewUpcomingHidden
+                            else -> state.crewPreviousHidden
+                        },
+                        text = row.title.asString(),
+                        onClick =
+                        when {
+                            row.isCast && row.isUpcoming -> toggleCastUpcomingHidden
+                            row.isCast && !row.isUpcoming -> toggleCastPreviousHidden
+                            !row.isCast && row.isUpcoming -> toggleCrewUpcomingHidden
+                            else -> toggleCrewPreviousHidden
+                        }
+                    )
+                }
+                is DisplayedCreditRow.DisplayedCredit -> {
+                    val credit = row.credit
+                    ListItem(
+                        modifier = Modifier.animateItem(
+                            fadeInSpec = spring(stiffness = Spring.StiffnessMediumLow),
+                            placementSpec = spring(stiffness = Spring.StiffnessLow),
+                            fadeOutSpec = spring(stiffness = Spring.StiffnessMediumLow),
+                        ),
+                        isLoading = false,
+                        title = credit.title,
+                        iconPath = credit.posterPath,
+                        rating = credit.voteAverage.asOneDecimalString,
+                        releaseYear = credit.releaseDate?.yearString,
+                        info = credit.info,
+                        onClick = {
+                            onMediaClicked(credit.id, credit.mediaType)
+                        }
+                    )
+                }
             }
         }
-        items(state.details.castCredits) { credit ->
-            ListItem(
-                isLoading = false,
-                title = credit.title,
-                iconPath = credit.posterPath,
-                rating = credit.voteAverage.asOneDecimalString,
-                releaseYear = credit.releaseDate.yearString,
-                info = credit.info,
-                onClick = {
-                    onMediaClicked(credit.id, credit.mediaType)
-                }
+    }
+}
+
+@Composable
+private fun LazyItemScope.ListHeader(
+    isHidden: Boolean,
+    text: String,
+    onClick: () -> Unit,
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp)
+            .border(
+                width = 1.dp,
+                color = MaterialTheme.colorScheme.primary,
+                shape = RoundedCornerShape(8.dp)
             )
-        }
-        if (state.details.crewCredits.isNotEmpty()) {
-            item {
-                HorizontalDivider(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 16.dp),
-                    thickness = 1.dp,
-                    color = MaterialTheme.colorScheme.primary
-                )
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 16.dp),
-                    text = stringResource(R.string.personDetails_crewCredits),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.primary
-                )
+            .clip(shape = RoundedCornerShape(8.dp))
+            .clickable {
+                onClick()
             }
-        }
-        items(state.details.crewCredits) { credit ->
-            ListItem(
-                isLoading = false,
-                title = credit.title,
-                iconPath = credit.posterPath,
-                rating = credit.voteAverage.asOneDecimalString,
-                releaseYear = credit.releaseDate.yearString,
-                info = credit.info,
-                onClick = {
-                    onMediaClicked(credit.id, credit.mediaType)
-                }
-            )
-        }
+            .padding(horizontal = 8.dp, vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(
+            modifier = Modifier,
+            text = text,
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.primary
+        )
+        Spacer(modifier = Modifier.weight(1f))
+        val rotation by animateFloatAsState(if (isHidden) 0f else 180f, label = "")
+        Icon(
+            modifier = Modifier.graphicsLayer { rotationZ = rotation },
+            imageVector = Icons.Filled.KeyboardArrowDown,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.primary,
+        )
     }
 }
 

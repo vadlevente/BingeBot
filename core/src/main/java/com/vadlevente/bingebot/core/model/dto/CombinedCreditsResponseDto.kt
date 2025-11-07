@@ -11,7 +11,10 @@ data class CombinedCreditsResponseDto(
 )
 
 data class CastCredit(
-    val id: Int,
+    @SerializedName("credit_id")
+    val creditId: String,
+    @SerializedName("id")
+    val id: Long,
     @SerializedName("title")
     val title: String?,
     @SerializedName("poster_path")
@@ -24,10 +27,17 @@ data class CastCredit(
     val character: String,
     @SerializedName("media_type")
     val mediaType: String,
+    @SerializedName("name")
+    val name: String?,
+    @SerializedName("first_credit_air_date")
+    val firstCreditAirDate: String?,
 )
 
 data class CrewCredit(
-    val id: Int,
+    @SerializedName("credit_id")
+    val creditId: String,
+    @SerializedName("id")
+    val id: Long,
     @SerializedName("title")
     val title: String?,
     @SerializedName("poster_path")
@@ -40,4 +50,8 @@ data class CrewCredit(
     val job: String,
     @SerializedName("media_type")
     val mediaType: String,
+    @SerializedName("name")
+    val name: String?,
+    @SerializedName("first_credit_air_date")
+    val firstCreditAirDate: String?,
 )
