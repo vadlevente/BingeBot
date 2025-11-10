@@ -11,7 +11,7 @@ import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
 import com.vadlevente.bingebot.core.model.Item
 import com.vadlevente.bingebot.core.model.WatchList
-import com.vadlevente.bingebot.core.stringOf
+import com.vadlevente.bingebot.core.ui.stringOf
 import com.vadlevente.bingebot.core.viewModel.BaseViewModel
 import com.vadlevente.bingebot.core.viewModel.State
 import kotlinx.coroutines.flow.MutableStateFlow

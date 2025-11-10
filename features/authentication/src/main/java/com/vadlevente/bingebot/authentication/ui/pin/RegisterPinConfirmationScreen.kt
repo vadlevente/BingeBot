@@ -22,8 +22,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.vadlevente.bingebot.authentication.R
 import com.vadlevente.bingebot.authentication.ui.composables.PinScreen
-import com.vadlevente.bingebot.core.stringOf
-import com.vadlevente.bingebot.core.ui.composables.TopBar
+import com.vadlevente.bingebot.common.ui.composables.TopBar
+import com.vadlevente.bingebot.core.ui.stringOf
 import com.vadlevente.bingebot.ui.BingeBotTheme
 import kotlinx.coroutines.launch
 

@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.vadlevente.bingebot.search.R
 import com.vadlevente.bingebot.search.SearchMovieViewModel
+import com.vadlevente.bingebot.resources.R as Resources
 
 @Composable
 fun SearchMovieScreen(
@@ -12,7 +13,7 @@ fun SearchMovieScreen(
     SearchItemScreen(
         viewModel = viewModel,
         resources = SearchItemScreenResources(
-            title = R.string.searchMovies_pageTitle,
+            title = Resources.string.searchMovies_pageTitle,
             searchFieldHint = R.string.searchMovies_searchFieldHint,
             queryDescription = R.string.searchMovies_shortQueryDescription,
         )

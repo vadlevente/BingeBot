@@ -1,6 +1,6 @@
 package com.vadlevente.bingebot.core.events.dialog
 
-import com.vadlevente.bingebot.core.UIText
+import com.vadlevente.bingebot.core.ui.UIText
 
 sealed interface DialogEvent {
 

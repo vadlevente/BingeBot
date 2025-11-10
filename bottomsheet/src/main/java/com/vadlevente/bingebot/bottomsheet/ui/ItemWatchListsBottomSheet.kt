@@ -29,8 +29,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.vadlevente.bingebot.bottomsheet.R
 import com.vadlevente.bingebot.bottomsheet.viewmodel.ItemWatchListsBottomSheetViewModel
+import com.vadlevente.bingebot.common.ui.composables.ProgressScreen
 import com.vadlevente.bingebot.core.model.Item
-import com.vadlevente.bingebot.core.ui.composables.ProgressScreen
 import com.vadlevente.bingebot.ui.bottomSheetBottomPadding
 
 @OptIn(ExperimentalMaterial3Api::class)

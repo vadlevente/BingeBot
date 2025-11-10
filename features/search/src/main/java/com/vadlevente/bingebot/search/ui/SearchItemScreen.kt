@@ -25,11 +25,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.vadlevente.bingebot.common.ui.composables.BBOutlinedTextField
+import com.vadlevente.bingebot.common.ui.composables.ListItem
+import com.vadlevente.bingebot.common.ui.composables.TopBar
 import com.vadlevente.bingebot.core.model.Item
-import com.vadlevente.bingebot.core.stringOf
-import com.vadlevente.bingebot.core.ui.composables.BBOutlinedTextField
-import com.vadlevente.bingebot.core.ui.composables.ListItem
-import com.vadlevente.bingebot.core.ui.composables.TopBar
+import com.vadlevente.bingebot.core.ui.stringOf
 import com.vadlevente.bingebot.core.util.Constants.QUERY_MINIMUM_LENGTH
 import com.vadlevente.bingebot.core.util.asOneDecimalString
 import com.vadlevente.bingebot.core.util.yearString

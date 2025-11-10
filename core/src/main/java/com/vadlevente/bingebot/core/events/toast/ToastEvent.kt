@@ -1,6 +1,6 @@
 package com.vadlevente.bingebot.core.events.toast
 
-import com.vadlevente.bingebot.core.UIText
+import com.vadlevente.bingebot.core.ui.UIText
 
 sealed interface ToastEvent {
     data class ShowToast(

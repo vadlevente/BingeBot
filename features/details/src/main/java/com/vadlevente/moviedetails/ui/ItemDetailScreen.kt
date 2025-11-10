@@ -46,11 +46,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
+import com.vadlevente.bingebot.common.ui.composables.BBIcon
+import com.vadlevente.bingebot.common.ui.composables.TopBar
+import com.vadlevente.bingebot.common.ui.composables.shimmerEffect
 import com.vadlevente.bingebot.core.model.Item
-import com.vadlevente.bingebot.core.stringOf
-import com.vadlevente.bingebot.core.ui.composables.BBIcon
-import com.vadlevente.bingebot.core.ui.composables.TopBar
-import com.vadlevente.bingebot.core.ui.composables.shimmerEffect
+import com.vadlevente.bingebot.core.ui.stringOf
 import com.vadlevente.bingebot.core.util.asOneDecimalString
 import com.vadlevente.bingebot.core.util.dateString
 import com.vadlevente.bingebot.details.R

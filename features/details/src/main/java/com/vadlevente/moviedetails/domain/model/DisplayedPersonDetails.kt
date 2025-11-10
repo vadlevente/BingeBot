@@ -1,7 +1,7 @@
 package com.vadlevente.moviedetails.domain.model
 
-import com.vadlevente.bingebot.core.UIText
 import com.vadlevente.bingebot.core.model.PersonCredit
+import com.vadlevente.bingebot.core.ui.UIText
 import java.util.Date
 
 data class DisplayedPersonDetails(

@@ -1,17 +1,9 @@
 import org.gradle.kotlin.dsl.android
 
 plugins {
-    id("com.android.library") 
-    id("kotlin-android")
+    id("library-common")
 }
 
 android {
     namespace = "com.vadlevente.bingebot.resources"
-}
-
-apply{
-    from("$rootDir/compose-module.gradle")
-}
-dependencies{
-
 }

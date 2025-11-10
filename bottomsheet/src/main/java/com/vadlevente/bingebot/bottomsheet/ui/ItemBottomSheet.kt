@@ -43,9 +43,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.vadlevente.bingebot.bottomsheet.R
 import com.vadlevente.bingebot.bottomsheet.ui.composables.ItemBottomSheetHeader
 import com.vadlevente.bingebot.bottomsheet.viewmodel.ItemBottomSheetViewModel
+import com.vadlevente.bingebot.common.ui.composables.BBButton
+import com.vadlevente.bingebot.common.ui.composables.BBOutlinedButton
 import com.vadlevente.bingebot.core.model.Item
-import com.vadlevente.bingebot.core.ui.composables.BBButton
-import com.vadlevente.bingebot.core.ui.composables.BBOutlinedButton
 import com.vadlevente.bingebot.core.util.isBeforeTomorrow
 import com.vadlevente.bingebot.core.util.yearString
 import com.vadlevente.bingebot.ui.BingeBotTheme

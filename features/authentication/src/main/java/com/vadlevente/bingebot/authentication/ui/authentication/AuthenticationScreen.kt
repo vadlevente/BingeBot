@@ -21,9 +21,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.vadlevente.bingebot.authentication.R
 import com.vadlevente.bingebot.authentication.ui.composables.PinScreen
-import com.vadlevente.bingebot.core.stringOf
-import com.vadlevente.bingebot.core.ui.composables.BBBiometricPrompt
-import com.vadlevente.bingebot.core.ui.composables.TopBar
+import com.vadlevente.bingebot.common.ui.composables.BBBiometricPrompt
+import com.vadlevente.bingebot.common.ui.composables.TopBar
+import com.vadlevente.bingebot.core.ui.stringOf
 import com.vadlevente.bingebot.ui.BingeBotTheme
 import kotlinx.coroutines.launch
 import com.vadlevente.bingebot.resources.R as Res

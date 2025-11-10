@@ -13,7 +13,7 @@ import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastType
 import com.vadlevente.bingebot.core.model.Extras
 import com.vadlevente.bingebot.core.model.NavDestination
-import com.vadlevente.bingebot.core.stringOf
+import com.vadlevente.bingebot.core.ui.stringOf
 import com.vadlevente.bingebot.core.usecase.GetConfigurationUseCase
 import com.vadlevente.bingebot.core.usecase.SetScreenResultUseCase
 import com.vadlevente.bingebot.core.usecase.SetScreenResultUseCaseArgs

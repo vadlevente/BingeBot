@@ -11,7 +11,7 @@ import com.vadlevente.bingebot.core.model.DisplayedItem
 import com.vadlevente.bingebot.core.model.Item
 import com.vadlevente.bingebot.core.model.exception.Reason.DATA_NOT_FOUND
 import com.vadlevente.bingebot.core.model.exception.isBecauseOf
-import com.vadlevente.bingebot.core.stringOf
+import com.vadlevente.bingebot.core.ui.stringOf
 import com.vadlevente.bingebot.core.viewModel.BaseViewModel
 import com.vadlevente.bingebot.core.viewModel.State
 import com.vadlevente.bingebot.watchlist.R.string

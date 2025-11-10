@@ -4,7 +4,7 @@ import com.vadlevente.bingebot.core.events.dialog.DialogEvent.ShowDialog
 import com.vadlevente.bingebot.core.events.dialog.DialogEventChannel
 import com.vadlevente.bingebot.core.events.navigation.NavigationEvent.TopNavigationEvent.ExitApplication
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
-import com.vadlevente.bingebot.core.stringOf
+import com.vadlevente.bingebot.core.ui.stringOf
 import javax.inject.Inject
 import com.vadlevente.bingebot.resources.R as Res
 

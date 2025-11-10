@@ -1,7 +1,7 @@
 package com.vadlevente.bingebot.core.model.exception
 
-import com.vadlevente.bingebot.core.UIText
-import com.vadlevente.bingebot.core.stringOf
+import com.vadlevente.bingebot.core.ui.UIText
+import com.vadlevente.bingebot.core.ui.stringOf
 import com.vadlevente.bingebot.resources.R as Res
 
 class BingeBotException(

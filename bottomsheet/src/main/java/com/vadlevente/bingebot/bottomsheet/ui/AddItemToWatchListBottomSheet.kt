@@ -29,8 +29,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.vadlevente.bingebot.bottomsheet.R
 import com.vadlevente.bingebot.bottomsheet.ui.composables.ItemBottomSheetHeader
 import com.vadlevente.bingebot.bottomsheet.viewmodel.AddItemToWatchListBottomSheetViewModel
+import com.vadlevente.bingebot.common.ui.composables.ProgressScreen
 import com.vadlevente.bingebot.core.model.Item
-import com.vadlevente.bingebot.core.ui.composables.ProgressScreen
 import com.vadlevente.bingebot.core.util.yearString
 import com.vadlevente.bingebot.ui.bottomSheetBottomPadding
 

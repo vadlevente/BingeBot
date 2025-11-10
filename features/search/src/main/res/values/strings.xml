@@ -2,11 +2,9 @@
 <resources>
     <string name="searchItems_emptyListDescription">Nincs a kulcsszónak megfelelő találat.</string>
 
-    <string name="searchMovies_pageTitle">Filmek keresése</string>
     <string name="searchMovies_searchFieldHint">Film címe</string>
     <string name="searchMovies_shortQueryDescription">Kérjük, írjon be legalább 3 karaktert a filmek kereséséhez.</string>
 
-    <string name="searchTv_pageTitle">Sorozatok keresése</string>
     <string name="searchTv_searchFieldHint">Sorozat címe</string>
     <string name="searchTv_shortQueryDescription">Kérjük, írjon be legalább 3 karaktert a sorozatok kereséséhez.</string>
 </resources>

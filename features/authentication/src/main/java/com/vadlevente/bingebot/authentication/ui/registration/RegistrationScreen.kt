@@ -33,10 +33,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.vadlevente.bingebot.authentication.R
 import com.vadlevente.bingebot.authentication.R.string
 import com.vadlevente.bingebot.authentication.ui.registration.RegistrationViewModel.ViewState
-import com.vadlevente.bingebot.core.stringOf
-import com.vadlevente.bingebot.core.ui.composables.BBOutlinedButton
-import com.vadlevente.bingebot.core.ui.composables.BBOutlinedTextField
-import com.vadlevente.bingebot.core.ui.composables.PasswordTrailingIcon
+import com.vadlevente.bingebot.common.ui.composables.BBOutlinedButton
+import com.vadlevente.bingebot.common.ui.composables.BBOutlinedTextField
+import com.vadlevente.bingebot.common.ui.composables.PasswordTrailingIcon
+import com.vadlevente.bingebot.core.ui.stringOf
 import com.vadlevente.bingebot.ui.BingeBotTheme
 import com.vadlevente.bingebot.ui.margin16
 import com.vadlevente.bingebot.ui.margin8
@@ -105,8 +105,8 @@ fun RegistrationScreenComponent(
                 modifier = Modifier
                     .fillMaxWidth(),
                 value = state.email,
-                label = stringOf(R.string.registrationEmailLabel),
-                hint = stringOf(R.string.registrationEmailLabel),
+                label = stringOf(string.registrationEmailLabel),
+                hint = stringOf(string.registrationEmailLabel),
                 onValueChange = onEmailChanged,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Email,
@@ -118,8 +118,8 @@ fun RegistrationScreenComponent(
                 modifier = Modifier
                     .fillMaxWidth(),
                 value = state.password,
-                label = stringOf(R.string.registrationPasswordLabel),
-                hint = stringOf(R.string.registrationPasswordLabel),
+                label = stringOf(string.registrationPasswordLabel),
+                hint = stringOf(string.registrationPasswordLabel),
                 visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 onValueChange = onPasswordChanged,
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
@@ -134,8 +134,8 @@ fun RegistrationScreenComponent(
                 modifier = Modifier
                     .fillMaxWidth(),
                 value = state.passwordConfirmed,
-                label = stringOf(R.string.registrationConfirmPasswordLabel),
-                hint = stringOf(R.string.registrationConfirmPasswordLabel),
+                label = stringOf(string.registrationConfirmPasswordLabel),
+                hint = stringOf(string.registrationConfirmPasswordLabel),
                 visualTransformation = if (confirmPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 onValueChange = onConfirmedPasswordChanged,
                 isError = state.passwordsDoNotMatch,

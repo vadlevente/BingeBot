@@ -1,4 +1,5 @@
 pluginManagement {
+//    includeBuild("build-logic")
     repositories {
         google()
         mavenCentral()
@@ -16,6 +17,7 @@ rootProject.name = "BingeBot"
 include(":app")
 include(":ui")
 include(":core")
+include(":common")
 include(":features:splash")
 include(":features:authentication")
 include(":features:listall")
@@ -26,3 +28,4 @@ include(":resources")
 include(":bottomsheet")
 include(":features:dashboard")
 include(":features:settings")
+include(":features:demo")

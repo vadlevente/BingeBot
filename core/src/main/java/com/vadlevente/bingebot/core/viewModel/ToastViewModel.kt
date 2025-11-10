@@ -1,13 +1,13 @@
 package com.vadlevente.bingebot.core.viewModel
 
 import androidx.lifecycle.viewModelScope
-import com.vadlevente.bingebot.core.UIText
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEvent.ShowToast
 import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastType
 import com.vadlevente.bingebot.core.events.toast.ToastType.WARNING
-import com.vadlevente.bingebot.core.stringOf
+import com.vadlevente.bingebot.core.ui.UIText
+import com.vadlevente.bingebot.core.ui.stringOf
 import com.vadlevente.bingebot.core.viewModel.ToastViewModel.ViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

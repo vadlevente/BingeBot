@@ -1,7 +1,7 @@
 package com.vadlevente.moviedetails.domain.usecases
 
 import com.vadlevente.bingebot.core.model.PersonDetails
-import com.vadlevente.bingebot.core.stringOf
+import com.vadlevente.bingebot.core.ui.stringOf
 import com.vadlevente.bingebot.core.usecase.BaseUseCase
 import com.vadlevente.bingebot.details.R
 import com.vadlevente.moviedetails.domain.model.DisplayedCreditRow

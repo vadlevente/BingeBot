@@ -2,11 +2,9 @@
 <resources>
     <string name="searchItems_emptyListDescription">No result found for this keyword</string>
 
-    <string name="searchMovies_pageTitle">Search movies</string>
     <string name="searchMovies_searchFieldHint">Movie title</string>
     <string name="searchMovies_shortQueryDescription">Please type in at least 3 characters to search movies</string>
 
-    <string name="searchTv_pageTitle">Search series</string>
     <string name="searchTv_searchFieldHint">Series title</string>
     <string name="searchTv_shortQueryDescription">Please type in at least 3 characters to search series</string>
 </resources>

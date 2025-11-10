@@ -13,8 +13,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.vadlevente.bingebot.authentication.R
 import com.vadlevente.bingebot.authentication.ui.composables.PinScreen
-import com.vadlevente.bingebot.core.stringOf
-import com.vadlevente.bingebot.core.ui.composables.TopBar
+import com.vadlevente.bingebot.common.ui.composables.TopBar
+import com.vadlevente.bingebot.core.ui.stringOf
 
 @Composable
 fun RegisterPinScreen(

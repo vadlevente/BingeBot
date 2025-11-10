@@ -2,6 +2,7 @@ object Modules {
     const val app = ":app"
     const val core = ":core"
     const val ui = ":ui"
+    const val common = ":common"
     const val resources = ":resources"
     const val bottomSheet = ":bottomsheet"
     const val splash = ":features:splash"

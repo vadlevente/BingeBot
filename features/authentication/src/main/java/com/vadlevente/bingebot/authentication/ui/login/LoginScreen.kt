@@ -32,10 +32,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.vadlevente.bingebot.authentication.R
 import com.vadlevente.bingebot.authentication.ui.login.LoginViewModel.ViewState
-import com.vadlevente.bingebot.core.stringOf
-import com.vadlevente.bingebot.core.ui.composables.BBOutlinedButton
-import com.vadlevente.bingebot.core.ui.composables.BBOutlinedTextField
-import com.vadlevente.bingebot.core.ui.composables.PasswordTrailingIcon
+import com.vadlevente.bingebot.common.ui.composables.BBOutlinedButton
+import com.vadlevente.bingebot.common.ui.composables.BBOutlinedTextField
+import com.vadlevente.bingebot.common.ui.composables.PasswordTrailingIcon
+import com.vadlevente.bingebot.core.ui.stringOf
 import com.vadlevente.bingebot.ui.BingeBotTheme
 import com.vadlevente.bingebot.ui.margin16
 import com.vadlevente.bingebot.ui.margin8

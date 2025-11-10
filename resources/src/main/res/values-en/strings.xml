@@ -31,4 +31,7 @@
 
     <string name="syncContent">Synchronizing content…</string>
 
+    <string name="searchMovies_pageTitle">Search movies</string>
+    <string name="searchTv_pageTitle">Search series</string>
+
 </resources>

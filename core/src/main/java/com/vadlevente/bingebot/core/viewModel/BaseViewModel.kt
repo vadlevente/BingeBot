@@ -3,7 +3,6 @@ package com.vadlevente.bingebot.core.viewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.crashlytics.FirebaseCrashlytics
-import com.vadlevente.bingebot.core.UIText
 import com.vadlevente.bingebot.core.events.navigation.NavigationEvent
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastEvent.ShowToast
@@ -14,7 +13,8 @@ import com.vadlevente.bingebot.core.model.NavDestination
 import com.vadlevente.bingebot.core.model.exception.BingeBotException
 import com.vadlevente.bingebot.core.model.exception.Reason.SESSION_EXPIRED
 import com.vadlevente.bingebot.core.model.exception.isBecauseOf
-import com.vadlevente.bingebot.core.stringOf
+import com.vadlevente.bingebot.core.ui.UIText
+import com.vadlevente.bingebot.core.ui.stringOf
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

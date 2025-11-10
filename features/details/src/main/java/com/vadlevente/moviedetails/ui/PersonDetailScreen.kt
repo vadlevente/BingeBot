@@ -38,12 +38,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
-import com.vadlevente.bingebot.core.asString
+import com.vadlevente.bingebot.common.ui.composables.ListItem
+import com.vadlevente.bingebot.common.ui.composables.TopBar
+import com.vadlevente.bingebot.common.ui.composables.shimmerEffect
+import com.vadlevente.bingebot.common.ui.util.asString
 import com.vadlevente.bingebot.core.model.MediaType
-import com.vadlevente.bingebot.core.stringOf
-import com.vadlevente.bingebot.core.ui.composables.ListItem
-import com.vadlevente.bingebot.core.ui.composables.TopBar
-import com.vadlevente.bingebot.core.ui.composables.shimmerEffect
+import com.vadlevente.bingebot.core.ui.stringOf
 import com.vadlevente.bingebot.core.util.asOneDecimalString
 import com.vadlevente.bingebot.core.util.dateString
 import com.vadlevente.bingebot.core.util.yearString

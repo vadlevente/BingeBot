@@ -36,11 +36,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.vadlevente.bingebot.common.ui.composables.BBIcon
+import com.vadlevente.bingebot.common.ui.composables.ProgressScreen
+import com.vadlevente.bingebot.common.ui.composables.TopBar
 import com.vadlevente.bingebot.core.model.SelectedLanguage
-import com.vadlevente.bingebot.core.stringOf
-import com.vadlevente.bingebot.core.ui.composables.BBIcon
-import com.vadlevente.bingebot.core.ui.composables.ProgressScreen
-import com.vadlevente.bingebot.core.ui.composables.TopBar
+import com.vadlevente.bingebot.core.ui.stringOf
 import com.vadlevente.bingebot.settings.SettingsViewModel.ViewState
 import com.vadlevente.bingebot.settings.ui.composables.SelectLanguageBottomSheet
 import com.vadlevente.bingebot.ui.BingeBotTheme

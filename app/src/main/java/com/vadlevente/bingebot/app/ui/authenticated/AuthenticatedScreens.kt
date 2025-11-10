@@ -18,11 +18,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.vadlevente.bingebot.common.ui.composables.horizontalSlideComposable
+import com.vadlevente.bingebot.common.ui.util.SetupLifecycle
 import com.vadlevente.bingebot.core.events.navigation.NavigationEvent.AuthenticatedNavigationEvent
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.model.NavDestination.AuthenticatedNavDestination
-import com.vadlevente.bingebot.core.ui.composables.horizontalSlideComposable
-import com.vadlevente.bingebot.core.util.SetupLifecycle
 import com.vadlevente.bingebot.dashboard.ui.DashboardScreen
 import com.vadlevente.bingebot.search.ui.SearchMovieScreen
 import com.vadlevente.bingebot.search.ui.SearchTvScreen

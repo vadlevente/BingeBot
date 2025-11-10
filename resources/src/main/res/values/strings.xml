@@ -31,4 +31,8 @@
 
     <string name="syncContent">Tartalom szinkronizálása…</string>
 
+    <string name="searchMovies_pageTitle">Filmek keresése</string>
+    <string name="searchTv_pageTitle">Sorozatok keresése</string>
+
+
 </resources>

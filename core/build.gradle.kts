@@ -1,8 +1,10 @@
 
 plugins {
-    id("com.android.library") 
+    id("library-common")
     id("kotlin-android")
     id("kotlinx-serialization")
+    id("dagger.hilt.android.plugin")
+    id("kotlin-kapt")
 }
 
 android {
@@ -10,10 +12,6 @@ android {
     defaultConfig {
         consumerProguardFiles("consumer-proguard-rules.pro")
     }
-}
-
-apply{
-    from("$rootDir/compose-module.gradle")
 }
 
 dependencies {
@@ -26,31 +24,36 @@ dependencies {
     "implementation"(Hilt.hiltTest)
     "implementation"(Testing.robolectric)
     "implementation"(Testing.navigationTest)
-    "implementation"(Concurrency.rxJava)
-    "implementation"(Concurrency.rxAndroid)
-    "implementation"(Concurrency.coroutinesRx)
-    "implementation"(Data.room)
-    "implementation"(Data.roomKtx)
-    "implementation"(Data.roomRx)
-    "implementation"(Networking.retrofit)
-    "implementation"(Networking.okHttp)
-    "implementation"(Networking.okhttpLogger)
-    "implementation"(Networking.retrofitGsonConverter)
-    "implementation"(Kotlin.kotlinSerialization)
+    "api"(Concurrency.rxJava)
+    "api"(Concurrency.rxAndroid)
+    "api"(Concurrency.coroutinesRx)
+    "api"(Data.room)
+    "api"(Data.roomKtx)
+    "api"(Data.roomRx)
+    "api"(Networking.retrofit)
+    "api"(Networking.okHttp)
+    "api"(Networking.okhttpLogger)
+    "api"(Networking.retrofitGsonConverter)
+    "api"(Kotlin.kotlinSerialization)
     "kapt"(Data.roomCompiler)
-    "implementation"(Data.dataStore)
-    "implementation"(Data.cryptoDataStore)
-    "implementation"(Utils.timber)
-    "implementation"(Utils.gson)
-    "implementation"(Biometrics.biometrics)
+    "api"(Data.dataStore)
+    "api"(Data.cryptoDataStore)
+    "api"(Utils.timber)
+    "api"(Utils.gson)
+    "api"(Biometrics.biometrics)
+    "api"(Ui.appCompat)
+    "api"(Ui.androidxCore)
+
     // Firebase
     "implementation"(platform(Firebase.firebaseBoM))
     "implementation"(Firebase.firebaseCrashlytics)
     "implementation"(Firebase.firebaseAuth)
     "implementation"(Firebase.firebaseFirestore)
-//    "implementation"(project(Modules.coreUi))
     "testImplementation"(Testing.kotlin)
     "androidTestImplementation"(Testing.kotlin)
     "androidTestImplementation"(Testing.turbine)
     "androidTestImplementation"(Networking.okHttp)
+
+    "api"(Hilt.hilt)
+    "kapt"(Hilt.hiltCompiler)
 }

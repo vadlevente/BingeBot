@@ -10,10 +10,10 @@ import androidx.navigation.toRoute
 import com.vadlevente.bingebot.authentication.ui.biometrics.RegisterBiometricsScreen
 import com.vadlevente.bingebot.authentication.ui.pin.RegisterPinConfirmationScreen
 import com.vadlevente.bingebot.authentication.ui.pin.RegisterPinScreen
+import com.vadlevente.bingebot.common.ui.composables.horizontalSlideComposable
 import com.vadlevente.bingebot.core.events.navigation.NavigationEvent.EnrollSecurityNavigationEvent
 import com.vadlevente.bingebot.core.events.navigation.NavigationEventChannel
 import com.vadlevente.bingebot.core.model.NavDestination.EnrollSecurityNavDestination
-import com.vadlevente.bingebot.core.ui.composables.horizontalSlideComposable
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.launch

@@ -14,7 +14,7 @@ import com.vadlevente.bingebot.core.events.toast.ToastEventChannel
 import com.vadlevente.bingebot.core.events.toast.ToastType.INFO
 import com.vadlevente.bingebot.core.model.Extras
 import com.vadlevente.bingebot.core.model.NavDestination
-import com.vadlevente.bingebot.core.stringOf
+import com.vadlevente.bingebot.core.ui.stringOf
 import com.vadlevente.bingebot.core.usecase.GetScreenResultUseCase
 import com.vadlevente.bingebot.core.usecase.GetScreenResultUseCaseArgs
 import com.vadlevente.bingebot.core.viewModel.BaseViewModel

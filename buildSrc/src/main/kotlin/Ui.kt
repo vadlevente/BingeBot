@@ -14,14 +14,14 @@ object Ui {
     private const val viewpager2Version = "1.1.0-beta01"
     const val viewPager2 = "androidx.viewpager2:viewpager2:$viewpager2Version"
 
-    private const val appCompatVersion = "1.5.0"
+    private const val appCompatVersion = "1.7.0"
     const val appCompat = "androidx.appcompat:appcompat:${appCompatVersion}"
 
     private const val fragmentVersion = "1.5.6"
     const val fragment = "androidx.fragment:fragment-ktx:$fragmentVersion"
     const val fragmentTest = "androidx.fragment:fragment-testing:$fragmentVersion"
 
-    private const val androidxCoreVersion = "1.9.0"
+    private const val androidxCoreVersion = "1.12.0"
     const val androidxCore = "androidx.core:core-ktx:$androidxCoreVersion"
 
     private const val materialVersion = "1.6.1"
